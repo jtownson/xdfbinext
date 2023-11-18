@@ -11,12 +11,14 @@ object XdfParser:
   def parse(xdf: String): XdfModel =
     parse(XML.loadString(xdf))
 
-  private def parse(xml: scala.xml.Elem): XdfModel =
+  private def parse(xml: scala.xml.Elem): XdfModel = {
+    val xdfHeader = node2Header((xml \\ "XDFFORMAT" \ "XDFHEADER").head)
     XdfModel(
       version = xml \\ "XDFFORMAT" \@ "version",
-      xdfHeader = node2Header((xml \\ "XDFFORMAT" \ "XDFHEADER").head),
-      tables = (xml \\ "XDFTABLE").map(node2Table)
+      xdfHeader = xdfHeader,
+      tables = (xml \\ "XDFTABLE").map(node2Table(xdfHeader.categories))
     )
+  }
 
   private def optionalInt(n: Node, xpath: String, default: Int): Int =
     (n \ xpath).headOption.map(n => decode(n.text).toInt).getOrElse(default)
@@ -25,20 +27,21 @@ object XdfParser:
     (n \ xpath).headOption.map(n => decodeLong(n.text).toLong).getOrElse(default)
 
   private val node2Category: Node => Category = { n =>
-    val index = decode(n \@ "index")
+    val index = n \@ "index"
     val name  = n \@ "name"
     Category(index, name)
   }
 
-  private val node2CategoryMem: Node => CategoryMem = { n =>
-    val index    = decode(n \@ "index")
-    val category = decode(n \@ "category")
-    CategoryMem(index = index, category = category)
+  private def node2CategoryMem(categories: Seq[Category]): Node => CategoryMem = { n =>
+    val index                = decode(n \@ "index")
+    val actualZeroBasedIndex = decode(n \@ "category") - 1
+
+    CategoryMem(index = index, category = categories(actualZeroBasedIndex))
   }
 
   private val node2EmbeddedData: Node => EmbeddedData = { n =>
     val mmedTypeFlags = optionalInt(n, "@mmedtypeflags", 0)
-    val mmedAddress   = optionalLong(n, "@mmedaddress", -1)
+    val mmedAddress   = optionalLong(n, "@mmedaddress", undefinedAddress)
     val mmedRowCount  = optionalInt(n, "@mmedrowcount", 0)
     val mmedColCount  = optionalInt(n, "@mmedcolcount", 0)
     EmbeddedData(
@@ -144,11 +147,11 @@ object XdfParser:
     Axes(xAxis, yAxis, zAxis)
   }
 
-  private val node2Table: Node => XdfTable = { n =>
+  private def node2Table(categories: Seq[Category]): Node => XdfTable = { n =>
     val uniqueId     = decode(n \@ "uniqueid")
     val flags        = decode(n \@ "flags")
     val title        = (n \ "title").head.text
-    val categoryMems = (n \ "CATEGORYMEM").map(node2CategoryMem)
+    val categoryMems = (n \ "CATEGORYMEM").map(node2CategoryMem(categories))
     val axes         = node2Axes(n)
 
     XdfTable(

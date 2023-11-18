@@ -7,6 +7,12 @@ lazy val scalatest = Seq(
 )
 lazy val scalaXml  = Seq("org.scala-lang.modules" %% "scala-xml" % "2.2.0")
 lazy val fastParse = Seq("com.lihaoyi" %% "fastparse" % "3.0.2")
+lazy val breeze = Seq(
+  "org.scalanlp" %% "breeze"     % "2.1.0",
+  "org.scalanlp" %% "breeze-viz" % "2.1.0"
+)
+lazy val commonsText = Seq("org.apache.commons" % "commons-text" % "1.11.0")
+lazy val scopt    = Seq("com.github.scopt" %% "scopt" % "4.1.0")
 
 lazy val root = project
   .in(file("."))
@@ -14,5 +20,5 @@ lazy val root = project
     name         := "xdfbinext",
     version      := "0.1.0-SNAPSHOT",
     scalaVersion := scala3Version,
-    libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse
+    libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt
   )
