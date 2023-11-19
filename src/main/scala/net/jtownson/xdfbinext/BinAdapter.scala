@@ -1,6 +1,5 @@
 package net.jtownson.xdfbinext
 
-import breeze.linalg.{DenseMatrix, DenseVector}
 import net.jtownson.xdfbinext.BinAdapter.{data2Str1D, data2Str2D, data2StrConst}
 import net.jtownson.xdfbinext.XdfSchema.{Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
 
@@ -85,18 +84,18 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     val tableRaw = readRaw(table)
 
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
-    val wrapped: ByteBuffer = ByteBuffer.wrap(tableRaw)
 
     require(cellSizeBytes == 2, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
 
-    val shortBuff = wrapped.asShortBuffer()
-    val toBuff    = new ArrayBuffer[Int](numCells)
+    val wrapped: ByteBuffer = ByteBuffer.wrap(tableRaw)
+    val shortBuff           = wrapped.asShortBuffer()
+    val toBuff              = new ArrayBuffer[Int](numCells)
 
     while (shortBuff.hasRemaining) {
       val shortVal    = shortBuff.get
-      val intVal: Int = if (shortVal >= 0) shortVal.toInt else (0x10000 + shortVal).toInt
+      val intVal: Int = if (isSigned || shortVal >= 0) shortVal.toInt else 0x10000 + shortVal
       toBuff.addOne(intVal)
     }
 
@@ -104,6 +103,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 
     toBuff.map(equation).toArray
   }
+
   private def tableInt(table: XdfTable): Array[BigDecimal] = {
     val tableRaw = readRaw(table)
 
@@ -114,7 +114,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 
     require(cellSizeBytes == 4, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
 
-    val isFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointTypeFlag
+    val isFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointFlag
 
     if (isFloatingPoint) {
       val floatBuff = wrapped.asFloatBuffer()

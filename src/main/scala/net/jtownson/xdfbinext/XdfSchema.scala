@@ -4,7 +4,8 @@ object XdfSchema:
 
   val undefinedAddress: Long = -1
 
-  val floatingPointTypeFlag = 0x10000
+  val floatingPointFlag = 0x10000
+  val signedFlag        = 0x01
 
   case class XdfModel(version: String, xdfHeader: XdfHeader, tables: Seq[XdfTable]) {
     val tablesByName: Map[String, XdfTable] = tables.map(t => t.title -> t).toMap

@@ -1,5 +1,7 @@
 package net.jtownson.xdfbinext
 
+import net.jtownson.xdfbinext.BinAdapter.BinAdapterCompare
+import net.jtownson.xdfbinext.XdfSchema.Category
 import net.jtownson.xdfbinext.{BinAdapter, XdfParser}
 import scopt.{OParser, OParserBuilder}
 
@@ -21,11 +23,19 @@ object MapCompareApp {
           .filter((name, _) => config.tableExpr.matches(name))
           .filterNot((name, _) => tableFilters.exists(filter => name.contains(filter)))
 
+        val filteredComparisonsSortByCat = filteredComparisons
+          .map[(Category, String, BinAdapterCompare)] { (name, comparison) =>
+            (xdf.tablesByName(name).categoryMems.map(_.category).last, name, comparison)
+          }
+          .toList
+          .sortBy((cat, name, comp) => Integer.decode(cat.index))
+
         val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
 
         Using.resource(output) { o =>
-          filteredComparisons.foreach { (table, comparison) =>
+          filteredComparisonsSortByCat.foreach { (category, table, comparison) =>
             val cats = xdf.tablesByName(table).categoryMems.map(_.category.name)
+
             o.println(s"TABLE: $table")
             o.println(s"CATEGORIES: ${cats.mkString(", ")}")
             o.println(comparison.lhs)

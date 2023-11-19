@@ -73,3 +73,10 @@ class BinAdapterTest extends AnyFlatSpec:
       4500, 5000, 5500, 6000, 6500, 6950)
     binAdapter.tableRead(table) shouldBe expected
   }
+
+  it should "read WGDC P correction X (autogen)" in {
+    val table = "WGDC P correction X (autogen)"
+    val expected = Array[BigDecimal](-500.0, -50.0, -20.0, -10.0, -5.0, 0.0, 5.0, 10.0, 30.0, 50.0, 100.0, 500.0)
+
+    binAdapter.tableRead(table) shouldBe expected
+  }
