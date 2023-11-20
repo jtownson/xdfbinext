@@ -45,6 +45,14 @@ object XdfSchema:
     val tables2D: Map[String, Table2DEnriched] =
       tables.filter(is2D).map(table => table.title -> table2DAndBreakpoints(table.title)).toMap
 
+    def table(tableName: String): XdfTable | Table1DEnriched | Table2DEnriched = {
+      tablesConstant
+        .get(tableName)
+        .orElse(tables1D.get(tableName))
+        .orElse(tables2D.get(tableName))
+        .getOrElse(throw new IllegalArgumentException(s"Invalid table name $tableName"))
+    }
+
     private def table2DAndBreakpoints(name: String): Table2DEnriched = {
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
@@ -108,6 +116,10 @@ object XdfSchema:
   ) {
     def xLabels: Seq[String] = axes.x.labels.map(_.value)
     def yLabels: Seq[String] = axes.y.labels.map(_.value)
+
+    def xUnits: String = axes.x.units
+    def yUnits: String = axes.y.units
+    def zUnits: String = axes.z.units
   }
 
   case class Axes(x: XdfAxisX, y: XdfAxisY, z: XdfAxisZ)
@@ -123,7 +135,8 @@ object XdfSchema:
       unitType: Int,
       daLink: DaLink,
       labels: Seq[Label],
-      math: Math
+      math: Math,
+      units: String
   )
 
   case class XdfAxisY(
@@ -135,7 +148,8 @@ object XdfSchema:
       unitType: Int,
       daLink: DaLink,
       labels: Seq[Label],
-      math: Math
+      math: Math,
+      units: String
   )
 
   case class XdfAxisZ(
@@ -145,7 +159,8 @@ object XdfSchema:
       min: BigDecimal,
       max: BigDecimal,
       outputType: Int,
-      math: Math
+      math: Math,
+      units: String
   )
 
   case class EmbeddedData(

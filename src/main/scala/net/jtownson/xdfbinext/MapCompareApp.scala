@@ -1,7 +1,7 @@
 package net.jtownson.xdfbinext
 
 import net.jtownson.xdfbinext.BinAdapter.BinAdapterCompare
-import net.jtownson.xdfbinext.XdfSchema.Category
+import net.jtownson.xdfbinext.XdfSchema.{Category, Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
 import net.jtownson.xdfbinext.{BinAdapter, XdfParser}
 import scopt.{OParser, OParserBuilder}
 
@@ -14,36 +14,88 @@ object MapCompareApp {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CommandLine()) match {
       case Some(config) =>
+        val xdf = Using.resource(Source.fromFile(config.xdfModel))(xdfr => XdfParser.parse(xdfr.mkString))
+
+        val notes = config.reportFile.fold(Map.empty[String, String])(notesFile => readNotes(notesFile))
+
+        val tablesOrdered = config.reportFile.fold(tablesByCategory(xdf))(report => tablesByReport(xdf, report))
+
         val tableFilters = Set("(Custom)", "(Antilag)", "(Map 2)", "(Map 3)", "(Map 4)", "(FF)", "(FF#2)")
 
         println(s"xdfModel ${config.xdfModel}, baseBin ${config.baseBin}, modBin ${config.modBin}")
-        val xdf         = Using.resource(Source.fromFile(config.xdfModel))(xdfr => XdfParser.parse(xdfr.mkString))
+
         val comparisons = BinAdapter.compare(xdf, config.baseBin, config.modBin)
+
         val filteredComparisons = comparisons
           .filter((name, _) => config.tableExpr.matches(name))
           .filterNot((name, _) => tableFilters.exists(filter => name.contains(filter)))
 
-        val filteredComparisonsSortByCat = filteredComparisons
-          .map[(Category, String, BinAdapterCompare)] { (name, comparison) =>
-            (xdf.tablesByName(name).categoryMems.map(_.category).last, name, comparison)
-          }
-          .toList
-          .sortBy((cat, name, comp) => Integer.decode(cat.index))
-
         val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
 
         Using.resource(output) { o =>
-          filteredComparisonsSortByCat.foreach { (category, table, comparison) =>
-            val cats = xdf.tablesByName(table).categoryMems.map(_.category.name)
+          tablesOrdered.foreach { table =>
 
-            o.println(s"TABLE: $table")
-            o.println(s"CATEGORIES: ${cats.mkString(", ")}")
-            o.println(comparison.lhs)
-            o.println(comparison.diff)
-            o.println(comparison.rhs)
+            val cats            = xdf.tablesByName(table).categoryMems.map(_.category.name)
+            val maybeComparison = filteredComparisons.get(table)
+
+            maybeComparison.foreach { comparison =>
+              xdf.table(table) match {
+                case t: XdfTable =>
+                  o.println(s"Table (scalar): $table")
+                  o.println(s"Unit info: ${t.zUnits}")
+                  o.println(s"Categories: ${cats.mkString(", ")}")
+                case t: Table1DEnriched =>
+                  o.println(s"Table (vector): $table")
+                  o.println(s"Unit info: ${t.table.xUnits} --> ${t.table.zUnits}")
+                  o.println(s"Categories: ${cats.mkString(", ")}")
+                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)}")
+                case t: Table2DEnriched =>
+                  o.println(s"Table (matrix): $table")
+                  o.println(s"Unit info: ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}")
+                  o.println(s"Categories: ${cats.mkString(", ")}")
+                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
+                      .fold("<labels>")(_.title)}")
+              }
+
+              o.println("Base:")
+              o.println(comparison.lhs)
+              o.println("Difference:")
+              o.println(comparison.diff)
+              o.println("Modified:")
+              o.println(comparison.rhs)
+
+              notes.get(table).foreach { tableNotes =>
+                o.println("Notes:")
+                o.println(tableNotes)
+                o.println()
+              }
+            }
           }
         }
       case _ =>
+    }
+  }
+
+  private def tablesByCategory(xdf: XdfModel): Seq[String] = {
+    xdf.tables
+      .map(table => (table.title, table.categoryMems.map(_.category).last))
+      .sortBy((tableName, cat) => Integer.decode(cat.index))
+      .map(_._1)
+  }
+
+  private def tablesByReport(xdf: XdfModel, reportFile: File): Seq[String] = {
+    Using.resource(Source.fromFile(reportFile)) { reportResource =>
+      val reportTables = ReportExtractor.tables(reportResource.getLines().to(Iterable))
+      xdf.tables.map(_.title).sortBy { name =>
+        val i = reportTables.indexOf(name)
+        if (i == -1) Int.MaxValue else i
+      }
+    }
+  }
+
+  private def readNotes(notesFile: File): Map[String, String] = {
+    Using.resource(Source.fromFile(notesFile)) { notesResource =>
+      ReportExtractor.notes(notesResource.getLines().to(Iterable))
     }
   }
 
@@ -51,6 +103,7 @@ object MapCompareApp {
       xdfModel: File = File("model.xdf"),
       baseBin: File = File("a.bin"),
       modBin: File = File("b.bin"),
+      reportFile: Option[File] = None,
       tableExpr: Regex = """.+""".r,
       output: Option[File] = None
   )
@@ -79,6 +132,9 @@ object MapCompareApp {
         .optional()
         .action((e, c) => c.copy(tableExpr = e.r))
         .text("Regular expression matching one or more tables"),
+      opt[File]("report")
+        .optional()
+        .action((r, c) => c.copy(reportFile = Some(r))),
       opt[File]("output")
         .optional()
         .action((of, c) => c.copy(output = Some(of)))

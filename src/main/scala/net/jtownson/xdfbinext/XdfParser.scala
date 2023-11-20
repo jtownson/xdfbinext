@@ -86,6 +86,7 @@ object XdfParser:
       val daLink       = node2DaLink((xAxisNode \ "DALINK").head)
       val labels       = (xAxisNode \ "LABEL").map(node2Label)
       val math         = node2Math((xAxisNode \ "MATH").head)
+      val units        = (xAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisX(
         id = "x",
@@ -96,7 +97,8 @@ object XdfParser:
         unitType = unitType,
         daLink = daLink,
         labels = labels,
-        math = math
+        math = math,
+        units = units
       )
     }
 
@@ -110,6 +112,7 @@ object XdfParser:
       val daLink       = node2DaLink((yAxisNode \ "DALINK").head)
       val labels       = (yAxisNode \ "LABEL").map(node2Label)
       val math         = node2Math((yAxisNode \ "MATH").head)
+      val units        = (yAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisY(
         id = "y",
@@ -120,7 +123,8 @@ object XdfParser:
         unitType = unitType,
         daLink = daLink,
         labels = labels,
-        math = math
+        math = math,
+        units = units
       )
     }
 
@@ -132,6 +136,7 @@ object XdfParser:
       val max          = BigDecimal((zAxisNode \ "max").head.text)
       val outputType   = decode((zAxisNode \ "outputtype").head.text)
       val math         = node2Math((zAxisNode \ "MATH").head)
+      val units        = (zAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisZ(
         id = "z",
@@ -140,7 +145,8 @@ object XdfParser:
         min = min,
         max = max,
         outputType = outputType,
-        math = math
+        math = math,
+        units = units
       )
     }
 

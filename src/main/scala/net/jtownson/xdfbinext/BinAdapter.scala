@@ -28,20 +28,6 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     maybeY.fold(table.yLabels.toArray)(t => tableRead(t).map(_.toString))
   }
 
-//  private def tableRead(
-//      elementSizeBits: Int,
-//      pred: XdfTable => Boolean,
-//      read: XdfTable => Array[BigDecimal]
-//  ): Map[String, (XdfTable, Array[BigDecimal])] = {
-//    xdfModel.tablesByName
-//      .filter((_, xdfTable) => pred(xdfTable))
-//      .map { (tableName, xdfTable: XdfTable) =>
-//        val dExact = read(xdfTable)
-//        val dRound = dExact.map(bd => bd.setScale(xdfTable.axes.z.decimalPl, RoundingMode.HALF_UP))
-//        tableName -> (xdfTable, dRound)
-//      }
-//  }
-
   private def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
     in.map(bd => bd.setScale(t.axes.z.decimalPl, RoundingMode.HALF_UP))
   }
@@ -68,16 +54,21 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
   }
 
   private def tableByte(table: XdfTable): Array[BigDecimal] = {
-    val tableRaw      = readUnsignedByte(table)
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
     require(cellSizeBytes == 1, s"Invalid cell size for tableByte: ${table.title} has size in bytes $cellSizeBytes")
-    val range = (table.axes.z.max - table.axes.z.min).abs
 
-    val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.equation)
+    if (isSigned) {
+      val t                            = readRaw(table)
+      val equation: Byte => BigDecimal = EquationParser.parseByteF1(table.axes.z.math.equation)
+      t.map(equation)
+    } else {
+      val t                           = readUnsignedByte(table)
+      val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.equation)
+      t.map(equation)
+    }
 
-    tableRaw.map(equation)
   }
 
   private def tableShort(table: XdfTable): Array[BigDecimal] = {
@@ -146,96 +137,74 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
 
-    if (cellSizeBytes == 1) // must be byte
+    if (cellSizeBytes == 1)
       tableByte(table)
     else if (cellSizeBytes == 2)
       tableShort(table)
     else if (cellSizeBytes == 4)
       tableInt(table)
     else
-      ???
+      throw new UnsupportedOperationException(s"No handling of cells with size $cellSizeBytes bytes")
   }
 
   def tableReadStr(name: String): String = {
-    val table = xdfModel.tablesByName(name)
-
-    xdfModel.tablesConstant
-      .get(name)
-      .map(dataToStrConst)
-      .orElse(
-        xdfModel.tables1D
-          .get(name)
-          .map(dataToStr1D)
-      )
-      .orElse(
-        xdfModel.tables2D
-          .get(name)
-          .map(dataToStr2D)
-      )
-      .getOrElse("Unknown")
+    xdfModel.table(name) match {
+      case t: XdfTable =>
+        dataToStrConst(t)
+      case t: Table1DEnriched =>
+        dataToStr1D(t)
+      case t: Table2DEnriched =>
+        dataToStr2D(t)
+    }
   }
 
   def dataToStrConst(table: XdfTable): String = {
-    val tableData = tableRead(table).head
-    val title     = s"${bin.getName}: ${table.title}"
-    data2StrConst(title, tableData)
+    data2StrConst(tableRead(table).head)
   }
 
   def dataToStr1D(enrichedTable: Table1DEnriched): String = {
-    val tableData    = tableRead(enrichedTable.table)
-    val xAxisData    = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
-    val xAxisHeading = enrichedTable.xAxisBreakpoints.fold("<labels>")(t => t.title)
-    val title        = s"${bin.getName}: ${enrichedTable.table.title}: $xAxisHeading"
-
-    data2Str1D(title, xAxisData, tableData)
+    val tableData = tableRead(enrichedTable.table)
+    val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
+    data2Str1D(xAxisData, tableData)
   }
 
   def dataToStr2D(enrichedTable: Table2DEnriched): String = {
-    val xAxisData    = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
-    val xAxisHeading = enrichedTable.xAxisBreakpoints.fold("<labels>")(t => t.title)
-
-    val yAxisData    = tableReadOrY(enrichedTable.table, enrichedTable.yAxisBreakpoints)
-    val yAxisHeading = enrichedTable.yAxisBreakpoints.fold("<labels>")(t => t.title)
-
-    val title = s"${bin.getName}: ${enrichedTable.table.title}: $xAxisHeading vs $yAxisHeading"
-
+    val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
+    val yAxisData = tableReadOrY(enrichedTable.table, enrichedTable.yAxisBreakpoints)
     val tableData = tableRead(enrichedTable.table)
-
-    data2Str2D(title, xAxisData, yAxisData, tableData)
+    data2Str2D(xAxisData, yAxisData, tableData)
   }
 
 }
 
 object BinAdapter {
 
-  def data2StrConst(title: String, tableData: BigDecimal): String = {
-    new StringBuilder().append(title).append("\n").append(f"$tableData%12s").append("\n").toString
+  def data2StrConst(tableData: BigDecimal): String = {
+    new StringBuilder().append(f"$tableData%9s").append("\n").toString
   }
 
-  def data2Str1D(title: String, xAxisData: Array[String], tableData: Array[BigDecimal]): String = {
+  def data2Str1D(xAxisData: Array[String], tableData: Array[BigDecimal]): String = {
     val cols        = xAxisData.length
-    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%12s" }.mkString
-    val rowStr      = (0 until cols).map(col => f"${tableData(col)}%12s").mkString
-    new StringBuilder().append(title).append('\n').append(xAxisHeader).append("\n").append(rowStr).append("\n").toString
+    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%9s" }.mkString
+    val rowStr      = (0 until cols).map(col => f"${tableData(col)}%9s").mkString
+    new StringBuilder().append(xAxisHeader).append("\n").append(rowStr).append("\n").toString
   }
 
   def data2Str2D(
-      title: String,
       xAxisData: Array[String],
       yAxisData: Array[String],
       tableData: Array[BigDecimal]
   ): String = {
-    val cols = xAxisData.length
-    val rows = yAxisData.length
-    val sb   = new StringBuilder()
-    sb.append(title).append('\n')
-    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%12s" }.mkString
-    sb.append(" ".repeat(12)).append(xAxisHeader).append("\n")
+    val cols        = xAxisData.length
+    val rows        = yAxisData.length
+    val sb          = new StringBuilder()
+    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%9s" }.mkString
+    sb.append(" ".repeat(9)).append(xAxisHeader).append("\n")
     (0 until rows).map { row =>
-      sb.append(f"${yAxisData(row)}%12s")
+      sb.append(f"${yAxisData(row)}%9s")
       val rowStr = (0 until cols).map { col =>
         val i = row * cols + col
-        f"${tableData(i)}%12s"
+        f"${tableData(i)}%9s"
       }.mkString
       sb.append(rowStr).append("\n")
     }
@@ -268,27 +237,17 @@ object BinAdapter {
     } else {
       val diff = rhsb.applyDecimalPl(table)(dl.zip(dr).map { case (lbd, rbd) => rbd - lbd })
 
-      val td = xdfModel.tablesConstant
-        .get(tableName)
-        .map(t => data2StrConst("Difference", diff.head))
-        .orElse(
-          xdfModel.tables1D
-            .get(tableName)
-            .map(t => data2Str1D("Difference", rhsb.tableReadOrX(t.table, t.xAxisBreakpoints), diff))
-        )
-        .orElse(
-          xdfModel.tables2D
-            .get(tableName)
-            .map(t =>
-              data2Str2D(
-                "Difference",
-                rhsb.tableReadOrX(t.table, t.xAxisBreakpoints),
-                rhsb.tableReadOrY(t.table, t.yAxisBreakpoints),
-                diff
-              )
-            )
-        )
-        .getOrElse("Unknown")
+      val td = xdfModel.table(tableName) match
+        case t: XdfTable =>
+          data2StrConst(diff.head)
+        case t: Table1DEnriched =>
+          data2Str1D(rhsb.tableReadOrX(t.table, t.xAxisBreakpoints), diff)
+        case t: Table2DEnriched =>
+          data2Str2D(
+            rhsb.tableReadOrX(t.table, t.xAxisBreakpoints),
+            rhsb.tableReadOrY(t.table, t.yAxisBreakpoints),
+            diff
+          )
 
       Some(BinAdapterCompare(tl, td, tr))
     }

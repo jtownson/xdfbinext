@@ -75,8 +75,17 @@ class BinAdapterTest extends AnyFlatSpec:
   }
 
   it should "read WGDC P correction X (autogen)" in {
-    val table = "WGDC P correction X (autogen)"
+    val table    = "WGDC P correction X (autogen)"
     val expected = Array[BigDecimal](-500.0, -50.0, -20.0, -10.0, -5.0, 0.0, 5.0, 10.0, 30.0, 50.0, 100.0, 500.0)
 
     binAdapter.tableRead(table) shouldBe expected
+  }
+
+  it should "read Miniumum/Maximum fuer CltPrt_MdDec_P" in {
+    binAdapter.tableRead("Minimum fuer CltPrt_MdDec_P") shouldBe Array(BigDecimal("-395.000"))
+    binAdapter.tableRead("Maximum fuer CltPrt_MdDec_P") shouldBe Array(BigDecimal("495.000"))
+  }
+
+  it should "read Timing (main)" in {
+    binAdapter.tableRead("Timing (main)").exists(_ < 0) shouldBe true
   }

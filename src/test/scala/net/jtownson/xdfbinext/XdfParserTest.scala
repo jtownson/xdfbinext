@@ -121,7 +121,8 @@ class XdfParserTest extends AnyFlatSpec:
         Label(index = 10, value = "0.00"),
         Label(index = 11, value = "0.00")
       ),
-      math = Math(equation = "X", vars = Seq(Var(id = "X")))
+      math = Math(equation = "X", vars = Seq(Var(id = "X"))),
+      units = ""
     )
 
     xdfModel.tables(0).axes.y shouldBe XdfAxisY(
@@ -141,7 +142,8 @@ class XdfParserTest extends AnyFlatSpec:
       unitType = 0,
       daLink = DaLink(0),
       labels = Seq(Label(index = 0, value = "0.00")),
-      math = Math(equation = "X", vars = Seq(Var(id = "X")))
+      math = Math(equation = "X", vars = Seq(Var(id = "X"))),
+      units = ""
     )
 
     xdfModel.tables(0).axes.z shouldBe XdfAxisZ(
@@ -159,8 +161,21 @@ class XdfParserTest extends AnyFlatSpec:
       min = BigDecimal("0.000000"),
       max = BigDecimal("255.000000"),
       outputType = 1,
-      math = Math(equation = "X/100", vars = Seq(Var(id = "X")))
+      math = Math(equation = "X/100", vars = Seq(Var(id = "X"))),
+      units = ""
     )
+  }
+
+  it should "parse x axis units" in {
+    xdfModel.tablesByName("Intake Waterpump flow ( IAT minus ambient temp, ambient temp)").axes.x.units shouldBe "°C"
+  }
+
+  it should "parse y axis units" in {
+    xdfModel.tablesByName("Intake Waterpump flow ( IAT minus ambient temp, ambient temp)").axes.y.units shouldBe "°C"
+  }
+
+  it should "parse z axis units" in {
+    xdfModel.tablesByName("Intake Waterpump flow ( IAT minus ambient temp, ambient temp)").axes.z.units shouldBe "l/h"
   }
 
   it should "parse memaddress for axes with breakpoints" in {
