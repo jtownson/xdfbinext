@@ -3,6 +3,8 @@ package net.jtownson.xdfbinext;
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
+import scala.io.Source
+
 class ReportExtractorTest extends AnyFlatSpec {
 
   "ReportExtractor" should "extract notes" in {
@@ -22,6 +24,11 @@ class ReportExtractorTest extends AnyFlatSpec {
       "Max Torque at clutch (monitoring)",
       "Max power (monitoring)"
     )
+  }
+
+  it should "not crash for this report" in {
+    val in = Source.fromResource("stage-1-vs-stage-2-hpfp.txt")
+    noException shouldBe thrownBy(ReportExtractor.notes(in.getLines().to(Iterable)))
   }
 
   val text = """

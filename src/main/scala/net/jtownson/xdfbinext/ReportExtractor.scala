@@ -9,16 +9,18 @@ object ReportExtractor {
     def startTable(t: String): Acc = Acc(m, Some(t), currentNote)
 
     def startNewNote: Acc =
-      Acc(m, currentTable, Some(Note(Vector.empty)))
+      currentTable.fold(this)(_ => Acc(m, currentTable, Some(Note(Vector.empty))))
 
     def startNewNote(line: String): Acc =
-      Acc(m, currentTable, Some(Note(Vector(line))))
+      currentTable.fold(this)(_ => Acc(m, currentTable, Some(Note(Vector(line)))))
 
     def addNoteLine(line: String): Acc =
       Acc(m, currentTable, currentNote.map(n => Note(n.lines :+ line)))
 
     def endNote: Acc =
-      Acc(m + (currentTable.get -> currentNote.get.lines.mkString("\n")), currentTable = None, currentNote = None)
+      currentTable.fold(this)(t =>
+        Acc(m + (t -> currentNote.get.lines.mkString("\n")), currentTable = None, currentNote = None)
+      )
 
     val inNote: Boolean = currentNote.nonEmpty
   }
