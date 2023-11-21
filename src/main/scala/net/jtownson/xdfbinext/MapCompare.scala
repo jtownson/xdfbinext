@@ -18,41 +18,47 @@ object MapCompare {
 
         val notes = config.reportFile.fold(Map.empty[String, String])(notesFile => readNotes(notesFile))
 
-        val tablesOrdered = config.reportFile.fold(tablesByCategory(xdf))(report => tablesByReport(xdf, report))
-
-        val tableFilters = Set("(Custom)", "(Antilag)", "(Map 2)", "(Map 3)", "(Map 4)", "(FF)", "(FF#2)")
-
-        println(s"xdfModel ${config.xdfModel}, baseBin ${config.baseBin}, modBin ${config.modBin}")
+        val tablesOrderedAndFiltered =
+          TableAndCategoryFilter.filterTables(
+            tables = config.reportFile.fold(tablesByCategory(xdf))(report => tablesByReport(xdf, report)),
+            tableExclusions = config.tableExclusions,
+            categoryExclusions = config.categoryExclusions
+          )
 
         val comparisons = BinAdapter.compare(xdf, config.baseBin, config.modBin)
-
-        val filteredComparisons = comparisons
-          .filter((name, _) => config.tableExpr.matches(name))
-          .filterNot((name, _) => tableFilters.exists(filter => name.contains(filter)))
 
         val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
 
         Using.resource(output) { o =>
-          tablesOrdered.foreach { table =>
 
-            val cats            = xdf.tablesByName(table).categoryMems.map(_.category.name)
-            val maybeComparison = filteredComparisons.get(table)
+          o.println(s"Base bin: ${config.baseBin}")
+          o.println(s"Modified bin: ${config.modBin}")
+          o.println(s"XDF: ${config.xdfModel}")
+          o.println()
+
+          tablesOrderedAndFiltered.foreach { table =>
+            val tableName       = table.title
+            val cats            = table.categoryMems.map(_.category.name)
+            val maybeComparison = comparisons.get(tableName)
 
             maybeComparison.foreach { comparison =>
-              xdf.table(table) match {
+              xdf.table(tableName) match {
                 case t: XdfTable =>
-                  o.println(s"Table (scalar): $table")
+                  o.println(s"Table (scalar): $tableName")
+                  o.println(s"Description: ${t.description}")
+                  o.println(s"Categories: ${cats.mkString(", ")}")
                   o.println(s"Unit info: ${t.zUnits}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
                 case t: Table1DEnriched =>
-                  o.println(s"Table (vector): $table")
-                  o.println(s"Unit info: ${t.table.xUnits} --> ${t.table.zUnits}")
+                  o.println(s"Table (vector): $tableName")
+                  o.println(s"Description: ${t.table.description}")
                   o.println(s"Categories: ${cats.mkString(", ")}")
+                  o.println(s"Unit info: ${t.table.xUnits} --> ${t.table.zUnits}")
                   o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)}")
                 case t: Table2DEnriched =>
-                  o.println(s"Table (matrix): $table")
-                  o.println(s"Unit info: ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}")
+                  o.println(s"Table (matrix): $tableName")
+                  o.println(s"Description: ${t.table.description}")
                   o.println(s"Categories: ${cats.mkString(", ")}")
+                  o.println(s"Unit info: ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}")
                   o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
                       .fold("<labels>")(_.title)}")
               }
@@ -64,7 +70,7 @@ object MapCompare {
               o.println("Modified:")
               o.println(comparison.rhs)
 
-              notes.get(table).foreach { tableNotes =>
+              notes.get(tableName).foreach { tableNotes =>
                 o.println("Notes:")
                 o.println(tableNotes)
                 o.println()
@@ -76,18 +82,18 @@ object MapCompare {
     }
   }
 
-  private def tablesByCategory(xdf: XdfModel): Seq[String] = {
+  private def tablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
     xdf.tables
-      .map(table => (table.title, table.categoryMems.map(_.category).last))
-      .sortBy((tableName, cat) => Integer.decode(cat.index))
+      .map(table => (table, table.categoryMems.map(_.category).last))
+      .sortBy((_, cat) => Integer.decode(cat.index))
       .map(_._1)
   }
 
-  private def tablesByReport(xdf: XdfModel, reportFile: File): Seq[String] = {
+  private def tablesByReport(xdf: XdfModel, reportFile: File): Seq[XdfTable] = {
     Using.resource(Source.fromFile(reportFile)) { reportResource =>
       val reportTables = ReportExtractor.tables(reportResource.getLines().to(Iterable))
-      xdf.tables.map(_.title).sortBy { name =>
-        val i = reportTables.indexOf(name)
+      xdf.tables.sortBy { t =>
+        val i = reportTables.indexOf(t.title)
         if (i == -1) Int.MaxValue else i
       }
     }
@@ -104,13 +110,16 @@ object MapCompare {
       baseBin: File = File("a.bin"),
       modBin: File = File("b.bin"),
       reportFile: Option[File] = None,
-      tableExpr: Regex = """.+""".r,
+      tableExclusions: Set[String] = Set.empty,
+      categoryExclusions: Set[String] = Set.empty,
       output: Option[File] = None
   )
 
   import scopt.OParser
 
   private val builder: OParserBuilder[CommandLine] = OParser.builder[CommandLine]
+
+  implicit val csvReader: scopt.Read[Set[String]] = scopt.Read.reads[Set[String]](s => s.split("""\s*,\s*""").toSet)
 
   private val parser: OParser[Unit, CommandLine] = {
     import builder.*
@@ -134,10 +143,18 @@ object MapCompare {
         .required()
         .action((mb, c) => c.copy(modBin = mb))
         .text("Filename of the bin to compare with the base"),
-      opt[String]("table-expr")
+      opt[Set[String]]("table-exclusions")
         .optional()
-        .action((e, c) => c.copy(tableExpr = e.r))
-        .text("Regular expression matching one or more tables"),
+        .action((ss, c) => c.copy(tableExclusions = ss))
+        .text(
+          "A comma separated list of substrings used to exclude tables. E.g. '(FF), (FF#2)' => exclude flex fuel tables."
+        ),
+      opt[Set[String]]("category-exclusions")
+        .optional()
+        .action((ss, c) => c.copy(categoryExclusions = ss))
+        .text(
+          "A comma separated list of exact names used to exclude categories. E.g. 'MHD+ Suite, MHD+ Config' => exclude these two categories."
+        ),
       opt[File]("report")
         .optional()
         .action((r, c) => c.copy(reportFile = Some(r)))

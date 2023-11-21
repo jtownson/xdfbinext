@@ -8,6 +8,6 @@ extension (s: String) {
   }
 
   def repeat(n: Int): String = {
-    (0 until n).map(s).mkString
+    (0 until n).map(_ => s).mkString
   }
 }
