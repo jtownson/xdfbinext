@@ -157,6 +157,7 @@ object XdfParser:
     val uniqueId     = decode(n \@ "uniqueid")
     val flags        = decode(n \@ "flags")
     val title        = (n \ "title").head.text
+    val description  = (n \ "description").headOption.map(_.text).getOrElse("")
     val categoryMems = (n \ "CATEGORYMEM").map(node2CategoryMem(categories))
     val axes         = node2Axes(n)
 
@@ -164,6 +165,7 @@ object XdfParser:
       uniqueId = uniqueId,
       flags = flags,
       title = title,
+      description = description,
       categoryMems = categoryMems,
       axes = axes
     )

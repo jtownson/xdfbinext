@@ -19,8 +19,12 @@ class XdfParserTest extends AnyFlatSpec:
     xdfModel.xdfHeader.flags shouldBe 0x1
   }
 
-  it should "parse description" in {
+  it should "parse model description" in {
     xdfModel.xdfHeader.description shouldBe "this is the description"
+  }
+
+  it should "parse table descriptions" in {
+    xdfModel.tablesByName("Wastegate Position Model (FF)").description shouldBe "BMWtchctr_pct_WgBasc_M (FF)"
   }
 
   it should "parse base offset" in {

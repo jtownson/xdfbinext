@@ -10,7 +10,7 @@ import scala.io.Source
 import scala.util.Using
 import scala.util.matching.{Regex, UnanchoredRegex}
 
-object MapCompareApp {
+object MapCompare {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CommandLine()) match {
       case Some(config) =>
@@ -116,6 +116,12 @@ object MapCompareApp {
     import builder.*
     OParser.sequence(
       programName("MapCompare"),
+      head(
+        "Compare bin files using an XDF and print out a report with the differences.",
+        "This allows you to see what you have and have not done when developing a tune.",
+        "It is also useful if reverse engineering a tune."
+      ),
+      help("help").text("Display usage text"),
       opt[File]("xdf")
         .required()
         .action((x, c) => c.copy(xdfModel = x))
@@ -123,22 +129,25 @@ object MapCompareApp {
       opt[File]("base-bin")
         .required()
         .action((bb, c) => c.copy(baseBin = bb))
-        .text("filename of the starting bin file"),
+        .text("Filename of the starting bin file"),
       opt[File]("mod-bin")
         .required()
         .action((mb, c) => c.copy(modBin = mb))
-        .text("filename of the bin to compare with the base"),
+        .text("Filename of the bin to compare with the base"),
       opt[String]("table-expr")
         .optional()
         .action((e, c) => c.copy(tableExpr = e.r))
         .text("Regular expression matching one or more tables"),
       opt[File]("report")
         .optional()
-        .action((r, c) => c.copy(reportFile = Some(r))),
+        .action((r, c) => c.copy(reportFile = Some(r)))
+        .text(
+          "Filename of an existing report from which to extract notes and table ordering. Enables re-running of a diff without having to rework notes and table re-ordering."
+        ),
       opt[File]("output")
         .optional()
         .action((of, c) => c.copy(output = Some(of)))
-        .text("output filename for difference report")
+        .text("Output filename for difference report.")
     )
   }
 }

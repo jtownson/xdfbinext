@@ -111,6 +111,7 @@ object XdfSchema:
       uniqueId: Int,
       flags: Int,
       title: String,
+      description: String,
       categoryMems: Seq[CategoryMem],
       axes: Axes
   ) {
