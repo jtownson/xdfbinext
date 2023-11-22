@@ -16,10 +16,10 @@ Usage: MapCompare [options]
 --xdf <value>            XDF model common to both bins
 --base-bin <value>       Filename of the starting bin file
 --mod-bin <value>        Filename of the bin to compare with the base
---table-exclusions <value>
-A comma separated list of substrings used to exclude tables. E.g. '(FF), (FF#2)' => exclude flex fuel tables.
---category-exclusions <value>
-A comma separated list of exact names used to exclude categories. E.g. 'MHD+ Suite, MHD+ Config' => exclude these two categories.
+--table-exclusions <value> A comma separated list of substrings used to exclude tables. 
+                         E.g. '(FF), (FF#2)' => exclude flex fuel tables.
+--category-exclusions <value> A comma separated list of exact names used to exclude categories. 
+                         E.g. 'MHD+ Suite, MHD+ Config' => exclude these two categories.
 --report <value>         Filename of an existing report from which to extract notes and table ordering. Enables re-running of a diff without having to rework notes and table re-ordering.
 --output <value>         Output filename for difference report.
 ```
@@ -71,6 +71,8 @@ Modified:
 
 Notes:
     Adjust volumetric efficiency to simplify calculations
+    
+...
 ```
 
 The `--report` option is designed to help with iterative map development. 
@@ -83,12 +85,12 @@ due to `--table-exclusions` and `--category-exclusions`.
 
 ### Thoughts on future features
 
-## Map simulation
+1. Map simulation
 This would allow arithmetic expressions referencing table lookups and allow the user
 to feed in ranges of values to see the response from the map. For example, calculate
 the torque request given the values in 'relative torque request' and 'torque request ceiling'
 maps for a range of accelerator pedal inputs. Determine if any inputs fall outside the 
 map breakpoints.
 
-## Nicer rendering
+2. Nicer rendering
 Text works okay but HTML rendering with coloured graphs would be nicer.
