@@ -18,8 +18,9 @@ lazy val root = project
   .in(file("."))
   .settings(
     name         := "xdfbinext",
-    version      := "0.1.0-SNAPSHOT",
+    version      := "0.1",
     scalaVersion := scala3Version,
     libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt,
-    assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare")
+    assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare"),
+    assemblyJarName      := "xbc.jar"
   )

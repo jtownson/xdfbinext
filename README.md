@@ -1,4 +1,4 @@
-## MapCompare: A tunerpro XDF and bin comparison utility
+## XdfBinCompare: A tunerpro XDF and bin comparison utility
 
 ### Motivation
 
@@ -10,7 +10,7 @@ changes made by others.
 
 ### Usage
 ```shell
-Usage: MapCompare [options]
+Usage: xbc [options]
 
 --help                   Display usage text
 --xdf <value>            XDF model common to both bins
@@ -26,7 +26,7 @@ Usage: MapCompare [options]
 
 For example, the following command
 ```shell
-MapCompare --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
+xbc --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
 ```
 will compare a stage 0 and stage 1 bin, ignoring flexfuel, antilag and multimap tables.
 
