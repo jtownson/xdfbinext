@@ -18,14 +18,22 @@ object MapCompare {
 
         val notes = config.reportFile.fold(Map.empty[String, String])(notesFile => readNotes(notesFile))
 
+        val allTablesSorted = config.reportFile
+          .fold(allTablesByCategory(xdf))(report => allTablesByReport(xdf, report))
+          .filterNot(xdf.isBreakpointTable)
+
         val tablesOrderedAndFiltered =
-          TableAndCategoryFilter.filterTables(
-            tables = config.reportFile.fold(tablesByCategory(xdf))(report => tablesByReport(xdf, report)),
-            tableExclusions = config.tableExclusions,
-            categoryExclusions = config.categoryExclusions
-          )
+          TableAndCategoryFilter
+            .filterTables(
+              tables = allTablesSorted,
+              tableExclusions = config.tableExclusions,
+              categoryExclusions = config.categoryExclusions
+            )
 
         val comparisons = BinAdapter.compare(xdf, config.baseBin, config.modBin)
+
+        val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
+        val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))
 
         val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
 
@@ -77,19 +85,29 @@ object MapCompare {
               }
             }
           }
+
+          o.println("\nUnmodified tables:")
+          unmodifiedTables.foreach { table =>
+            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
+          }
+
+          o.println("\nExcluded tables:")
+          excludedTables.foreach { table =>
+            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
+          }
         }
       case _ =>
     }
   }
 
-  private def tablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
+  private def allTablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
     xdf.tables
       .map(table => (table, table.categoryMems.map(_.category).last))
       .sortBy((_, cat) => Integer.decode(cat.index))
       .map(_._1)
   }
 
-  private def tablesByReport(xdf: XdfModel, reportFile: File): Seq[XdfTable] = {
+  private def allTablesByReport(xdf: XdfModel, reportFile: File): Seq[XdfTable] = {
     Using.resource(Source.fromFile(reportFile)) { reportResource =>
       val reportTables = ReportExtractor.tables(reportResource.getLines().to(Iterable))
       xdf.tables.sortBy { t =>

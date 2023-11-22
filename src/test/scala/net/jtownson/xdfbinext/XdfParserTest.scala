@@ -236,3 +236,8 @@ class XdfParserTest extends AnyFlatSpec:
       withClue(tableName) { categorised shouldBe true }
     }
   }
+
+  it should "return true for isBreakpoint when a table is a breakpoint table" in {
+    xdfModel.isBreakpointTable(xdfModel.tablesByName("Basic catalyst heating mode wish X (autogen)")) shouldBe true
+    xdfModel.isBreakpointTable(xdfModel.tablesByName("Basic catalyst heating mode wish")) shouldBe false
+  }

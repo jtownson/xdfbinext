@@ -232,24 +232,39 @@ object BinAdapter {
     val dl = lhsb.tableDyn(table)
     val dr = rhsb.tableDyn(table)
 
-    if (dl.sameElements(dr)) {
-      None
-    } else {
-      val diff = rhsb.applyDecimalPl(table)(dl.zip(dr).map { case (lbd, rbd) => rbd - lbd })
+    val diff = rhsb.applyDecimalPl(table)(dl.zip(dr).map { case (lbd, rbd) => rbd - lbd })
 
-      val td = xdfModel.table(tableName) match
-        case t: XdfTable =>
-          data2StrConst(diff.head)
-        case t: Table1DEnriched =>
-          data2Str1D(rhsb.tableReadOrX(t.table, t.xAxisBreakpoints), diff)
-        case t: Table2DEnriched =>
-          data2Str2D(
+    xdfModel.table(tableName) match
+      case t: XdfTable =>
+        if (dl.sameElements(dr)) {
+          None
+        } else {
+          Some(BinAdapterCompare(tl, data2StrConst(diff.head), tr))
+        }
+      case t: Table1DEnriched =>
+        val xLh = t.xAxisBreakpoints.map(x => lhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
+        val xRh = t.xAxisBreakpoints.map(x => rhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
+        if (dl.sameElements(dr) && xLh.sameElements(xRh)) {
+          None
+        } else {
+          val td = data2Str1D(rhsb.tableReadOrX(t.table, t.xAxisBreakpoints), diff)
+          Some(BinAdapterCompare(tl, td, tr))
+        }
+      case t: Table2DEnriched =>
+        val xLh = t.xAxisBreakpoints.map(x => lhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
+        val xRh = t.xAxisBreakpoints.map(x => rhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
+
+        val yLh = t.yAxisBreakpoints.map(y => lhsb.tableDyn(y)).getOrElse(Array.empty[BigDecimal])
+        val yRh = t.yAxisBreakpoints.map(y => rhsb.tableDyn(y)).getOrElse(Array.empty[BigDecimal])
+        if (dl.sameElements(dr) && xLh.sameElements(xRh) && yLh.sameElements(yRh)) {
+          None
+        } else {
+          val td = data2Str2D(
             rhsb.tableReadOrX(t.table, t.xAxisBreakpoints),
             rhsb.tableReadOrY(t.table, t.yAxisBreakpoints),
             diff
           )
-
-      Some(BinAdapterCompare(tl, td, tr))
-    }
+          Some(BinAdapterCompare(tl, td, tr))
+        }
   }
 }

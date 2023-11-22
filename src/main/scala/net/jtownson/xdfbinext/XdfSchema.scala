@@ -1,5 +1,7 @@
 package net.jtownson.xdfbinext
 
+import scala.collection.immutable.Seq
+
 object XdfSchema:
 
   val undefinedAddress: Long = -1
@@ -44,6 +46,16 @@ object XdfSchema:
 
     val tables2D: Map[String, Table2DEnriched] =
       tables.filter(is2D).map(table => table.title -> table2DAndBreakpoints(table.title)).toMap
+
+    val breakPointTables: Set[String] = {
+      val bp1D: Set[String] = tables1D.flatMap((_, t1d) => t1d.xAxisBreakpoints.map(_.title)).toSet
+      val bp2D: Set[String] = tables2D
+        .flatMap((_, t2d) => Seq(t2d.xAxisBreakpoints.map(_.title), t2d.yAxisBreakpoints.map(_.title)).flatten)
+        .toSet
+      bp1D ++ bp2D
+    }
+
+    def isBreakpointTable(xdfTable: XdfTable): Boolean = breakPointTables.contains(xdfTable.title)
 
     def table(tableName: String): XdfTable | Table1DEnriched | Table2DEnriched = {
       tablesConstant
