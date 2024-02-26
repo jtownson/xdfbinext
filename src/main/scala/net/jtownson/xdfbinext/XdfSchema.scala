@@ -9,8 +9,17 @@ object XdfSchema:
   val floatingPointFlag = 0x10000
   val signedFlag        = 0x01
 
-  case class XdfModel(version: String, xdfHeader: XdfHeader, tables: Seq[XdfTable]) {
+  case class XdfExpression()
+
+  case class XdfModel(
+      version: String,
+      xdfHeader: XdfHeader,
+      tables: Seq[XdfTable],
+      virtualTables: Seq[XdfVirtualTable]
+  ) {
     val tablesByName: Map[String, XdfTable] = tables.map(t => t.title -> t).toMap
+
+    val virtualTablesByName: Map[String, XdfVirtualTable] = virtualTables.map(t => t.title -> t).toMap
 
     private val tablesByAddress: Map[Long, XdfTable] = tables.foldLeft(Map.empty[Long, XdfTable]) { (acc, nextTable) =>
       val zAddr = nextTable.axes.z.embeddedData.mmedAddress
@@ -94,7 +103,9 @@ object XdfSchema:
       defaults: Defaults,
       region: Region,
       categories: Seq[Category]
-  )
+  ) {
+    val categoryIndex: Map[Int, Category] = categories.map(c => (Integer.decode(c.index).toInt, c)).toMap
+  }
 
   case class BaseOffset(offset: Int, subtract: Int)
 
@@ -118,6 +129,8 @@ object XdfSchema:
   )
 
   case class Category(index: String, name: String)
+
+  case class XdfVirtualTable(title: String, description: String /*, axes: Axes*/ )
 
   case class XdfTable(
       uniqueId: Int,

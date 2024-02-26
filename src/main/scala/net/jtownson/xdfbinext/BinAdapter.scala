@@ -1,6 +1,7 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.BinAdapter.{data2Str1D, data2Str2D, data2StrConst}
+import net.jtownson.xdfbinext.BinAdapter.{compare, data2Str1D, data2Str2D, data2StrConst}
+import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
 import net.jtownson.xdfbinext.XdfSchema.{Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
 
 import java.io.{File, RandomAccessFile}
@@ -12,8 +13,97 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 
+  private val constants: Map[String, Array[BigDecimal]] =
+    xdfModel.tablesConstant.map((tableName, _) => tableName -> tableRead(tableName))
+
+  private val tables1D: Map[String, Array[BigDecimal]] =
+    xdfModel.tables1D.map((tableName, _) => tableName -> tableRead(tableName))
+
+  private val tables2D: Map[String, Array[BigDecimal]] =
+    xdfModel.tables2D.map((tableName, _) => tableName -> tableRead(tableName))
+
+  /** Read table data into a flat array.
+    * @param tableName
+    * @return
+    */
   def tableRead(tableName: String): Array[BigDecimal] = {
     tableRead(xdfModel.tablesByName(tableName))
+  }
+
+  def tableRead(tableName: String, x: BigDecimal): BigDecimal = {
+
+    // obtain the breakpoints
+    val xAxisDef    = xdfModel.tables1D(tableName).xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+    val xAxis       = tableRead(xAxisDef.title)
+    val tableValues = tables1D(tableName)
+
+    require(
+      isMonotonicallyIncreasing(xAxis),
+      s"non-monotonic breakpoint axis for table $tableName, axis name ${xAxisDef.title}."
+    )
+    require(
+      tableValues.length == xAxis.length,
+      s"Mismatched breakpoints for table $tableName, axis name ${xAxisDef.title}."
+    )
+
+    linearInterpolate(xAxis, tableValues, x)
+  }
+
+  def tableRead(tableName: String, x: BigDecimal, y: BigDecimal): BigDecimal = {
+    // obtain the breakpoints
+    val xAxisDef = xdfModel.tables2D(tableName).xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+    val yAxisDef = xdfModel.tables2D(tableName).yAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+
+    val xAxis = tableRead(xAxisDef.title)
+    val yAxis = tableRead(yAxisDef.title)
+
+    val tableValues = tables2D(tableName)
+
+    require(
+      isMonotonicallyIncreasing(xAxis),
+      s"non-monotonic breakpoint x-axis for table $tableName, axis name ${xAxisDef.title}."
+    )
+    require(
+      isMonotonicallyIncreasing(yAxis),
+      s"non-monotonic breakpoint y-axis for table $tableName, axis name ${yAxisDef.title}."
+    )
+    require(
+      tableValues.length == xAxis.length * yAxis.length,
+      s"Mismatched breakpoints for table $tableName. Axes ${xAxisDef.title} and ${yAxisDef.title}."
+    )
+
+    linearInterpolate(xAxis, yAxis, tableValues, x, y)
+  }
+
+  /** Read table data as a printable string.
+    * @param name
+    * @return
+    */
+  def tableReadStr(name: String): String = {
+    xdfModel.table(name) match {
+      case t: XdfTable =>
+        dataToStrConst(t)
+      case t: Table1DEnriched =>
+        dataToStr1D(t)
+      case t: Table2DEnriched =>
+        dataToStr2D(t)
+    }
+  }
+
+  private def isMonotonicallyIncreasing(decimals: Array[BigDecimal]): Boolean = decimals.sorted.sameElements(decimals)
+
+  private def tableDyn(table: XdfTable): Array[BigDecimal] = {
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
+
+    if (cellSizeBytes == 1)
+      tableByte(table)
+    else if (cellSizeBytes == 2)
+      tableShort(table)
+    else if (cellSizeBytes == 4)
+      tableInt(table)
+    else
+      throw new UnsupportedOperationException(s"No handling of cells with size $cellSizeBytes bytes")
   }
 
   private def tableRead(xdfTable: XdfTable): Array[BigDecimal] = {
@@ -133,42 +223,17 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     }
   }
 
-  def tableDyn(table: XdfTable): Array[BigDecimal] = {
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
-    if (cellSizeBytes == 1)
-      tableByte(table)
-    else if (cellSizeBytes == 2)
-      tableShort(table)
-    else if (cellSizeBytes == 4)
-      tableInt(table)
-    else
-      throw new UnsupportedOperationException(s"No handling of cells with size $cellSizeBytes bytes")
-  }
-
-  def tableReadStr(name: String): String = {
-    xdfModel.table(name) match {
-      case t: XdfTable =>
-        dataToStrConst(t)
-      case t: Table1DEnriched =>
-        dataToStr1D(t)
-      case t: Table2DEnriched =>
-        dataToStr2D(t)
-    }
-  }
-
-  def dataToStrConst(table: XdfTable): String = {
+  private def dataToStrConst(table: XdfTable): String = {
     data2StrConst(tableRead(table).head)
   }
 
-  def dataToStr1D(enrichedTable: Table1DEnriched): String = {
+  private def dataToStr1D(enrichedTable: Table1DEnriched): String = {
     val tableData = tableRead(enrichedTable.table)
     val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
     data2Str1D(xAxisData, tableData)
   }
 
-  def dataToStr2D(enrichedTable: Table2DEnriched): String = {
+  private def dataToStr2D(enrichedTable: Table2DEnriched): String = {
     val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
     val yAxisData = tableReadOrY(enrichedTable.table, enrichedTable.yAxisBreakpoints)
     val tableData = tableRead(enrichedTable.table)

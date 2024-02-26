@@ -16,7 +16,8 @@ object XdfParser:
     XdfModel(
       version = xml \\ "XDFFORMAT" \@ "version",
       xdfHeader = xdfHeader,
-      tables = (xml \\ "XDFTABLE").map(node2Table(xdfHeader.categories))
+      tables = (xml \\ "XDFTABLE").map(node2Table(xdfHeader)),
+      virtualTables = (xml \\ "VIRTUALTABLE").map(node2VirtualTable)
     )
   }
 
@@ -32,11 +33,12 @@ object XdfParser:
     Category(index, name)
   }
 
-  private def node2CategoryMem(categories: Seq[Category]): Node => CategoryMem = { n =>
-    val index                = decode(n \@ "index")
-    val actualZeroBasedIndex = decode(n \@ "category") - 1
+  private def node2CategoryMem(header: XdfHeader): Node => CategoryMem = { n =>
+    val index = decode(n \@ "index")
+//    val
+    val indexRef = decode(n \@ "category") - 1
 
-    CategoryMem(index = index, category = categories(actualZeroBasedIndex))
+    CategoryMem(index = index, category = header.categoryIndex(indexRef))
   }
 
   private val node2EmbeddedData: Node => EmbeddedData = { n =>
@@ -153,12 +155,19 @@ object XdfParser:
     Axes(xAxis, yAxis, zAxis)
   }
 
-  private def node2Table(categories: Seq[Category]): Node => XdfTable = { n =>
+  private def node2VirtualTable: Node => XdfVirtualTable = { n =>
+    val title       = (n \ "title").head.text
+    val description = (n \ "description").headOption.map(_.text).getOrElse("")
+
+    XdfVirtualTable(title, description)
+  }
+
+  private def node2Table(header: XdfHeader): Node => XdfTable = { n =>
     val uniqueId     = decode(n \@ "uniqueid")
     val flags        = decode(n \@ "flags")
     val title        = (n \ "title").head.text
     val description  = (n \ "description").headOption.map(_.text).getOrElse("")
-    val categoryMems = (n \ "CATEGORYMEM").map(node2CategoryMem(categories))
+    val categoryMems = (n \ "CATEGORYMEM").map(node2CategoryMem(header))
     val axes         = node2Axes(n)
 
     XdfTable(

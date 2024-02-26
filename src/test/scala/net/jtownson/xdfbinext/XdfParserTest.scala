@@ -6,7 +6,7 @@ import org.scalatest.matchers.should.Matchers.*
 
 import scala.io.Source
 
-class XdfParserTest extends AnyFlatSpec:
+class XdfParserTest extends AnyFlatSpec {
 
   private val xdfFile  = Source.fromResource("00003076501103.xdf").mkString
   private val xdfModel = XdfParser.parse(xdfFile)
@@ -75,6 +75,11 @@ class XdfParserTest extends AnyFlatSpec:
       "MHD+ Suite",
       "FlexFuel",
       "WGDC"
+    )
+
+    xdfModel.tablesByName("Enable Port Injection Safety").categoryMems.map(_.category.name) shouldBe Seq(
+      "MHD+ Suite",
+      "MHD+ Config"
     )
   }
 
@@ -241,3 +246,10 @@ class XdfParserTest extends AnyFlatSpec:
     xdfModel.isBreakpointTable(xdfModel.tablesByName("Basic catalyst heating mode wish X (autogen)")) shouldBe true
     xdfModel.isBreakpointTable(xdfModel.tablesByName("Basic catalyst heating mode wish")) shouldBe false
   }
+
+  it should "parse the motiv XDF" in {
+    val xdfFile = Source.fromResource("v5.99_Reflex+_XDF.xdf").mkString
+
+    noException shouldBe thrownBy(XdfParser.parse(xdfFile))
+  }
+}
