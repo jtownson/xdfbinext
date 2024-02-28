@@ -23,6 +23,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     xdfModel.tables2D.map((tableName, _) => tableName -> tableRead(tableName))
 
   /** Read table data into a flat array.
+    *
     * @param tableName
     * @return
     */
@@ -279,17 +280,22 @@ object BinAdapter {
   case class BinAdapterCompare(lhs: String, diff: String, rhs: String) {}
 
   def compare(xdfModel: XdfModel, lhs: File, rhs: File): Map[String, BinAdapterCompare] = {
+    val lhsb = new BinAdapter(lhs, xdfModel)
+    val rhsb = new BinAdapter(rhs, xdfModel)
+
     xdfModel.tablesByName.keySet
-      .map(tableName => tableName -> compare(tableName, xdfModel, lhs, rhs))
+      .map(tableName => tableName -> compare(tableName, xdfModel, lhsb, rhsb))
       .toMap
       .collect { case (name, Some(comparison)) => name -> comparison }
   }
 
-  def compare(tableName: String, xdfModel: XdfModel, lhs: File, rhs: File): Option[BinAdapterCompare] = {
+  private def compare(
+      tableName: String,
+      xdfModel: XdfModel,
+      lhsb: BinAdapter,
+      rhsb: BinAdapter
+  ): Option[BinAdapterCompare] = {
     val table = xdfModel.tablesByName(tableName)
-
-    val lhsb = new BinAdapter(lhs, xdfModel)
-    val rhsb = new BinAdapter(rhs, xdfModel)
 
     val tl = lhsb.tableReadStr(tableName)
     val tr = rhsb.tableReadStr(tableName)

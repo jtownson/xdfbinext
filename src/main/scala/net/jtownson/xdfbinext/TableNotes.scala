@@ -1,13 +1,19 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.XdfSchema.{Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
+import net.jtownson.xdfbinext.BinAdapter.BinAdapterCompare
+import net.jtownson.xdfbinext.XdfSchema.*
+import net.jtownson.xdfbinext.{BinAdapter, XdfParser}
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
+import scala.collection.mutable
 import scala.io.Source
 import scala.util.Using
+import scala.util.matching.{Regex, UnanchoredRegex}
 
-object MapCompare {
+/** Prints table notes suitable for adding to b58.wiki
+  */
+object TableNotes {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CommandLine()) match {
       case Some(config) =>
@@ -16,7 +22,7 @@ object MapCompare {
         val notes = config.reportFile.fold(Map.empty[String, String])(notesFile => readNotes(notesFile))
 
         val allTablesSorted = config.reportFile
-          .fold(allTablesByCategory(xdf))(report => allTablesByReport(xdf, report))
+          .fold(allTablesByCategory(xdf))(report => allTablesByCategory(xdf))
           .filterNot(xdf.isBreakpointTable)
 
         val tablesOrderedAndFiltered =
@@ -32,69 +38,108 @@ object MapCompare {
         val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
         val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))
 
-        val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
+//        val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
+//        var currentCat          = ""
+        val catMap: mutable.Map[String, StringBuilder] = mutable.Map.empty[String, StringBuilder]
 
-        Using.resource(output) { o =>
+        tablesOrderedAndFiltered.foreach { table =>
+          val tableName = table.title
+          val cats      = table.categoryMems.map(_.category.name)
+          val mainCat   = cats.head
+          val sb        = catMap.getOrElse(mainCat, new StringBuilder())
 
-          o.println(s"Base bin: ${config.baseBin}")
-          o.println(s"Modified bin: ${config.modBin}")
-          o.println(s"XDF: ${config.xdfModel}")
-          o.println()
+          val maybeComparison = comparisons.get(tableName)
+          sb.append('\n')
 
-          tablesOrderedAndFiltered.foreach { table =>
-            val tableName       = table.title
-            val cats            = table.categoryMems.map(_.category.name)
-            val maybeComparison = comparisons.get(tableName)
+          doTable(sb, xdf, table)
 
-            maybeComparison.foreach { comparison =>
-              xdf.table(tableName) match {
-                case t: XdfTable =>
-                  o.println(s"Table (scalar): $tableName")
-                  o.println(s"Description: ${t.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.zUnits}")
-                case t: Table1DEnriched =>
-                  o.println(s"Table (vector): $tableName")
-                  o.println(s"Description: ${t.table.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.table.xUnits} --> ${t.table.zUnits}")
-                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)}")
-                case t: Table2DEnriched =>
-                  o.println(s"Table (matrix): $tableName")
-                  o.println(s"Description: ${t.table.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}")
-                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
-                      .fold("<labels>")(_.title)}")
-              }
-
-              o.println("Base:")
-              o.println(comparison.lhs)
-              o.println("Difference:")
-              o.println(comparison.diff)
-              o.println("Modified:")
-              o.println(comparison.rhs)
-
-              notes.get(tableName).foreach { tableNotes =>
-                o.println("Notes:")
-                o.println(tableNotes)
-                o.println()
-              }
-            }
+          maybeComparison.foreach { comparison =>
+            sb.append(s"'''Example''':\n\n")
+            sb.append(s"${comparison.lhs}\n")
+            sb.append("\n\n")
           }
 
-          o.println("\nUnmodified tables:")
-          unmodifiedTables.foreach { table =>
-            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
+          notes.get(tableName).foreach { tableNotes =>
+            sb.append(s"'''Notes''':\n\n")
+            sb.append(s"$tableNotes\n")
+            sb.append('\n')
           }
 
-          o.println("\nExcluded tables:")
-          excludedTables.foreach { table =>
-            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
-          }
+          catMap.put(mainCat, sb)
         }
+
+        List(
+          "Load",
+          "Limits",
+          "Throttle",
+          "MAF",
+          "Boost",
+          "Fuel",
+          "Ignition",
+          "Cooling",
+          "Vanos",
+          "MHD+ Suite",
+          "Exhaust",
+          "Dev",
+          "Toggles"
+        ).foreach { cat =>
+          println(s"== $cat ==")
+          println(catMap(cat).toString())
+        }
+
+//          unmodifiedTables.foreach { table =>
+//            doTable(o, xdf, table)
+//          }
+//
+//          excludedTables.foreach { table =>
+//            doTable(o, xdf, table)
+//          }
       case _ =>
     }
+  }
+
+  private def doTable(sb: StringBuilder, xdfModel: XdfModel, table: XdfTable): Unit = {
+    val tableName = table.title
+    val cats      = table.categoryMems.map(_.category.name)
+
+    xdfModel.table(tableName) match {
+      case t: XdfTable =>
+        sb.append(s"=== $tableName ===\n")
+        sb.append(s"'''Brief description''': ${t.description}\n")
+        sb.append('\n')
+        sb.append(s"'''Dimension''': constant\n")
+        sb.append('\n')
+        sb.append(s"'''Categories''': ${cats.mkString(", ")}\n")
+        sb.append('\n')
+        sb.append(s"'''Units''': ${t.zUnits}\n")
+        sb.append('\n')
+      case t: Table1DEnriched =>
+        sb.append(s"=== $tableName ===\n")
+        sb.append(s"'''Brief Description''': ${t.table.description}\n")
+        sb.append('\n')
+        sb.append(s"'''Dimension''': 1D, vector\n")
+        sb.append('\n')
+        sb.append(s"'''Categories''': ${cats.mkString(", ")}\n")
+        sb.append('\n')
+        sb.append(s"'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
+        sb.append('\n')
+        sb.append(s"'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
+        sb.append('\n')
+      case t: Table2DEnriched =>
+        sb.append(s"=== $tableName ===\n")
+        sb.append(s"'''Brief description''': ${t.table.description}\n")
+        sb.append('\n')
+        sb.append(s"'''Dimension''': 2D, table\n")
+        sb.append('\n')
+        sb.append(s"'''Categories''': ${cats.mkString(", ")}\n")
+        sb.append('\n')
+        sb.append(s"'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")
+        sb.append('\n')
+        sb.append(s"'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
+            .fold("<labels>")(_.title)}")
+        sb.append('\n')
+    }
+    sb.append('\n')
   }
 
   private def allTablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
