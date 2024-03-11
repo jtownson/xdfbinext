@@ -130,7 +130,11 @@ object XdfSchema:
 
   case class Category(index: String, name: String)
 
-  case class XdfVirtualTable(title: String, description: String /*, axes: Axes*/ )
+  case class XdfVirtualTable(title: String, description: String, tableDef: VirtualTableDef)
+
+  case class InverseLookup(table: String, invert: String)
+
+  type VirtualTableDef = InverseLookup
 
   case class XdfTable(
       uniqueId: Int,

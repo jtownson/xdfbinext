@@ -244,15 +244,25 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 }
 
 object BinAdapter {
-
+  
   def data2StrConst(tableData: BigDecimal): String = {
     new StringBuilder().append(f"$tableData%9s").append("\n").toString
   }
 
+  private def pad(s: String, len: Int): String = {
+    val p = len - s.length
+    " ".repeat(p) + s
+  }
+
   def data2Str1D(xAxisData: Array[String], tableData: Array[BigDecimal]): String = {
-    val cols        = xAxisData.length
-    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%9s" }.mkString
-    val rowStr      = (0 until cols).map(col => f"${tableData(col)}%9s").mkString
+    val cols         = xAxisData.length
+    val maxXLen      = xAxisData.map(_.length).max
+    val tableDataStr = tableData.map(_.toString())
+    val maxDataLen   = tableDataStr.map(_.length).max
+    val len          = Math.max(maxXLen, maxDataLen) + 2
+
+    val xAxisHeader = (0 until cols).map { col => pad(xAxisData(col), len) }.mkString
+    val rowStr      = (0 until cols).map { col => pad(tableDataStr(col), len) }.mkString
     new StringBuilder().append(xAxisHeader).append("\n").append(rowStr).append("\n").toString
   }
 
@@ -261,16 +271,24 @@ object BinAdapter {
       yAxisData: Array[String],
       tableData: Array[BigDecimal]
   ): String = {
-    val cols        = xAxisData.length
-    val rows        = yAxisData.length
-    val sb          = new StringBuilder()
-    val xAxisHeader = (0 until cols).map { col => f"${xAxisData(col)}%9s" }.mkString
+    val cols = xAxisData.length
+    val rows = yAxisData.length
+
+    val maxXLen      = xAxisData.map(_.length).max
+    val maxYLen      = yAxisData.map(_.length).max
+    val tableDataStr = tableData.map(_.toString())
+    val maxDataLen   = tableDataStr.map(_.length).max
+    val len          = Math.max(maxXLen, Math.max(maxYLen, maxDataLen)) + 2
+
+    val sb = new StringBuilder()
+
+    val xAxisHeader = (0 until cols).map { col => pad(xAxisData(col), len) }.mkString
     sb.append(" ".repeat(9)).append(xAxisHeader).append("\n")
     (0 until rows).map { row =>
-      sb.append(f"${yAxisData(row)}%9s")
+      sb.append(pad(yAxisData(row), len))
       val rowStr = (0 until cols).map { col =>
         val i = row * cols + col
-        f"${tableData(i)}%9s"
+        pad(tableDataStr(i), len)
       }.mkString
       sb.append(rowStr).append("\n")
     }

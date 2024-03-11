@@ -80,9 +80,9 @@
     <CATEGORY index="0x47" name="ReFlex Integration" />
   </XDFHEADER>
     <VIRTUALTABLE>
-      <title>Torque to load</title>
-      <description>Inverse lookup into Load to torque</description>
-      <INVERSELOOKUP table="Load to torque" invert="x"/> <!-- here x is the load axis -->
+        <title>Torque to load</title>
+        <description>Inverse lookup into Load to torque</description>
+        <INVERSELOOKUP table="Load to torque" invert="x"/> <!-- here x is the load axis -->
     </VIRTUALTABLE>
     <!-- <VIRTUALTABLE>
         <title>Load torque request sport</title>

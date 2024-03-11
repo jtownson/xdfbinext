@@ -49,46 +49,53 @@ object MapCompare {
             maybeComparison.foreach { comparison =>
               xdf.table(tableName) match {
                 case t: XdfTable =>
-                  o.println(s"Table (scalar): $tableName")
-                  o.println(s"Description: ${t.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.zUnits}")
+                  o.print(s"\n=== $tableName ===\n")
+                  o.print(s"\n'''Brief description''': ${t.description}\n")
+                  o.print(s"\n'''Dimension''': constant\n")
+                  o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+                  o.print(s"\n'''Units''': ${t.zUnits}\n")
+                  o.print('\n')
+
                 case t: Table1DEnriched =>
-                  o.println(s"Table (vector): $tableName")
-                  o.println(s"Description: ${t.table.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.table.xUnits} --> ${t.table.zUnits}")
-                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)}")
+                  o.print(s"\n=== $tableName ===\n")
+                  o.print(s"\n'''Brief Description''': ${t.table.description}\n")
+                  o.print(s"\n'''Dimension''': 1D, vector\n")
+                  o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+                  o.print(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
+                  o.print(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
+                  o.print('\n')
                 case t: Table2DEnriched =>
-                  o.println(s"Table (matrix): $tableName")
-                  o.println(s"Description: ${t.table.description}")
-                  o.println(s"Categories: ${cats.mkString(", ")}")
-                  o.println(s"Unit info: ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}")
-                  o.println(s"Breakpoints: ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
+                  o.print(s"\n=== $tableName ===\n")
+                  o.print(s"\n'''Brief description''': ${t.table.description}\n")
+                  o.print(s"\n'''Dimension''': 2D, table\n")
+                  o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+                  o.print(s"\n'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")
+                  o.print(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
                       .fold("<labels>")(_.title)}")
+                  o.print('\n')
               }
 
-              o.println("Base:")
-              o.println(comparison.lhs)
-              o.println("Difference:")
-              o.println(comparison.diff)
-              o.println("Modified:")
-              o.println(comparison.rhs)
+              o.print("\n'''Base''':\n\n")
+              o.print(comparison.lhs)
+              o.print("\n'''Difference''':\n\n")
+              o.print(comparison.diff)
+              o.print("\n'''Modified''':\n\n")
+              o.print(comparison.rhs)
 
               notes.get(tableName).foreach { tableNotes =>
-                o.println("Notes:")
+                o.print("\n'''Notes''':\n\n")
                 o.println(tableNotes)
                 o.println()
               }
             }
           }
 
-          o.println("\nUnmodified tables:")
+          o.println("\n== Unmodified tables ==\n")
           unmodifiedTables.foreach { table =>
-            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
+            o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})\n")
           }
 
-          o.println("\nExcluded tables:")
+          o.println("\n== Excluded tables ==\n")
           excludedTables.foreach { table =>
             o.println(s"\t${table.title} (${table.categoryMems.map(_.category.name).mkString(", ")})")
           }

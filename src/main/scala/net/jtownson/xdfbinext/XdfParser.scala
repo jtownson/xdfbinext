@@ -57,6 +57,13 @@ object XdfParser:
     )
   }
 
+  private val node2InverseLookup: Node => InverseLookup = { n =>
+    val table  = n \@ "table"
+    val invert = n \@ "invert"
+
+    InverseLookup(table, invert)
+  }
+
   private val node2DaLink: Node => DaLink = { n => DaLink(index = decode(n \@ "index")) }
 
   private val node2Var: Node => Var = n => Var(id = n \@ "id")
@@ -158,8 +165,9 @@ object XdfParser:
   private def node2VirtualTable: Node => XdfVirtualTable = { n =>
     val title       = (n \ "title").head.text
     val description = (n \ "description").headOption.map(_.text).getOrElse("")
+    val tableDef    = node2InverseLookup((n \ "INVERSELOOKUP").head)
 
-    XdfVirtualTable(title, description)
+    XdfVirtualTable(title, description, tableDef)
   }
 
   private def node2Table(header: XdfHeader): Node => XdfTable = { n =>

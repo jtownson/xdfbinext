@@ -1,5 +1,6 @@
 package net.jtownson.xdfbinext
 
+import net.jtownson.xdfbinext.XdfSchema.InverseLookup
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -29,6 +30,7 @@ class XdfExpressionTest extends AnyFlatSpec {
 
     xdf.virtualTablesByName("Torque to load").title shouldBe "Torque to load"
     xdf.virtualTablesByName("Torque to load").description shouldBe "Inverse lookup into Load to torque"
+    xdf.virtualTablesByName("Torque to load").tableDef shouldBe InverseLookup("Load to torque", "x")
   }
 
   it should "read an inverse table" in {
