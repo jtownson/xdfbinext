@@ -50,10 +50,10 @@ object XdfSchema:
     val tablesConstant: Map[String, XdfTable] =
       tablesByName.filter((_, t) => isConstant(t))
 
-    val tables1D: Map[String, Table1DEnriched] =
+    val tables1D: Map[String, XdfTable1D] =
       tables.filter(is1D).map(table => table.title -> table1DAndBreakpoints(table.title)).toMap
 
-    val tables2D: Map[String, Table2DEnriched] =
+    val tables2D: Map[String, XdfTable2D] =
       tables.filter(is2D).map(table => table.title -> table2DAndBreakpoints(table.title)).toMap
 
     val breakPointTables: Set[String] = {
@@ -66,7 +66,7 @@ object XdfSchema:
 
     def isBreakpointTable(xdfTable: XdfTable): Boolean = breakPointTables.contains(xdfTable.title)
 
-    def table(tableName: String): XdfTable | Table1DEnriched | Table2DEnriched = {
+    def table(tableName: String): XdfTable | XdfTable1D | XdfTable2D = {
       tablesConstant
         .get(tableName)
         .orElse(tables1D.get(tableName))
@@ -74,27 +74,27 @@ object XdfSchema:
         .getOrElse(throw new IllegalArgumentException(s"Invalid table name $tableName"))
     }
 
-    private def table2DAndBreakpoints(name: String): Table2DEnriched = {
+    private def table2DAndBreakpoints(name: String): XdfTable2D = {
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
       val yAddr = tVal.axes.y.embeddedData.mmedAddress
       val tX    = if (xAddr == undefinedAddress) None else Some(tablesByAddress(xAddr))
       val tY    = if (yAddr == undefinedAddress) None else Some(tablesByAddress(yAddr))
-      Table2DEnriched(tVal, tX, tY)
+      XdfTable2D(tVal, tX, tY)
     }
 
-    private def table1DAndBreakpoints(name: String): Table1DEnriched = {
+    private def table1DAndBreakpoints(name: String): XdfTable1D = {
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
       val tX    = if (xAddr == undefinedAddress) None else Some(tablesByAddress(xAddr))
 
-      Table1DEnriched(tVal, tX)
+      XdfTable1D(tVal, tX)
     }
   }
 
-  case class Table2DEnriched(table: XdfTable, xAxisBreakpoints: Option[XdfTable], yAxisBreakpoints: Option[XdfTable])
+  case class XdfTable2D(table: XdfTable, xAxisBreakpoints: Option[XdfTable], yAxisBreakpoints: Option[XdfTable])
 
-  case class Table1DEnriched(table: XdfTable, xAxisBreakpoints: Option[XdfTable])
+  case class XdfTable1D(table: XdfTable, xAxisBreakpoints: Option[XdfTable])
 
   case class XdfHeader(
       flags: Int,

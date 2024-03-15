@@ -91,26 +91,26 @@ class BinAdapterTest extends AnyFlatSpec {
   }
 
   it should "read a value from a 1D table before the min breakpoints" in {
-    binAdapter.tableRead("Max load (spool)", 1400) shouldBe BigDecimal(185.0)
-    binAdapter.tableRead("Max load (spool)", 1500) shouldBe BigDecimal(185.0)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(1400) shouldBe BigDecimal(185.0)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(1500) shouldBe BigDecimal(185.0)
   }
 
   it should "read a value from a 1D table after the max breakpoint" in {
-    binAdapter.tableRead("Max load (spool)", 7500) shouldBe BigDecimal(160.0)
-    binAdapter.tableRead("Max load (spool)", 7000) shouldBe BigDecimal(160.0)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(7500) shouldBe BigDecimal(160.0)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(7000) shouldBe BigDecimal(160.0)
   }
 
   it should "read a value from a 1D table within the breakpoint range" in {
-    binAdapter.tableRead("Max load (spool)", 5400) shouldBe BigDecimal(174.6)
-    binAdapter.tableRead("Max load (spool)", 5500) shouldBe BigDecimal(172.0)
-    binAdapter.tableRead("Max load (spool)", 5600) shouldBe BigDecimal(170.4)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(5400) shouldBe BigDecimal(174.6)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(5500) shouldBe BigDecimal(172.0)
+    binAdapter.tableRead1D("Max load (spool)").data.atX(5600) shouldBe BigDecimal(170.4)
   }
 
   it should "read a value from a 1D table where the breakpoints are defined by labels" in {
-    binAdapter.tableRead("Fan PWM based on coolant act to target delta", -3.1) shouldBe BigDecimal(0.0)
-    binAdapter.tableRead("Fan PWM based on coolant act to target delta", 0.1) shouldBe BigDecimal(1.2)
-    binAdapter.tableRead("Fan PWM based on coolant act to target delta", 12.0) shouldBe BigDecimal(68.850)
-    binAdapter.tableRead("Fan PWM based on coolant act to target delta", 16.0) shouldBe BigDecimal(100.0)
+    binAdapter.tableRead1D("Fan PWM based on coolant act to target delta").data.atX(-3.1) shouldBe BigDecimal(0.0)
+    binAdapter.tableRead1D("Fan PWM based on coolant act to target delta").data.atX(0.1) shouldBe BigDecimal(1.2)
+    binAdapter.tableRead1D("Fan PWM based on coolant act to target delta").data.atX(12.0) shouldBe BigDecimal(68.850)
+    binAdapter.tableRead1D("Fan PWM based on coolant act to target delta").data.atX(16.0) shouldBe BigDecimal(100.0)
   }
 
   it should "read a value fro a 2D table" in {
@@ -118,6 +118,6 @@ class BinAdapterTest extends AnyFlatSpec {
     77.0	95.0
     79.0	96.0
      */
-    binAdapter.tableRead("Load to torque", 25, 1800) shouldBe BigDecimal(88.08)
+    binAdapter.tableRead2D("Load to torque").data.atXY(25, 1800) shouldBe BigDecimal(88.08)
   }
 }

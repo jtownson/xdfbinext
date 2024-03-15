@@ -1,8 +1,16 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.BinAdapter.{compare, data2Str1D, data2Str2D, data2StrConst}
-import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
-import net.jtownson.xdfbinext.XdfSchema.{Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
+import net.jtownson.xdfbinext.BinAdapter.{
+  BinConst,
+  BinTable1D,
+  BinTable2D,
+  compare,
+  data2Str1D,
+  data2Str2D,
+  data2StrConst
+}
+import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated1D, Interpolated2D, linearInterpolate}
+import net.jtownson.xdfbinext.XdfSchema.{XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 
 import java.io.{File, RandomAccessFile}
 import java.nio.ByteBuffer
@@ -31,10 +39,15 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     tableRead(xdfModel.tablesByName(tableName))
   }
 
-  def tableRead(tableName: String, x: BigDecimal): BigDecimal = {
+  def tableReadConst(tableName: String): BinConst = {
+    val xdfTable   = xdfModel.tablesConstant(tableName)
+    val tableValue = tableRead(tableName).head
+    BinConst(xdfTable, tableValue)
+  }
 
-    // obtain the breakpoints
-    val xAxisDef    = xdfModel.tables1D(tableName).xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+  def tableRead1D(tableName: String): BinTable1D = {
+    val xdfTable    = xdfModel.tables1D(tableName)
+    val xAxisDef    = xdfTable.xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
     val xAxis       = tableRead(xAxisDef.title)
     val tableValues = tables1D(tableName)
 
@@ -47,13 +60,13 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
       s"Mismatched breakpoints for table $tableName, axis name ${xAxisDef.title}."
     )
 
-    linearInterpolate(xAxis, tableValues, x)
+    BinTable1D(xdfTable, Interpolated1D(xAxis, tableValues))
   }
 
-  def tableRead(tableName: String, x: BigDecimal, y: BigDecimal): BigDecimal = {
-    // obtain the breakpoints
-    val xAxisDef = xdfModel.tables2D(tableName).xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
-    val yAxisDef = xdfModel.tables2D(tableName).yAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+  def tableRead2D(tableName: String): BinTable2D = {
+    val xdfTable = xdfModel.tables2D(tableName)
+    val xAxisDef = xdfTable.xAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
+    val yAxisDef = xdfTable.yAxisBreakpoints.getOrElse(throw new UnsupportedOperationException())
 
     val xAxis = tableRead(xAxisDef.title)
     val yAxis = tableRead(yAxisDef.title)
@@ -73,7 +86,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
       s"Mismatched breakpoints for table $tableName. Axes ${xAxisDef.title} and ${yAxisDef.title}."
     )
 
-    linearInterpolate(xAxis, yAxis, tableValues, x, y)
+    BinTable2D(xdfTable, Interpolated2D(xAxis, yAxis, tableValues))
   }
 
   /** Read table data as a printable string.
@@ -84,9 +97,9 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     xdfModel.table(name) match {
       case t: XdfTable =>
         dataToStrConst(t)
-      case t: Table1DEnriched =>
+      case t: XdfTable1D =>
         dataToStr1D(t)
-      case t: Table2DEnriched =>
+      case t: XdfTable2D =>
         dataToStr2D(t)
     }
   }
@@ -228,13 +241,13 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     data2StrConst(tableRead(table).head)
   }
 
-  private def dataToStr1D(enrichedTable: Table1DEnriched): String = {
+  private def dataToStr1D(enrichedTable: XdfTable1D): String = {
     val tableData = tableRead(enrichedTable.table)
     val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
     data2Str1D(xAxisData, tableData)
   }
 
-  private def dataToStr2D(enrichedTable: Table2DEnriched): String = {
+  private def dataToStr2D(enrichedTable: XdfTable2D): String = {
     val xAxisData = tableReadOrX(enrichedTable.table, enrichedTable.xAxisBreakpoints)
     val yAxisData = tableReadOrY(enrichedTable.table, enrichedTable.yAxisBreakpoints)
     val tableData = tableRead(enrichedTable.table)
@@ -244,7 +257,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 }
 
 object BinAdapter {
-  
+
   def data2StrConst(tableData: BigDecimal): String = {
     new StringBuilder().append(f"$tableData%9s").append("\n").toString
   }
@@ -330,7 +343,7 @@ object BinAdapter {
         } else {
           Some(BinAdapterCompare(tl, data2StrConst(diff.head), tr))
         }
-      case t: Table1DEnriched =>
+      case t: XdfTable1D =>
         val xLh = t.xAxisBreakpoints.map(x => lhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
         val xRh = t.xAxisBreakpoints.map(x => rhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
         if (dl.sameElements(dr) && xLh.sameElements(xRh)) {
@@ -339,7 +352,7 @@ object BinAdapter {
           val td = data2Str1D(rhsb.tableReadOrX(t.table, t.xAxisBreakpoints), diff)
           Some(BinAdapterCompare(tl, td, tr))
         }
-      case t: Table2DEnriched =>
+      case t: XdfTable2D =>
         val xLh = t.xAxisBreakpoints.map(x => lhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
         val xRh = t.xAxisBreakpoints.map(x => rhsb.tableDyn(x)).getOrElse(Array.empty[BigDecimal])
 
@@ -356,4 +369,11 @@ object BinAdapter {
           Some(BinAdapterCompare(tl, td, tr))
         }
   }
+
+  case class BinConst(xdfTable: XdfTable, value: BigDecimal)
+
+  case class BinTable1D(xdfTable: XdfTable1D, data: Interpolated1D)
+
+  case class BinTable2D(xdfTable: XdfTable2D, data: Interpolated2D)
+
 }

@@ -113,7 +113,7 @@ object TableNotes {
         sb.append('\n')
         sb.append(s"'''Units''': ${t.zUnits}\n")
         sb.append('\n')
-      case t: Table1DEnriched =>
+      case t: XdfTable1D =>
         sb.append(s"=== $tableName ===\n")
         sb.append(s"'''Brief Description''': ${t.table.description}\n")
         sb.append('\n')
@@ -125,7 +125,7 @@ object TableNotes {
         sb.append('\n')
         sb.append(s"'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
         sb.append('\n')
-      case t: Table2DEnriched =>
+      case t: XdfTable2D =>
         sb.append(s"=== $tableName ===\n")
         sb.append(s"'''Brief description''': ${t.table.description}\n")
         sb.append('\n')

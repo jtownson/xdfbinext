@@ -203,7 +203,7 @@ class XdfParserTest extends AnyFlatSpec {
   it should "query 1D tables and associated breakpoints" in {
     val tableName     = "Torque Reduction Factor (RPM)"
     val xAxisName     = "Torque Reduction Factor (RPM) X (autogen)"
-    val expectedTable = Table1DEnriched(xdfModel.tablesByName(tableName), xdfModel.tablesByName.get(xAxisName))
+    val expectedTable = XdfTable1D(xdfModel.tablesByName(tableName), xdfModel.tablesByName.get(xAxisName))
 
     xdfModel.tables1D(tableName) shouldBe expectedTable
   }
@@ -212,7 +212,7 @@ class XdfParserTest extends AnyFlatSpec {
     val tableName = "Load to torque"
     val xAxisName = "Load to torque X (autogen)"
     val yAxisName = "Load to torque Y (autogen)"
-    val expectedTable = Table2DEnriched(
+    val expectedTable = XdfTable2D(
       xdfModel.tablesByName(tableName),
       xdfModel.tablesByName.get(xAxisName),
       xdfModel.tablesByName.get(yAxisName)

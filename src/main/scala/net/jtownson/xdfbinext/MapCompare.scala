@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.XdfSchema.{Table1DEnriched, Table2DEnriched, XdfModel, XdfTable}
+import net.jtownson.xdfbinext.XdfSchema.{XdfTable1D, XdfTable2D, XdfModel, XdfTable}
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
@@ -56,7 +56,7 @@ object MapCompare {
                   o.print(s"\n'''Units''': ${t.zUnits}\n")
                   o.print('\n')
 
-                case t: Table1DEnriched =>
+                case t: XdfTable1D =>
                   o.print(s"\n=== $tableName ===\n")
                   o.print(s"\n'''Brief Description''': ${t.table.description}\n")
                   o.print(s"\n'''Dimension''': 1D, vector\n")
@@ -64,7 +64,7 @@ object MapCompare {
                   o.print(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
                   o.print(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
                   o.print('\n')
-                case t: Table2DEnriched =>
+                case t: XdfTable2D =>
                   o.print(s"\n=== $tableName ===\n")
                   o.print(s"\n'''Brief description''': ${t.table.description}\n")
                   o.print(s"\n'''Dimension''': 2D, table\n")
