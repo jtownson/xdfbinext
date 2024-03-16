@@ -57,11 +57,11 @@ object XdfParser:
     )
   }
 
-  private val node2InverseLookup: Node => InverseLookup = { n =>
+  private val node2InverseLookup: Node => InverseLookup2D = { n =>
     val table  = n \@ "table"
     val invert = n \@ "invert"
 
-    InverseLookup(table, invert)
+    InverseLookup2D(table, invert)
   }
 
   private val node2DaLink: Node => DaLink = { n => DaLink(index = decode(n \@ "index")) }

@@ -7,28 +7,28 @@ object Invert {
   }
 
   def tableInvertX(
-      load: Array[BigDecimal],
-      rpm: Array[BigDecimal],
-      torque: Array[BigDecimal]
+      xAxis: Array[BigDecimal],
+      yAxis: Array[BigDecimal],
+      z: Array[BigDecimal]
   ): (Array[BigDecimal], Array[BigDecimal], Array[BigDecimal]) = {
 
     // get the range of the data
-    val tqMin = torque.min
-    val tqMax = torque.max
+    val zMin = z.min
+    val zMax = z.max
     // divide the range into a new x axis
-    val nX     = load.length
-    val tqAxis = (0 until nX).map(i => tqMin + i * (tqMax - tqMin) / (nX - 1)).toArray
+    val nX    = xAxis.length
+    val zAxis = (0 until nX).map(i => zMin + i * (zMax - zMin) / (nX - 1)).toArray
 
-    val ldValues = rpm.indices.flatMap { iy => // go through each row of the table
-      val loadRow   = load
-      val torqueRow = torque.slice(iy * nX, iy * nX + nX) // extract the row values (torque)
+    val x = yAxis.indices.flatMap { iy => // go through each row of the table
+      val loadRow   = xAxis
+      val torqueRow = z.slice(iy * nX, iy * nX + nX) // extract the row values (torque)
       // here, we have the values of load, but at the wrong torque values
-      // so for each torque value we have (tqAxis)
+      // so for each torque value we have (zAxis)
       // we need to interpolate
-      tqAxis.map(tq => LinearInterpolate.linearInterpolate(torqueRow, loadRow, tq))
+      zAxis.map(tq => LinearInterpolate.linearInterpolate(torqueRow, loadRow, tq))
     }.toArray
 
-    (tqAxis, rpm, ldValues)
+    (zAxis, yAxis, x)
   }
 
 }

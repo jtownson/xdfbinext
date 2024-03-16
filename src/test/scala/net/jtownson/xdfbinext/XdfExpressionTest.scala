@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.XdfSchema.InverseLookup
+import net.jtownson.xdfbinext.XdfSchema.InverseLookup2D
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -30,34 +30,15 @@ class XdfExpressionTest extends AnyFlatSpec {
 
     xdf.virtualTablesByName("Torque to load").title shouldBe "Torque to load"
     xdf.virtualTablesByName("Torque to load").description shouldBe "Inverse lookup into Load to torque"
-    xdf.virtualTablesByName("Torque to load").tableDef shouldBe InverseLookup("Load to torque", "x")
+    xdf.virtualTablesByName("Torque to load").tableDef shouldBe InverseLookup2D("Load to torque", "x")
   }
 
   it should "read an inverse table" in {
-    // here we want to be able to feed in values to perform a table lookup
-    // and perform the same for a virtual table
-    /*
-    t = t(load, rpm)
-          0.0	12.0	14.0
-        --------------------
-    500 | 0.0 	29.1	34.0
-    600 | 0.0 	32.6	38.0
-    800 | 0.0 	36.0	42.0
-    1000| 0.0 	36.9	43.0
+    val tqLd = binAdapter.virtualTableByName("Torque to load").rounded(1)
 
-
-    we want a function g(t, rpm) = load
-    i.e. in the first case we know load and rpm
-    in the second we know rpm and torque
-    so to get the inverse, we note the range of torque values is in [0.0, 43.0]
-    which gives us the torque axis range
-    l = t' = l(torque, rpm)
-           0    43/3    2 * 43/3
-    500 |  0
-    600 |  0
-    800 |  0
-    1000|  0
-     */
-//    binAdapter.tableRead("Torque to load")
+    tqLd.xAxis.toSeq shouldBe Seq(0, 45, 90, 135, 180, 225, 270, 315, 360, 405, 450, 495, 540, 585, 630, 675, 720, 765)
+    tqLd.yAxis.toSeq shouldBe Seq(500, 600, 800, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500,
+      5000, 5500, 6000, 6500, 7000)
+    tqLd.atXY( /* torque */ 450, /* rpm */ 4500) should equal(BigDecimal(117.4) +- 1)
   }
 }

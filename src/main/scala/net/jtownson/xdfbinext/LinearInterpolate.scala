@@ -1,5 +1,8 @@
 package net.jtownson.xdfbinext
 
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.HALF_UP
+
 object LinearInterpolate {
 
   case class Interpolated1D(axis: Array[BigDecimal], values: Array[BigDecimal]) {
@@ -12,6 +15,14 @@ object LinearInterpolate {
     def atRowCol(row: Int, col: Int): BigDecimal = values(xAxis.length * row + col)
 
     def atRow(row: Int): Array[BigDecimal] = values.slice(xAxis.length * row, xAxis.length * row + xAxis.length)
+
+    def rounded(decimalPlaces: Int): Interpolated2D = {
+      Interpolated2D(
+        xAxis.map(_.setScale(decimalPlaces, HALF_UP)),
+        yAxis.map(_.setScale(decimalPlaces, HALF_UP)),
+        values.map(_.setScale(decimalPlaces, HALF_UP))
+      )
+    }
   }
 
   def linearInterpolate(axis: Array[BigDecimal], values: Array[BigDecimal], x: BigDecimal): BigDecimal = {

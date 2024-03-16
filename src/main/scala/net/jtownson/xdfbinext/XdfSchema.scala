@@ -1,5 +1,7 @@
 package net.jtownson.xdfbinext
 
+import net.jtownson.xdfbinext
+
 import scala.collection.immutable.Seq
 
 object XdfSchema:
@@ -8,8 +10,6 @@ object XdfSchema:
 
   val floatingPointFlag = 0x10000
   val signedFlag        = 0x01
-
-  case class XdfExpression()
 
   case class XdfModel(
       version: String,
@@ -132,9 +132,23 @@ object XdfSchema:
 
   case class XdfVirtualTable(title: String, description: String, tableDef: VirtualTableDef)
 
-  case class InverseLookup(table: String, invert: String)
+  case class InverseLookup2D(table: String, invert: String)
 
-  type VirtualTableDef = InverseLookup
+  object InverseLookup2D {
+    val x = "x"
+    val y = "y"
+
+    def apply(table: String, invert: String): InverseLookup2D = {
+      if (invert == x || invert == y)
+        new InverseLookup2D(table, invert)
+      else
+        throw new IllegalArgumentException(
+          s"Invalid axis name in inverse lookup. Should be one of 'x' or 'y'. Got $invert."
+        )
+    }
+  }
+
+  type VirtualTableDef = InverseLookup2D
 
   case class XdfTable(
       uniqueId: Int,

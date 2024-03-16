@@ -10,7 +10,7 @@ import net.jtownson.xdfbinext.BinAdapter.{
   data2StrConst
 }
 import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated1D, Interpolated2D, linearInterpolate}
-import net.jtownson.xdfbinext.XdfSchema.{XdfModel, XdfTable, XdfTable1D, XdfTable2D}
+import net.jtownson.xdfbinext.XdfSchema.{InverseLookup2D, XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 
 import java.io.{File, RandomAccessFile}
 import java.nio.ByteBuffer
@@ -29,6 +29,26 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 
   private val tables2D: Map[String, Array[BigDecimal]] =
     xdfModel.tables2D.map((tableName, _) => tableName -> tableRead(tableName))
+
+  private val virtualTables: Map[String, Interpolated2D] =
+    xdfModel.virtualTablesByName.map((tableName, _) => tableName -> virtualTableRead(tableName))
+
+  private def virtualTableRead(tableName: String): Interpolated2D = {
+    xdfModel.virtualTablesByName(tableName).tableDef match
+      case InverseLookup2D(baseTableName, invert) =>
+        val xdfBase = xdfModel.tables2D(baseTableName)
+        val tBase   = tableRead2D(baseTableName)
+        if (invert == InverseLookup2D.x)
+          val (xp, yp, zp) = Invert.tableInvertX(tBase.data.xAxis, tBase.data.yAxis, tBase.data.values)
+          Interpolated2D(xp, yp, zp)
+        else
+          require(invert == InverseLookup2D.y, s"Invalid invert axis '$invert'.")
+          ???
+  }
+
+  def virtualTableByName(tableName: String): Interpolated2D = {
+    virtualTables(tableName)
+  }
 
   /** Read table data into a flat array.
     *
@@ -124,12 +144,12 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
     applyDecimalPl(xdfTable)(tableDyn(xdfTable))
   }
 
-  private def tableReadOrX(table: XdfTable, maybeX: Option[XdfTable]): Array[String] = {
-    maybeX.fold(table.xLabels.toArray)(t => tableRead(t).map(_.toString))
+  private def tableReadOrX(table: XdfTable, maybeX: Option[XdfTable]): Array[BigDecimal] = {
+    maybeX.fold(table.xLabels.map(BigDecimal(_)).toArray)(t => tableRead(t))
   }
 
-  private def tableReadOrY(table: XdfTable, maybeY: Option[XdfTable]): Array[String] = {
-    maybeY.fold(table.yLabels.toArray)(t => tableRead(t).map(_.toString))
+  private def tableReadOrY(table: XdfTable, maybeY: Option[XdfTable]): Array[BigDecimal] = {
+    maybeY.fold(table.yLabels.map(BigDecimal(_)).toArray)(t => tableRead(t))
   }
 
   private def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
@@ -267,38 +287,45 @@ object BinAdapter {
     " ".repeat(p) + s
   }
 
-  def data2Str1D(xAxisData: Array[String], tableData: Array[BigDecimal]): String = {
+  def data2Str1D(xAxisData: Array[BigDecimal], tableData: Array[BigDecimal]): String = {
     val cols         = xAxisData.length
-    val maxXLen      = xAxisData.map(_.length).max
-    val tableDataStr = tableData.map(_.toString())
+    val xAxisStr     = xAxisData.map(_.toString)
+    val maxXLen      = xAxisStr.map(_.length).max
+    val tableDataStr = tableData.map(_.toString)
     val maxDataLen   = tableDataStr.map(_.length).max
     val len          = Math.max(maxXLen, maxDataLen) + 2
 
-    val xAxisHeader = (0 until cols).map { col => pad(xAxisData(col), len) }.mkString
+    val xAxisHeader = (0 until cols).map { col => pad(xAxisStr(col), len) }.mkString
     val rowStr      = (0 until cols).map { col => pad(tableDataStr(col), len) }.mkString
     new StringBuilder().append(xAxisHeader).append("\n").append(rowStr).append("\n").toString
   }
 
+  def data2Str2D(t: Interpolated2D): String = {
+    data2Str2D(t.xAxis, t.yAxis, t.values)
+  }
+
   def data2Str2D(
-      xAxisData: Array[String],
-      yAxisData: Array[String],
+      xAxisData: Array[BigDecimal],
+      yAxisData: Array[BigDecimal],
       tableData: Array[BigDecimal]
   ): String = {
     val cols = xAxisData.length
     val rows = yAxisData.length
 
-    val maxXLen      = xAxisData.map(_.length).max
-    val maxYLen      = yAxisData.map(_.length).max
-    val tableDataStr = tableData.map(_.toString())
+    val xAxisStr     = xAxisData.map(_.toString)
+    val yAxisStr     = yAxisData.map(_.toString)
+    val tableDataStr = tableData.map(_.toString)
+    val maxXLen      = xAxisStr.map(_.length).max
+    val maxYLen      = yAxisStr.map(_.length).max
     val maxDataLen   = tableDataStr.map(_.length).max
     val len          = Math.max(maxXLen, Math.max(maxYLen, maxDataLen)) + 2
 
     val sb = new StringBuilder()
 
-    val xAxisHeader = (0 until cols).map { col => pad(xAxisData(col), len) }.mkString
-    sb.append(" ".repeat(9)).append(xAxisHeader).append("\n")
+    val xAxisHeader = (0 until cols).map { col => pad(xAxisStr(col), len) }.mkString
+    sb.append(" ".repeat(len)).append(xAxisHeader).append("\n")
     (0 until rows).map { row =>
-      sb.append(pad(yAxisData(row), len))
+      sb.append(pad(yAxisStr(row), len))
       val rowStr = (0 until cols).map { col =>
         val i = row * cols + col
         pad(tableDataStr(i), len)
