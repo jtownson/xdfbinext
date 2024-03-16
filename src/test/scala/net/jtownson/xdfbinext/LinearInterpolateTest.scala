@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
+import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated2D, linearInterpolate}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.prop.TableDrivenPropertyChecks.*
@@ -41,9 +41,19 @@ class LinearInterpolateTest extends AnyFlatSpec {
     31, 32, 33, 34, 35,
     41, 42, 43, 44, 45
   )
-  // format: on
 
   it should "interpolate a 2D fn" in forAll(t2d) { (_, x, y, expected) =>
     linearInterpolate(xAxis = xAxis, yAxis = yAxis, values = fxy, x = x, y = y) shouldBe expected
   }
+
+  it should "generate a zero table" in {
+    Interpolated2D.zero(xAxis, yAxis).values.toSeq shouldBe Seq(
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0)
+  }
+
+  // format: on
+
 }

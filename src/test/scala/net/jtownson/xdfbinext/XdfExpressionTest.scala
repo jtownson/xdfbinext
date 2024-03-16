@@ -41,4 +41,16 @@ class XdfExpressionTest extends AnyFlatSpec {
       5000, 5500, 6000, 6500, 7000)
     tqLd.atXY( /* torque */ 450, /* rpm */ 4500) should equal(BigDecimal(117.4) +- 1)
   }
+
+  it should "read a table defined from arithmetic on other tables" in {
+    val lobeSep = binAdapter.virtualTableByName("Mean lobe angle (warm) 1")
+
+    val vanosInW1 = binAdapter.tableRead2D("Vanos IN (warm) 1")
+    val vanosExW1 = binAdapter.tableRead2D("Vanos EX (warm) 1")
+    val expected  = vanosInW1.data.values.zip(vanosExW1.data.values).map((vi, ve) => (vi + ve) / 2)
+
+    lobeSep.xAxis.toSeq shouldBe vanosInW1.data.xAxis.toSeq
+    lobeSep.yAxis.toSeq shouldBe vanosInW1.data.yAxis.toSeq
+    lobeSep.values.toSeq shouldBe expected.toSeq
+  }
 }

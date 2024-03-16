@@ -34,8 +34,7 @@ object XdfParser:
   }
 
   private def node2CategoryMem(header: XdfHeader): Node => CategoryMem = { n =>
-    val index = decode(n \@ "index")
-//    val
+    val index    = decode(n \@ "index")
     val indexRef = decode(n \@ "category") - 1
 
     CategoryMem(index = index, category = header.categoryIndex(indexRef))
@@ -55,6 +54,18 @@ object XdfParser:
       mmedMajorStrideBits = decode(n \@ "mmedmajorstridebits"),
       mmedMinorStrideBits = decode(n \@ "mmedminorstridebits")
     )
+  }
+
+  private val node2Alias: Node => (String, String) = { n =>
+    val label = (n \@ "label")
+    val table = (n \@ "table")
+    (label, table)
+  }
+
+  private val node2ExpressionDef: Node => XdfExpression = { n =>
+    val expressionValue = (n \@ "value")
+    val aliases         = (n \ "alias").map(node2Alias).toMap
+    XdfExpression(aliases, expressionValue)
   }
 
   private val node2InverseLookup: Node => InverseLookup2D = { n =>
@@ -163,9 +174,18 @@ object XdfParser:
   }
 
   private def node2VirtualTable: Node => XdfVirtualTable = { n =>
-    val title       = (n \ "title").head.text
-    val description = (n \ "description").headOption.map(_.text).getOrElse("")
-    val tableDef    = node2InverseLookup((n \ "INVERSELOOKUP").head)
+    val title                 = (n \ "title").head.text
+    val description           = (n \ "description").headOption.map(_.text).getOrElse("")
+    val maybeInverseLookupDef = (n \ "INVERSELOOKUP").headOption.map(node2InverseLookup)
+    val maybeExpressionDef    = (n \ "EXPRESSION").headOption.map(node2ExpressionDef)
+
+    val tableDef = maybeInverseLookupDef
+      .orElse(maybeExpressionDef)
+      .getOrElse(
+        throw new IllegalArgumentException(
+          s"Invalid virtual table definition $n. Expected either INVERSELOOKUP or EXPRESSION."
+        )
+      )
 
     XdfVirtualTable(title, description, tableDef)
   }

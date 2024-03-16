@@ -84,6 +84,14 @@
         <description>Inverse lookup into Load to torque</description>
         <INVERSELOOKUP table="Load to torque" invert="x"/> <!-- here x is the load axis -->
     </VIRTUALTABLE>
+    <VIRTUALTABLE>
+        <title>Mean lobe angle (warm) 1</title>
+        <description>(intake angle + exhaust angle) / 2</description>
+        <EXPRESSION value="(I + E) / 2">
+            <alias label="I" table="Vanos IN (warm) 1"/>
+            <alias label="E" table="Vanos EX (warm) 1"/>
+        </EXPRESSION>
+    </VIRTUALTABLE>
     <!-- <VIRTUALTABLE>
         <title>Load torque request sport</title>
         <LOOKUP table="Torque to load">

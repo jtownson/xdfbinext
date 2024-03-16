@@ -10,7 +10,7 @@ import net.jtownson.xdfbinext.BinAdapter.{
   data2StrConst
 }
 import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated1D, Interpolated2D, linearInterpolate}
-import net.jtownson.xdfbinext.XdfSchema.{InverseLookup2D, XdfModel, XdfTable, XdfTable1D, XdfTable2D}
+import net.jtownson.xdfbinext.XdfSchema.{InverseLookup2D, XdfExpression, XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 
 import java.io.{File, RandomAccessFile}
 import java.nio.ByteBuffer
@@ -36,14 +36,25 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
   private def virtualTableRead(tableName: String): Interpolated2D = {
     xdfModel.virtualTablesByName(tableName).tableDef match
       case InverseLookup2D(baseTableName, invert) =>
-        val xdfBase = xdfModel.tables2D(baseTableName)
-        val tBase   = tableRead2D(baseTableName)
-        if (invert == InverseLookup2D.x)
-          val (xp, yp, zp) = Invert.tableInvertX(tBase.data.xAxis, tBase.data.yAxis, tBase.data.values)
-          Interpolated2D(xp, yp, zp)
-        else
-          require(invert == InverseLookup2D.y, s"Invalid invert axis '$invert'.")
-          ???
+        inverseLookup(baseTableName, invert)
+      case XdfExpression(aliases, expression) =>
+        xdfExpression(aliases, expression)
+  }
+
+  private def xdfExpression(aliases: Map[String, String], expression: String): Interpolated2D = {
+    val aliasesBin = aliases.map((label, tableName) => (label, tableRead2D(tableName).data))
+    XdfExpressionParser.from(aliasesBin).parseTableExpr(expression)
+  }
+
+  private def inverseLookup(baseTableName: String, invert: String) = {
+    val xdfBase = xdfModel.tables2D(baseTableName)
+    val tBase   = tableRead2D(baseTableName)
+    if (invert == InverseLookup2D.x)
+      val (xp, yp, zp) = Invert.tableInvertX(tBase.data.xAxis, tBase.data.yAxis, tBase.data.values)
+      Interpolated2D(xp, yp, zp)
+    else
+      require(invert == InverseLookup2D.y, s"Invalid invert axis '$invert'.")
+      ???
   }
 
   def virtualTableByName(tableName: String): Interpolated2D = {
@@ -401,6 +412,9 @@ object BinAdapter {
 
   case class BinTable1D(xdfTable: XdfTable1D, data: Interpolated1D)
 
+  // TODO consider real and virtual tables under some common abstraction
+  // really all we care about here is the data, the axes, the units and perhaps some notion of the base data type or precision.
+  // could extract that info to a new type. Map XdfTable2D to that type and do likewise for virtual tables somehow.
   case class BinTable2D(xdfTable: XdfTable2D, data: Interpolated2D)
 
 }

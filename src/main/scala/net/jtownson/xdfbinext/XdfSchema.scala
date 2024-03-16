@@ -134,6 +134,8 @@ object XdfSchema:
 
   case class InverseLookup2D(table: String, invert: String)
 
+  case class XdfExpression(aliases: Map[String, String], expression: String)
+
   object InverseLookup2D {
     val x = "x"
     val y = "y"
@@ -148,7 +150,7 @@ object XdfSchema:
     }
   }
 
-  type VirtualTableDef = InverseLookup2D
+  type VirtualTableDef = InverseLookup2D | XdfExpression
 
   case class XdfTable(
       uniqueId: Int,
