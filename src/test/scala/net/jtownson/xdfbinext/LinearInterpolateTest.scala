@@ -55,5 +55,9 @@ class LinearInterpolateTest extends AnyFlatSpec {
   }
 
   // format: on
-
+  it should "interpolate this" in {
+    val x = Array[BigDecimal](486, 520)
+    val y = Array[BigDecimal](140, 150)
+    println(LinearInterpolate.Interpolated1D(x, y).atX(500))
+  }
 }

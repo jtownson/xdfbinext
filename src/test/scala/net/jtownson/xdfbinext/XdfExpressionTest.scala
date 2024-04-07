@@ -1,11 +1,16 @@
 package net.jtownson.xdfbinext
 
 import net.jtownson.xdfbinext.XdfSchema.InverseLookup2D
+import org.apache.commons.lang3.CharSet
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
 import java.io.File
-import scala.io.Source
+import java.nio.charset.StandardCharsets
+import java.util.Base64
+import scala.io.{BufferedSource, Source}
+import scala.math.BigDecimal.RoundingMode
+import scala.util.Using
 
 class XdfExpressionTest extends AnyFlatSpec {
 
@@ -18,6 +23,23 @@ class XdfExpressionTest extends AnyFlatSpec {
 
   private val binAdapter = new BinAdapter(originalBin, xdf)
 
+  it should "process report" ignore {
+    val tables    = xdf.tablesByName.keySet
+    val tableExpr = """====\s(.+)\s====""".r
+    Using.resource(Source.fromResource("mppsk.txt")) { src =>
+      val sb = new StringBuilder()
+      src.getLines().foreach { line =>
+        println(line)
+        line match
+          case tableExpr(tableName) =>
+            val linkName = tableName.replace(' ', '_')
+            println()
+            println(s"""'''Ref''': [[DME_table_reference#$linkName|$tableName]]""")
+          case _ =>
+      }
+    }
+  }
+  
   "XdfExpression" should "read a virtual table metadata" in {
     // we want to define a model structure which has discoverable input variables
     // the user can then provide values or ranges of values for those variables

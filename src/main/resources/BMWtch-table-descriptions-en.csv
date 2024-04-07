@@ -1,0 +1,907 @@
+BMWtchad_fac_AdpCrtn_M,"Correction factor for the deviation of the adaptation factor from 1, depending on the operating point. Background: As long as the I component and the adaptation are in the WG position, you have a much greater sensitivity with a high charge and a wide-closed WG."
+BMWtchad_fac_EngHotMin_C,Lower limit of engine compartment warming for adaptation release
+BMWtchad_fac_Ip_C,Integration factor
+BMWtchad_fac_IpMax_C,Atl controller adaptation factor - upper limit value
+BMWtchad_fac_IpMin_C,Atl controller adaptation factor - lower limit value
+BMWtchad_fac_IpOfs_C,Offset on factor for ratio I component d. Pre-control regulation
+BMWtchad_fac_p_CmprLimMax_C,Max. charging factor for adaptation implementation
+BMWtchad_fac_PBasc_T,Factor_on_Basic Boost Pressure Ratio for determining the minimum degree of boosting for the release of the boost pressure adaptation
+BMWtchad_n_EngMax_C,Upper speed threshold for adaptation
+BMWtchad_n_EngMin_C,Lower speed threshold for adaptation
+BMWtchad_p_DifAbsMax_C,Max. control difference for active adaptation
+BMWtchad_p_ReqDynMax_C,Max. change in boost pressure setpoint for adaptation
+BMWtchad_p_ReqDynMin_C,Min. change in boost pressure setpoint for adaptation
+BMWtchad_pct_WgIpAdpToDwn_C,"Tolerance of negative I component for re-adaptation (easy to learn out, difficult to re-learn)"
+BMWtchad_pct_WgIpAdpToUp_C,"Tolerance of positive I component for re-adaptation (easy to learn out, difficult to re-learn)"
+BMWtchad_swi_AcvMan_C,Manually activate adaptation.
+BMWtchad_swi_Rst_C,reset adaptation
+BMWtchad_t_EngMin_C,Min. motor temperature for controller adaptation
+BMWtchad_t_MnfMax_C,Max. intake air temperature for controller adaptation
+BMWtchad_ti_DlyAftIpIni_C,Delay after initialization of the I controller
+BMWtchbas_acvn_ModEngRaceStrt_C,Motor torque increase level from which the race start is activated.
+BMWtchbas_cw_Noise_C,Wastegate opening configuration for acoustic reasons
+BMWtchbas_cw_RaceStr_C,Code word for activating the increase in charger preload at the start of the race with the DKG (bit 2)
+BMWtchbas_fac_FilPBefThrDyn_C,Filter constant for actual boost pressure value
+BMWtchbas_fac_FilPDif_T,Filter constant for boost pressure deviation
+BMWtchbas_fac_FilPDifCrtn_T,Correction factor for filter constant to make filtering fast with high Pld_diff
+BMWtchbas_fac_n_FilDyn_C,Filter constant for engine speed dynamics
+BMWtchbas_fac_TcBascCrtn_M,Correction of basic boost pressure
+BMWtchbas_mf_NoiseMin_C,Maximum exhaust gas mass flow for activating wastegate opening for acoustic reasons
+BMWtchbas_n_FlGcMin_C,Minimum speed to activate full load switching (without lifting the accelerator pedal)
+BMWtchbas_n_NoiseMin_C,Maximum speed for activating wastegate opening for acoustic reasons
+BMWtchbas_n_OfsNoiseOff_C,Offset to the restart speed to deactivate the noise function
+BMWtchbas_nr_n_AvgDyn2_C,Number of delta truck values to be averaged for truck_dyn2
+BMWtchbas_nr_PDifGraAvg_C,Number of values d. Degree of control deviation. which should be averaged for Pld_diff_grd
+BMWtchbas_p_DifAmbBefCmpr_T,Differential pressure Pu - Pvld
+BMWtchbas_pct_AccrFlGcMin_C,Min. pedal angle for detection of a full load shift
+BMWtchbas_pct_AccrFlGcMin_T,Min. pedal angle for detection of a full load shift
+BMWtchbas_pct_AccrGradNoiseMin_C,Minimum accelerator pedal angle gradient to activate the sound function (
+BMWtchbas_pct_AccrGraFlGcMax_C,Min. neg. pedal value gradient for detection of a full load switching
+BMWtchbas_pct_AccrNoiseMin_C,Minimum accelerator pedal angle to activate the sound function
+BMWtchbas_pct_AccrRaceStrt_C,Minimum accelerator pedal value to activate ATL racing start
+BMWtchbas_pct_AccrRaceStrtDly_C,Threshold accelerator pedal for deceleration race start condition.
+BMWtchbas_rat_p_BefThrFlGc_C,Min. charging factor for detecting a full load circuit
+BMWtchbas_rat_p_TcBasc_T,Factor f. basic boost pressure
+BMWtchbas_rat_p_TcBascCond_T,Factor for basic boost pressure with risk of condensation on the intercooler
+BMWtchbas_rat_p_TcBascEco_T,Basic boost pressure with preload via the Eco map
+BMWtchbas_rat_p_TcBascRoofOp_T,Factor for basic boost pressure with preload via the convertible map
+BMWtchbas_rat_p_TcBascSpt_T,Basic boost pressure with preload via the sports map
+BMWtchbas_swi_RaceVarSel_C,Use of the condition St_rsta_mdkg for the start of the race (previously bracketed via SY_MDKG)
+BMWtchbas_ti_DlyAccr0FlGcDi_C,"Delay, Pwg = 0 for full load switching"
+BMWtchbas_ti_DlyFlGcCluDi_C,Max. time of a detected full load switching
+BMWtchbas_ti_DlyFlGcEna_C,"Delay, Pwg for full load switching"
+BMWtchbas_ti_DlyFlGcHld_C,Delay time to hold full load gear shift
+BMWtchbas_ti_DlyFlGcLock_C,Locking time after full load gear shift to activate it again.
+BMWtchbas_ti_DlyFlGcMax_C,Max. time of a detected full load switching
+BMWtchbas_ti_DlyFlGcPucDi_C,Max. reaction time for active fuel cut-off
+BMWtchbas_ti_DlyNoiseOff_C,Time delay for switching off the sound function after the speed is below the switch-off threshold again.
+BMWtchbas_ti_DlyRaceStr_C,Delay time for maintaining the race start.
+BMWtchbov_b_AcvnMan_C,Manual switch to activate divert-air-valve (true: valve is open; false: valve is closed)
+BMWtchbov_cw_1_C,Code word (Bit0: Reset ULV at B_ll_fallingedge; Bit1: Activation BOV independent of BMWtchco_b_Acv_bo)
+BMWtchbov_cw_CylOffEna_C,Code word for releasing the EZA when the air recirculation function is activated (
+BMWtchbov_cw_DscSpt_C,Codeword to switch to Sport for Bov in case of deactivated DSC (dynamic stabilization system).
+BMWtchbov_fac_FadeDec_T,"Ramp slope during fadeout of the anti-pump mass flow. Reduction of the crossfader per calculation step, i.e. 10ms. Example: 0.01 ramps from full mass flow to 0 in 100 calculation steps, i.e. 1 second."
+BMWtchbov_fac_mf_ThrEcoMin_C,Correction factor for target mass flow for DK booster to avoid pumps if SUV is omitted
+BMWtchbov_fac_mf_ThrMin_C,Correction factor for target mass flow for DK booster to avoid pumps if SUV is omitted
+BMWtchbov_fac_mf_ThrSptMin_M,Correction factor for target mass flow for DK booster to avoid pumps if SUV is omitted
+BMWtchbov_fac_mf_ThrThrEcoMin_C,Correction factor for target mass flow for DC boost to avoid pumps if SUV is omitted in throttled operation with FES=Eco
+BMWtchbov_fac_mf_ThrThrMin_C,Correction factor for target mass flow for DK booster to avoid pumps if SUV is omitted
+BMWtchbov_fac_mf_ThrThrSptMin_M,Correction factor for target mass flow for DC boost to avoid pumping if SUV is omitted in throttled operation with FES=Sport
+BMWtchbov_fac_mf_VvtEcoMin_C,Correction factor for target mass flow for valve lift control to avoid pumps if an SUV is omitted
+BMWtchbov_fac_mf_VvtMin_C,Correction factor for target mass flow for valve lift control to avoid pumps if an SUV is omitted
+BMWtchbov_fac_mf_VvtSptMin_M,"Turbocharger blow off valve factor, dimensionless massflow variable valve train sport minimum map map"
+BMWtchbov_mf_PmpLim_M,Inverse pumping limit to determine the minimum mass flow to avoid pumping.
+BMWtchbov_n_AcvnMax_C,Maximum speed limit for activating the diverter air valve or the replacement function
+BMWtchbov_n_Di_T,"If engine speed falls below this threshold, bov is deactivated."
+BMWtchbov_n_DiSpt_T,"If engine speed falls below this threshold, bov is deactivated (used in sport mode)."
+BMWtchbov_n_OfsAcvMin_C,"Offset to the deactivation speed for enabling activation. When the speed drops, the ULV is active at least for this speed difference."
+BMWtchbov_nr_PDifPrdn_C,Pediction interval (number of calculation steps for pressure difference prediction).
+BMWtchbov_p_BrkMaxDi_C,"To ensure that the Bov function is not blocked, the brake pressure at low speeds must be less than this threshold (so that the vehicle speed-dependent partial load precontrol can come through)."
+BMWtchbov_p_DifAcvn_M,"Threshold for predicted differential pressure to open the recirculation valve (if predicted differential pressure is below this threshold, i.e. the actual pressure is significantly above the target pressure)"
+BMWtchbov_p_DifAcvnSpt_M,"Threshold for predicted differential pressure to open the recirculation valve (if predicted differential pressure is below this threshold, i.e. the actual pressure is significantly above the target pressure)"
+BMWtchbov_p_DifDeac_C,Limit for premature closing of the ULV before the actual boost pressure has reached the target boost pressure
+BMWtchbov_rat_FiGraAcvn_T,Threshold filling gradient for charger dynamics
+BMWtchbov_rat_FiGraDeac_C,Threshold filling gradient for charger dynamics - reset
+BMWtchbov_rat_p_CmprThdVlvOp_C,Compressor pressure ratio threshold below which the eSUV is always controlled (and no mass flow increase occurs).
+BMWtchbov_rat_p_InAmb_C,"SR pressure ratio below this purely over the Rf_soll gradient without taking the boost pressure into account, the recirculation valve in the dyn. Case can be opened (for jump to partial load operation)"
+BMWtchbov_rat_p_InAmbSpt_C,"SR pressure ratio below this purely over the Rf_soll gradient without taking the boost pressure into account, the recirculation valve in the dyn. Case can be opened (for jump to partial load operation)"
+BMWtchbov_st_OpmRednO2Emi_C,Load reduction operating mode if the entry of O2 must be prevented due to load control from the OPF.
+BMWtchbov_swi_CylOff0Flow_C,Enable cylinder suppression only if no mass flow increase is requested.
+BMWtchbov_swi_Man_C,Switching to manual ULV control
+BMWtchbov_swi_RednO2Emi_C,Switch for switching to your own Bov pilot control with OPF soot hold function
+BMWtchbov_swi_TiRmp_C,"When activated, the volume flow increase is calculated once from the pressure ratio, held briefly and then ramped down over a time ramp."
+BMWtchbov_swi_VlvOpAll_C,open the electrical blowoff valve even if the mass flow is increased.
+BMWtchbov_ti_AcvnMax_C,Duration of active ULV during pressure reduction
+BMWtchbov_ti_AftStrtEndEna_C,Delay after end of start for standby ULV
+BMWtchbov_ti_DlyFiGraAcvn_C,Duration of the time window after a negative gradient to activate the ULV.
+BMWtchbov_ti_HldFlow_T,Holding time for the initially calculated anti-pumping mass flow before ramping begins.
+BMWtchbov_ti_Lock_C,Blocking time after the last activation for a new activation.
+BMWtchbov_ti_ToutIgTqAcv_C,"Timeout after activating the mass flow increase. If the ignition angle intervention is not released after this time, the mass flow increase will be withdrawn."
+BMWtchbov_v_VehMaxDi_C,Blocking of the BOV function below this vehicle speed (so that the vehicle speed-dependent partial load pre-control can get through).
+BMWtchbpi_fac_Lpf_C,filter constant for filtering pvdkds to display it at the boost pressure indicator
+BMWtchbpi_p_MaxTcSptDisp_C,Boost pressure display area
+BMWtchco_cw_1_C,"Code word for the calculation of Atlvst_mode (Bit0: start with ECO, Bit1: activate eco with cruise control, Bit2: switch to sport in case of high accr-gradient even in eco)"
+BMWtchco_cw_Clc10MilliSe_C,Process activation matrix 10ms (everything except TchOb and TchBov)
+BMWtchco_cw_Clc10MilliSe2_C,Process activation matrix 10ms (for TchOb and TchBov)
+BMWtchco_cw_DscSpt_C,Code word to switch to Sport in case of deactivated DSC (dynamic stabilization system).
+BMWtchco_cw_FadeDynSpt_C,"Bit-coded, at which st_Opm_ub is switched to the sport blending factors."
+BMWtchco_cw_RoofOp_C,Codeword to activate the Opm for an open roof (convertibles)
+BMWtchco_fac_AcvPlOn_C,Scaling factor between ambient pressure and basic boost pressure for calculating the switch-on threshold of the boost pressure regulator.
+BMWtchco_fac_FadePl_T,Blending factor for boost pressure precontrol for partial load operation
+BMWtchco_fac_FilFadePl_C,Filtering for blend factor
+BMWtchco_p_HysAcv_C,Target charge pressure hysteresis for activation control
+BMWtchco_rat_AccrEcoOff_C,Minimum pedal value for switching the ATL bias voltage back from ECO mode to normal mode
+BMWtchco_rat_AccrSpt_C,Minimum pedal value for activating the ATL preload increase
+BMWtchco_rat_gra_AccrEcoOff_C,Minimum pedal value gradient for switching the ATL bias voltage back from ECO mode to normal mode
+BMWtchco_rat_gra_AccrEcoOn_C,Maximum pedal value gradient for switching the ATL bias to ECO mode
+BMWtchco_rat_gra_AccrSpt_C,Threshold value Pwg_grad for the time-limited increase in partial load pre-control (sport)
+BMWtchco_swi_AcvPl_C,Enable boost pressure control below the basic boost pressure to improve the part-load dynamics and for the possibility of being able to compensate for a vehicle-specific base boost pressure that is too low with the I share.
+BMWtchco_swi_ClcCtlr_C,Force calculation of performance-based controller. (Should be set to 0 for runtime reasons).
+BMWtchco_swi_ClcPl_C,Force partial load calculation. (Should be set to 0 for runtime reasons).
+BMWtchco_swi_FlGcCtlrOn_C,Keep controller activated during full load gear chance.
+BMWtchco_t_OilEco_C,"Temperature below which the ECO pre-control is switched over. (When the engine is cold, a slower response is more acceptable)."
+BMWtchco_ti_DlyAccrEcoOn_C,Minimum time for low pedal value dynamics for switching the ATL preload to ECO mode
+BMWtchco_ti_DlyAccrSpt_C,Holding time for increasing the partial load ATL feedforward control at high Pwg_grad.
+BMWtchco_ti_DlyCtlrOff_C,Delayed opening of the wastegates in the event of an error
+BMWtchco_v_OpmRoofOpHys_C,Speed hysteresis for switching to sport mode to prevent the wastegate linkage from rattling on the convertible.
+BMWtchco_v_OpmRoofOpMax_C,Maximum speed for switching to sport mode to prevent the wastegate linkage from rattling on the convertible.
+BMWtchco_v_OpmRoofOpMin_C,Minimum speed for switching to sport mode to prevent the wastegate linkage from rattling on the convertible.
+BMWtchco_v_OpmSptHys_C,Hysteresis for speed-dependent switching to sport in order to prevent the wastegate plate/linkage from rattling by means of a closed wastegate.
+BMWtchco_v_OpmSptMax_C,Upper speed threshold for switching to sport in order to prevent the wastegate plate/linkage from rattling by keeping the wastegate closed.
+BMWtchco_v_OpmSptMin_C,Lower speed threshold for switching to sport in order to prevent the wastegate plate/linkage from rattling by keeping the wastegate closed.
+BMWtchctr_cpp_ExGas_T,specific heat capacity of the exhaust gas depending on the exhaust gas temperature
+BMWtchctr_cw_FadeFlowSpSpt_C,"Bit-coded, switching of the blending factor between actual and target mass flow when converting power to WG position depending on st_Opm_ub."
+BMWtchctr_eff_CylOffMin_C,"Cylinder suppression efficiency threshold. If the cylinder suppression efficiency is smaller than this threshold (i.e. more cylinders are suppressed), a minimum selection (instead of a maximum selection) is made between the simple temperature model and the temperature value"
+BMWtchctr_fac_AltiCrtn_T,Temperature-dependent correction of the altitude factor Fho for calculating the altitude correction of the ATL precontrol
+BMWtchctr_fac_Dp_T,Correction factor for the D component of the performance-based boost pressure regulator
+BMWtchctr_fac_DpDyn_T,Correction factor for the D component of the performance-based boost pressure regulator
+BMWtchctr_fac_FadeAdp_T,Overlay of the calculation of the ATL adaptation
+BMWtchctr_fac_FadeAdpMax_T,Overlay of the calculation of the ATL adaptation at EWG
+BMWtchctr_fac_FadeAdpMin_C,Threshold inclusion of the adaptation values from which the adaptation can be enabled
+BMWtchctr_fac_FadeDyn_M,fading factor between general (0) and dynamic controller parameters.
+BMWtchctr_fac_FadeDynSpt_M,Crossfade to other control parameters for dynamics in Sport-FES
+BMWtchctr_fac_FadeFlowSpAcv_M,Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position.
+BMWtchctr_fac_FadeFlowSpSpt_M,Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position (for sport).
+BMWtchctr_fac_FadeTExGas_C,Starting value for the blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation
+BMWtchctr_fac_FadeTExGas_M,Blending factor between exhaust gas temperature from the ATM (in stationary operation) and simple ATL exhaust gas temperature model in dynamic operation
+BMWtchctr_fac_FadeTExGasGc_C,Starting value for the blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation
+BMWtchctr_fac_FilFadeDyn_C,Filtering blending factor between stationary and dynamic control parameters.
+BMWtchctr_fac_FilLimPctl_C,Filter constant for crossfading to precontrol when boost pressure control is aborted
+BMWtchctr_fac_FilPctWgDyn_C,Filter constant for detection of feedforward dynamics
+BMWtchctr_fac_FilRatPTrb_T,Filter constant for the turbine pressure ratio (necessary for the stability of the iteration of the target turbine pressure ratio).
+BMWtchctr_fac_FilRatWg_T,Filter constant for transient precontrol
+BMWtchctr_fac_gra_FadeTExGas_C,Gradient for outramps blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation
+BMWtchctr_fac_Ip_M,Integration constant for power-based I component in W/(hPa*10ms)
+BMWtchctr_fac_IpMax_C,Maximum limit for performance-based I component
+BMWtchctr_fac_IpMin_C,Minimum limitation for performance-based I component
+BMWtchctr_fac_IpPctWg_M,Gain control difference - I share
+BMWtchctr_fac_IpRstMax_C,"If the I component is above this threshold and the actual pressure is already too high, then reset the I component."
+BMWtchctr_fac_IpRstMin_C,"If the I component is below this threshold and the actual pressure is already too low, then reset the I component."
+BMWtchctr_fac_pwr_CompLimPctl_T,Factor on pilot control up to which the controller with the P and D components can increase the compressor output during operation via pilot control
+BMWtchctr_fac_TMdlCylOff_T,Scaling of the exhaust gas temperature from the simple exhaust gas temperature model with cylinder blanking.
+BMWtchctr_fac_TrbEffIvs_T,Turbine efficiency
+BMWtchctr_fac_TrbEffPlsCrtn_M,Pulsation correction for pre-exhaust shock
+BMWtchctr_fac_TrbExp_T,specific Temperature change due to turbine expansion
+BMWtchctr_n_DynIpRstMax_C,Reset I component with positive speed gradient.
+BMWtchctr_n_DynIpRstMax2_C,Reset I component with positive speed gradient.
+BMWtchctr_n_DynIpRstMin_C,Reset I component with negative speed gradient.
+BMWtchctr_n_DynIpRstMin2_C,Reset I component with negative speed gradient.
+BMWtchctr_n_PpLimMax_C,Max speed limit for activating the limitation of the P component when switching gears.
+BMWtchctr_n_PpLimMin_C,Min speed limit for activating the limitation of the P component when switching gears.
+BMWtchctr_p_BefThrDynIpStop_C,Stopping the I component if the actual boost pressure dynamic buildup is greater than this value.
+BMWtchctr_p_DifCrtnPp_M,Correction of the pressure difference for the P component of the performance-based boost pressure regulator
+BMWtchctr_p_DifCrtnPpDyn_M,Correction of the pressure difference for the P component of the performance-based boost pressure regulator
+BMWtchctr_p_DifGraPpLimOff_C,"From this gradient of the control deviation, the limitation of the P component is reset."
+BMWtchctr_p_DifGraWgClsd_C,Limit value control difference gradient for canceling the locking function.
+BMWtchctr_p_DifIpRstMax_C,"If this control deviation is exceeded, an I component that has become negative is reset."
+BMWtchctr_p_DifIpRstMax2_C,"If this control deviation is exceeded, an I component that has become negative is reset."
+BMWtchctr_p_DifIpRstMin_C,"If this control deviation falls below, an I component that has become positive is reset."
+BMWtchctr_p_DifIpRstMin2_C,"If this control deviation falls below, an I component that has become positive is reset."
+BMWtchctr_p_DifPpLimOff_C,"From this control deviation, the limitation of the P share is reset."
+BMWtchctr_p_DifWgClsd_T,Limit control difference for canceling the locking function.
+BMWtchctr_p_DynIpRstMax_C,Reset I component with positive target pressure dynamic gradient
+BMWtchctr_p_DynIpRstMax2_C,Reset I component with positive target pressure dynamic gradient
+BMWtchctr_p_DynIpRstMin_C,Reset I component with negative target pressure dynamic gradient
+BMWtchctr_p_DynIpRstMin2_C,Reset I component with negative target pressure dynamic gradient
+BMWtchctr_p_ReqDynIpStop_C,"If this control deviation gradient is exceeded, the I component is stopped"
+BMWtchctr_p_ReqDynLimPctl_C,Upper limit of target boost pressure dynamics for overspeed protection
+BMWtchctr_pct_WgAltiCrtn_M,Height correction of the ATL pre-control (if not represented by performance-based pre-control)
+BMWtchctr_pct_WgBasc_M,Wastegate position - for pilot control
+BMWtchctr_pct_WgClsdMin_C,Threshold value Atlvst for delayed locking EEC
+BMWtchctr_pct_WgClsdPl_C,Position setpoint of wastegate for partload at acoustic critical velocity
+BMWtchctr_pct_WgDeltRaceStr_C,Offset to the partial load precontrol for increased preload of the ATL at the start of the race
+BMWtchctr_pct_WgDyn_C,Threshold feedforward dynamics
+BMWtchctr_pct_WgFlGc_M,Pre-control value wastegate position at full load switching
+BMWtchctr_pct_WgIpLimMax_T,Max. Limit I share
+BMWtchctr_pct_WgIpLimMin_T,Min. Limit I share
+BMWtchctr_pct_WgIpLimPlMin_C,Limitation of the I component in the partial load range in the negative direction
+BMWtchctr_pct_WgIpMan_C,Control value I share
+BMWtchctr_pct_WgIpRstMax_C,"If the I component is above this threshold, it can be set back to 0 if the opposite control difference is sufficiently large."
+BMWtchctr_pct_WgIpRstMin_C,"If the I component is below this threshold, it can be set back to 0 if the opposite control difference is sufficiently large."
+BMWtchctr_pct_WgNoise_T,Wastegate control for acoustic reasons.
+BMWtchctr_pct_WgPl_M,ATL controller - pilot control - throttled operation
+BMWtchctr_pct_WgPlCond_M,ATL pilot control throttled operation in the event of a risk of condensation on the intercooler
+BMWtchctr_pct_WgPlEco_M,ATL controller - pilot control - throttled operation (Eco)
+BMWtchctr_pct_WgPlRoofOp_M,ATL controller - pilot control - throttled operation (convertible roof open)
+BMWtchctr_pct_WgPlSpt_M,ATL controller - pilot control - throttled operation (sport)
+BMWtchctr_pct_WgPosnIpStopMax_C,Wastegate position below which the I component of the controller is stopped
+BMWtchctr_pct_WgPosnIpStopMax2_C,Wastegate position below which the I component of the controller is stopped
+BMWtchctr_pct_WgPosnIpStopMin_C,Wastegate position above which the I component of the controller is stopped
+BMWtchctr_pct_WgPosnIpStopMin2_C,Wastegate position above which the I component of the controller is stopped
+BMWtchctr_pct_WgSpIpStopMax_C,I component threshold for ATL
+BMWtchctr_pct_WgSpIpStopMax2_C,I component threshold for ATL
+BMWtchctr_pwr_CmprGra_M,P component of the performance-based boost pressure regulator. Gradient compressor performance according to pressure ratio.
+BMWtchctr_pwr_Dp_M,D-portion of the performance-based boost pressure regulator
+BMWtchctr_pwr_Pctl_M,Compressor map with required compressor/turbine performance
+BMWtchctr_rat_p_CmprPpLimMax_C,Max charge level limit for activating the limitation of the P component when switching gears.
+BMWtchctr_rat_p_CmprPpLimMin_C,Min charge level limit for activating the limitation of the P component when switching gears.
+BMWtchctr_rat_p_ComprLimPctl_T,Minimum limit of the target boost factor for canceling boost pressure control when the target pressure specification falls
+BMWtchctr_swi_ClcPwrWgPosn_C,"Calculation of the iteration process for determining the WG position even at partial load (for a better starting value during the later transition to the control system). For runtime reasons, set it to 0 if possible."
+BMWtchctr_swi_IpFcdOn_C,I-Part is always on.
+BMWtchctr_swi_IpPwrAcvn_C,Switch for activating/resetting the power-based I component (only for application
+BMWtchctr_swi_IpRstMan_C,I Reset share
+BMWtchctr_swi_IpRstMan2_C,I Reset share
+BMWtchctr_swi_WgIpMan_C,I proportion determined manually
+BMWtchctr_t_EgCrtn_T,Transfer characteristic curve to bend Tabg_mw.
+BMWtchctr_t_ExGasFilMin_C,Minimum exhaust gas temperature for activation of filtering.
+BMWtchctr_t_ExGasMdl_M,Exhaust gas temperature during dynamic load changes for the physical ATL pilot control
+BMWtchctr_t_ExGasMdlScav_M,Exhaust gas temperature during dynamic load changes for the physical ATL pilot control
+BMWtchctr_t_MdlOfsIgRtd_T,Temperature offset due to ignition angle retard adjustment for simple temperature model
+BMWtchctr_ti_DlyPl_T,Duration of the feedforward damping when transitioning to charged. Operation
+BMWtchctr_ti_DlyPpLimOff_C,Delay time for resetting the P share limitation
+BMWtchctr_ti_DlyWgClsd_T,Delay for opening the electrical wastegate when jumping from low partial load
+BMWtchctr_ti_ToutPpLim_C,Timeout for activating the limitation of the P component when shifting gears.
+BMWtchctr_v_WgClsdPlHys_C,hysteresis for velocity to close the wastegate for partload operation (to prevent acoustic noise)
+BMWtchctr_v_WgClsdPlMax_C,velocity to close the wastegate for partload operation (to prevent acoustic noise)
+BMWtchctr_v_WgClsdPlMin_C,velocity to close the wastegate for partload operation (to prevent acoustic noise)
+BMWtchdiag_fac_FilPPreThr_C,Filter constant for calculating the actual boost pressure dynamics.
+BMWtchdiag_fac_FilRatAirFlow_C,Filter constant for filtering the mass flow quotient Mshfm_kor_i/Mszyl_diag for error messages in case of undercharging errors
+BMWtchdiag_n_EngMax_T,Upper speed threshold for leak detection
+BMWtchdiag_n_EngMin_C,Lower speed threshold for leak detection
+BMWtchdiag_p_MnfSp_C,"Diagnostic threshold target intake manifold pressure for the last emergency nail diagnosis for overboost pressure (if, for example, the EEC sensor signal is no longer available)."
+BMWtchdiag_p_OfsDiagOn_T,Offset to basic boost pressure for enabling the boost pressure diagnosis
+BMWtchdiag_p_PreThrDynMin_T,Minimum boost pressure increase speed for activating the overcharging protection function
+BMWtchdiag_p_PreThrPlau_C,"Diagnostic threshold for boost pressure for the last emergency nail diagnosis for overboost pressure (if, for example, the EEC sensor signal is no longer available)."
+BMWtchdiag_p_PreThrPlau_T,"Threshold pressure before throttle valve. If the pressure rises above this threshold value, the rapid overboost pressure diagnosis can be activated."
+BMWtchdiag_pct_WgPHi_M,Control variable lower threshold
+BMWtchdiag_pct_WgPLo_M,Control variable upper threshold
+BMWtchdiag_posn_Dif10Milli_C,typical adjustment speed for opening the wastegate. Unit: mm per 10ms
+BMWtchdiag_posn_DifThd_C,Threshold bearing controller deviation. neg to data. negative data: Example: Wastegate is closed 1mm further than the adjustment speed in the opening direction would allow
+BMWtchdiag_posn_WgMax_C,maximum opening wastegate. Only if the wastegate is opened less than this position will the quick overload check function be enabled.
+BMWtchdiag_rat_mf_NotOkMin_C,Lower limit for mass flow quotient Mshfm_kor/Mszyl_diag from which a leak in the intake air duct behind the compressor is concluded in the event of an undercharging error
+BMWtchdiag_rat_mf_OkMax_C,Upper limit of the tolerance range of the mass flow quotient Mshfm_kor/Mszyl_diag in which no leakage between the HFM and the inlet valve is assumed.
+BMWtchdiag_rat_mf_OkMin_C,Lower limit of the tolerance range of the mass flow quotient Mshfm_kor/Mszyl_diag in which no leakage between the HFM and the inlet valve is assumed.
+BMWtchdiag_rat_p_CmprMax_T,Upper limit for leakage determination
+BMWtchdiag_rat_p_CmprMin_M,Lower limit for leakage determination
+BMWtchdiag_rf_MaxPBefThrHi_T,Fast Rf limitation when diagnosing overcharge pressure
+BMWtchdiag_rf_MaxPBefThrHiInc_C,Increment for ramping up the rf limit again after the overload protection function was active.
+BMWtchdiag_rf_Min_C,Minimum RF for quick overload diagnosis.
+BMWtchdiag_rf_SpMin_C,"Target filling (from Rf_soll_md, limited between Rf_max and Rf_min)"
+BMWtchdiag_swi_FidNew_C,Use of the new FIDs for ATL emergency running coordination (switch will be omitted in the future).
+BMWtchdiag_swi_PBefThrHiFis_C,Switch whether the rapid overcharging diagnosis writes the overcharging error to the error memory. This should always be the case as soon as a correspondingly high Rf reduction is activated.
+BMWtchdiag_swi_Rst_C,Reset error status in ATLDIAG without changing terminals
+BMWtchdiag_ti_DebPLo_C,Delay time for pinpointing underload errors. 0.2s smaller than DurDeb of DFC_PldMn.
+BMWtchdiag_ti_DlyDiagCmpl_C,Minimum time for continuous activation of the boost pressure diagnosis before the roller test at the end of the belt shows that the diagnosis has been completed
+BMWtchdiag_ti_DlyHiLo_T,Delay for controller errors
+BMWtchdiag_ti_DlyPBefThrHi_C,Holding time of the Rf limitation during protection function due to excessive boost pressure.
+BMWtchdiag_ti_DlyPBefThrHi2_C,Debounce time for the last emergency nail diagnosis for overcharging pressure (e.g. if the EEC sensor signal is no longer available).
+BMWtchob_cw_AtEna_T,Release for overboost activation depending on driving program and gear
+BMWtchob_cw_DctEna_T,KL_OB_DKG_ENA
+BMWtchob_cw_GcUpDwnAtTrig_C,Code word whether an overboost can be activated in the automatic transmission when upshifting and/or downshifting
+BMWtchob_cw_GearAtTrig_T,Release for overboost activation depending on driving program and gear
+BMWtchob_cw_GearMtTrig_C,Release for overboost activation depending on the target gear after shifting in the manual transmission
+BMWtchob_cw_MtEna_C,Release for overboost activation depending on gear with manual switch
+BMWtchob_cw_MtSptEna_C,Release for overboost activation depending on gear with manual switch when the sports button is pressed
+BMWtchob_cw_TqInfoAtTrig_C,Code word for the type of torque intervention after which overboost can be activated during a switching process
+BMWtchob_fac_tq_Delt_T,Reduction factor overboost torque via TANS
+BMWtchob_p_DifEnd_C,Rule difference for overboost end
+BMWtchob_p_DifEnd2_C,Threshold control deviation for end of overboost with time delay
+BMWtchob_p_DifGraEnd_C,Gradient of the control difference for overboost end
+BMWtchob_p_DifGraTrigMin_C,Gradient of the control difference to trigger overboost
+BMWtchob_p_DifTrigMin_C,Control difference to trigger overboost
+BMWtchob_rat_AccrAtTrigMin_C,Accelerator pedal limit value from which overboost can be activated after a gear change in the automatic transmission
+BMWtchob_rat_AccrMtTrigMin_C,Accelerator pedal limit value from which overboost can be activated after a gear change in a manual transmission
+BMWtchob_swi_DeacEco_C,No overboost torque increase due to eco operation.
+BMWtchob_t_EngMin_C,Temperature threshold for enabling overboost
+BMWtchob_ti_Hld_C,Speed dependency Holding time for increasing the target torque during overboost
+BMWtchob_ti_HldChgSp_T,Speed dependency Holding time to max. filling increase
+BMWtchob_ti_Max_T,general timeout for overboost (if no new trigger occurs).
+BMWtchob_tq_Dec_C,Shutdown ramp for overboost (negative data!)
+BMWtchob_tq_Delt_M,permissible overboost torque
+BMWtchob_tq_GraTrigMin_C,Threshold for gradient Mdk_wunsch to trigger overboost
+BMWtchob_tq_TrigMin_C,Threshold for Mdk_wunsch to trigger overboost
+BMWtchout_f_GasWg_M,Gas power on the wastegate
+BMWtchout_pct_Dfco_C,Wastegate target position when fuel is switched off
+BMWtchout_pct_WgBlwOff_T,Set point for wastegate position during blow off valve active
+BMWtchout_pct_WgCthIdl_C,Wastegate target position when the catalytic heater is idling
+BMWtchout_pct_WgDfcoDiag_C,Wastegate target position during Coast Down diagnosis.
+BMWtchout_pct_WgMan_C,manual Wastegate position set point
+BMWtchout_pct_WgNotRdy_C,manual Wastegate position setpoint
+BMWtchout_pct_WgOfs_C,Minimum duty cycle for control - component-related behavior d. vacuum can
+BMWtchout_pct_WgStrt_C,"Wastegate position specification during start (before end of start, as soon as starter is energized or KW is rotating)"
+BMWtchout_pct_WgWait_C,Wastegate position specification when standing after Kl15 without a rotating crankshaft (also MSA stop).
+BMWtchout_swi_BlwOff_C,activate special setpoint during active blow off valve
+BMWtchout_swi_Dfco_C,Own setpoint when switching off fuel
+BMWtchout_swi_DfcoDiagWgOp_C,Opening the wastegate for the Coast Down diagnosis.
+BMWtchout_swi_PctWgMan_C,activate manual wastegate setpoint
+BMWtchout_ti_DlyDfcoDiagStr_C,Delay time until the wastegate is opened for the Coast Down diagnosis (the WG only has to be opened when the radiator blind is open).
+BMWtchscv_ag_IgRtd_M,Threshold ignition angle retard to deactivate scavenging.
+BMWtchscv_fac_Dyn_M,dynamic flushing map
+BMWtchscv_fac_DynEco_M,dynamic flushing map for Atlvst_mode == ECO
+BMWtchscv_fac_GraDec_M,Gradient for ramping out the flushing factor
+BMWtchscv_fac_GraInc_C,Max. gradient of F_atldyn when ramping into stationary overwash
+BMWtchscv_fac_ReqOff_C,Deactivation threshold F_atldyn for flushing
+BMWtchscv_fac_ReqOn_C,Activation threshold F_atldyn for flushing
+BMWtchscv_fac_Stat_M,Flushing factor in stationary operation
+BMWtchscv_fac_StatEco_M,Flushing factor in stationary operation with ECO switch
+BMWtchscv_fac_VnsMax_C,Factor blender on stroke map with stop spread
+BMWtchscv_fac_Wup_T,Factor for weighting the stationary flushing factor KF_FATLDYN
+BMWtchscv_fac_WupCrtn_M,Factor for weighting the stationary flushing factor KF_FATLDYN depending on engine temperature and intake air temperature to avoid large exotherms with rich combustion chamber lambda
+BMWtchscv_n_DynHysMax_C,Speed hysteresis for activation of the flushing phase
+BMWtchscv_n_DynMax_C,Max. speed for activation of the overwash phase
+BMWtchscv_p_DifDynDeac_T,Deactivation of dynamic overflushing when the actual charging pressure has reached this value of the target charging pressure.
+BMWtchscv_p_DifMin_M,Min. control difference for activating dynamic flushing.
+BMWtchscv_p_ReqDynMin_C,Min. target boost pressure dynamics for activation of flushing
+BMWtchscv_rf_DynHysMin_C,Filling hysteresis for Vanos
+BMWtchscv_rf_DynMin_C,Minimum filling for Vanos
+BMWtchscv_swi_DynRstNotEna_C,Reset BMWtchscv_b_Dyn_bo if scavenging is disabled.
+BMWtchscv_swi_KnkDetErrOff_C,"If there is an error in the knocker detection, switch off the flushing."
+BMWtchscv_swi_RednO2Emi_C,Switch for deactivating flushing due to the soot hold function (to avoid lambda excursions towards lean)
+BMWtchscv_swi_ReqMan_C,application switch to force request for operation mode scarvenging
+BMWtchscv_swi_StatEcoInh_C,Prohibit flushing in stationary operation with the ECO switch pressed
+BMWtchscv_t_EgCatRst_C,Exhaust gas temperature in catalyst to deactive scavenging.
+BMWtchscv_t_EngMin_C,Min. motor temperature for activation of the flushing phase
+BMWtchscv_t_ExGasCatMax_C,maximum gas temperature in catalyst to allow dynamic scavenging.
+BMWtchscv_ti_DebDeac_C,Debounce time for deactivation of scavenging due to ign angle retard
+BMWtchscv_ti_DlyDynDeac_T,Delay in the deactivation of the dynamic flushing condition after the pressure threshold has been reached.
+BMWtchscv_ti_DynLock_C,Delay time for reactivation of B_atldyn
+BMWtchscv_ti_DynMax_T,Max. duration of flushing
+BMWtchsp_cw_1_C,Codeword(Bit0: disable Rf limitation; Bit1: switch to separate filter constant during gearshift)
+BMWtchsp_cw_RfLimAcv_C,Bit mask for setting BMWtchsp_b_RfLimAcv_bo (for deactivating the TchBov).
+BMWtchsp_fac_FadeMdlFlLim_M,Blending factor for calculating the max. filling from the maximum boost pressure from a simple characteristic curve absorption model for full load (0 if the actual pressure is still far away from the max pressure) and the real Fups and Pirg (1 if the actual load
+BMWtchsp_fac_FadePBefTc_C,Crossfade between Pvdl (0) and Pumg (1) for calculating the volume flow between the air inlet and in front of the charger.
+BMWtchsp_fac_FilPDifReqMax_C,Filter constant for filtering the difference between max. target charging pressure and current target charging pressure
+BMWtchsp_fac_FilPDyn_C,Filter constant for dyn. Boost pressure setpoint
+BMWtchsp_fac_FilPRatCmpr_T,Filter constant for target pressure ratio
+BMWtchsp_fac_mf_FilCmprNorm_T,Filter constant for corr. Target mass flow
+BMWtchsp_fac_mf_FilCmprNormGc_C,Filter constant for standardized target mass flow when changing gears
+BMWtchsp_fac_rf_MaxSmaMdl_C,"Correction factor to increase the Rfmax, which is calculated from the simple characteristic curve model. This increase makes sense in order not to unnecessarily reduce the Rfmax at low partial load due to model inaccuracies."
+BMWtchsp_fac_SqrtTBefTc_T,Temperature in front of charger corrected
+BMWtchsp_p_DifIco_T,Pressure loss across intercooler
+BMWtchsp_p_OfsMax_C,"Offset to the Pld_soll_max. This is deducted from Pld_soll_max. If the actual pressure Pvdkds rises above this threshold, the Rf_max_pldmax calculation is switched on (load is high enough so that Fups and Pirg can be used for an Rfmax calculation"
+BMWtchsp_p_OfsMaxHys_C,Hysteresis for the BMWtchsp_p_OfsMax_C threshold
+BMWtchsp_p_ReqMax_C,Maximum target boost pressure due to diagnosis of the boost pressure sensor
+BMWtchsp_p_ReqMaxSnsrErr_C,Maximum pressure limitation in the event of a boost pressure sensor error.
+BMWtchsp_rat_p_CmprMax_M,KF_FPLDMAX
+BMWtchsp_rat_p_CmprPmp_T,KL_FPLDPUMP
+BMWtchsp_rf_Liho_T,Limitation Rf for Atl variants in the event of an error (b_atlerr_md)
+BMWtchsp_rf_LimThd_C,"RF max limitation threshold. Below this threshold, TchBov is deactivated (so that the Rf limit is not violated by increasing the mass flow)."
+BMWtchsp_swi_PSpRace_C,set pressure setpoint at race-Start to max-Pressure.
+BMWtchsvc_fac_FilP_C,Filter constant for pressure difference value of the ATL service function
+BMWtchsvc_fac_p_Crtn_M,Temp. dependent factor for maximum value of the boost pressure difference for ATL service function
+BMWtchsvc_lam_Req_C,Setpoint for Lambda of the ATL service function
+BMWtchsvc_n_Idl_C,Target idle speed
+BMWtchsvc_n_IdlDec_C,Decrement idle speed when ramping down
+BMWtchsvc_n_IdlInc_C,Increment idle speed increase
+BMWtchsvc_n_IdlMax_C,Upper speed threshold for activation of the cat heat manager
+BMWtchsvc_n_IdlMin_C,Lower speed threshold for activation of the cat heat manager
+BMWtchsvc_p_AmbMin_C,Minimum ambient pressure for enabling ATL service function
+BMWtchsvc_p_DeltMin_T,Maximum value of the boost pressure difference for ATL service function
+BMWtchsvc_pct_WgOp_C,Open shared apartment control for ATL service function
+BMWtchsvc_swi_Req_C,Switch to manually activate turbocharger service test
+BMWtchsvc_t_EngMax_C,Maximum engine temperature for enabling ATL service function
+BMWtchsvc_t_EngMin_C,Minimum engine temperature for enabling ATL service function
+BMWtchsvc_ti_CthAcvMax_C,Maximum time between request and confirmation of catheating active.
+BMWtchsvc_ti_DebIdlNotOk_C,Debounce time until the LL speed is not OK again. is.
+BMWtchsvc_ti_DebPOk_C,Debounce time for detecting a not OK torque reserve.
+BMWtchsvc_ti_DebTqNotOk_C,Debounce time for detecting a not OK torque reserve.
+BMWtchsvc_ti_n_IdlTot_C,Waiting time for reaching the LL speed of the ATL service function
+BMWtchsvc_ti_PChkMax_C,Debounce time for detecting a not OK torque reserve.
+BMWtchsvc_ti_TqMax_C,Debounce time for detecting a not OK torque reserve.
+BMWtchsvc_tq_ResDec_C,decrement of for torque reserve set point
+BMWtchsvc_tq_ResInc_C,increment of for torque reserve set point
+BMWtchsvc_tqi_Air_T,Setpoint for internal air torque of the ATL service function.
+BMWtchsvc_tqi_AirTo_C,tbd
+BMWtchtbc_cw_t_BefCmpr_C,Codeword temperature before compressor (Bit0: no Sensor bef Cmpr; Bit1: use model even in case of amb temp sensor failure; Bit2: use model even in case of engine temp sensor failure; Bit 3: set fixed temp by application)
+BMWtchtbc_fac_EngHot_M,Engine compartment temperature influenced by the shutdown time
+BMWtchtbc_fac_EngHotIni_T,Influence of the shutdown time on the load-dependent portion of the engine compartment temperature
+BMWtchtbc_fac_FadeWoLoad_T,Blending factor for modeled engine compartment temperature
+BMWtchtbc_fac_FilFade_C,Filter constant for delaying the mass flow-dependent blending between engine compartment temperature and ambient temperature when calculating the model temperature in front of the compressor Tvld_mod
+BMWtchtbc_fac_FilFadeWoLoad_T,Filter constant for the blending factor between Tumg and Tmot in the engine compartment temperature model
+BMWtchtbc_fac_FilTEx_M,Weighting of load-dependent temperature
+BMWtchtbc_fac_FilVVeh_T,Integrator constant for modeling the engine compartment temp. - heating up due to load
+BMWtchtbc_fac_t_Fade_T,Blending factor for modeled temperature before charger
+BMWtchtbc_fac_TExIni_T,Weighting load-dependent temperature - for initialization
+BMWtchtbc_fac_ti_EngStop_T,Factor shutdown time for engine compartment temperature model - from previous. driving cycle
+BMWtchtbc_swi_EngAmbIniOld_C,Taking engine compartment warming into account when calculating the influence of reheating. (Recommendation: 0)
+BMWtchtbc_swi_t_Amb_C,switch between filtered and unfiltered ambient temperature value
+BMWtchtbc_t_BefCmprSub_C,Substitute value for temperature before compressor in case of failure of ambient temperature. Also used to give a fixed value by application.
+BMWtchtbc_t_ExDifMax_C,Temperature threshold - load > stationary load
+BMWtchtbc_t_ExDifMin_C,Min. temperature difference - load < stationary load
+BMWtchtbc_t_ExStat_T,Exhaust gas temperature - static
+BMWtchtbc_t_Norm_C,Reference temperature in front of the charger for the compressor performance pilot control map
+BMWtchtbc_ti_EngStopMax_C,Limitation of shutdown time ATL
+BMWtchtbc_v_Corr_M,Offset to the actual vehicle speed which reflects the cooling influence of the fan for the engine compartment
+BMWtchdiag_b_PHi_bo,Pressure too high.
+BMWtchsvc_b_AllOk_bo,Idle speed ok.
+BMWtchsvc_n_Idl_sw,Target idle speed of the ATL service function
+BMWtchco_b_CthIdl_bo,Catalyst heating with Idle.
+BMWtchdiag_cw_Ena_ub,"Code word to enable the diagnosis (Bit0: no shutdown due to emergency running, Bit1: speed ok, Bit2: charge level ok, Bit3: Rf_set high enough)"
+BMWtchtbc_ti_EngStopSave_uw,Shutdown time in minutes - f. Engine compartment temperature modeling
+BMWtchsvc_b_tq_OkSelf_bo,Torque reserve ok.
+BMWtchbas_p_DifGra_sw,Gradient of the control difference normalized - bank-specific
+BMWtchbas_n_Dyn2_sw,Dynamic detection for engine speed
+BMWtchsvc_b_Req_bo,Request for turbocharger service test
+BMWtchsp_rat_p_Cmpr_uw,Ratio of target intake manifold pressure to pressure in front of the compressor
+BMWtchdiag_b_tq_Lim_bo,Lymphomas. Switch diagnosis off.
+BMWtchctr_pwr_DpRaw_sw,Pverd_grd_atlrd_xeb
+BMWtchdiag_b_PLo_bo,Pressure too high.
+BMWtchbov_b_CylOffEna_bo,Enable cylinder blanking during rapid load reduction (B_ulvdyn)
+BMWtchco_b_LnkAftCmprSlv_bo,"In the 2-SG concept there is a crosstalk point after the compressor, i.e. only the boost pressure control should be calculated on the master. And at the same time you are currently on the slave."
+BMWtchbov_fac_mf_ThrMin_uw,Factor for increasing the target mass flow through the throttle valve when the load is reduced quickly to avoid ATL compressor pumps.
+BMWtchbas_b_RaceStr_bo,Race start
+BMWtchsp_volf_Ico_uw,Volume flow via intercooler
+BMWtchdiag_st_OpmSelf_ub,Operating status emergency running charging. 0: normal operation; 1: Limitation to feedforward control; 2: Shutdown charging; 3: Shutdown charging and strong filling limitation (charger protection).
+BMWtchsvc_b_CthOk_bo,Idle speed ok.
+BMWtchsp_p_Req_uw,Boost pressure - setpoint for controller
+BMWtchbas_pct_AccrGra_sw,Accelerator pedal gradient (change in the last 40ms) Unit: %/40ms. Better resolved than Pwg_grad.
+BMWtchctr_b_PpLim_bo,Limitation of the P component when changing gears.
+BMWtchbas_p_BefCmpr_uw,Pressure before compressor
+BMWtchdiag_p_PreThrDyn_uw,Dynamics actual boost pressure.
+BMWtchdiag_fac_pwr_TrbPctl_uw,AXY_KF_ATLRPID_MX
+BMWtchctr_fac_Dp_uw,Correction factor for the D component of the performance-based boost pressure regulator
+BMWtchscv_b_Dyn_bo,dynamic condition
+BMWtchtbc_mair_Acv_uw,Integrated air mass flow with a wide range of values
+BMWtchctr_pct_WgPl_uw,Activation of WG at partial load
+BMWtchsp_volf_BefTc_uw,Volume flow before compressor
+BMWtchco_b_Clc10MilliSec2_bo,Calculation
+BMWtchsp_p_ReqMax_uw,Boost pressure - setpoint for controller
+BMWtchctr_b_FadeTExGasDyn_bo,Fade to the simple temperature model due to dynamic (not gearshift)
+BMWtchctr_pct_WgCrtd1_uw,Manipulating variable share through feedforward control - after correction
+BMWtchtbc_t_BefCmprMdl_sw,Temperature before charger - modeled
+BMWtchctr_b_PctWgFil_bo,Feedforward behavior dampened
+BMWtchctr_pct_WgBascRaw_uw,Additional size for WG control due to WG spring
+BMWtchtbc_mair_Save_uw,Integrated air mass flow with a large range of values - value saved
+BMWtchctr_b_LimPctl_bo,"Cancellation of boost pressure control, limitation to pilot control"
+BMWtchtbc_fac_t_BefComp_uw,Factor temperature before compressor relative to standard temperature.
+BMWtchco_st_Opm_ub,Selection of charger preload
+BMWtchco_b_AccrLoDyn_bo,low accelerator dynamic detected
+BMWtchbov_st_Opm_ub,"Operation mode for blow off valve (0: Normal, 1: Sport, 2: Eco)"
+BMWtchad_fac_AdpAry_sl,ATL controller adaptation factor (long value)
+BMWtchsp_rf_ReqMax_uw,Max. possible filling for Rf_set limitation due to boost pressure limitation Pld_max
+BMWtchscv_fac_Wish_ub,Flush factor
+BMWtchsp_b_RfLimAcv_bo,Filling limitation from ATL cluster active.
+BMWtchbov_rat_p_Cmpr_uw,Pressure ratio across compressor (actual value).
+BMWtchtbc_fac_EngHot_ub,Factor for warming up the engine compartment after shutdown time and mass flow integral
+BMWtchscv_b_Ena_bo,global enablement of scavenging.
+BMWtchco_b_ClcCtlr_bo,Calculate condition of performance-based controller.
+BMWtchbas_b_FlGc_bo,Full load switching
+BMWtchctr_fac_pwr_Real_uw,Conversion factor from the standardized to the real compressor performance.
+BMWtchsvc_b_CthReq_bo,Catalyst heating requested
+BMWtchdiag_st_Opm_ub,Operating status emergency running charging. 0: normal operation; 1: Limitation to feedforward control; 2: Shutdown charging; 3: Shutdown charging and strong filling limitation (charger protection).
+BMWtchscv_fac__ub,Flush factor
+BMWtchctr_b_WgClsdPl_bo,close WG during partload for low vehicle speed due to acoustic reasons.
+BMWtchob_b_Trig_bo,Trigger bit for overboost
+BMWtchctr_fac_mf_CrtnIvs_uw,Correction factor on turbine mass flow - inverse
+BMWtchout_f_GasWg_uw,Gas power on the wastegate
+BMWtchbas_p_Dif_sw,Pld_diff (target boost pressure minus actual boost pressure)
+BMWtchco_b_LnkAftCmpr_bo,"In the 2-SG concept there is a crosstalk point after the compressor, i.e. only the boost pressure control should be calculated on the master."
+BMWtchbov_mf_PmpLim_uw,normalized mass flow at the surge limit
+BMWtchad_fac_AdpAry_uw,ATL controller adaptation factor (speed dependent)
+BMWtchbas_p_DifRaw_sw,Raw value Pld_diff (target boost pressure minus actual boost pressure)
+BMWtchbas_b_FlGcHld_bo,full load gear change - delayed
+BMWtchsvc_tqi_Air_sw,tbd
+BMWtchco_b_Acv_bo,Boost pressure control active
+BMWtchad_b_Acv_bo,ATL controller adaptation active
+BMWtchctr_rat_mf_TrbWg_uw,Splitting factor turbine/wastegate
+BMWtchco_b_ClcPl_bo,Calculate partial load condition.
+BMWtchob_tq_Delt_sw,delta torque for overboost
+BMWtchctr_fac_TrbEffTot_uw,Conversion of mechanical turbine power to exhaust gas enthalpy
+BMWtchctr_volf_SpAftPclFil_uw,Target volume flow through the particle filter
+BMWtchdiag_b_Acv_bo,Diagnosis active
+BMWtchctr_pct_WgBefLim_uw,Manipulating variable from ATL controller - before limitation
+BMWtchctr_pct_WgIp_sw,Control variable - I share
+BMWtchbas_rat_p_BefCmpr_uw,Pressure standardized before loader
+BMWtchbov_b_Ena_bo,divert-air valve operation enabled after initial start.
+BMWtchctr_pwr_Dp_sw,D-portion of the performance-based boost pressure regulator
+BMWtchbas_n_Dyn_sw,Dynamic detection of engine speed
+BMWtchctr_pct_WgCrtd3_uw,Manipulating variable share through feedforward control - after correction 3
+BMWtchctr_t_ExGas_sw,Exhaust gas temperature
+BMWtchtbc_t_EngAmbWoLoad_sw,Engine compartment temperature - modeled - without load influence
+BMWtchtbc_t_EngAmbWiLoad_sw,Delta engine compartment temperature - heating due to load influence
+BMWtchdiag_rat_mf__uw,Ratio of HFM mass flow Mshfm_kor and model mass flow Mszyl_diag to isolate the cause of undercharging errors
+BMWtchctr_pwr_Ctr_uw,Regulator output turbine power
+BMWtchsp_p_DifIco_uw,Pressure drop across the intercooler
+BMWtchctr_fac_Ip_uw,I component of the performance-based boost pressure regulator
+BMWtchbov_b_Acv_bo,Divert air valve active
+BMWtchsvc_b_Acv_bo,Tester service active
+BMWtchco_b_Req_bo,Boost pressure control requested
+BMWtchob_st_Opm_ub,"operation mode (0:disabled,1:standby,2:activated,3:fadeout)"
+BMWtchdiag_b_RbmDen_bo,Denominator RBM monitoring
+BMWtchctr_fac_FadeDynRaw_uw,fading factor between general (0) and dynamic controller parameters.
+BMWtchctr_rat_p_TrbRaw_uw,Pressure ratio at turbine - unfiltered
+BMWtchscv_b_DynEna_bo,Enable dynamic condition
+BMWtchsp_p_ReqDyn_sw,Boost pressure - setpoint for controller - bank-specific dynamics
+BMWtchbas_b_Noise_bo,keep open for loud sound
+BMWtchco_b_Clc10MilliSec_bo,Calculation
+BMWtchbas_p_DifGraRaw_sw,Gradient of the control difference
+BMWtchdiag_b_AdpOff_bo,Lymphomas. Switch adaptation off.
+BMWtchctr_fac_AdpAcv_uw,ATL adaptation at current speed
+BMWtchctr_pct_WgBasc_uw,Additional size for WG control due to WG spring
+BMWtchco_b_Eco_bo,eco operation mode requested due to low accelerator dynamic
+BMWtchdiag_b_CtlrOff_bo,Lymphomas. Switch controller off.
+BMWtchctr_pct_WgDyn_sw,Dynamics of the manipulated variable - share through feedforward control
+BMWtchout_pct_Wg_uw,Control variable for wastegate from ATL controller
+BMWtchscv_b_Req_bo,Request for scavenging (in regards to engine operation point).
+BMWtchdiag_pct_WgDif_sw,Manipulating variable share through feedforward control - after correction 3
+BMWtchsvc_p_DeltMin_uw,Ambient temperature
+BMWtchsp_p_DifReqMax_sw,"Difference between maximum and current target charging pressure, filtered."
+BMWtchctr_b_IpStop_bo,Condition for stopping the I component of the boost pressure control
+BMWtchdiag_b_LimPctl_bo,Lymphomas. Limit turbocharger to precontrol.
+BMWtchctr_pwr_CmprGra_uw,P component of the performance-based boost pressure regulator
+BMWtchco_fac_FadePlRaw_ub,Blending factor between partial load (1) and charged operation (0).
+BMWtchsp_mf_CmprNorm_uw,Target mass flow corrected for boost pressure control
+BMWtchbas_p_TcBasc_uw,Basic boost pressure
+BMWtchtbc_t_BefCmpr_sw,Temperature before charger - model or sensor value
+BMWtchco_fac_FadePl_ub,Blending factor for boost pressure precontrol for partial load operation
+BMWtchco_b_NewDrvg100ms_bo,First functional
+BMWtchbas_p_BefThrDyn_sw,Boost pressure dyn. actual value
+BMWtchctr_p_DifCrtnPp_sw,Correction of the pressure difference for the P component of the performance-based boost pressure regulator
+BMWtchctr_pwr_Pp_sw,P component of the performance-based boost pressure regulator
+BMWtchsvc_lam_Req_uw,Setpoint for Lambda of the ATL service function
+BMWtchsp_fac_mf_CmprNorm_uw,Factor for converting the real to the standardized mass flow for addressing the compressor map
+BMWtchdiag_posn_WgMod_sw,Modeled minimum opening of the wastegate (taking into account the typical opening speed).
+BMWtchctr_rat_p_Trb_uw,Pressure ratio at turbine
+BMWtchdiag_b_RbmNum_bo,Denominator RBM monitoring
+BMWtchdiag_b_rf_Lim_bo,Lymphomas. Switch diagnosis off.
+BMWtchdiag_b_PBefThrHi_bo,Engine protection function active for excessive boost pressure.
+BMWtchob_b_HldChgSp_bo,Bit to switch from ECO to DYN calculation of trubocharger setpoint.
+BMWtchctr_gra_DeltPDeltPwr_uw,Factor compressor power per boost pressure (correct unit: kw/hPa)
+BMWtchbov_mf_VvtMin_uw,"Target air mass flow, minimum for B_ulvdyn if ULV is omitted"
+BMWtchdiag_rf_MaxPBefThrHi_sw,Rf limitation due to engine protection due to excessive boost pressure.
+BMWtchco_rat_gra_Accr_sw,gradient of accelerator angle (similar to Pwg_grad but with higher resolution).
+BMWtchbpi_p_TcSptDisp_ub,Current boost pressure in percent of the display range (see BMWtchbpi_p_MaxTcSptDisp_ub).
+BMWtchco_b_AcvPl_bo,Boost pressure control activated below the basic boost pressure (and above the ambient pressure) to improve the part-load dynamics and for the possibility of being able to compensate for a vehicle-specific base boost pressure that is too low with the I component.
+BMWtchtbc_t_EngAmbWiLoadSave_sw,Delta engine compartment temperature - heating due to load influence
+BMWtchbov_b_VlvOp_bo,Request to open the recirculation valve (blow off valve).
+BMWtchctr_pct_Wg_uw,Control variable from ATL controller
+BMWtchsvc_tq_Res_sw,tbd
+BMWtchctr_pwr_Pctl_uw,Turbine performance from compressor map
+BMWtchctr_fac_FadeDyn_uw,fading factor between general (0) and dynamic controller parameters.
+BMWtchctr_b_IpStop2_bo,Condition for stopping the I component of the boost pressure control
+BMWtchtbc_v_VehEfc_uw,Virtual driving speed that represents the same cooling behavior without fan as the current driving speed with current fan control
+BMWtchsvc_p_Delt_uw,Ambient temperature
+BMWtchsp_mf_Ex_uw,Target mass flow at the exhaust manifold - inflow
+BMWtchad_fac_InttIn_sw,Factor f. Ratio I share d. Control for feedforward control - indicator for ATL status
+BMWtchsvc_st_Opm_ub,Operation Mode service test
+BMWtchscv_fac_Acv_ub,Flush factor
+BMWtchctr_pct_WgAct_uw,Current wastegate position either from the EWG function in the BMW SW or from the supplier (from the supplier's eWG function or from a model of a pneumatic wastegate).
+BMWtchctr_b_IpRst_bo,Condition for resetting the I component of the boost pressure control
+BMWtchctr_pwr_Trb_uw,Turbine performance - for performance-based PD controllers - or from the compressor map for non-performance-based PID controllers
+BMWtchsvc_st_Tstr_ub,Status during the diagnosis of the exhaust gas turbochargers
+BMWtchsvc_b_tq_Ok_bo,Torque reserve ok.
+BMWtchbpi_fac_P2Pct_uw,Conversion factor for pressure [hPa] to percent of the display range [%].
+BMWtchtbc_t_BefCmprMnfAvg_sw,Temperature average value from temperature before charger and intake air temperature
+BMWtchbov_mf_ThrMin_uw,Minimum target air mass flow for Wdk_soll due to surge limit (only with B_ulvdyn=1)
+BMWtchctr_pct_WgLimMax_uw,Upper limit of manipulated variable from ATL controller
+BMWtchad_cw_Ena_uw,"Codeword enabling adpation (0: I share active, 1: CV ok, 2: target charge level ok, 3: target pressure dyn ok, 4: Tmot ok, 5: engine room pressure heating ok, 6: no emergency running, 7: tans small enough, 8: pressure control deviation small, 9: adaptation is taken into account)"
+BMWtchob_b_TrigGc_bo,Trigger for overboost is activated by gearshift.
+BMWtchctr_fac_FadeAdp_ub,Factoring in the adaptation (0: = no accounting; 1: = full accounting)
+BMWtchad_pct_WgIpAdp_sw,"I component for asymmetrical adaptation (easy to learn out, difficult to learn in)"
+BMWtchctr_fac_FadeTExGas_uw,Blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation with VL circuits
+BMWtchob_b_TrigTq_bo,Trigger for overboost is activated by Torque request (gradient)
+BMWtchctr_pct_WgAltiCrtn_sw,Height-dependent offset to the ATL pre-control (if not represented by power-based pre-control)
+BMWtchsvc_pct_Wg_uw,Wastegate control for tester diagnosis
+BMWtchsvc_b_Ena_bo,general enable condition for service test
+BMWtchctr_b_PlDlyd_bo,Flag for delayed reset of the damped feedforward control
+BMWtchbpi_p_MaxTcSptDisp_ub,Value range of boost pressure display
+BMWtchctr_mf_Trb_uw,Target mass flow at the exhaust manifold - inflow
+BMWtchad_fac_Tmp_uw,Raw value ATL adaptation at current speed
+BMWtchtbc_t_EngAmb_sw,Engine compartment temperature modeled
+BMWtchctr_p_BefCatSp_uw,Pkat_atlvst
+BMWtchctr_pct_WgCrtd2_uw,Manipulating variable share through feedforward control - after correction 2
+BMWtchtbc_t_EngAmbWiLoadIni_sw,Delta engine compartment temperature - initial value
+BMWtchctr_b_IpRst2_bo,Condition for resetting the I component of the boost pressure control
+BMWtchbas_rat_p_BascBefCmpr_uw,Pressure ratio of basic boost pressure to pressure before compressor
+BMWtchco_b_TOilEco_bo,Eco bias due to low oil temperature.
+BMWtchsp_rat_p_CmprLim_uw,Target boost factor - boost pressure target value for pressure in front of the compressor
+BMWtchctr_pct_WgRaw_uw,Control shared apartment
+BMWtchtbc_ti_EngStopOld_uw,Shutdown time in minutes - f. Engine compartment temperature modeling
+BMWtchctr_p_BefTrb_uw,required exhaust gas back pressure for turbine performance
+BMWtchtbc_t_ExDif_sw,Difference exhaust gas temperature - load < the stationary load
+BMWtchbov_fac_mf_VvtMin_uw,Factor for increasing the target mass flow through the inlet valves with rapid load reduction to avoid ATL compressor pumps.
+BMWtchbas_rat_p_BefThrAmb_uw,Factor boost pressure to ambient pressure
+BMWtchad_fac_Raw_uw,Raw value ATL adaptation at current speed
+BMWtchscv_b_Wish_bo,Turbocharger is ready to perform boost control
+BMWtchco_b_Rdy_bo,Turbocharger is ready to perform boost control
+BMWtchsvc_b_n_IdlOk_bo,Idle speed ok.
+BMWtchsvc_b_POk_bo,Pressure high enough.
+BMWtchsp_p_Race_uw,Target boost pressure for the start of the race
+BMWtchbpi_p_Disp_sw,boost pressure (relative to ambient pressure) to be displayed at the boost pressure indicator
+BMWtchdiag_b_DiagOff_bo,Lymphomas. Switch diagnosis off.
+BMWewgt_r_ElIvs_uw,inverse value of electrical resistance of the eWG coil
+BMWewgctr_rat_Raw_sw,raw value for duty cycle
+BMWewgctr_rat_CtlrIp_sw,Integral part (I-Part) of the controller
+BMWewgt_stb_1_ub.BMWewgt_b_TWarn_bc,ewg temperature has reached warning level
+BMWewgad_posn_RngStop_sw,range between bottom and upper stop
+BMWewgmo_stb_1_ub.BMWewgmo_b_Rbm_bc,EWG monitoring (EWG position controller monitoring)() bit
+BMWewgsvc_st_TstrExtn_ub,extended feedback for workshop tester unit.
+BMWewgsvc_b_Acv_bo,in-service test for the ewg active
+BMWewgt_q_El_uw,electric heat input to the ewg (calculated in 5ms task)
+BMWewgsp_posn_BoosPCtlrRaw_sw,Raw value of the target position of the WG from the boost pressure control (without filtering)
+BMWewgco_b_SnsrQlyLo_bo,Sensor quality low due to disturbance of the sensor (e.g. magnetic field from start system)
+BMWewgt_t_Gra_sw,temperature gradient etc
+BMWewgco_stb_1_ub.BMWewgco_b_SnsrNotVld_bc,Sensor value is not valid.
+BMWewgctr_stb_1_ub.BMWewgctr_b_EgySave_bc,energy-save mode active (duty cycle is set to zero).
+BMWewgsvc_ti_TstrMaxAry_ub,maximum time for changing the position (0: closing
+BMWewgctr_rat_Ctlr_sw,duty cycle (controller output)
+BMWewgco_st_SnsrQly_ub,Signal quality of position sensor (0: sensor ok; 1: bad signal quality e.g. due to magnetic disturbance; 2: sensor not available e.g. due to low voltage)
+BMWewgctr_rat_NoCrtn_sw,duty cycle before voltage correction
+BMWewgsvc_posn_PerfTstSp_sw,position setpoint for performance test
+BMWewgctr_rat_CtlrPp_sw,Proportional part (P-Part) of the controller
+BMWewgsp_b_WipRdy_bo,Cleaning function completed completely.
+BMWewgsp_posn_Wip_sw,Target position from cleaning function
+BMWewgt_i__sw,electrical current in the EEC
+BMWewgsvc_b_Lock_bo,in-service test for the ewg locked
+BMWewgco_b_ErrSnsrMpl_bo,error sensor not available for multiple times
+BMWewgacp_posn_Ctlr_sw,EWG actual position (EWG Actual position)() position(position) controller(controller) signed Word (sint16)
+BMWewgad_posn_BotmStopRaw_sw,raw sensor value (without adaptation) of position of the bottom mechanical stop (wastegate fully closed)
+BMWewgsvc_ti_PerfTstOp_ub,time counter for needed time to open the ewg (from position 2 to 3).
+BMWewgco_stb_1_ub.BMWewgco_b_ErrDeac_bc,deactivation of electrical wastegate due to an error
+BMWewgctr_rat_CtlrPctl_sw,duty cycle precontroller part
+BMWewgdiag_stb_1_ub,carrier for bits
+BMWewgdiag_stb_1_ub.BMWewgdiag_b_FltMemLock_bc,Locking the fault memory entry for adaptation and deviation fault to check the powerstage for problems first. Also used to lock this fault if a powerstage error has already been detected.
+BMWewgmo_posn_GraLimSp_sw,setpoint eWG after gradient limitation
+BMWewgctr_rat_Out_sw,Duty cycle for controlling the electrical wastegate
+BMWewgad_posn_BotmStopRawVld_sw,Raw value of the last validly learned lower stop
+BMWewgsp_posn_Ctlr_sw,ewg position setpoint for use in the controller
+BMWewgt_stb_1_ub,bit carrier
+BMWewgad_posn_UpprStopRaw_sw,raw sensor value (without adaptation) of position of the upperr mechanical stop (wastegate fully open)
+BMWewgacp_posn_Snsr_sw,Raw value position of electrical wastegate (corrected if necessary for a disturbance from the generator current.
+BMWewgad_t_WallTch_sw,Pipe wall temperature replacement pipe ATL with correct initialization
+BMWewgsvc_b_Ena_bo,in-service test for the ewg enabled
+BMWewgsp_ti_Wip_uw,Time counter for cleaning function
+BMWewgco_stb_1_ub,carrier for bits
+BMWewgctr_stb_1_ub,Bit carrier
+BMWewgctr_rat_CtlrDp_sw,differential part (D-Part) of the controller
+BMWewgsvc_ti_Op_ub,time needed to open the eWG
+BMWewgad_posn_Raw_sw,EWG adaptation (EWG Adaptation)() position(position) raw value(raw value) signed Word (sint16)
+BMWewgco_b_u_SplWgLo_bo,Supply voltage too low for a critical period of time during the learning process.
+BMWewgco_stb_1_ub.BMWewgco_b_ErrTher_bc,thermal error of electrical wastegate
+BMWewgt_ct_ElSum_ub,counter for sum of electrical heat input calculated in 5ms-task (to build average in 100ms-task)
+BMWewgacp_posn_Gra_sw,gradient of the active position of the ewg
+BMWewgt_stb_1_ub.BMWewgt_b_TErr_bc,ewg temperature has reached error level
+BMWewgt_t__sw,model temperature of the ewg
+BMWewgt_q_ElSum_uw,Sum of electrical power input to the ewg (sum of multiple 5ms-calculation steps to build average in 100ms-task)
+BMWewgsvc_st_TstrStop_ub,feedback for workshop tester unit about state of adaptation of the bottom and upper mechanical stop.
+BMWewgsvc_posn_TstrAry_sw,vector with nominal mechanical stop positions and the allowed tolerances (0:bottom min
+BMWewgctr_posn_DifGra_sw,Gradient of the difference between requested and actual position.
+BMWewgacp_posn__sw,active position ewg (relative to the adapted bottom mechanical stop).
+BMWewgsp_posn_BoosPCtlr_sw,Setpoint ewg-position requested by the boost pressure controller
+BMWewgad_posn_MovgAvgRaw_sw,moving average of raw value of ewg position
+BMWewgco_st_Opm_ub,operation mode of electrical wastegate
+BMWewgacp_pct_WgAvg_uw,Storage report electrical wastegate (measured value). Average of all eWGs (of this control unit)
+BMWewgmo_b_GraErr_bo,Sensor gradient monitoring error
+BMWewgmo_stb_1_ub,EWG monitoring (EWG position controller monitoring)() statusword for bits(status word for bits) one(eins) unsigned byte (uint8)
+BMWewgco_ct_OpLoadSus_uw,Counter for suspicion Openload
+BMWewgt_q_Pah1_sw,heat flow into the ewg (path1)
+BMWewgco_ct_SnsrNotRdy_ub,counter for sensor-not-ready-events
+BMWewgt_u_Indn_sw,voltage due to back of the moving ewg
+BMWewgad_st_Opm_ub,ewg adaptation operation mode
+BMWewgctr_posn_Dif_sw,Difference between requested and actual position
+BMWewgsvc_st_OpmPerfTst_ub,operation mode of performance test.
+BMWewgsp_posn__sw,requested wastegate position (relative to the bottom mechanical stop) from the boost pressure control
+BMWewgad_st_OpmUpprStop_ub,ewg adaptation operation mode (upper mechanical stop)
+BMWewgsp_ti_CkMovgWip_uw,Motor operating time since the cleaning function was last activated
+BMWewgt_q_Tot_sw,total heat flow into the ewg
+BMWewgdiag_stb_1_ub.BMWewgdiag_b_ElDiagReqd_bc,EWG diagnosis (EWG diagnosis)() bit
+BMWewgmo_ct_Err_ub,Counter for monitoring the position (rising if actual position is far away from requested position
+BMWewgsp_b_WipAcv_bo,Cleaning function active
+BMWewgacp_posn_GraMovAvg_sw,filtered gradient of the active position of the ewg
+BMWewgad_posn_BotmStopTmpRaw_sw,raw sensor value (without adaptation) of position of the bottom mechanical stop (wastegate fully closed)
+BMWewgad_stb_1_ub.BMWewgad_b_BotmStopWarn_bc,buttom mechanical stop position is still ok but is near error-range.
+BMWewgt_b_ClcAvg_bo,Flag to calc new mean value in 5ms grid
+BMWewgt_q_El2_sw,heat flow into eWG from the electric power
+BMWewgdiag_b_ElDiagReqd_bo,Requirement for final stage diagnosis
+BMWewgad_t_ExFil_sw,filtered exhaust gas temperature
+BMWewgmo_ct_GraErr_ub,Counter for EEC gradient monitoring
+BMWewgacp_pct_PosnTstr_ub,normalized position for output to the service tester
+BMWewgco_b_OpLoadSusFaild_bo,Standby operation failed due to suspected openload.
+BMWewgmo_ct_Rbm_ub,Counter for the rbm nominator. It is increased as if the smallest not tolerable deviation between actual and requested position is detected. At the point of time when this counter reaches 255 even a small not tolerable deviation would have been detected.
+BMWewgad_stb_1_ub,carrier byte for bits
+BMWewgctr_rat__sw,duty cycle for the output to the power stage.
+BMWewgsp_ct_TCycWip_uw,Number of temperature cycles after which the cleaning function should be activated again.
+BMWewgt_t__sl,model temperature of the ewg (high precision)
+BMWewgsvc_st_TstrStdn_ub,standardized feedback for workshop tester unit.
+BMWewgmo_stb_1_ub.BMWewgmo_b_Err_bc,EWG monitoring (EWG position controller monitoring)() bit
+BMWewgco_stb_1_ub.BMWewgco_b_OpmChg_bc,change of electrical wastegate operation mode
+BMWewgad_st_OpmBotmStopTmp_ub,ewg re-adaptation operation mode (bottom mechanical stop)
+BMWewgt_u_R_sw,voltage drop at the coil resistance of the ewg
+BMWewgad_posn_DeltTDrif_sw,Current drift of the actual wastegate position due to temperature-elongation.
+BMWewgsvc_st_Opm_ub,operation mode of the in-service test
+BMWewgsvc_ti_PerfTstCls_ub,time counter for needed time to close the ewg (from position 1 to 2).
+BMWewgco_stb_1_ub.BMWewgco_b_StucClsdChk_bc,Request a check of the position of the ewg during limphome mode. In case the ewg is stuck closed and could not be opened
+BMWewgt_q_Pah2_sw,heat flow into the ewg (path2)
+BMWewgsp_posn_Adp_sw,EWG Setpoint (EWG target position)() position(position) adaptive
+BMWewgco_b_NewDrvg_bo,EWG coordinator (EWG coordination)() bit
+BMWewgsp_posn_Dyn_sw,Dynamic of ewg setpoint
+BMWewgad_st_OpmBotmStop_ub,ewg adaptation operation mode (bottom mechanical stop)
+BMWewgsvc_ti_Cls_ub,time needed to close the eWG
+BMWewgad_b_BotmStpLrnd_bo,The lower stop was learned (either regularly through the initial stop learning) or through post-adaptation.
+BMWewgctr_rat_CtlrRaw_sw,duty cycle (controller output)
+BMWewgt_ct_100ms_ub,Counter for calculation of the mean-value of the ewg current.
+BMWewgco_stb_1_ub.BMWewgco_b_DynLimn_bc,limitation of dynamic (e.g. due to overheating)
+BMWewgco_stb_1_ub.BMWewgco_b_ErrSnsrMpl_bc,error sensor not available for multiple times
+BMWewgt_q_El_sw,heat flow into eWG from the electric power
+BMWtchob_cw_GearAtTrig_Ax,AXX_KL_OB_GS_AKT_AT
+BMWtchctr_fac_IpPctWg_Ax,AXX_KF_FATLR_I
+BMWtchscv_p_DifDynDeac_Ax,axis
+BMWtchout_f_GasWg_Ax,AXX_KF_FGAS_WG
+BMWtchdiag_p_PreThrDynMin_Ax,axis
+BMWtchctr_p_DifWgClsd_Ax,axis
+BMWtchbov_p_DifAcvn_Ay,AXY_KF_PGRD_PRD
+BMWtchctr_fac_TrbEffIvs_Ax,AXX_KL_ETA_TURB
+BMWtchscv_fac_Stat_Ax,AXX_KF_FATLDYN
+BMWtchscv_ag_IgRtd_Ax,AXX_KF_ZWATLD_MN
+BMWtchctr_fac_FadeFlowSpAcv_Ax,axis
+BMWtchsvc_fac_p_Crtn_Ay,AXY_KF_FAK_DPVDK
+BMWewgctr_rat_CtlrPctl_Ax,Axis of BMWewgctr_rat_CtlrPctl_T
+BMWtchsp_fac_FilPRatCmpr_Ax,AXX_KL_FK_PLDSVLD
+BMWtchbov_p_DifAcvnSpt_Ay,Turbocharger blow off valve (exhaust gas turbocharger - diverter air valve) pressure (pressure) difference (difference) activation (activation) sport (sport) axis y direction (Y-axis)
+BMWtchctr_p_DifCrtnPpDyn_Ay,AXY_KF_PDIFF_ATLR_P
+BMWtchscv_fac_Wup_Ax,AXX_KL_FATLDYNKOR_DLAWUP
+BMWtchob_tq_Delt_Ay,AXY_KF_DMDMX_OB
+BMWtchob_cw_AtEna_Ax,AXX_KL_OB_AT_ENA
+BMWtchbas_rat_p_TcBascCond_Ax,Axis for factor for basic boost pressure with risk of condensate on the intercooler
+BMWtchctr_fac_TrbEffPlsCrtn_Ax,AXX_KF_PULSKOR_TURB
+BMWtchctr_pwr_CmprGra_Ax,AXX_KF_PVERD_GRD
+BMWtchbov_fac_FadeDec_Ax,"Turbocharger blow off valve factor, dimensionless fade fade decrease, decrementation axis x direction"
+BMWtchscv_fac_DynEco_Ay,AXY_KF_FATLDYN_AKT_ECO
+BMWtchdiag_p_PreThrPlau_Ax,Turbocharger diagnosis (exhaust gas turbocharger diagnosis)() pressure(pressure) pre-(before) throttle(throttle) plausible(plausible) axis x direction(X-axis)
+BMWtchdiag_pct_WgPHi_Ax,AXX_KF_ATLRPID_MN
+BMWtchctr_pct_WgAltiCrtn_Ax,AXX_KF_ATLVST_HOEHE_KOR
+BMWtchtbc_fac_FadeWoLoad_Ax,AXX_KL_FTMOTRAUM
+BMWtchsp_fac_SqrtTBefTc_Ax,AXX_KL_FTVLD_SQR
+BMWewgctr_rat_SoftClsMin_Ay,axis
+BMWewgt_fac_Pah1Crtn_Ax,"EWG temperature model (EWG temperature model) factor, dimensionless path one correction axis x direction"
+BMWewgsp_posn_Wip_Ax,axis
+BMWtchbas_fac_TcBascCrtn_Ax,AXX_KL_FGRPLD_TKOR
+BMWtchbov_p_DifAcvnSpt_Ax,Turbocharger blow off valve (exhaust gas turbocharger - diverter air valve) pressure (pressure) difference (difference) activation (activation) sport (sport) axis x direction (X-axis)
+BMWtchsp_rat_p_CmprMax_Ay,AXY_KF_FPLDMAX
+BMWtchbov_mf_PmpLim_Ay,Axis
+BMWtchsvc_p_DeltMin_Ax,AXX_KL_DPVDK_PUMG
+BMWtchsp_fac_FadeMdlFlLim_Ax,axis
+BMWtchbas_rat_p_TcBasc_Ax,AXX_KL_FGRPLD
+BMWtchctr_pct_WgPl_Ax,AXX_KF_ATLVST_GD
+BMWewgctr_rat_Push_Ax,"EWG controller (EWG position controller)() ratio, dutycycle(ratio, duty cycle, translation) push,towing,power on driving,(stoï¿½, schub, push, push) axis x direction (X -Axis)"
+BMWtchob_ti_HldChgSp_Ax,AXX_KL_TDOBHALT
+BMWtchtbc_fac_EngHot_Ay,AXY_KF_FTMOTRAUM
+BMWtchdiag_rf_MaxPBefThrHi_Ax,axis
+BMWtchctr_fac_Dp_Ax,AXX_KL_FPATLR_D
+BMWtchctr_pct_WgFlGc_Ay,axis
+BMWtchctr_fac_TrbExp_Ax,AXX_KL_TURB_EXP
+BMWewgt_t_IncAftStop_Ax,"EWG temperature model (EWG temperature model)() temperature(temperature) increase, incrementation(increase, increase) after(after) stop(switch off, switch off, stop) axis x direction (X-axis)"
+BMWtchbov_fac_mf_ThrThrSptMin_Ax,axis
+BMWewgad_posn_DeltTDrif_Ax,Axis
+BMWtchtbc_v_Corr_Ay,AXY_KF_VKORR_TMOTRAUM
+BMWtchbas_pct_AccrFlGcMin_Ax,AXX_KL_PWG_VLS
+BMWtchctr_fac_pwr_CompLimPctl_Ax,AXX_KL_F_PTURBVST
+BMWtchbas_rat_p_TcBascSpt_Ax,AXX_KL_FGRPLD_SPORT
+BMWtchbov_n_DiSpt_Ax,Axis
+BMWtchdiag_pct_WgPLo_Ax,AXX_KF_ATLRPID_MX
+BMWtchctr_pct_WgBasc_Ay,AXY_KF_WGPOS_VST
+BMWtchctr_t_ExGasMdlScav_Ay,AXY_KF_TABGATL
+BMWtchscv_ag_IgRtd_Ay,AXY_KF_ZWATLD_MN
+BMWtchsvc_tqi_Air_Ax,AXX_KL_MDRES_ATLSVC
+BMWtchob_tq_Delt_Ax,AXX_KF_DMDMX_OB
+BMWtchctr_cpp_ExGas_Ax,AXX_KL_CP_ABG
+BMWtchbov_ti_HldFlow_Ax,axis
+BMWewgsp_fac_FilBoosCtlAcv_Ax,Axle for BMWewgsp_fac_FilBoosCtlAcv_T
+BMWtchctr_ti_DlyWgClsd_Ax,AXX_KL_TD_EWGZU
+BMWtchctr_pwr_Dp_Ay,AXY_KF_PATLR_D
+BMWtchscv_fac_GraDec_Ax,AXX_KF_FATLDYNGRD
+BMWtchco_fac_FadePl_Ax,AXX_KL_ATLVST_UEB
+BMWtchob_ti_Max_Ax,AXX_KL_TDOBAKTIV
+BMWtchctr_fac_FadeDynSpt_Ax,axis
+BMWtchdiag_ti_DlyHiLo_Ax,AXX_KL_TDATL_ERR
+BMWtchdiag_rat_p_CmprMin_Ay,AXY_KF_PLDLEK_MN
+BMWtchtbc_fac_FilVVeh_Ax,AXX_KL_IKTMOTRAUM
+BMWtchctr_t_ExGasMdl_Ax,AXX_KF_TABGATL
+BMWtchscv_fac_WupCrtn_Ax,AXX_KF_FATLDYNKOR_TMOTTANS
+BMWtchsp_rat_p_CmprMax_Ax,AXX_KF_FPLDMAX
+BMWtchdiag_rat_p_CmprMin_Ax,AXX_KF_PLDLEK_MN
+BMWtchscv_fac_Dyn_Ay,AXY_KF_FATLDYN_AKT
+BMWtchctr_pct_WgPlRoofOp_Ax,AXX_KF_ATLVST_GD
+BMWtchtbc_fac_TExIni_Ax,AXX_KL_FTABGD_I
+BMWewgctr_rat_CtlrDp_Ax,"EWG controller (EWG position controller)() ratio, dutycycle(ratio, duty cycle, translation) controller(controller) differential part of a control structure(d-part of a controller) axis x direction (X-axis)"
+BMWtchscv_p_DifMin_Ay,AXY_KF_PLDDUESP_MN
+BMWtchctr_fac_FilRatPTrb_Ax,axis
+BMWtchscv_fac_WupCrtn_Ay,AXY_KF_FATLDYNKOR_TMOTTANS
+BMWtchscv_fac_DynEco_Ax,AXX_KF_FATLDYN_AKT_ECO
+BMWtchctr_pct_WgPl_Ay,AXY_KF_ATLVST_GD
+BMWewgt_q_Pah2_Ax,"EWG temperature model (EWG temperature model)() heat transfer(heat transport) path(path, path) two(two) axis x direction (X-axis)"
+BMWtchctr_pct_WgAltiCrtn_Ay,AXY_KF_ATLVST_HOEHE_KOR
+BMWtchtbc_fac_FilTEx_Ay,AXY_KF_FTABGD
+BMWtchctr_fac_FadeAdpMax_Ax,AXX_KL_UEB_AD_EWG
+BMWtchctr_fac_FadeDyn_Ax,Axis
+BMWtchbas_fac_FilPDifCrtn_Ax,AXX_KL_FK_PLDDIFF_KOR
+BMWtchctr_fac_FadeFlowSpSpt_Ax,axis
+BMWtchctr_pct_WgFlGc_Ax,AXX_KL_ATLVST_VLS
+BMWtchob_cw_DctEna_Ax,AXX_KL_OB_DKG_ENA
+BMWtchctr_fac_TMdlCylOff_Ax,axis
+BMWtchscv_fac_StatEco_Ay,AXY_KF_FATLDYN_ECO
+BMWtchbov_fac_mf_ThrSptMin_Ax,axis
+BMWtchbas_rat_p_TcBascEco_Ax,AXX_KL_FGRPLD_ECO
+BMWewgctr_rat_CtlrPp_Ax,"EWG controller (EWG position controller)() ratio, dutycycle(ratio, duty cycle, ratio) controller(controller) proportional part of a control structure(p-portion) axis x direction (X-axis)"
+BMWtchbov_fac_mf_ThrThrSptMin_Ay,axis
+BMWtchctr_pct_WgIpLimMax_Ax,AXX_KL_ATLRI_MX
+BMWtchtbc_fac_EngHot_Ax,AXX_KF_FTMOTRAUM
+BMWtchdiag_pct_WgPLo_Ay,AXY_KF_ATLRPID_MX
+BMWtchout_f_GasWg_Ay,AXY_KF_FGAS_WG
+BMWtchctr_fac_AltiCrtn_Ax,AXX_KL_ATLVST_HOEHE_KOR
+BMWtchtbc_fac_EngHotIni_Ax,AXX_KL_FTMOTRAUM_I
+BMWtchscv_fac_GraDec_Ay,AXY_KF_FATLDYNGRD
+BMWtchbas_fac_TcBascCrtn_Ay,AXX_KL_FGRPLD_TKOR
+BMWtchbov_fac_mf_ThrSptMin_Ay,"Turbocharger blow off valve factor, dimensionless massflow throttle sport minimum axis y direction"
+BMWtchscv_fac_Stat_Ay,AXY_KF_FATLDYN
+BMWtchbas_rat_p_TcBascRoofOp_Ax,AXX_KL_FGRPLD_KH
+BMWtchctr_pct_WgPlCond_Ax,"Axis for ATL pilot control, throttled operation in case of risk of condensation on the intercooler"
+BMWtchctr_pct_WgBasc_Ax,AXX_KF_WGPOS_VST
+BMWtchctr_t_ExGasMdlScav_Ax,AXX_KF_TABGATL
+BMWewgctr_fac_TCrtn_Ax,"EWG controller (EWG position controller)() factor, dimensionless(factor, dimensionless) temperature(temperature) correction(correction) axis x direction (X-axis)"
+BMWtchscv_ti_DynMax_Ax,AXX_KL_TDATLD_OFF
+BMWtchctr_fac_FadeDynSpt_Ay,axis
+BMWtchtbc_t_ExStat_Ax,AXX_KL_TABG_STAT
+BMWtchctr_t_MdlOfsIgRtd_Ax,axis
+BMWtchctr_pct_WgNoise_Ax,"Turbocharger controller;(exhaust gas turbocharger controller)() percentage, relative(percent size, relative size) wastegate(wastegate) noise(noise) axis x direction(X-axis)"
+BMWtchtbc_fac_ti_EngStop_Ax,AXX_KL_FTNABSTELL
+BMWtchdiag_n_EngMax_Ax,AXX_KL_NKWLEK_MX
+BMWtchsp_rf_Liho_Ax,AXX_KL_LAMX
+BMWtchctr_fac_DpDyn_Ax,AXX_KL_FPATLR_D
+BMWtchctr_pwr_Dp_Ax,AXX_KF_PATLR_D
+BMWtchctr_ti_DlyPl_Ax,AXX_KL_TDATLVST_F
+BMWtchsp_fac_mf_FilCmprNorm_Ax,AXX_KL_FK_MSSOLATL
+BMWtchctr_pwr_Pctl_Ay,AXY_KF_ATL_PVERD
+BMWtchctr_p_DifCrtnPp_Ay,AXY_KF_PDIFF_ATLR_P
+BMWtchscv_fac_StatEco_Ax,AXX_KF_FATLDYN_ECO
+BMWtchbov_fac_mf_VvtSptMin_Ax,"Turbocharger blow off valve factor, dimensionless massflow variable valve train sport minimum axis x direction"
+BMWewgco_mf_ExhOpLoadSus_Ax,axis
+BMWtchctr_fac_FadeDyn_Ay,axis
+BMWtchctr_fac_FadeTExGas_Ay,AXY_KF_FTABGUEB
+BMWtchctr_pct_WgPlSpt_Ay,AXY_KF_ATLVST_GD
+BMWtchbov_p_DifAcvn_Ax,AXX_KF_PGRD_PRD
+BMWtchctr_fac_FadeAdp_Ax,AXX_KL_UEB_AD
+BMWtchtbc_fac_FilFadeWoLoad_Ax,AXX_KL_FK_FTMOTRAUM
+BMWtchtbc_fac_FilTEx_Ax,AXX_KF_FTABGD
+BMWtchctr_fac_Ip_Ay,axis
+BMWtchbas_p_DifAmbBefCmpr_Ax,AXX_KL_PUPVLD
+BMWtchscv_fac_Dyn_Ax,AXX_KF_FATLDYN_AKT
+BMWtchbov_n_Di_Ax,Axis
+BMWtchad_fac_AdpCrtn_Ax,axis
+BMWtchtbc_v_Corr_Ax,AXX_KF_VKORR_TMOTRAUM
+BMWtchdiag_pct_WgPHi_Ay,AXY_KF_ATLRPID_MN
+BMWtchscv_ti_DlyDynDeac_Ax,AXX_KL_TDATLD_ON
+BMWewgctr_rat_CtlrIp_Ax,"EWG controller (EWG position controller)() ratio, dutycycle(ratio, duty cycle, translation) controller(regulator) integral part of a control structure(i-part of a controller) axis x direction (X-axis)"
+BMWtchctr_fac_FadeFlowSpAcv_Ay,axis
+BMWewgt_t_IncAftStop_Ay,"EWG temperature model (EWG temperature model)() temperature(temperature) increase, incrementation(increase, increase) after(after) stop(switch off, switch off, stop) axis y direction (Y-axis)"
+BMWtchad_fac_PBasc_Ax,AXX_KL_PLDGRUND_FAK_AD
+BMWtchsp_rat_p_CmprPmp_Ax,AXX_KL_FPLDPUMP
+BMWtchsvc_fac_p_Crtn_Ax,AXX_KF_FAK_DPVDK
+BMWtchctr_pct_WgPlCond_Ay,"Axis for ATL pilot control, throttled operation in case of risk of condensation on the intercooler"
+BMWtchdiag_rat_p_CmprMax_Ax,AXX_KL_PLDLEK_MX
+BMWtchctr_pct_WgPlSpt_Ax,AXX_KF_ATLVST_GD
+BMWtchctr_fac_TrbEffPlsCrtn_Ay,AXY_KF_PULSKOR_TURB
+BMWtchbas_fac_FilPDif_Ax,AXX_KL_FK_PLDDIFF
+BMWtchctr_pwr_CmprGra_Ay,AXY_KF_PVERD_GRD
+BMWewgt_r_ElIvs_Ax,EWG temperature model (EWG temperature model)() resistance (resistance) electrical (electrical) invers (inverse) axis x direction (X-axis)
+BMWewgt_q_Pah1_Ax,"EWG temperature model (EWG temperature model)() heat transfer(heat transport) path(path, path) one(one) axis x direction (X-axis)"
+BMWtchctr_pwr_Pctl_Ax,AXX_KF_ATL_PVERD
+BMWtchctr_fac_FadeFlowSpSpt_Ay,axis
+BMWewgt_fac_FadeTiStop_Ax,"EWG temperature model (EWG temperature model) factor, dimensionless fade time time stop axis x direction"
+BMWewgad_fac_FadeTGas_Ax,axis
+BMWtchtbc_fac_t_Fade_Ax,Axis
+BMWtchscv_p_DifMin_Ax,AXX_KF_PLDDUESP_MN
+BMWtchctr_fac_IpPctWg_Ay,AXY_KF_FATLR_I
+BMWtchctr_p_DifCrtnPpDyn_Ax,AXX_KF_PDIFF_ATLR_P
+BMWtchctr_pct_WgPlEco_Ay,AXY_KF_ATLVST_GD
+BMWtchad_fac_AdpCrtn_Ay,axis
+BMWtchbov_mf_PmpLim_Ax,AXX_KL_ATLPUMPINV
+BMWtchctr_fac_FilRatWg_Ax,AXX_KL_FK_ATLVST
+BMWtchsp_p_DifIco_Ax,AXX_KL_DPLLK
+BMWtchctr_t_ExGasMdl_Ay,AXY_KF_TABGATL
+BMWtchbov_rat_FiGraAcvn_Ax,AXX_KL_DRFS_DYN
+BMWtchdiag_p_OfsDiagOn_Ax,Turbocharger diagnosis pressure offset diagnosis on axis x direction
+BMWtchctr_fac_FadeTExGas_Ax,AXX_KF_FTABGUEB
+BMWtchsp_fac_FadeMdlFlLim_Ay,axis
+BMWtchbov_fac_mf_VvtSptMin_Ay,"Turbocharger blow off valve factor, dimensionless massflow variable valve train sport minimum axis y direction"
+BMWewgctr_rat_SoftClsMin_Ax,axis
+BMWtchout_pct_WgBlwOff_Ax,axis
+BMWtchctr_rat_p_ComprLimPctl_Ax,AXX_KL_FPLDSVLD_MN_DIS
+BMWtchob_fac_tq_Delt_Ax,AXX_KL_FDMDMX_OB
+BMWtchctr_pct_WgPlEco_Ax,AXX_KF_ATLVST_GD
+BMWtchctr_p_DifCrtnPp_Ax,AXX_KF_PDIFF_ATLR_P
+BMWtchctr_t_EgCrtn_Ax,axis
+BMWtchctr_pct_WgPlRoofOp_Ay,AXY_KF_ATLVST_GD
+BMWtchctr_pct_WgIpLimMin_Ax,AXX_KL_ATLRI_MN
+BMWtchctr_fac_Ip_Ax,axis
+BMWewgsp_fac_FilBoosCtlNotAcv_Ax,axis

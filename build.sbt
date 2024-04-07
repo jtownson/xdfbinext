@@ -13,6 +13,8 @@ lazy val breeze = Seq(
 )
 lazy val commonsText = Seq("org.apache.commons" % "commons-text" % "1.11.0")
 lazy val scopt       = Seq("com.github.scopt" %% "scopt" % "4.1.0")
+lazy val a2lParser   = Seq("net.alenzen.a2l" % "a2lparser" % "2.6.2-local")
+lazy val graphviz    = Seq("guru.nidi" % "graphviz-java" % "0.18.1")
 
 lazy val root = project
   .in(file("."))
@@ -20,7 +22,8 @@ lazy val root = project
     name         := "xdfbinext",
     version      := "0.1",
     scalaVersion := scala3Version,
-    libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt,
+    resolvers += Resolver.mavenLocal,
+    libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
     assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare"),
     assemblyJarName      := "xbc.jar"
   )
