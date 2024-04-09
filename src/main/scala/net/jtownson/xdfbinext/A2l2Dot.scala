@@ -1,12 +1,14 @@
 package net.jtownson.xdfbinext
 
+import guru.nidi.graphviz.attribute.Image.{Position, Scale}
 import guru.nidi.graphviz.attribute.Rank.RankDir
 import guru.nidi.graphviz.attribute.Rank.RankDir.LEFT_TO_RIGHT
-import guru.nidi.graphviz.attribute.{Label, Rank}
+import guru.nidi.graphviz.attribute.Shape.RECTANGLE
+import guru.nidi.graphviz.attribute.{Color, Font, Image, Label, Rank, Style}
 import guru.nidi.graphviz.model.Factory.{mutGraph, mutNode}
 import guru.nidi.graphviz.model.MutableGraph
 import net.alenzen.a2l.enums.CharacteristicType
-import net.alenzen.a2l.*
+import net.alenzen.a2l.{Unit as A2lUnit, *}
 import org.apache.commons.text.WordUtils
 
 import java.net.URL
@@ -45,29 +47,57 @@ class A2l2Dot(a2lUrl: URL) {
     .map(cm => cm.getName -> cm)
     .toMap
 
+  private val functions: Map[String, Function] = a2l
+    .iterator()
+    .asScala
+    .collect { case f: Function => f }
+    .map(f => f.getName -> f)
+    .toMap
+
   //    axisPts.foreach { (n, m) =>
   //      if (namePredicate(n))
   //        println(s"""$n,"${m.getLongIdentifier}"""")
   //    }
   //    fail()
 
-  def asGraph(fnPredicate: String => Boolean, namePredicate: String => Boolean): MutableGraph = {
+  def valueCentredGraph(namePredicate: String => Boolean): MutableGraph = {
+
+    def nn(l: IdentReferenceList): Set[String] = {
+      Option(l).fold(Set.empty[String])(_.iterator().asScala.toSet)
+    }
+
+    val applicableFns = functions.filter { (name, fn) =>
+      val defCharacteristics = nn(fn.getDefCharacteristics)
+      val inMeasurements     = nn(fn.getInMeasurments)
+      val locMeasurements    = nn(fn.getLocMeasurments)
+      val outMeasurements    = nn(fn.getOutMeasurments)
+
+      defCharacteristics.exists(namePredicate) ||
+      inMeasurements.exists(namePredicate) ||
+      locMeasurements.exists(namePredicate) ||
+      outMeasurements.exists(namePredicate)
+    }.keySet
+
+    functionCentredGraph(fnName => applicableFns.contains(fnName), namePredicate)
+  }
+
+  def functionCentredGraph(fnPredicate: String => Boolean, namePredicate: String => Boolean): MutableGraph = {
+
+    def nfm(l: IdentReferenceList): Seq[String] = {
+      Option(l).fold(Seq.empty[String])(_.iterator().asScala.toSeq.filter(namePredicate))
+    }
 
     val graph: MutableGraph =
       mutGraph(a2l.getProject.getName).setDirected(true).graphAttrs().add(Rank.dir(LEFT_TO_RIGHT))
 
     a2l.iterator().asScala.foreach {
       case n: net.alenzen.a2l.Function if (fnPredicate(n.getName)) =>
-        // create a node for the function
-        // draw lines from each defChar to the function
-        // draw lines from each inMeasurem to the function
-        // draw lines from the function to each outMesurement
-        val gn = mutNode(n.getName)
+        val gn = mutNode(n.getName).add(Style.lineWidth(4))
 
-        val defCharacteristics = n.getDefCharacteristics.iterator().asScala.filter(namePredicate)
-        val inMeasurements     = n.getInMeasurments.iterator().asScala.filter(namePredicate)
-        val locMeasurements    = n.getLocMeasurments.iterator().asScala.toSeq.filter(namePredicate)
-        val outMeasurements    = n.getOutMeasurments.iterator().asScala.toSeq.filter(namePredicate)
+        val defCharacteristics = nfm(n.getDefCharacteristics)
+        val inMeasurements     = nfm(n.getInMeasurments)
+        val locMeasurements    = nfm(n.getLocMeasurments)
+        val outMeasurements    = nfm(n.getOutMeasurments)
 
         defCharacteristics.foreach { cn =>
           characteristics.get(cn).foreach { c =>
@@ -96,7 +126,6 @@ class A2l2Dot(a2lUrl: URL) {
         graph.add(gn)
 
       case n =>
-
     }
     graph
   }
@@ -115,7 +144,27 @@ class A2l2Dot(a2lUrl: URL) {
   private def characteristicNode(c: Characteristic, graph: MutableGraph) = {
     val gn    = mutNode(c.getName)
     val units = compuMethods.get(c.getConversion).map(_.getUnit).getOrElse("-")
-    gn.add(mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)))
+    if (c.getType == CharacteristicType.MAP) {
+      gn.add(
+        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        RECTANGLE,
+        Image.of("src/main/resources/axis-xyz.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
+        Color.BLUE
+      )
+    } else if (c.getType == CharacteristicType.CURVE) {
+      gn.add(
+        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        RECTANGLE,
+        Image.of("src/main/resources/axis-xy.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
+        Color.BLUE
+      )
+    } else {
+      gn.add(
+        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        RECTANGLE,
+        Color.BLUE
+      )
+    }
 
     def addAxisIndex(i: Int) = {
       val axisRef = c.getAxisDescriptions.asScala(i).getAxisPoints_ref
@@ -136,7 +185,15 @@ class A2l2Dot(a2lUrl: URL) {
   private def measurementNode(m: Measurement) = {
     val gn    = mutNode(m.getName)
     val units = compuMethods.get(m.getConversion).map(_.getUnit).getOrElse("-")
-    gn.add(mapLabel(name = m.getName, units = units, longDescription = BmwTchDescriptions.table(m.getName)))
+
+    if (!BmwTchDescriptions.table.contains(m.getName)) {
+      println(s"""${m.getName},"${m.getLongIdentifier}"""")
+    }
+    val longDescription = BmwTchDescriptions.table.getOrElse(m.getName, "")
+    gn.add(
+      mapLabel(name = m.getName, units = units, longDescription = longDescription),
+      Color.RED
+    )
     gn
   }
 
@@ -148,8 +205,70 @@ class A2l2Dot(a2lUrl: URL) {
         name = n.getName,
         units = units,
         longDescription = BmwTchDescriptions.table.getOrElse(n.getName, n.getName)
-      )
+      ),
+      Color.GREY
     )
     gn
+  }
+
+  def asCommentCsv(namePredicate: String => Boolean) = {
+    a2l
+      .iterator()
+      .asScala
+      .foreach(n => fold(n, namePredicate))
+  }
+
+  private def print(name: String, ld: String, namePredicate: String => Boolean) = {
+    if (namePredicate(name) && (!BmwTchDescriptions.table.contains(name)) && ld.trim.nonEmpty) {
+      println(s""""$name","$ld"""")
+    }
+  }
+
+  private def fold(node: IAsap2TreeElement, namePredicate: String => Boolean) = node match {
+    case n: net.alenzen.a2l.CompuMethod =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.CompuTab =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Project =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.AxisPts =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.MemorySegment =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Measurement =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Function =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Characteristic =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Module =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.CompuVTab =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n: net.alenzen.a2l.Unit =>
+      val name = n.getName
+      val ld   = n.getLongIdentifier
+      print(name, ld, namePredicate)
+    case n =>
   }
 }

@@ -88,7 +88,7 @@ BMWtchbov_rat_p_InAmbSpt_C,"SR pressure ratio below this purely over the Rf_soll
 BMWtchbov_st_OpmRednO2Emi_C,Load reduction operating mode if the entry of O2 must be prevented due to load control from the OPF.
 BMWtchbov_swi_CylOff0Flow_C,Enable cylinder suppression only if no mass flow increase is requested.
 BMWtchbov_swi_Man_C,Switching to manual ULV control
-BMWtchbov_swi_RednO2Emi_C,Switch for switching to your own Bov pilot control with OPF soot hold function
+BMWtchbov_swi_RednO2Emi_C,Switch for switching to your own Bov feed-forward control with OPF soot hold function
 BMWtchbov_swi_TiRmp_C,"When activated, the volume flow increase is calculated once from the pressure ratio, held briefly and then ramped down over a time ramp."
 BMWtchbov_swi_VlvOpAll_C,open the electrical blowoff valve even if the mass flow is increased.
 BMWtchbov_ti_AcvnMax_C,Duration of active ULV during pressure reduction
@@ -157,7 +157,7 @@ BMWtchctr_fac_IpMin_C,Minimum limitation for performance-based I component
 BMWtchctr_fac_IpPctWg_M,Gain control difference - I share
 BMWtchctr_fac_IpRstMax_C,"If the I component is above this threshold and the actual pressure is already too high, then reset the I component."
 BMWtchctr_fac_IpRstMin_C,"If the I component is below this threshold and the actual pressure is already too low, then reset the I component."
-BMWtchctr_fac_pwr_CompLimPctl_T,Factor on pilot control up to which the controller with the P and D components can increase the compressor output during operation via pilot control
+BMWtchctr_fac_pwr_CompLimPctl_T,Factor on feed-forward control up to which the controller with the P and D components can increase the compressor output during operation via feed-forward control
 BMWtchctr_fac_TMdlCylOff_T,Scaling of the exhaust gas temperature from the simple exhaust gas temperature model with cylinder blanking.
 BMWtchctr_fac_TrbEffIvs_T,Turbine efficiency
 BMWtchctr_fac_TrbEffPlsCrtn_M,Pulsation correction for pre-exhaust shock
@@ -186,7 +186,7 @@ BMWtchctr_p_DynIpRstMin2_C,Reset I component with negative target pressure dynam
 BMWtchctr_p_ReqDynIpStop_C,"If this control deviation gradient is exceeded, the I component is stopped"
 BMWtchctr_p_ReqDynLimPctl_C,Upper limit of target boost pressure dynamics for overspeed protection
 BMWtchctr_pct_WgAltiCrtn_M,Height correction of the ATL pre-control (if not represented by performance-based pre-control)
-BMWtchctr_pct_WgBasc_M,Wastegate position - for pilot control
+BMWtchctr_pct_WgBasc_M,Wastegate position - for feed-forward control
 BMWtchctr_pct_WgClsdMin_C,Threshold value Atlvst for delayed locking EEC
 BMWtchctr_pct_WgClsdPl_C,Position setpoint of wastegate for partload at acoustic critical velocity
 BMWtchctr_pct_WgDeltRaceStr_C,Offset to the partial load precontrol for increased preload of the ATL at the start of the race
@@ -199,11 +199,11 @@ BMWtchctr_pct_WgIpMan_C,Control value I share
 BMWtchctr_pct_WgIpRstMax_C,"If the I component is above this threshold, it can be set back to 0 if the opposite control difference is sufficiently large."
 BMWtchctr_pct_WgIpRstMin_C,"If the I component is below this threshold, it can be set back to 0 if the opposite control difference is sufficiently large."
 BMWtchctr_pct_WgNoise_T,Wastegate control for acoustic reasons.
-BMWtchctr_pct_WgPl_M,ATL controller - pilot control - throttled operation
-BMWtchctr_pct_WgPlCond_M,ATL pilot control throttled operation in the event of a risk of condensation on the intercooler
-BMWtchctr_pct_WgPlEco_M,ATL controller - pilot control - throttled operation (Eco)
-BMWtchctr_pct_WgPlRoofOp_M,ATL controller - pilot control - throttled operation (convertible roof open)
-BMWtchctr_pct_WgPlSpt_M,ATL controller - pilot control - throttled operation (sport)
+BMWtchctr_pct_WgPl_M,ATL controller - feed-forward control - throttled operation
+BMWtchctr_pct_WgPlCond_M,ATL feed-forward control throttled operation in the event of a risk of condensation on the intercooler
+BMWtchctr_pct_WgPlEco_M,ATL controller - feed-forward control - throttled operation (Eco)
+BMWtchctr_pct_WgPlRoofOp_M,ATL controller - feed-forward control - throttled operation (convertible roof open)
+BMWtchctr_pct_WgPlSpt_M,ATL controller - feed-forward control - throttled operation (sport)
 BMWtchctr_pct_WgPosnIpStopMax_C,Wastegate position below which the I component of the controller is stopped
 BMWtchctr_pct_WgPosnIpStopMax2_C,Wastegate position below which the I component of the controller is stopped
 BMWtchctr_pct_WgPosnIpStopMin_C,Wastegate position above which the I component of the controller is stopped
@@ -825,7 +825,7 @@ BMWtchbas_fac_TcBascCrtn_Ay,AXX_KL_FGRPLD_TKOR
 BMWtchbov_fac_mf_ThrSptMin_Ay,"Turbocharger blow off valve factor, dimensionless massflow throttle sport minimum axis y direction"
 BMWtchscv_fac_Stat_Ay,AXY_KF_FATLDYN
 BMWtchbas_rat_p_TcBascRoofOp_Ax,AXX_KL_FGRPLD_KH
-BMWtchctr_pct_WgPlCond_Ax,"Axis for ATL pilot control, throttled operation in case of risk of condensation on the intercooler"
+BMWtchctr_pct_WgPlCond_Ax,"Axis for ATL feed-forward control, throttled operation in case of risk of condensation on the intercooler"
 BMWtchctr_pct_WgBasc_Ax,AXX_KF_WGPOS_VST
 BMWtchctr_t_ExGasMdlScav_Ax,AXX_KF_TABGATL
 BMWewgctr_fac_TCrtn_Ax,"EWG controller (EWG position controller)() factor, dimensionless(factor, dimensionless) temperature(temperature) correction(correction) axis x direction (X-axis)"
@@ -867,7 +867,7 @@ BMWewgt_t_IncAftStop_Ay,"EWG temperature model (EWG temperature model)() tempera
 BMWtchad_fac_PBasc_Ax,AXX_KL_PLDGRUND_FAK_AD
 BMWtchsp_rat_p_CmprPmp_Ax,AXX_KL_FPLDPUMP
 BMWtchsvc_fac_p_Crtn_Ax,AXX_KF_FAK_DPVDK
-BMWtchctr_pct_WgPlCond_Ay,"Axis for ATL pilot control, throttled operation in case of risk of condensation on the intercooler"
+BMWtchctr_pct_WgPlCond_Ay,"Axis for ATL feed-forward control, throttled operation in case of risk of condensation on the intercooler"
 BMWtchdiag_rat_p_CmprMax_Ax,AXX_KL_PLDLEK_MX
 BMWtchctr_pct_WgPlSpt_Ax,AXX_KF_ATLVST_GD
 BMWtchctr_fac_TrbEffPlsCrtn_Ay,AXY_KF_PULSKOR_TURB
@@ -905,3 +905,532 @@ BMWtchctr_pct_WgPlRoofOp_Ay,AXY_KF_ATLVST_GD
 BMWtchctr_pct_WgIpLimMin_Ax,AXX_KL_ATLRI_MN
 BMWtchctr_fac_Ip_Ax,axis
 BMWewgsp_fac_FilBoosCtlNotAcv_Ax,axis
+BMWisgusm_i_AltPwrClas_T,Performance class characteristic curve
+BMWisgusm_b_StrEndSeln_C,Selection to detect the end of the start
+BMWisgusm_ti_DblAltErrHealDly_C,Time for turn-off delay when switching the double generator control
+BMWisgusm_ti_IRdyTmrAftStr_C,Activation time window I-Ready after start
+BMWisgusm_b_AvlMac_bo,Machine detection is running
+BMWisgusm_b_ErrIbs_bo,IBS not available (not installed or defective)
+BMWisgusm_b_SgrTypWoPhaSnsr_bo,SGR type without phase current measurement
+BMWisgusm_b_TypUkwn_bo,Installed type unknown (not identical to the dated or coded type)
+BMWisgusm_err_BusAkt_bo,Error active bus
+BMWisgusm_err_BusDlyd_bo,Delayed active bus error
+BMWisgusm_err_t_Hi_bo,High temperature error (according to USM)
+BMWisgusm_nr_DblAltErrCt_ub,Counter for switching the double generator control
+BMWisgusm_st_AltTypPlauAcvn_bo,Type plausibility check was activated
+BMWisgusm_st_AltTypPlau_bo,Type plausibility check currently active
+BMWisgusm_st_SgrTypDet_bo,SGR type recognition is running
+BMWewgad_fac_FadeTGas_T,"Fading Factor between Ambient and ExhaustGas Temperature to take into account, that the solid parts of the turbocharger do not reach exhaust gas temperature at low massflow."
+BMWewgad_posn_DeltTDrif_T,Position drift due to temperature elongation. This position is considered during adaptation and during position calculation. Should be calibrated to 0mm for reference temperature of e.g. 20ï¿½C.
+BMWewgco_mf_ExhOpLoadSus_T,Mass flow to push open the wastegate plate (in the case of state 12 OpenLoadSuspicion).
+BMWewgctr_fac_TCrtn_T,factor for temperature correction of the output duty cycle.
+BMWewgctr_rat_CtlrDp_T,Differential part (D-Part) of the controller
+BMWewgctr_rat_CtlrIp_T,Integral part (I-Part) of the controller
+BMWewgctr_rat_CtlrPctl_T,duty cycle for precontroller-part of ewg controller
+BMWewgctr_rat_CtlrPp_T,Proportional part (P-Part) of the controller
+BMWewgctr_rat_Push_T,duty cycle for push operation mode
+BMWewgctr_rat_SoftClsMin_M,Minimum duty cycle for soft closing near the bottom stop
+BMWewgsp_fac_FilBoosCtlAcv_T,Filter constant for filtering the eWG setpoint specification when boost pressure control is active
+BMWewgsp_fac_FilBoosCtlNotAcv_T,Filter constant for filtering the eWG setpoint specification when boost pressure control is not active
+BMWewgsp_posn_Wip_T,"EWG Setpoint (EWG target position) () position (position) wiper (wiper) curve, table (characteristic curve)"
+BMWewgt_fac_FadeTiStop_T,fading factor between ambient temperature (0) and last ewg temperature (1)
+BMWewgt_fac_Pah1Crtn_T,correction factor for heat flow (path 1)
+BMWewgt_q_Pah1_T,"EWG temperature model (EWG temperature model)() heat transfer(heat transport) path(path, path) one(one) curve, table (characteristic curve)"
+BMWewgt_q_Pah2_T,"EWG temperature model (EWG temperature model)() heat transfer(heat transport) path(path, path) two(two) curve, table (characteristic curve)"
+BMWewgt_r_ElIvs_T,inverse value of electrical resistance of the eWG coil
+BMWewgt_t_IncAftStop_M,temperature increase after stop
+BMWewgacp_fac_CrtnIGnrGra_C,Gradient (in respect of position) of Correction factor to calculate the position deviation due to the exit current of the generator. Unit: (mm/A) / mm
+BMWewgacp_fac_CrtnIGnr_C,Correction factor to calculate the position deviation due to the exit current of the generator for the ewg position of 0mm. Unit: mm/A
+BMWewgacp_nr_MovAvgGraFild_C,Number of values for the calculation of the moving average of the Gradient of the ewg-psoition.
+BMWewgacp_posn_OpLoadSusPos_C,Threshold current position below which switches to the positive duty cycle in the OpenLoad suspected state (12).
+BMWewgacp_swi_posn_CrtnIGnr_C,switch to activate the correction of the position with the current of the generator.
+BMWewgad_cw__C,Code word (Bit0: tempAdaptation using raw gradient; Bit1:use Tw_atl1 for temp. correction)
+BMWewgad_f_GasMax_C,maximum gas force for enabling the readaptation of the lower mechanical stop
+BMWewgad_fac_FilTEgDwn_C,Filter constant Tabg_bank when temperatures fall
+BMWewgad_fac_FilTEgUp_C,Filter constant Tabg_bank at increasing temperatures
+BMWewgad_nr_MovgAvg_C,number of values for calculating the moving average of the ewg position during adaptation
+BMWewgad_posn_BotmStopMax_C,maximum position of bottom mechanical stop (wastegate fully closed)
+BMWewgad_posn_BotmStopMin_C,minimum position of bottom mechanical stop (wastegate fully closed)
+BMWewgad_posn_BotmStopNorm_C,nominal position of bottom mechanical stop
+BMWewgad_posn_BotmStopRmpStrDi_C,part of the search ramp for which the detection of the lower stop is disabled
+BMWewgad_posn_BotmStopRmpStr_C,start position for search ramp to find the bottom mechanical stop (wastegate fully closed)
+BMWewgad_posn_BotmStopWarnMax_C,maximum position of bottom mechanical stop (wastegate fully closed). Threshold for warning error code.
+BMWewgad_posn_BotmStopWarnMin_C,minimum position of bottom mechanical stop (wastegate fully closed). Threshold for warning error code.
+BMWewgad_posn_DeltFirstAdpMax_C,maximum position difference of re-adaptation to first adaptation
+BMWewgad_posn_DifStopRcnd_C,"Maximum deviation between position after 1st and 2nd debounce time. If the difference is smaller than this threshold, the stop is still recognized as valid, even if the stop detection failed in the first debounce time."
+BMWewgad_posn_GraMax_C,maximum gradient of the measured position for the detection of the mechanical stop
+BMWewgad_posn_GraTmpMax_C,maximum position gradient for enabling the readaptation of the lower mechanical stop
+BMWewgad_posn_RmpStrTo_C,tolerance to reach the start position of the search ramp
+BMWewgad_posn_TmpMax_C,maximum position for readaptation of the lower mechanical stop
+BMWewgad_posn_TmpMin_C,Minimum position for readaptation of the lower mechanical stop
+BMWewgad_posn_UpprStopMax_C,maximum position of upper mechanical stop
+BMWewgad_posn_UpprStopMin_C,minimum position of upper mechanical stop
+BMWewgad_posn_UpprStopNorm_C,nominal position of uppr mechanical stop
+BMWewgad_posn_UpprStopRmpStr_C,start position for search ramp to find the upper mechanical stop
+BMWewgad_rat_BotmStopTmp_C,of duty cycle during readaptation (should be calibrated limitation similar to BMWewgad_rat_RmpMax_C to guarantee similar force during initial and re-adaptation).
+BMWewgad_rat_RmpMax_C,limitation of duty cycle during search ramp
+BMWewgad_ti_DebStopRcnd_C,debouncing time delay to recognize a mechanical stop
+BMWewgad_ti_DlyStopRcnd2_C,"Subsequent debounce time for emergency nail function: If no standstill of the eWG was detected within the first debounce time, a second debounce time (date here) runs. The shared apartment position changed little after the 1st and 2nd debounce times"
+BMWewgad_ti_DlyStopRcnd_C,timeout to recognize a mechanical stop
+BMWewgad_ti_ToutRmpStr_C,timeout to reach the start position of the search ramp
+BMWewgad_ti_ToutTmp_C,timeout for readaptation of Bottom mechanical stop
+BMWewgco_ct_OpLoadSusMax_C,Maximum number of activations of the OpenLoadSuspicion state (12).
+BMWewgco_cw_1_C,Codeword (Bit0: adaptation at every ign-key-on; bit1: activation of adaptation during wakeup; bit2: adapt also upper mech. stop; bit3: operate ewg even in case of error of upper mech stop detection)
+BMWewgco_cw_OpLoadSusEna_C,"Code word for activating the StandbyOpenload suspected state (bit 0: not found at UMA start position, 1: UMA stop not found, 2: UMA stop off"
+BMWewgco_cw_SnsrQlyLoStrSys_C,"Codeword to configure the behavior at low signal quality (Bit0: no start, Bit1: SGR, Bit2: eMotor (drag start), Bit3: unused, Bit4: Pinion start, Bit5: Zarsta)."
+BMWewgco_cw_SnsrQlyLo_C,"Codeword to configure the behavior at low signal quality (Bit0: consider B_ckl50, Bit1: consider B_msastart_siko, Bit2: interrupt initial adaptation and restart initial adaptation when signal quality is ok again, Bit3: disable tmp-adaption if low sign quali)."
+BMWewgco_nr_ErrSnsrMax_C,"EWG coordinator (EWG coordination)() number, count(number, number) error(error) sensor(sensor) maximum(maximum) constant (constant)"
+BMWewgco_p_OpLoadSusMax_C,Ejection state 12 StandbyOpenLoad when the boost pressure is too high
+BMWewgco_posn_DifOpLoadSusNeg_C,Threshold how far the controller must have moved in the negative direction after entering state 12 OpenLoadSuspicion in order to switch to controlled operation.
+BMWewgco_posn_DifOpLoadSusPos_C,Threshold how far the actuator must have moved in a positive direction after entering state 12 OpenLoadSuspicion in order to switch to controlled operation.
+BMWewgco_posn_PushDeacAct2_C,Expanded threshold for the state transition to Druecken_zu in the event that the lower stop has not yet been learned (can actually only happen if the state 12 OpenloadSuspicion switches to controlled operation.)
+BMWewgco_posn_PushDeacAct_C,threshold actual ewg position to deactivate the push operation mode
+BMWewgco_posn_PushDeacSp_C,threshold of ewg position setpoint to deactivate the push operation mode
+BMWewgco_posn_PushReacSp_C,threshold of ewg position setpoint below which the push operation mode can be reactivated.
+BMWewgco_posn_PushUpprAct_C,"Offset to the upper mechanical stop position, if actual position is greater than this value the push-open function can be activated (has to be calibrated with small negative value)."
+BMWewgco_posn_PushUpprSp_C,"Offset to the maximum position, if position-setpoint is smaller than this value, the push-open function is deactivated (has to be calibrated with small negative value)."
+BMWewgco_rat_ErrTher_C,threshold duty cycle electrical wastegate to activate the thermal error (simple temperature model)
+BMWewgco_st_OpmMan_C,set the operation mode of the ewg manually
+BMWewgco_swi_NewDrvgIni_C,Relearn the stops every time you change terminals (1) or only relearn the stops when in emergency mode (0).
+BMWewgco_swi_OpLoadSusMon_C,"In the event of a position control error, switch to the OpenLoadSuspicion state (0: never; 1: only if the start position could not be approached when learning the closed stop; 2: always)"
+BMWewgco_swi_OpmMan_C,at every edge of this switch the operation mode of the ewg is set to the value provided with BMWewgco_st_OpmMan_C
+BMWewgco_swi_RstPreDrv_C,Switch for resetting the eWG function when entering PreDrive (instead of Drive). This prevents the EEC from going into the Standby_wg_ungï¿½ltiges_Sensor state during the transition from post to predrive. Urgent data recommendation =
+BMWewgco_ti_AftStrLrnMax_C,Latest time after the end of the start to start the eWG learning process (up to this point the start of the learning process can be delayed because the output stage supply voltage is too low).
+BMWewgco_ti_ErrTher_C,time delay to activate thermal error due to too high duty cycle (simple temperature model)
+BMWewgco_ti_OpLoadSusFlow_C,Debounce time for exiting state 12 (OpenLoad suspicion) via mass flow.
+BMWewgco_ti_OpLoadSusTcDiag_C,Debounce time for exiting from state 12 (OpenLoad suspicion) via error display in boost pressure diagnosis (should be set shorter than the debounce time in the boost pressure diagnosis so that the EEC error is entered. The boost pressure error is then not
+BMWewgco_ti_SnsrRdyReac_C,Time delay to reactivate normal operation when the sensor is ready again.
+BMWewgco_ti_u_LoLrnThd_C,"Maximum period of time that the output stage supply voltage may lie below the permissible threshold during the learning process. If this period of time is exceeded, if the learning process fails, it will be repeated after the engine starts or a corresponding one will be given"
+BMWewgco_u_SplWgLrnMin_C,"Minimum EEC output stage supply voltage to start the learning process of the EEC (if this voltage is not reached, the learning process starts at the latest via a timeout after the engine starts)."
+BMWewgco_u_SplWgLrnMon_C,"Voltage threshold during eWG learning process. If the BN voltage falls below this value for an applicable time during the eWG learning process, then if the learning process fails, either the learning process is repeated after the engine starts or a"
+BMWewgctr_cw_1_C,"Codeword (Bit0: manual duty-cycle demand, Bit1: energy-save mode even during engine run, Bit2: choose temperature for temperature-compensation, Bit3: invert controller output)."
+BMWewgctr_f_MaxNoTCrtn_C,Maximum gas force up to which no temperature correction of the duty cycle is required in pressing mode.
+BMWewgctr_nr_MovAvgDifGra_C,Number of values for the moving average to calculate the gradient of the difference of setpoint and actual position.
+BMWewgctr_posn_DynIpRst_C,threshold setpoint dynamic to reset the i-part of the controller
+BMWewgctr_rat_AdpMax_C,Limitation of duty cycle during adaptation of mechanical stops
+BMWewgctr_rat_CtlrIpMax_C,Limitation of I-Part of the controller
+BMWewgctr_rat_DynLimMax_C,duty cycle limitation in case of an error.
+BMWewgctr_rat_DynLimPushMax_C,duty cycle limitation in push operation mode in case of an error.
+BMWewgctr_rat_EgySaveAcvnMax_C,maximum duty cycle request to activate the energy-save mode.
+BMWewgctr_rat_EgySaveDeacMin_C,minimum duty cycle request to deactivate the energy-save mode.
+BMWewgctr_rat_ErrOpHld_C,duty cycle value to hold the ewg open after pushing it open in case of an error.
+BMWewgctr_rat_ErrOp_C,duty cycle value to push the eWG open in case of error.
+BMWewgctr_rat_IncPush_C,"Duty-cycle-Increment to ramp up the the target duty-cycle at push-operation mode (positive value, for pushing against the bottom-stop this value is multiplied with -1)."
+BMWewgctr_rat_LimMax_C,Maximum limitation of duty cycle.
+BMWewgctr_rat_LimMin_C,Minimum limitation of duty cycle.
+BMWewgctr_rat_Man_C,manual duty-cycle setpoint (to be activated with Bit 0 of BMWewgctr_cw_1_C)
+BMWewgctr_rat_OpenLoadSus_C,Duty cycle during suspected openload
+BMWewgctr_rat_PushUppr_C,target duty cycle to push against the upper stop.
+BMWewgctr_ti_DlyEgySave_C,time delay to activate the energy save mode
+BMWewgctr_ti_ErrOp_C,time to push ewg open in case of an error
+BMWewgctr_u_BatRef_C,reference Battery voltage for duty-cycle voltage correction
+BMWewgdiag_cw__C,Code word (Bit0: fault memory is not locked)
+BMWewgdiag_posn_RbmMin_C,minimum position setpoint for the ewg to be emission relevant and therefore to be relevant for the special rbm-denominator.
+BMWewgdiag_posn_RngMax_C,maximum range between the bottom and the upper mechanical stop
+BMWewgdiag_posn_RngMin_C,minimum range between the bottom and the upper mechanical stop
+BMWewgdiag_posn_StucClsd_C,Threshold for diagnosis of ewg stuck in closed position. If ewg-position is below this value the EWGSTUCKCLOSED-Faultcode is wirtten and torque of combustion engine is reduced even more to protect the turbocharger.
+BMWewgdiag_swi_ElDiagReqdIrv_C,Diagnostic requirement for the final stage diagnosis is irreversible (remains until the end of the driving cycle). See CP443359.
+BMWewgdiag_swi_FltUpprEna_C,"Enable error memory entry for the upper stop, even if there was no change to emergency mode. This switch should be set to TRUE if an error in the upper stop does not lead to emergency operation (see bits 2 and 3 of BMWewgco_cw_1_C)."
+BMWewgdiag_ti_DlyStucClsd_C,"Time delay for diagnosis of ewg stuck in closed position. If ewg position cannot be opened after this delay time, EWGSTUCKCLOSED-Faultcode is wirtten and torque of combustion engine is reduced even more to protect the turbocharger."
+BMWewgdiag_ti_FltMemLockMax_C,timeout for locking the fault memory entry of adaptation and monitoring faults during powerstage diagnosis is running.
+BMWewgmo_ct_GraErr_C,Error threshold for counter gradient monitoring
+BMWewgmo_ct_IncDifHiDynLim_C,counter increment for high deviation between actual and requested position during operation with limited dynamic
+BMWewgmo_ct_IncDifHi_C,counter increment for high deviation between actual and requested position
+BMWewgmo_ct_IncDifLoDynLim_C,counter increment for low deviation between actual and requested position during operation with limited dynamic
+BMWewgmo_ct_IncDifLo_C,counter increment for low deviation between actual and requested position
+BMWewgmo_ct_IncGraHi_C,Counter increment for gradient above the high threshold (wastegate position changes significantly faster than physically possible).
+BMWewgmo_ct_IncGraLow_C,Counter increment for gradient above the low threshold (wastegate position changes faster than physically possible).
+BMWewgmo_opm_SysGraMoAcv_C,Control unit operating state in which the gradient monitoring from the eWG is active.
+BMWewgmo_posn_DifHi_C,threshold for high deviation between requested an actual position
+BMWewgmo_posn_DifLo_C,threshold for low deviation between requested an actual position
+BMWewgmo_posn_GraLimSp_C,Gradient (position change per 10ms) limitation for the position setpoint for monitoring
+BMWewgmo_posn_GraNegHi_C,Minimum plausible negative adjustment speed for sensor gradient monitoring [mm/10ms]
+BMWewgmo_posn_GraNegLow_C,Minimum plausible negative adjustment speed for sensor gradient monitoring [mm/10ms]
+BMWewgmo_posn_GraPosHi_C,maximum plausible positive adjustment speed for sensor gradient monitoring [mm/10ms]
+BMWewgmo_posn_GraPosLow_C,maximum plausible positive adjustment speed for sensor gradient monitoring [mm/10ms]
+BMWewgmo_ti_DlyGraMon_C,Delay time for activating gradient monitoring (to bridge any incorrect initialization behavior)
+BMWewgs_ct_TCycWip_C,Number of temperature cycles after which the cleaning function should be activated again.
+BMWewgsp_cw_1_C,codeword for ewg-setpoint calculation (Bit0: manual setpoint; Bit1: request rest-position during engine stop; Bit2: deactivate Filter if setpoint is 0)
+BMWewgsp_cw_Wip_C,"Code word for activating the cleaning function (Bit0: general release, Bit1: with braked thrust, Bit2: with MSA stop, Bit3: in overrun)"
+BMWewgsp_fac_FilBlwOff_C,Filter constant for filtering the wastegate target position when the diverter air valve is activated (or SUV omission function)
+BMWewgsp_fac_FilPosnDyn_C,filter constant for the filter to calculate the position setpoint dynamic
+BMWewgsp_posn_CtlrMan_C,"manual setpoint for the controller (to be activated by BMWewgsp_cw_1_C, Bit 0)"
+BMWewgsp_posn_IncAdpRmp_C,Increment of the position setpoint to calculate the position-setpoint-ramp during adaptation.
+BMWewgsp_posn_LimpHomCtl_C,ewg setpoint in case of position controlled opening for limphome.
+BMWewgsp_posn_OfsPushBotmRls_C,Short-term position offset to prevent thermal distortion at the lower stop. Is activated when the temperature has risen too far in the press_too state.
+BMWewgsp_posn_OfsPushUpprRls_C,Short-term position offset to prevent thermal distortion at the upper stop. Is activated when the temperature has dropped too far in the press_up state.
+BMWewgsp_posn_OfsSecu_C,Safety Offset to stay away from the upper mechanical stop
+BMWewgsp_posn_PushUpprDeacSp_C,position offset to the deactivate pushing against the upper mechanical stop (to be calibrated with a small negative value)
+BMWewgsp_posn_PushUpprReacSp_C,position offset to the activate pushing against the upper mechanical stop (to be calibrated with a small negative value)
+BMWewgsp_posn_Rest_C,rest position during engine stop
+BMWewgsp_posn_RngNom_C,Nominal position range between the bottom and the upper mechanical stop
+BMWewgsp_posn_RngSecu_C,reduced secure operation range in case the upper mechanical stop has not been learned (to avoid collision with upper mechanical stop).
+BMWewgsp_t_EngThdTCycMin_C,Threshold below which the temperature must fall in order to recognize a new temperature cycle.
+BMWewgsp_t_EngThdTCyc_C,Threshold value for recognizing a new heating cycle
+BMWewgsp_t_WallIncPushBotm_C,"Threshold temperature rise during the push-close function. If this temperature increase is exceeded, the eWG is opened briefly and then re-adapted to prevent distortion due to temperature expansion at the lower stop."
+BMWewgsp_t_WallIncPushUppr_C,"Threshold temperature drop during the push-up function. If this temperature drop is not reached, the eWG is briefly moved away from the upper stop to avoid distortion."
+BMWewgsp_ti_CkMovgWipLock_C,Blocking time for reactivating the cleaning function
+BMWewgsp_ti_DlyRest_C,Delay time before requesting rest position
+BMWewgsp_ti_OfsPushRls_C,Minimum holding time for the setpoint offset to prevent mechanical distortion due to temperature changes in push_up or push_to mode.
+BMWewgsp_ti_WipMax_C,Maximum time for cleaning function.
+BMWewgsp_ti_WipStrPostDrv_C,Remaining time of the overrun to start the cleaning function
+BMWewgsvc_posn_PerfTst1_C,position 1 for the ewg performance test
+BMWewgsvc_posn_PerfTst2_C,position 2 for the ewg performance test
+BMWewgsvc_posn_PerfTst3_C,position 3 for the ewg performance test
+BMWewgsvc_posn_ToPerfTst_C,position tolerance of the desired positions during the performance test
+BMWewgsvc_swi_Acvn_C,switch to activate the in-service test
+BMWewgsvc_t_DlyPerfTst_C,time delay to remain at the required position before the setpoint switches to the next position during the performance test.
+BMWewgsvc_ti_ClsMax_C,maximum acceptable time to close the eWG
+BMWewgsvc_ti_DlyLock_C,Delay time to lock the in-service test against repeated execution
+BMWewgsvc_ti_OpMax_C,maximum acceptable time to open the eWG
+BMWewgsvc_ti_PerfTstTout_C,Timeout for the performance test.
+BMWewgt_cp_Ivs_C,Inverse value of the heat capacity of the ewg-part (s*W/K)
+BMWewgt_cw__C,codeword temperature model of the ewg
+BMWewgt_fac_Indn_C,"EWG temperature model (EWG temperature model)() factor, dimensionless(factor, dimensionless) induction(induction) constant (constant)"
+BMWewgt_t_ErrRst_C,temperature threshold below which the temperature error is reset.
+BMWewgt_t_ErrSet_C,temperature threshold above which the temperature error is set
+BMWewgt_t_WarnRst_C,temperature threshold below which the temperature warning is reset.
+BMWewgt_t_WarnSet_C,temperature threshold above which the temperature warning is set
+CWBGEWG,Code word to determine the type of adaptation
+DFC_CtlMsk2.DFC_BMW_EWGLRNRNGWRN_U_C,Behavior control mask / behavior control mask for testing DFC_BMW_EWGLRNRNGWRN_U
+DFC_CtlMsk2.DFC_BMW_EWGSTUCKCLOSED_C,Behavior control mask / behavior control mask for testing DFC_BMW_EWGSTUCKCLOSED
+DFC_CtlMsk2.DFC_EWGKH_C,Behavior control mask / behavior control mask for testing DFC_EWGKH
+DFC_CtlMsk2.DFC_EWGLOWVOLT_C,Behavior control mask / behavior control mask for testing DFC_EWGLOWVOLT
+DFC_CtlMsk2.DFC_EWGLRNMISO_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNMISO
+DFC_CtlMsk2.DFC_EWGLRNMISZ_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNMISZ
+DFC_CtlMsk2.DFC_EWGLRNMOVO_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNMOVO
+DFC_CtlMsk2.DFC_EWGLRNMOVZ_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNMOVZ
+DFC_CtlMsk2.DFC_EWGLRNRNGO_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNRNGO
+DFC_CtlMsk2.DFC_EWGLRNRNGOZ_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNRNGOZ
+DFC_CtlMsk2.DFC_EWGLRNRNGZ_C,Behavior control mask / behavior control mask for testing DFC_EWGLRNRNGZ
+DFC_CtlMsk2.DFC_EWGLRU_C,Behavior control mask / behavior control mask for testing DFC_EWGLRU
+DFC_CtlMsk2.DFC_EWGLRUKH_C,Behavior control mask / behavior control mask for testing DFC_EWGLRUKH
+DFC_CtlMsk2.DFC_EWGSENSNG_C,Behavior control mask / behavior control mask for testing DFC_EWGSENSNG
+DFC_CtlMsk2.DFC_EWGTEMPOVL_C,Behavior control mask / behavior control mask for testing DFC_EWGTEMPOVL
+DFC_CtlMsk2.DFC_EWGTEMPOVLWRN_C,Behavior control mask / behavior control mask for testing DFC_EWGTEMPOVLWRN
+DFC_CtlMsk2.DFC_EwgOpenLoad_C,Behavior control mask / behavior control mask for testing DFC_EwgOpenLoad
+DFC_DisblMsk2.DFC_BMW_EWGLRNRNGWRN_U_C,Shutdown mask / shutdown mask for testing DFC_BMW_EWGLRNRNGWRN_U
+DFC_DisblMsk2.DFC_BMW_EWGSTUCKCLOSED_C,Shutdown mask / shutdown mask for test DFC_BMW_EWGSTUCKCLOSED
+DFC_DisblMsk2.DFC_EWGKH_C,Shutdown mask / shutdown mask for test DFC_EWGKH
+DFC_DisblMsk2.DFC_EWGLOWVOLT_C,Switch-off mask / switch-off mask for test DFC_EWGLOWVOLT
+DFC_DisblMsk2.DFC_EWGLRNMISO_C,Shutdown mask / shutdown mask for check DFC_EWGLRNMISO
+DFC_DisblMsk2.DFC_EWGLRNMISZ_C,Shutdown mask / shutdown mask for test DFC_EWGLRNMISZ
+DFC_DisblMsk2.DFC_EWGLRNMOVO_C,Shutdown mask / shutdown mask for test DFC_EWGLRNMOVO
+DFC_DisblMsk2.DFC_EWGLRNMOVZ_C,Shutdown mask / shutdown mask for test DFC_EWGLRNMOVZ
+DFC_DisblMsk2.DFC_EWGLRNRNGO_C,Shutdown mask / shutdown mask for test DFC_EWGLRNRNGO
+DFC_DisblMsk2.DFC_EWGLRNRNGOZ_C,Shutdown mask / shutdown mask for test DFC_EWGLRNRNGOZ
+DFC_DisblMsk2.DFC_EWGLRNRNGZ_C,Shutdown mask / shutdown mask for test DFC_EWGLRNRNGZ
+DFC_DisblMsk2.DFC_EWGLRU_C,Shutdown mask / shutdown mask for check DFC_EWGLRU
+DFC_DisblMsk2.DFC_EWGLRUKH_C,Shutdown mask / shutdown mask for test DFC_EWGLRUKH
+DFC_DisblMsk2.DFC_EWGSENSNG_C,Shutdown mask / shutdown mask for test DFC_EWGSENSNG
+DFC_DisblMsk2.DFC_EWGTEMPOVL_C,Shutdown mask / shutdown mask for test DFC_EWGTEMPOVL
+DFC_DisblMsk2.DFC_EWGTEMPOVLWRN_C,Shutdown mask / shutdown mask for test DFC_EWGTEMPOVLWRN
+DFC_DisblMsk2.DFC_EwgOpenLoad_C,Shutdown mask / shutdown mask for check DFC_EwgOpenLoad
+DFES_Cls.DFC_BMW_EWGLRNRNGWRN_U_C,Error class per DFC / error class for test DFC_BMW_EWGLRNRNGWRN_U
+DFES_Cls.DFC_BMW_EWGSTUCKCLOSED_C,Error class per DFC / error class for test DFC_BMW_EWGSTUCKCLOSED
+DFES_Cls.DFC_EWGKH_C,Error class per DFC / error class for test DFC_EWGKH
+DFES_Cls.DFC_EWGLOWVOLT_C,Error class per DFC / error class for test DFC_EWGLOWVOLT
+DFES_Cls.DFC_EWGLRNMISO_C,Error class per DFC / error class for check DFC_EWGLRNMISO
+DFES_Cls.DFC_EWGLRNMISZ_C,Error class per DFC / error class for test DFC_EWGLRNMISZ
+DFES_Cls.DFC_EWGLRNMOVO_C,Error class per DFC / error class for check DFC_EWGLRNMOVO
+DFES_Cls.DFC_EWGLRNMOVZ_C,Error class per DFC / error class for check DFC_EWGLRNMOVZ
+DFES_Cls.DFC_EWGLRNRNGO_C,Error class per DFC / error class for test DFC_EWGLRNRNGO
+DFES_Cls.DFC_EWGLRNRNGOZ_C,Error class per DFC / error class for test DFC_EWGLRNRNGOZ
+DFES_Cls.DFC_EWGLRNRNGZ_C,Error class per DFC / error class for test DFC_EWGLRNRNGZ
+DFES_Cls.DFC_EWGLRU_C,Error class per DFC / error class for check DFC_EWGLRU
+DFES_Cls.DFC_EWGLRUKH_C,Error class per DFC / error class for test DFC_EWGLRUKH
+DFES_Cls.DFC_EWGSENSNG_C,Error class per DFC / error class for test DFC_EWGSENSNG
+DFES_Cls.DFC_EWGTEMPOVL_C,Error class per DFC / error class for test DFC_EWGTEMPOVL
+DFES_Cls.DFC_EWGTEMPOVLWRN_C,Error class per DFC / error class for test DFC_EWGTEMPOVLWRN
+DFES_Cls.DFC_EwgOpenLoad_C,Error class per DFC / error class for check DFC_EwgOpenLoad
+DFES_DTCM.DFC_BMW_EWGLRNRNGWRN_U_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_BMW_EWGLRNRNGWRN_U
+DFES_DTCM.DFC_BMW_EWGSTUCKCLOSED_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_BMW_EWGSTUCKCLOSED
+DFES_DTCM.DFC_EWGKH_C,Manufacturer-specific error code / manufacturer-specific error code for test DFC_EWGKH
+DFES_DTCM.DFC_EWGLOWVOLT_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLOWVOLT
+DFES_DTCM.DFC_EWGLRNMISO_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLRNMISO
+DFES_DTCM.DFC_EWGLRNMISZ_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGLRNMISZ
+DFES_DTCM.DFC_EWGLRNMOVO_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLRNMOVO
+DFES_DTCM.DFC_EWGLRNMOVZ_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGLRNMOVZ
+DFES_DTCM.DFC_EWGLRNRNGO_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLRNRNGO
+DFES_DTCM.DFC_EWGLRNRNGOZ_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGLRNRNGOZ
+DFES_DTCM.DFC_EWGLRNRNGZ_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGLRNRNGZ
+DFES_DTCM.DFC_EWGLRU_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLRU
+DFES_DTCM.DFC_EWGLRUKH_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGLRUKH
+DFES_DTCM.DFC_EWGSENSNG_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGSENSNG
+DFES_DTCM.DFC_EWGTEMPOVL_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EWGTEMPOVL
+DFES_DTCM.DFC_EWGTEMPOVLWRN_C,Manufacturer-specific error code / manufacturer-specific error code for testing DFC_EWGTEMPOVLWRN
+DFES_DTCM.DFC_EwgOpenLoad_C,Manufacturer-specific error code / manufacturer-specific error code for check DFC_EwgOpenLoad
+DFES_DTCO.DFC_BMW_EWGLRNRNGWRN_U_C,OBD specific error code / OBD specific error code for testing DFC_BMW_EWGLRNRNGWRN_U
+DFES_DTCO.DFC_BMW_EWGSTUCKCLOSED_C,OBD specific error code / OBD specific error code for testing DFC_BMW_EWGSTUCKCLOSED
+DFES_DTCO.DFC_EWGKH_C,OBD specific error code / OBD specific error code for testing DFC_EWGKH
+DFES_DTCO.DFC_EWGLOWVOLT_C,OBD specific error code / OBD specific error code for testing DFC_EWGLOWVOLT
+DFES_DTCO.DFC_EWGLRNMISO_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNMISO
+DFES_DTCO.DFC_EWGLRNMISZ_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNMISZ
+DFES_DTCO.DFC_EWGLRNMOVO_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNMOVO
+DFES_DTCO.DFC_EWGLRNMOVZ_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNMOVZ
+DFES_DTCO.DFC_EWGLRNRNGO_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNRNGO
+DFES_DTCO.DFC_EWGLRNRNGOZ_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNRNGOZ
+DFES_DTCO.DFC_EWGLRNRNGZ_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRNRNGZ
+DFES_DTCO.DFC_EWGLRU_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRU
+DFES_DTCO.DFC_EWGLRUKH_C,OBD specific error code / OBD specific error code for testing DFC_EWGLRUKH
+DFES_DTCO.DFC_EWGSENSNG_C,OBD specific error code / OBD specific error code for testing DFC_EWGSENSNG
+DFES_DTCO.DFC_EWGTEMPOVL_C,OBD specific error code / OBD specific error code for testing DFC_EWGTEMPOVL
+DFES_DTCO.DFC_EWGTEMPOVLWRN_C,OBD specific error code / OBD specific error code for testing DFC_EWGTEMPOVLWRN
+DFES_DTCO.DFC_EwgOpenLoad_C,OBD specific error code / OBD specific error code for check DFC_EwgOpenLoad
+DFES_EnvRef.DFC_BMW_EWGLRNRNGWRN_U_C,assigned environmental data / assignment of environmental data set for testing DFC_BMW_EWGLRNRNGWRN_U
+DFES_EnvRef.DFC_BMW_EWGSTUCKCLOSED_C,assigned environmental data / assignment of environmental data set for testing DFC_BMW_EWGSTUCKCLOSED
+DFES_EnvRef.DFC_EWGKH_C,assigned environmental data / assignment of environmental data set for test DFC_EWGKH
+DFES_EnvRef.DFC_EWGLOWVOLT_C,assigned environmental data / assignment of environmental data set for test DFC_EWGLOWVOLT
+DFES_EnvRef.DFC_EWGLRNMISO_C,assigned environmental data / assignment of environmental data set for test DFC_EWGLRNMISO
+DFES_EnvRef.DFC_EWGLRNMISZ_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNMISZ
+DFES_EnvRef.DFC_EWGLRNMOVO_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNMOVO
+DFES_EnvRef.DFC_EWGLRNMOVZ_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNMOVZ
+DFES_EnvRef.DFC_EWGLRNRNGO_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNRNGO
+DFES_EnvRef.DFC_EWGLRNRNGOZ_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNRNGOZ
+DFES_EnvRef.DFC_EWGLRNRNGZ_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRNRNGZ
+DFES_EnvRef.DFC_EWGLRU_C,assigned environmental data / assignment of environmental data set for test DFC_EWGLRU
+DFES_EnvRef.DFC_EWGLRUKH_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGLRUKH
+DFES_EnvRef.DFC_EWGSENSNG_C,assigned environmental data / assignment of environmental data set for test DFC_EWGSENSNG
+DFES_EnvRef.DFC_EWGTEMPOVL_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGTEMPOVL
+DFES_EnvRef.DFC_EWGTEMPOVLWRN_C,assigned environmental data / assignment of environmental data set for testing DFC_EWGTEMPOVLWRN
+DFES_EnvRef.DFC_EwgOpenLoad_C,assigned environmental data / assignment of environmental data set for check DFC_EwgOpenLoad
+DFES_FaultTyp.DFC_BMW_EWGLRNRNGWRN_U_C,assigned error type / error type assignment for test DFC_BMW_EWGLRNRNGWRN_U
+DFES_FaultTyp.DFC_BMW_EWGSTUCKCLOSED_C,assigned error type / error type assignment for check DFC_BMW_EWGSTUCKCLOSED
+DFES_FaultTyp.DFC_EWGKH_C,assigned error type / error type assignment for check DFC_EWGKH
+DFES_FaultTyp.DFC_EWGLOWVOLT_C,assigned error type / error type assignment for check DFC_EWGLOWVOLT
+DFES_FaultTyp.DFC_EWGLRNMISO_C,assigned error type / error type assignment for check DFC_EWGLRNMISO
+DFES_FaultTyp.DFC_EWGLRNMISZ_C,assigned error type / error type assignment for check DFC_EWGLRNMISZ
+DFES_FaultTyp.DFC_EWGLRNMOVO_C,assigned error type / error type assignment for check DFC_EWGLRNMOVO
+DFES_FaultTyp.DFC_EWGLRNMOVZ_C,assigned error type / error type assignment for check DFC_EWGLRNMOVZ
+DFES_FaultTyp.DFC_EWGLRNRNGO_C,assigned error type / error type assignment for check DFC_EWGLRNRNGO
+DFES_FaultTyp.DFC_EWGLRNRNGOZ_C,assigned error type / error type assignment for check DFC_EWGLRNRNGOZ
+DFES_FaultTyp.DFC_EWGLRNRNGZ_C,assigned error type / error type assignment for check DFC_EWGLRNRNGZ
+DFES_FaultTyp.DFC_EWGLRU_C,assigned error type / error type assignment for check DFC_EWGLRU
+DFES_FaultTyp.DFC_EWGLRUKH_C,assigned error type / error type assignment for check DFC_EWGLRUKH
+DFES_FaultTyp.DFC_EWGSENSNG_C,assigned error type / error type assignment for check DFC_EWGSENSNG
+DFES_FaultTyp.DFC_EWGTEMPOVL_C,assigned error type / error type assignment for check DFC_EWGTEMPOVL
+DFES_FaultTyp.DFC_EWGTEMPOVLWRN_C,assigned error type / error type assignment for check DFC_EWGTEMPOVLWRN
+DFES_FaultTyp.DFC_EwgOpenLoad_C,assigned error type / error type assignment for check DFC_EwgOpenLoad
+DFES_GrpRpr.DFC_BMW_EWGLRNRNGWRN_U_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_BMW_EWGLRNRNGWRN_U
+DFES_GrpRpr.DFC_BMW_EWGSTUCKCLOSED_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_BMW_EWGSTUCKCLOSED
+DFES_GrpRpr.DFC_EWGKH_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGKH
+DFES_GrpRpr.DFC_EWGLOWVOLT_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLOWVOLT
+DFES_GrpRpr.DFC_EWGLRNMISO_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNMISO
+DFES_GrpRpr.DFC_EWGLRNMISZ_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNMISZ
+DFES_GrpRpr.DFC_EWGLRNMOVO_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNMOVO
+DFES_GrpRpr.DFC_EWGLRNMOVZ_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNMOVZ
+DFES_GrpRpr.DFC_EWGLRNRNGO_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNRNGO
+DFES_GrpRpr.DFC_EWGLRNRNGOZ_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNRNGOZ
+DFES_GrpRpr.DFC_EWGLRNRNGZ_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRNRNGZ
+DFES_GrpRpr.DFC_EWGLRU_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRU
+DFES_GrpRpr.DFC_EWGLRUKH_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGLRUKH
+DFES_GrpRpr.DFC_EWGSENSNG_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGSENSNG
+DFES_GrpRpr.DFC_EWGTEMPOVL_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGTEMPOVL
+DFES_GrpRpr.DFC_EWGTEMPOVLWRN_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EWGTEMPOVLWRN
+DFES_GrpRpr.DFC_EwgOpenLoad_C,Grouping common MIL debouncing / group representative for common MIL debouncing from DFC_EwgOpenLoad
+DINH_FId.DFC_BMW_EWGLRNRNGWRN_U_CA,lockable FIds / FIDs that can be locked by DFC_BMW_EWGLRNRNGWRN_U
+DINH_FId.DFC_BMW_EWGSTUCKCLOSED_CA,lockable FIds / FIDs that can be locked by DFC_BMW_EWGSTUCKCLOSED
+DINH_FId.DFC_EWGKH_CA,lockable FIds / FIDs that can be locked by DFC_EWGKH
+DINH_FId.DFC_EWGLOWVOLT_CA,lockable FIds / FIDs that can be locked by DFC_EWGLOWVOLT
+DINH_FId.DFC_EWGLRNMISO_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNMISO
+DINH_FId.DFC_EWGLRNMISZ_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNMISZ
+DINH_FId.DFC_EWGLRNMOVO_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNMOVO
+DINH_FId.DFC_EWGLRNMOVZ_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNMOVZ
+DINH_FId.DFC_EWGLRNRNGO_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNRNGO
+DINH_FId.DFC_EWGLRNRNGOZ_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNRNGOZ
+DINH_FId.DFC_EWGLRNRNGZ_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRNRNGZ
+DINH_FId.DFC_EWGLRU_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRU
+DINH_FId.DFC_EWGLRUKH_CA,lockable FIds / FIDs that can be locked by DFC_EWGLRUKH
+DINH_FId.DFC_EWGSENSNG_CA,lockable FIds / FIDs that can be locked by DFC_EWGSENSNG
+DINH_FId.DFC_EWGTEMPOVL_CA,lockable FIds / FIDs that can be locked by DFC_EWGTEMPOVL
+DINH_FId.DFC_EWGTEMPOVLWRN_CA,lockable FIds / FIDs that can be locked by DFC_EWGTEMPOVLWRN
+DINH_FId.DFC_EwgOpenLoad_CA,lockable FIds / FIDs that can be locked by DFC_EwgOpenLoad
+DINH_Lim.DFC_BMW_EWGLRNRNGWRN_U_CA,Locking conditions / locking condition by locking source DFC_BMW_EWGLRNRNGWRN_U
+DINH_Lim.DFC_BMW_EWGSTUCKCLOSED_CA,Locking conditions / locking condition by locking source DFC_BMW_EWGSTUCKCLOSED
+DINH_Lim.DFC_EWGKH_CA,Locking conditions / locking condition by locking source DFC_EWGKH
+DINH_Lim.DFC_EWGLOWVOLT_CA,Locking conditions / locking condition by locking source DFC_EWGLOWVOLT
+DINH_Lim.DFC_EWGLRNMISO_CA,Locking conditions / locking condition by locking source DFC_EWGLRNMISO
+DINH_Lim.DFC_EWGLRNMISZ_CA,Locking conditions / locking condition by locking source DFC_EWGLRNMISZ
+DINH_Lim.DFC_EWGLRNMOVO_CA,Locking conditions / locking condition by locking source DFC_EWGLRNMOVO
+DINH_Lim.DFC_EWGLRNMOVZ_CA,Locking conditions / locking condition by locking source DFC_EWGLRNMOVZ
+DINH_Lim.DFC_EWGLRNRNGO_CA,Locking conditions / locking condition by locking source DFC_EWGLRNRNGO
+DINH_Lim.DFC_EWGLRNRNGOZ_CA,Locking conditions / locking condition by locking source DFC_EWGLRNRNGOZ
+DINH_Lim.DFC_EWGLRNRNGZ_CA,Locking conditions / locking condition by locking source DFC_EWGLRNRNGZ
+DINH_Lim.DFC_EWGLRU_CA,Locking conditions / locking condition by locking source DFC_EWGLRU
+DINH_Lim.DFC_EWGLRUKH_CA,Locking conditions / locking condition by locking source DFC_EWGLRUKH
+DINH_Lim.DFC_EWGSENSNG_CA,Locking conditions / locking condition by locking source DFC_EWGSENSNG
+DINH_Lim.DFC_EWGTEMPOVL_CA,Locking conditions / locking condition by locking source DFC_EWGTEMPOVL
+DINH_Lim.DFC_EWGTEMPOVLWRN_CA,Locking conditions / locking condition by locking source DFC_EWGTEMPOVLWRN
+DINH_Lim.DFC_EwgOpenLoad_CA,Locking conditions / locking condition by locking source DFC_EwgOpenLoad
+DIUMPR_Ctl.FID_BMW_EWGRBM_C,IUPR control byte / control byte of the in-use performance monitoring of FID_BMW_EWGRBM
+DIUMPR_DFC.FID_BMW_EWGRBM_C,associated error check / assigned error check of the in-use performance monitoring of FID_BMW_EWGRBM
+DIUMPR_Grp.FID_BMW_EWGRBM_C,IUPR group / component group of in-use performance monitoring from FID_BMW_EWGRBM
+DIUMPR_idx.FID_BMW_EWGRBM_C,Grouping analogous to IUMPR / assigned measured value block of in-use performance monitoring from FID_BMW_EWGRBM
+Ewg_stPwrStgEnaCdnMask_C,Enabling mask with conditions for switching on the power amplifier
+Ewg_SwSABMW_ATS_ATS.LimitTypeMsk_C,Steller Test Ewg_SwSABMW_ATS_ATS / Tester requirement monitoring mask for Steller
+Ewg_SwSABMW_ATS_ATS.CnvNorm_C,Controller test Ewg_SwSABMW_ATS_ATS / normalization for conversion
+Ewg_SwSABMW_ATS_ATS.LowLim_C,Controller test Ewg_SwSABMW_ATS_ATS / Lower limit for monitoring
+Ewg_SwSABMW_ATS_ATS.UpLim_C,Controller test Ewg_SwSABMW_ATS_ATS / Upper limit for monitoring
+Ewg_SwSABMW_ATS_ATS.CnvFac_C,Steller test Ewg_SwSABMW_ATS_ATS / factor for conversion
+Ewg_SwSABMW_ATS_ATS.CnvOfs_C,Controller test Ewg_SwSABMW_ATS_ATS / offset for conversion
+Ewg_SwSABMW_ATS_ATS.DfltVal_C,Controller test Ewg_SwSABMW_ATS_ATS / default value for standby test
+UEWGGRD,Gradient for the linear conversion of voltage into the raw value of the position of the electrical wastegate
+UEWGOFFS,Voltage offset for the linear conversion of voltage into the raw value of the position of the electrical wastegate
+Ewg_033_003_0,Ewg-1707_033.003.0
+BMW_MOD_EwgAcP_5ms,BMW_MOD_EwgAcP_5ms
+BMW_MOD_EwgAd_10ms,BMW_MOD_EwgAd_10ms
+BMW_MOD_EwgAd_1000ms,BMW_MOD_EwgAd_1000ms
+BMW_MOD_EwgAd_swini,BMW_MOD_EwgAd_swini
+BMW_MOD_EwgCo_10ms,BMW_MOD_EwgCo_10ms
+BMW_MOD_EwgCtr_5ms,BMW_MOD_EwgCtr_5ms
+BMW_MOD_EwgDiag_100ms,BMW_MOD_EwgDiag_100ms
+BMW_MOD_EwgDiag_10ms,BMW_MOD_EwgDiag_10ms
+BMW_MOD_EwgMo_10ms,BMW_MOD_EwgMo_10ms
+BMW_MOD_EwgSp_5ms,BMW_MOD_EwgSp_5ms
+BMW_MOD_EwgSp_100ms,BMW_MOD_EwgSp_100ms
+BMW_MOD_EwgSp_swini,BMW_MOD_EwgSp_swini
+BMW_MOD_EwgSvc_100ms,BMW_MOD_EwgSvc_100ms
+BMW_MOD_EwgSvc_5ms,BMW_MOD_EwgSvc_5ms
+BMW_MOD_EwgSvc_swini,BMW_MOD_EwgSvc_swini
+BMW_MOD_EwgT_100ms,BMW_MOD_EwgT_100ms
+BMW_MOD_EwgT_5ms,BMW_MOD_EwgT_5ms
+BMW_MOD_EwgT_swini,BMW_MOD_EwgT_swini
+BMW_MOD_EwgWrap_10ms,BMW_MOD_EwgWrap_10ms
+BMW_MOD_EwgWrap_5ms,BMW_MOD_EwgWrap_5ms
+Ewgposri,Raw value position electrical wastegate
+Ewgposs_norm_tester,standardized target position specification for electrical wastegate from the tester (0 WG closed 100 WG open)
+St_ewg_in,Status word for bits (electrical wastegate)
+St_ewg_in.B_ewg_tester,Target position specification for the el wastegate active via tester
+St_ewg_in.B_ewgediag_fertig,Output stage diagnosis was completed as requested
+St_ewg_in.B_ewgerr_est,Power stage error electrical wastegate
+St_ewg_in.B_ewgeston,Power amplifier eWG is supplied
+St_ewg_in.B_ewgsensg,Sensor value electrical wastegate valid
+St_ewg_in.B_ewgsvc_if,Request system test electrical wastegate from the tester
+BasSvrAppl_stfaewg,Request system test electrical wastegate from the tester
+B_EwgPsOff_msg,Request to switch off the EWG power amplifier
+B_ewg_msg,The bit to differentiate the different build in exhaust components.
+DFC_st.DFC_BMW_EWGLRNRNGWRN_U,DFC / status of the error check DFC_BMW_EWGLRNRNGWRN_U
+DFC_st.DFC_BMW_EWGSTUCKCLOSED,DFC / error check status DFC_BMW_EWGSTUCKCLOSED
+DFC_st.DFC_EWGKH,DFC / error check status DFC_EWGKH
+DFC_st.DFC_EWGLOWVOLT,DFC / error check status DFC_EWGLOWVOLT
+DFC_st.DFC_EWGLRNMISO,DFC / error check status DFC_EWGLRNMISO
+DFC_st.DFC_EWGLRNMISZ,DFC / error check status DFC_EWGLRNMISZ
+DFC_st.DFC_EWGLRNMOVO,DFC / error check status DFC_EWGLRNMOVO
+DFC_st.DFC_EWGLRNMOVZ,DFC / error check status DFC_EWGLRNMOVZ
+DFC_st.DFC_EWGLRNRNGO,DFC / error check status DFC_EWGLRNRNGO
+DFC_st.DFC_EWGLRNRNGOZ,DFC / error check status DFC_EWGLRNRNGOZ
+DFC_st.DFC_EWGLRNRNGZ,DFC / error check status DFC_EWGLRNRNGZ
+DFC_st.DFC_EWGLRU,DFC / error check status DFC_EWGLRU
+DFC_st.DFC_EWGLRUKH,DFC / error check status DFC_EWGLRUKH
+DFC_st.DFC_EWGSENSNG,DFC / error check status DFC_EWGSENSNG
+DFC_st.DFC_EWGTEMPOVL,DFC / error check status DFC_EWGTEMPOVL
+DFC_st.DFC_EWGTEMPOVLWRN,DFC / error check status DFC_EWGTEMPOVLWRN
+DFC_st.DFC_EwgOpenLoad,DFC / status of the error check DFC_EwgOpenLoad
+DINH_nrActvInhReas.FID_BMW_EWGAUF,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGAUF
+DINH_nrActvInhReas.FID_BMW_EWGAUFRGL,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGAUFRGL
+DINH_nrActvInhReas.FID_BMW_EWGAUFSENS,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGAUFSENS
+DINH_nrActvInhReas.FID_BMW_EWGDYNLIM,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGDYNLIM
+DINH_nrActvInhReas.FID_BMW_EWGKH,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGKH
+DINH_nrActvInhReas.FID_BMW_EWGOFF,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGOFF
+DINH_nrActvInhReas.FID_BMW_EWGRBM,Number of lock sources that lock FIds / Number of lock sources that lock FID_BMW_EWGRBM
+DINH_nrActvInhReas.FID_EwgSnsrSply,Number of lock sources that lock FIds / Number of lock sources that lock FID_EwgSnsrSply
+DINH_stFId.FID_BMW_EWGAUF,FId / status of the function identifier FID_BMW_EWGAUF
+DINH_stFId.FID_BMW_EWGAUFRGL,FId / status of the function identifier FID_BMW_EWGAUFRGL
+DINH_stFId.FID_BMW_EWGAUFSENS,FId / status of the function identifier FID_BMW_EWGAUFSENS
+DINH_stFId.FID_BMW_EWGDYNLIM,FId / status of the function identifier FID_BMW_EWGDYNLIM
+DINH_stFId.FID_BMW_EWGKH,FId / status of the function identifier FID_BMW_EWGKH
+DINH_stFId.FID_BMW_EWGOFF,FId / status of the function identifier FID_BMW_EWGOFF
+DINH_stFId.FID_BMW_EWGRBM,FId / status of the function identifier FID_BMW_EWGRBM
+DINH_stFId.FID_EwgSnsrSply,FId / status of the function identifier FID_EwgSnsrSply
+DINH_xWhy.FID_BMW_EWGAUF,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGAUF
+DINH_xWhy.FID_BMW_EWGAUFRGL,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGAUFRGL
+DINH_xWhy.FID_BMW_EWGAUFSENS,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGAUFSENS
+DINH_xWhy.FID_BMW_EWGDYNLIM,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGDYNLIM
+DINH_xWhy.FID_BMW_EWGKH,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGKH
+DINH_xWhy.FID_BMW_EWGOFF,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGOFF
+DINH_xWhy.FID_BMW_EWGRBM,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_BMW_EWGRBM
+DINH_xWhy.FID_EwgSnsrSply,DINH / status of the function identifier DINH_xWhy / locking reason for function identifier FID_EwgSnsrSply
+DIUMPR_Den.FID_BMW_EWGRBM,IUMPR denominator (config) / calculated denominator of the in-use performance monitoring of FID_BMW_EWGRBM
+DIUMPR_Num.FID_BMW_EWGRBM,IUMPR counter (config) / calculated counter of the in-use performance monitoring of FID_BMW_EWGRBM
+DIUMPR_St.FID_BMW_EWGRBM,IUMPR status (config) / status of the in-use performance monitoring of FID_BMW_EWGRBM
+Ewg_flgSwtOffDiagStrt,Open load diagnostics started
+Ewg_stHBrdg,"State of the output stage (on, off, error)"
+Ewg_stPsErr_mp,Measuring point: Status of the EWG power amplifier
+mirBMW_EWGLRNRNGWRN_U,Mirror size for coupling FIS and DFC
+mirBMW_EWGSTUCKCLOSED,Mirror size for coupling FIS and DFC
+mirEWGKH,mirror value for FIS-DFC handling
+mirEWGLOWVOLT,DFC mirroring variables
+mirEWGLRNMISO,mirror value for FIS-DFC handling
+mirEWGLRNMISZ,mirror value for FIS-DFC handling
+mirEWGLRNMOVO,mirror value for FIS-DFC handling
+mirEWGLRNMOVZ,mirror value for FIS-DFC handling
+mirEWGLRNRNGO,mirror value for FIS-DFC handling
+mirEWGLRNRNGOZ,mirror value for FIS-DFC handling
+mirEWGLRNRNGZ,mirror value for FIS-DFC handling
+mirEWGLRU,mirror value for FIS-DFC handling
+mirEWGLRUKH,Electric wastegate position controller deviation when catalytic converter heater is idling
+mirEWGSENSNG,mirror value for FIS-DFC handling
+mirEWGTEMPOVL,mirror value for FIS-DFC handling
+mirEWGTEMPOVLWRN,mirror value for FIS-DFC handling
+statewg_w_msg,Electric wastegate operating status
+SwSABMW_nrmDesEwgTstr,"standardized target position specification for electrical wastegate from the tester (0: WG closed, 100 WG open)"
+SwSABMW_stDesEwg2Tstr,Target position specification for the electrical wastegate active via tester
+SwSABMW_stDesEwgTstr,Target position specification for the electrical wastegate active via tester
+tmrwgrdewg,Gradient of the reference temperature model after ethanol-dependent weighting
+Isgusm_ierr,Excitation current (according to USM)
+BMWeng_b_EcuPwsFaild_bo,Powerfail condition
+BMWeng_b_StrEnd_bo,Start end condition
+St_kl15,Status byte terminal 15
+Tumg,Ambient temperature
+BMWemm_ct_StDrv_ub,Counter Status Drive
+BMWemm_opm_SysEcuAct_ub,Current SystemECU substate
+BMWeng_b_StrEnd_bo,Start end condition
+BMWeng_u_SplWg_uw,Supply voltage for electrical wastegate
+Msakzu,Mass flow into the exhaust manifold (air plus fuel mass flow)
+Msa_startsyst,Starting system selection
+Pvdkds,if asymmetrical firing sequence pressure in front of throttle valve from each sensor moving average over 2-8 (applicable) values
+St_kl15,Status byte terminal 15
+St_msasiko,"Status word MSASIKO for the 10 ms task (Bit0: B_msastoppsiko, Bit1: B_msastart_siko, Bit2: n.a., Bit3: B_msa_fb_erl, Bit4: B_msaakt_siko, Bit5-6: n.a., Bit7: B_msavmkssoll_siko)"
+Tn_start_10,Time after start end resolved in 10ms
+BMWeng_b_CkMovg_bo,Condition rotating crankshaft detected
+Tmotraum,Engine compartment temperature modeled
+Ub,On-board network voltage
+BMWemm_opm_SysEcuAct_ub,Current SystemECU substate
+BMWeng_b_CkMovg_bo,Condition rotating crankshaft detected
+BMWeng_b_StrEnd_bo,Start end condition
+BMWemm_opm_SysEcuAct_ub,Current SystemECU substate
+BMWeng_b_CkMovg_bo,Condition rotating crankshaft detected
+BMWchc_b_Acv_bo,catalyst heating active.
+BMWemm_opm_SysEcuAct_ub,Current SystemECU substate
+BMWeng_b_CkMovg_bo,Condition rotating crankshaft detected
+BMWeng_b_EcuPwsFaild_bo,Powerfail condition
+BMWeng_b_StrEnd_bo,Start end condition
+BMWtqe_b_Dfco_bo,Signal indicating weather the combustion engine is in deceleration fuel-cutoff mode
+St_bgkuppl1,Status word BGKUPPL
+St_bls,
+St_kl15,Status byte terminal 15
+Tmot,Cooling water temperature
+BMWeng_b_CkMovg_bo,Condition rotating crankshaft detected
+V,Vehicle speed
+BMWeng_b_EcuPwsFaild_bo,Powerfail condition
+Tans,Intake air temperature average
+Tmot,Cooling water temperature
+Tmotraum,Engine compartment temperature modeled
+Tn_abstell,Shutdown time
+Tumg,Ambient temperature
+Gangi_stat,Current internal gear (including neutral and reverse)
+Nkw,number of revolutions
+Var_at,Vehicle variant with automatic transmission
+Var_dkg,Vehicle variant with dual clutch transmission
+BMWeisy_b_DiagAirFlowCoaEnd_bo,"Condition mass flow diagnosis HFM in Coast Down, number of measurements reached"
+BMWlhmplau_b_StrSysAcv_bo,Any starting system active
+St_as_in_fahrer2,Status word 2 for bits in P_as_in_fahrer
+St_as_in_fahrer2.B_bls_fast,Bit brake light switch fast (selection of the fastest transmitted signal)
+St_as_in_fahrer2.B_bls_pred,Bit brake light switch predicted (including prediction when releasing the brake pedal)
+St_as_in_fahrer2.B_ll_fzg,Bit for idling vehicle (accelerator pedal angle smaller hysteresis threshold)
+St_as_in_fahrer2.B_rennstart_as,Bit race start
+St_as_in_fahrer2.B_vl_fzg,Bit for full load vehicle (accelerator pedal angle smaller hysteresis threshold)
+St_eisydiag_enahfmb_global,Status byte EisyDiag_EnaHfmB_100ms (Bit0: B_eqpl_akt; Bit1: B_hfmplcd_akt; Bit2: B_hfmplll_akt; Bit3-7: n/a)
+St_eisydiag_enahfmb_global.B_eqpl_akt,Condition Diagnosis Inlet cross-section plausibility check active
+St_eisydiag_enahfmb_global.B_hfmplcd_akt,Mass flow diagnosis HFM condition active in Coast Down
+St_eisydiag_enahfmb_global.B_hfmplll_akt,Condition mass flow diagnosis HFM active in LL

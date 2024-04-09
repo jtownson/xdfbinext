@@ -1,8 +1,16 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.BinAdapter.*
-import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated1D, Interpolated2D}
-import net.jtownson.xdfbinext.XdfSchema.*
+import net.jtownson.xdfbinext.BinAdapter.{
+  BinConst,
+  BinTable1D,
+  BinTable2D,
+  compare,
+  data2Str1D,
+  data2Str2D,
+  data2StrConst
+}
+import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated1D, Interpolated2D, linearInterpolate}
+import net.jtownson.xdfbinext.XdfSchema.{InverseLookup2D, XdfExpression, XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 
 import java.io.{File, RandomAccessFile}
 import java.nio.ByteBuffer
