@@ -165,8 +165,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
   }
 
   private def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
-//    in.map(bd => bd.setScale(t.axes.z.decimalPl, RoundingMode.HALF_UP))
-    in.map(bd => bd.setScale(1, RoundingMode.HALF_UP))
+    in.map(bd => bd.setScale(t.axes.z.decimalPl, RoundingMode.HALF_UP))
   }
 
   private def readRaw(table: XdfTable): Array[Byte] = {
