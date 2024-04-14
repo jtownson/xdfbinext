@@ -141,36 +141,50 @@ class A2l2Dot(a2lUrl: URL) {
     Label.lines(s"$name", s"Units: $units", WordUtils.wrap(longDescription, 80))
   }
 
+  private def getObjectDescription(name: String): String = {
+    BmwTchDescriptions.table.get(name) match
+      case Some(value) =>
+        value
+      case None =>
+//        println(s"Missing $name")
+        ""
+  }
+
   private def characteristicNode(c: Characteristic, graph: MutableGraph) = {
+    if (!BmwTchDescriptions.table.contains(c.getName)) {
+      println(s"""${c.getName},"${c.getLongIdentifier}"""")
+    }
+
     val gn    = mutNode(c.getName)
     val units = compuMethods.get(c.getConversion).map(_.getUnit).getOrElse("-")
     if (c.getType == CharacteristicType.MAP) {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
         RECTANGLE,
         Image.of("src/main/resources/axis-xyz.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else if (c.getType == CharacteristicType.CURVE) {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
         RECTANGLE,
         Image.of("src/main/resources/axis-xy.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = BmwTchDescriptions.table(c.getName)),
+        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
         RECTANGLE,
         Color.BLUE
       )
     }
 
-    def addAxisIndex(i: Int) = {
+    def addAxisIndex(i: Int): Unit = {
       val axisRef = c.getAxisDescriptions.asScala(i).getAxisPoints_ref
-      val axis    = axisPts(axisRef)
-      val n       = axisPtsNode(axis).addLink(gn)
-      graph.add(n)
+      axisPts.get(axisRef).foreach { axis =>
+        val n = axisPtsNode(axis).addLink(gn)
+        graph.add(n)
+      }
     }
 
     if (c.getType == CharacteristicType.CURVE) {

@@ -59,6 +59,89 @@ class A2l2DotTest extends AnyFlatSpec {
     val namePredicate: String => Boolean = s => s.startsWith("BMWtchctr_pct_Wg")
     valueCentredGraphWith(a2l2Dot, namePredicate, "BMWtchctr_pct_Wg.svg")
   }
+
+  it should "create a valvelift graph on GKF_EHUB_NORM_WARM_LAST" in {
+    val fnPredicate: String => Boolean =
+      s => s == "BMW_MOD_BlsHub_HubevsollKF_10ms"
+    val namePredicate: String => Boolean = s => s == "GKF_EHUB_NORM_WARM_LAST"
+    functionCentredGraphWith(a2l2Dot, _ => true, fnPredicate, "BlsHub_HubevsollKF_10ms.svg")
+  }
+
+  it should "create a graph on P_MDGI_HAXL and BMW_MOD_Mafw_MdMax" in {
+    val fnPredicate: String => Boolean =
+      s => s == "BMW_MOD_Mafw_MdMax" || s == "P_MDGI_HAXL"
+
+    functionCentredGraphWith(a2l2Dot, _ => true, fnPredicate, "P_MDGI_HAXL-Mafw_MdMax.svg")
+  }
+
+  it should "graph torque request ceiling" in {
+    val namePredicate: String => Boolean = _ == "BMWtqe_tqc_FlApplStgNorm_T"
+    valueCentredGraphWith(a2l2Dot, namePredicate, "BMWtqe_tqc_FlApplStgNorm_T.svg")
+  }
+
+  it should "graph BMW_MOD_TqeLimStatMaxMdk_10ms" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_TqeLimStatMaxMdk_10ms", "TqeLimStatMaxMdk_10ms.svg")
+  }
+
+  it should "create a graph on Nkw_opt" in {
+    val namePredicate: String => Boolean = s => s == "Nkw_opt"
+    valueCentredGraphWith(a2l2Dot, namePredicate, "Nkw_opt.svg")
+  }
+
+  it should "create a graph for K_FRFMXBS_MN" in {
+    valueCentredGraphWith(a2l2Dot, _ == "K_FRFMXBS_MN", "K_FRFMXBS_MN.svg")
+  }
+
+  it should "create a graph for BMW_MOD_BsPost_20" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_BsPost_200ms", "BsPost_200ms.svg")
+  }
+
+  it should "create a graph for KL_MDRED_NKW" in {
+    valueCentredGraphWith(a2l2Dot, _ == "KL_MDRED_NKW", "KL_MDRED_NKW.svg")
+  }
+
+  it should "create a graph for wmschutzvma" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "wmschutzvma", "wmschutzvma.svg")
+  }
+
+  it should "create a graph for K_MDKIST_SOT_MX" in {
+    valueCentredGraphWith(a2l2Dot, _ == "K_MDKIST_SOT_MX", "K_MDKIST_SOT_MX.svg")
+  }
+
+  it should "create a graph for BMW_MOD_AsInFahrsit_100ms" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_AsInFahrsit_100ms", "AsInFahrsit_100ms.svg")
+  }
+
+  it should "graph Pwg_ist" in {
+    valueCentredGraphWith(a2l2Dot, _ == "Pwg_ist", "Pwg_ist.svg")
+
+    val namePred: String => Boolean = s => s == "Mdk_ist" || s == "Pwg_ist"
+    val fnPred: String => Boolean =
+      s => s == "BMW_MOD_AsInFahrsit_100ms" || s == "P_MDKIST_10ms" || s == "BMW_SWC_MDIST_Int" || s == "layer"
+    functionCentredGraphWith(a2l2Dot, s => true, fnPred, "mdk_pwg_ist.svg")
+  }
+
+  it should "graph MoFTrqPtd_tqCluMax_C" in {
+    valueCentredGraphWith(a2l2Dot, _ == "MoFTrqPtd_tqCluMax_C", "MoFTrqPtd_tqCluMax_C.svg")
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "MoFDrDem_Co", "MoFDrDem_Co.svg")
+  }
+
+  it should "graph KF_MDIOP_1_TQE" in {
+    valueCentredGraphWith(a2l2Dot, _ == "KF_MDIOP_1_TQE", "KF_MDIOP_1_TQE.svg")
+    valueCentredGraphWith(a2l2Dot, _ == "Md_reib_vm", "Md_reib_vm.svg")
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_TqeBasTqiMax_seg", "TqeBasTqiMax_seg.svg")
+    functionCentredGraphWith(
+      a2l2Dot,
+      _ => true,
+      s => s == "BMW_SWC_TqeLimStat_Int" || s == "BMW_MOD_TqeBasTqiMax_seg",
+      "TqeLimStat_Int.svg"
+    )
+  }
+
+  it should "graph K_EDA_P_ANZ_SPORT_BS_SCAL_CODE" in {
+    valueCentredGraphWith(a2l2Dot, _.contains("K_EDA_P_ANZ_SPORT_BS_SCAL_CODE"), "K_EDA_P_ANZ_SPORT_BS_SCAL_CODE.svg")
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_Abk_Tqc_Lda", "Abk_Tqc_Lda.svg")
+  }
 }
 
 object A2l2DotTest {

@@ -1434,3 +1434,2695 @@ St_eisydiag_enahfmb_global,Status byte EisyDiag_EnaHfmB_100ms (Bit0: B_eqpl_akt;
 St_eisydiag_enahfmb_global.B_eqpl_akt,Condition Diagnosis Inlet cross-section plausibility check active
 St_eisydiag_enahfmb_global.B_hfmplcd_akt,Mass flow diagnosis HFM condition active in Coast Down
 St_eisydiag_enahfmb_global.B_hfmplll_akt,Condition mass flow diagnosis HFM active in LL
+GKF_EHUB_NORM_WARM_LAST,"Map inlet valve lift setpoint in normal operation, warm, load"
+BMWchc_fac_Fade_ub,Transition normal (=0) to cat heaters (=1)
+BMWchc_fac_Sprd_ub,Fading factor for emission-optimal (0) or engine roughness (1) optimal spread.
+BMWctbsafe_fac_Fi_ub,Blend factor from combustion control for lift and spreads
+BMWeisy_b_CylActInjEnaSyncH_bo,Boolean size for activating segment functions in the auxiliary syncro (2SG systems)
+F_basis,Factor blender on stroke map with stop spread
+F_miller,Millern blending factor (for spread and stroke)
+F_uebl_ll_last,Factor blender LL2LAST (1=LL)
+Hube_kor,Intake valve lift used for inverse interpolation
+Nkw_eisy,filtered engine speed for cluster EISY (filter: K_FK_NKWEISY)
+Rfvhub_last,"normalized relative filling, from inverse calculation of the load stroke maps"
+Rfvhub_norm_warm_last,"standardized relative filling, norm, warm, last"
+Rfvhub_inv,"normalized relative filling, from inverse calculation of the hub maps"
+GKF_EHUB_NORM_KALT_LAST,"Intake valve lift map setpoint in normal operation, cold, load"
+GKF_EHUB_NORM_WARM_MILLER,Intake valve lift setpoint map at Millern (F_miller = 1)
+GKF_HUBEST_COMF_AG,Inlet valve lift setpoint in Comfort Start (with BMWtqe_st_StrVarEng_ub = 1 and B_autget = True)
+GKF_HUBEST_COMF_HG,Inlet valve lift setpoint in Comfort Start (with BMWtqe_st_StrVarEng_ub = 1 and B_autget = False)
+GKF_HUBEST_NUEN_AG,Inlet valve lift setpoint in neutral start (at BMWtqe_st_StrVarEng_ub = 4)
+GKF_HUBEST_RESP_AG,Intake valve lift setpoint in response start (for BMWtqe_st_StrVarEng_ub = 2)
+GKF_HUBEST_SLPSTRTEM_AG,Intake valve lift setpoint in drag start via EM (at BMWtqe_st_StrVarEng_ub = 5)
+GKF_HUBEST_SYS_AG,Inlet valve lift setpoint in system start (at BMWtqe_st_StrVarEng_ub = 3)
+KF_EHUB_BASIS,Intake valve lift map setpoint for stop spread
+KF_EHUB_KH_KALT_LAST,"Characteristic map setpoint inlet valve lift for cat heater, cold, load"
+KF_EHUB_KH_KALT_LL,"Intake valve lift map setpoint for catalytic heating, cold, idle"
+KF_EHUB_KH_WARM_LAST,"Intake valve lift map setpoint for cat heater, warm, load"
+KF_EHUB_KH_WARM_LL,"Intake valve lift map setpoint for catalytic heating, warm, idle"
+KF_EHUB_UESP,Intake valve lift map setpoint for flushing
+KF_HUBESTM,Intake valve lift setpoint map when starting the engine
+KL_FHUBST_PU,Factor ambient pressure on start stroke
+KL_UEBL_HUB_LL_LAST,Characteristic blender correction LL2LAST in BLSHUB
+K_OFFHUB_VNSAN,Inlet valve lift offset on start stroke if inlet VANOS is not in stop (B_vsean_loc=false)
+S_HUBST,Switch for inlet valve lift setpoint in start (Bit0: Enable B_hubst; Bit1: Disable B_hubst at B_start_comf; Bit2: Enable F_hubst_pu at Hubev_soll_stm; Bit3-7: n.a.)
+BMWchc_fac_Fade_ub,Transition normal (=0) to cat heaters (=1)
+BMWchc_fac_Sprd_ub,Fading factor for emission-optimal (0) or engine roughness (1) optimal spread.
+BMWctbsafe_fac_Fi_ub,Blend factor from combustion control for lift and spreads
+BMWtqe_st_StrVarEng_ub,"VM start variant from TQE perspective (0=Key, 1=Comf, 2=Resp, 3=Sys, 4=Nuen)"
+F_basis,Factor blender on stroke map with stop spread
+F_miller,Millern blending factor (for spread and stroke)
+F_uebl_ll_last,Factor blender LL2LAST (1=LL)
+Nkw_10ms,Speed averaged over 1 cylinder segment in 10ms ratio
+Nkw_bls,Engine speed filtered for BLSHUB (only with S_NKW_REF_BLS = 0)
+Pumg,ambient pressure
+Rfv_hub_kor,"relative filling for hub map, corrected with model adjustment factor"
+St_deavns2,Status condition Vanos at the ready
+St_deavns2.B_vse_an,Condition Vanos inlet ready
+Tmot_start,Engine start temperature
+Ehub_kh,Setpoint inlet valve lift cat heater
+Ehub_kh_last,"Setpoint inlet valve lift cat heater, load"
+Ehub_kh_ll,"Setpoint inlet valve lift cat heater, idle"
+Ehub_norm,"Setpoint inlet valve lift, standard"
+Ehub_norm_last,"Setpoint inlet valve lift, norm, load"
+F_uebl_hub_ll_last,Blending factor LL2LAST (1=LL)
+Hubev_soll_st,"Intake valve lift, setpoint in engine start"
+St_BlsHub_HubevsollKF_10ms_local,Status word BlsHub_HubevSollKf_10ms local (Bit0: B_hubst; Bit1-7: n.a.)
+St_BlsHub_HubevsollKF_10ms_local.B_hubst,Condition inlet valve lift setpoint from start stroke functionality
+Ehub_basis,Intake valve lift setpoint with stop spread
+Ehub_kh_kalt_last,"Intake valve lift setpoint for cat heater, cold, load"
+Ehub_kh_kalt_ll,"Inlet valve lift setpoint for catalytic heating, cold, idle"
+Ehub_kh_warm_last,"Intake valve lift setpoint for cat heater, warm, load"
+Ehub_kh_warm_ll,"Inlet valve lift setpoint for catalytic heating, warm, idle"
+Ehub_norm_kalt_last,"Inlet valve lift setpoint in normal operation, cold, load"
+Ehub_norm_warm_last,"Intake valve lift setpoint in normal operation, warm, load"
+Ehub_norm_warm_miller,"Inlet valve lift setpoint in normal operation, warm, Miller"
+Ehub_uesp,Inlet valve lift setpoint for flushing
+Hubev_soll_kf,"Intake valve lift, setpoint (value from the lift maps)"
+Nkw_opt,Engine speed that leads to optimal gear ratio (Almo)
+CW_IGES_STAT_VF_WK,Activation of converter overshoot at I_ges_stat_vf_wk via St_wk
+CW_MDGI_GETRIDX_QS12,Codeword for detecting QS1 and QS2 in MDGI via St_getr_dynidx
+CW_MDGI_USECASE_QS12,Code word for detecting QS1 and QS2 in MDGI via Status_usecase_antr
+CW_ST_WK_OFFEN,Code word for recognizing WK open in the MDGI
+I_GES_C,Set I_ges over I_GES_V
+I_GES_V,Manual setting of I_ges
+KF_FK_IGESHOCHSCHALTUNG_QS0,Map for filter constant I_ges in QS0
+KF_FK_IGESHOCHSCHALTUNG_QS12,Map for filter constant I_ges in QS1 and QS2
+KL_F_IGES_STAT_VF_WK,Factor for converter overshoot on I_ges_stat_vf_wk
+K_AUSWAHL_N_GETREIN_MDGI,"Switch for selecting the speed to determine the raw gear ratio: 0 = commercial vehicle, 1 = MAX(N_em1_actual, commercial vehicle), 2 = N_em1_actual"
+K_DELAY_IGES_STAT,Delay steps for I_ges derivative
+K_DI_GES_STAT_ABL,Extended switch-off threshold from the ratio of I_ges to I_ges_stat_vf to activate the lead reset
+K_DI_GES_STAT_RAT,Switch-off threshold from the ratio of I_ges to I_ges_stat_vf to reset the flip-flop
+K_DI_GES_STAT_RESET,Switch-off threshold from derivation of I_ges
+K_FAK_IGES_STAT_MIN,Maximum distance from I_ges_stat to I_ges
+K_FK_IGES,Filter constant for smoothing I_ges
+K_FK_IGESHOCHSCHALTUNG,Filter constant for smoothing I_ges when upshifting
+K_FK_IGESRUECKSCHALTUNG,Filter constant for smoothing I_ges when switching back
+K_FK_IGESSCHALT_HS,Filter constant for smoothing I_ges when switching (HS)
+K_FK_IGES_HS,Filter constant for smoothing I_ges (HS)
+K_F_IGES_STAT_DN,Gradient for I_ges_enlargement
+K_F_IGES_STAT_INIT,Initial value for I_total_enlargement
+K_F_IGES_STAT_LIM_ZW,Limit for F_iges_stat below which the ZW can be activated
+K_F_IGES_STAT_UP,Gradient for withdrawal I_total_expansion
+K_GANG_MAX_AT,max. gear AT
+K_IEFF_FAK,Factor safety distance I_ges_hs to I_ges_at
+K_IEFF_FAK_HOCHSCHALTUNG,Safety distance factor for upshifts
+K_IEFF_FAK_RUECKSCHALTUNG,Safety distance factor for downshifting
+K_I_EM1,Translation of the electric machine 1
+K_I_EM11,Gear ratio electric motor/wheel hub motor axle 1
+K_I_EM12,"Wheel hub motor gear ratio, axle 1"
+K_I_EM2,Gear ratio electric motor/wheel hub motor axle 2
+K_I_EM22,Gear ratio electric motor/wheel hub motor axle 2
+K_I_GANG,Gear ratio for HS (for ASD)
+K_I_GANGAT,Gear ratio AT gearbox
+K_MDI_GRENZE_RASTUNG,Relative limit above which the hand switch detent is canceled in the MDGI
+K_MDI_I_WANDLER_MAX,Maximum gear ratio for vehicles with a converter
+K_NAB_MN,min possible output speed
+K_NKW_PEMAX,Speed at which the engine has its maximum power
+K_ST_IGES_RDNDNT,Qualifier for St_i_ges (QU_REIN_PT) String reinforcement determined via redundancy (n/n).
+K_ST_WK_OFFEN,Qualifier for St_i_ges (QU_REIN_PT) WK is or changes to open / regulated
+K_TD_IGES_STAT,Time delay for circuit recognition
+K_TD_MDI_RASTUNG,Time constant for determining the translation I_eff_vb at HS
+K_TD_ZW_FREIGA_SCHALT,Time delay when switching off the air reserve during traction switching
+K_T_GANGWECHSEL_TIMEOUT,Time after which a switching detection is reset if B_gangwechsel_gs is not present
+K_V2NRAD_MDGI,Conversion factor speed according to output speed
+S_CP375095_RESET,Activation of reset condition I_ges derivative
+S_CP416841,Activation CP416841
+S_CP421997,Activation CP421997
+S_FRONTANTRIEB,Switch for front-wheel drive vehicles
+S_IEFF_GS,Activation of train reinforcement from the gearbox
+S_IGES_FILT_ZKA,Activation of I_ges filtering via maps
+S_IGES_STAT,Activation transfer I_ges_stat to translation
+S_IOPT,Selection for I_ges_opt (0: I_ges_opt; 1: I_ges)
+S_MDI_I_WANDLER_MAX,Consideration of systems with and without converters in the maximum translation
+S_MDI_RASTUNG,Enable detent strand reinforcement at HS
+S_NO_KS_INFO_4_RAT_HAXL,The overall ratio of the hybrid axle no longer goes to 0 if there is no traction.
+S_N_AB_MV,Selection of signed output speed
+S_N_ACHSE_MV,Selection of the signed speed of the drive axis
+S_SPT99_CP449266,Deactivation CP449266
+S_ZIELPRED_FAKFAK,Factoring Zka_fak_fak into Mdk_soll_vm_ziel_pred
+BMWbdy_b_RvsGear_bo,Reverse status
+F_mdk_vm_grad_max_pred,Protected torque gradient (as a factor)
+Gangi,Current internal gear (including neutral and reverse)
+Gangi_entpr,Debounced gait
+I_eff_gs_plaus,Strand reinforcement checked for plausibility
+I_ha,Gear ratio rear axle
+Md_em1_soll_i,Target torque of the EM1 (VM or transmission input basis)
+Mdg_em1_max_dyn,Maximum dynamic electric machine 1 potential based on transmission input including Siko limitation
+Mdg_wunsch,Desired unfiltered torque value at gearbox input of hybrid axle
+Mdk_soll_vm_ziel,Target torque combustion engine (long-term target torque Mdk_soll_vm)
+N_ab_m_plaus,measured output speed
+N_ab_real_plaus,"measured output speed (signed, contains information about the direction of rotation) (plausibility checked)"
+N_em1_ist_plaus,Plausibility-checked speed of the electric machine 1
+N_em2_ist_plaus,Plausibility-checked speed of the electric machine 2
+N_rad_hl_plaus,Plausibility checked wheel speed was on the left
+N_rad_hl_plaus_q,Qualifier for N_rad_hl
+N_rad_hr_plaus,Plausibility-checked rear right wheel speed
+N_rad_hr_plaus_q,Qualifier for N_rad_hr
+N_rad_vl_plaus,Plausibility-checked front left wheel speed
+N_rad_vl_plaus_q,Qualifier for N_rad_vl
+N_rad_vr_plaus,Plausibility-checked front right wheel speed
+N_rad_vr_plaus_q,Qualifier for N_rad_vr
+Nkw_plaus,Plausibility-checked speed of the crankshaft of the internal combustion engine
+Nturb_plaus,Speed transmission input
+St_anman,Drive management status
+St_anman.B_antrieb,Drive train not interrupted
+St_anman.B_getreten,Signal goes to True when accelerator pedal is pressed (Pwg_act > K_PWG_MIN)
+St_anman.B_kein_gang,no gear engaged
+St_anman.B_kupp_int,Clutch activated
+St_antrieb_wunsch,"Desired state of the drive (combustion engine, clutch K0, traction transmission 1, traction transmission 2)"
+St_getr_dynidx,
+St_getrdaten,Gearbox data status
+St_getrdaten.B_gangwechsel_gs,Gear change active
+St_kupp_dkg_plaus,Condition of the starting clutch
+St_n_rad_hl,Status qualifier signal from Nradhl
+St_n_rad_hr,Status qualifier signal from Nradhr
+St_n_rad_vl,Status qualifier signal from Nradvl
+St_n_rad_vr,Status qualifier signal from Nradvr
+St_wk_plaus,Status WK (plausibility checked)
+Status_antrieb_ist,"Actual state of the drive (combustion engine, clutch K0, traction transmission 1, traction transmission 2)"
+Status_antrieb_soll,"Target state of the drive (combustion engine, clutch K0, traction transmission 1, traction transmission 2)"
+Status_iae_plaus,Plausibility checked status of the IAE (transmission starting clutch)
+Status_usecase_antr,Status Usecase ANTR: Output size of the ASM for gb2; eBS; FP; EGS
+T_sample_tqc,Enter description
+V_mafw,Vehicle speed secured in mafw
+Var_hs,Vehicle variant with manual transmission
+Zka_fak_fak,Difference factor of the jump factor ZKA in the tension area during shifting
+BMWtqc_Rat_GearLeWhlMoHaxl,Wheel hub motor gear ratio on the hybrid axle (left)
+BMWtqc_Rat_GearRiWhlMoHaxl,Wheel hub motor gear ratio on the hybrid axle (right)
+BMWtqc_Spd_ActLeWhlMoHaxl,Speed of wheel hub motor on the hybrid axle (left)
+BMWtqc_Spd_ActRiWhlMoHaxl,Speed of wheel hub motor on the hybrid axle (right)
+B_zw_freiga_schalt_int,Internal bit for enabling the ignition angle
+Dmdg_wunsch_i_ges_stat,Desired delta torque by upshifting
+F_iges_stat,Factor for I_ges expansion
+F_iges_stat_vf_wk,Factor for converter overshoot for I_ges_stat_vf_wk
+I_ges_abl,Derivation I_ges via K_DELAY_IGES_STAT Number of calculation steps
+I_ges_stat_vf,Gangi-based overall translation for advance translation when upshifting before filtering
+I_ges_stat_vf_wk,Overall gear ratio based on Gangi for leading gear ratio when upshifting before filtering including protected converter overshoot
+I_opt,optimal gear ratio for axles with combustion engines
+Status_Schaltung_Mdgi,Bit carrier for the scheduling bits in the MDGI
+Status_Schaltung_Mdgi.B_Hochschaltung,B_Upshift
+Status_Schaltung_Mdgi.B_Rueckschaltung,B_reverse switching
+BMWtqc_Rat_GbxWhlHaxl,Hybrid axle translation (corresponds to I_ges from Almo)
+BMWtqc_Rat_GbxWhlHaxlStat,Hybrid axis translation for response start (corresponds to I_ges from Almo) released via status_drive_request/target
+BMWtqc_Rat_GearCkMoHaxl,Gear ratio before the K0 on the hybrid axle
+BMWtqc_Rat_GearGbxMoHaxl,Gear ratio at the transmission input on the hybrid axle
+BMWtqc_Rat_OptmGbxWhlHaxl,optimal gear ratio on the hybrid axle (corresponds to I_ges_opt in the Almo)
+BMWtqc_Spd_ActCkMoHaxl,Speed on the crankshaft (before K0) on the hybrid axle
+BMWtqc_Spd_ActGbxMoHaxl,Speed at the transmission input on the hybrid axle
+BMWtqc_Spd_ActLeWhlHaxl,Output speed on the hybrid axle (left)
+BMWtqc_Spd_ActRiWhlHaxl,Output speed on the hybrid axle (right)
+I_eff,Effective gear ratio for axles with combustion engines
+I_eff_f,I_ges / I_ha
+I_eff_gs_mn,minimal effective translation
+I_eff_gs_mx,maximum effective translation
+I_eff_stat_f,I_ges_stat / I_ha
+I_em1,Translation of electric machine 1
+I_ges,Overall gear ratio for axle with combustion engine (corresponds to BMWtqc_Rat_GbxWhlHaxl)
+I_ges_stat,Overall gear ratio based on Gangi for leading gear ratio when upshifting
+I_getr,Gear ratio hybrid axle with plausibility checked gear (for ASD)
+Mdk_vm_soll_ziel_pred,Target air torque after switching
+N_ab,output speed
+N_achse_antr,Speed of the drive axle (from wheel speeds) Almo
+N_em1_ist_i,Quotient of electric machine speed and gear ratio of the electric machine
+St_gangwechsel_akt,"Gear change active. 0: no gear change, 1: downshift, 2: upshift"
+St_i_ges,Status of overall translation
+Status_i_ges_stat,Status_i_ges_stat
+Status_i_ges_stat.B_reset_i_ges_stat,B_reset_i_ges_stat
+Status_i_ges_stat.B_set_i_ges_stat,B_set_i_ges_stat
+Status_i_ges_stat.B_zw_freiga_schalt,"Ignition angle release with preload, pull upshift"
+KL_MDR_DIFF_WLC_MAFW,"Expansion of Md_rad_max_rk due to torque converter elevation when stationary, depending on V_fzg_plaus"
+KL_MD_K_MAX_BST,Speed-dependent boost characteristic of the combustion engine (Nkw_opt)
+KL_MD_K_MAX_BST_HS,Speed-dependent boost characteristic of the combustion engine (Nkw_opt) for manual switches
+KL_MD_K_MAX_RST,Speed-dependent race start characteristic of the combustion engine (Nkw_opt)
+KL_MD_K_MAX_RST_HS,Speed-dependent race start characteristic of the combustion engine (Nkw_opt) for manual switches
+KL_MD_K_MAX_VL,Speed-dependent full load line of the combustion engine (Nkw_opt)
+KL_MD_K_MAX_VL_HS,Speed-dependent full load line of the combustion engine (Nkw_opt) for manual switch
+KL_MD_RAD_MAX_BST,Speed-dependent characteristic curve of the electric motor
+KL_MD_RAD_MAX_RST,Speed-dependent characteristic curve of the electric motor
+KL_MD_RAD_MAX_VL,Speed-dependent boost characteristic of the electric motor
+KL_UC_BOOST,"Usecase mapping: Boost behavior (0=no boost, 1=boost, 2=race start)"
+K_BST_OFF,Hide ramp slope for boost (MAFW)
+K_BST_ON,Show ramp gradient for boost (MAFW)
+K_KICK_MAX,Maximum torque selection at kickdown
+K_MDR_VERL_MAFW,Calculation factor for losses in accelerator pedal interpretation
+K_PWG_BST,Detection of boosting from specified Pwg value (ZKA)
+S_SPT104_CP458784,Switch for the CP458784
+BMWtqc_Rat_OptmGbxWhlHaxl,optimal gear ratio on the hybrid axle (corresponds to I_ges_opt in the Almo)
+F_rad_statverl,Factor for static losses (equivalent to BMWtqc_Fac_StatLossHaxl in Nemo)
+Md_rad_statverl,Error amplitude for the current drive train wheel torque (corresponds to BMWtqc_Tqw_StatLossHaxl in Nemo)
+Pwg_ist_mafw,Pwg_ist + K_PWG_IST_KICK_OFFSET at B_kickdown
+St_kickdown,Status word for kickdown
+St_kickdown.B_kickdown,Kick down
+St_mdipmfw,status
+St_mdipmfw.B_bst,Boosting detected
+St_mdipmfw.B_emf_aktiv,EMF active - no longer necessarily a requirement for torque limitation by EF
+St_mdipmfw.B_reku,From St_q_rekup_anf: Recuperation operation
+St_mdipmfw.B_schlepp,From St_q_rekup_anf: Towing operation
+Status_usecase_antr_lim,Selection from Selection from Status_usecase_mafw and Status_usecase_antr
+V_fzg_plaus,Plausible vehicle speed
+V_mafw,Vehicle speed secured in mafw
+Var_hs,Vehicle variant with manual transmission
+Zka_fak,Jump factor ZKA in the tensile area
+Md_rad_max_k,Maximum wheel torque of the electric motor
+Md_rad_max_r,Maximum wheel torque V engine
+Mdk_max_k,Maximum clutch torque V engine
+Mafw_mmax_fader,Blending factor between full load and boost operation
+Md_rad_max_rk,Maximum possible total wheel torque (wheel torque and clutch torque) without step factors
+Md_rad_max_zka,Maximum possible total wheel torque
+BMWtqe_tqc_FlApplStgNorm_T,"Torque Engine, torque crank shaft, fulload application, stage normal curve"
+BMWtqe_tqc_FlApplStgPwr1_T,"Torque Engine, torque crank shaft, fulload application, stage power one curve"
+BMWtqe_tqc_FlApplStgPwr2_T,"Torque Engine, torque crank shaft, fulload application, stage power two curve"
+BMWosc_acvn_ModEng_ub,Configuration signal for the full load increase control lever
+BMWtqe_st_tqi_LimSrc_uw,"Torque Engine status, state torque inside limit source unsigned Word (uint16)"
+Md_reib_vl,Md_reib_vl
+Md_reib_vm,Torque loss from indicated torque (HP part) to KW torque including auxiliary unit load
+Mdi_max,Min selection between maximum internal moment and applicable maximum internal moment
+Mdi_max_vm_saug,Maximum internal suction torque
+Mdk_bas,Maximum implementable VM moment from current filling
+Nkw_ref,ASD. Calculated commercial vehicle speed reference.
+Mdk_max_vm_roh,Maximum possible VM torque limited with STG coupling
+BMWtqe_st_tqc_LimSrc_uw,"Torque Engine status, state torque crank shaft limit source unsigned Word (uint16)"
+Mdk_max_vl_applz,Applicable maximum physical possible VM moment
+Mdk_max_vm_nobgr,Maximum physical possible torque from the combustion engine
+Mdk_max_vm_saug,Maximum suction torque
+Mdk_optvm_korr,Max selection between Mdk_max_vm_saug and Mdk_bas
+Mdk_vlsaug_max,mdk_max_vm_suction
+K_FRFMXBS_MN,Factor for load reduction in component protection mode
+BMWext_fac_FilRednPctl_C,Filter factor LowPass filter of the reduction factor (pre-control); 0.999=unfiltered
+BMWext_fac_InttLoadMaxIdl_T,integrator constant for ramping out of load reduction during B_ll in component protection
+BMWext_fac_RednCtlrInttMax_C,Maximum controller output for temperature controller via factor on torque or filling
+BMWext_fac_RednCtlrInttMin_C,Minimum controller output for temperature controller via factor on torque or filling
+BMWext_fac_RednCtlrIntt_T,I component for temperature controller via factor on torque or filling
+BMWext_fac_RednPctlFlTIntk_M,"Factor for fader addressing Reduction factor feedforward f(F_octan,Tans); 0=lowest reduction, 1=highest reduction"
+BMWext_fac_RednPctlMax_T,"Input control factor reduction due to component protection; lowest reduction level (=largest factor, possibly 1.0)"
+BMWext_fac_RednPctlMin_T,Input control factor reduction due to component protection; highest reduction level (=smallest factor) with poor fuel and high tans
+BMWext_fac_RednPctlTGasCatM1_T,"Factor for fader addressing reduction factor feedforward f(temperature cat monolith 1); 0=no reduction, 1=activation of reduction"
+BMWext_fac_RednPctlTGasMnf_T,"Factor for fader addressing Reduction factor pilot control f (exhaust gas temperature turbocharger inlet); 0=no reduction, 1=activation of reduction"
+BMWext_fac_RednPctlTGasP2Cat_T,"Factor for fader addressing Reduction factor pilot control f (exhaust gas temperature cat inlet); 0=no reduction, 1=activation of reduction"
+BMWext_fac_RednPctlTWallMnf_T,"Factor for fader addressing Reduction factor feedforward f(wall temperature manifold); 0=no reduction, 1=activation of reduction"
+BMWext_lam_CptPronMinLeanTq_M,Lambda Lean Best Torque for limiting the component protection lambda
+BMWext_swi_RednCtlrTcOff_C,"Switch for deactivating the temperature controller via reduction factor (ATL), 1 = controller off"
+BMWext_t_DeltRednCtlrTcOff_C,Difference from the target temperature to switch off the temperature controller (ATL)
+BMWext_t_DeltRednCtlrTcOn_C,Difference from the target temperature for switching on the temperature controller (ATL)
+KF_BSLGF,Lambda grease run limit for component protection filling intervention
+KL_FRFMXBS,Characteristic curve factor filling intervention for BS at grease run limit
+K_DTARFMX,BS temperature control deviation for filling limitation at grease run limit
+K_GRDUP_LALBT,Constant gradient limitation LBT lambda direction lean
+K_RFMX_I1,Increment integrator input ramp for filling limitation at BS
+K_RFMX_I2,Decrement integrator input ramp for filling limitation at BS
+K_TDBSLGF,Turnoff delay time for resetting the filling limit in the LL
+S_BSBUEK,Switch component protection for cross-bank Kruemmer
+S_BSRFMX,Filling limitation switch for component protection at the grease limit
+S_BS_MONO,BS only calculate mono (Bank2=Bank1)
+BMWas_b_Idl_bo,"drive strategy () bit, boolean, flag, binary message or variable (log. condition) idle (idle) boolean/logic value (bool)"
+BMWext_t_DeltGasMnfXab,Delta temperature setpoint deviation gas temperature before ATL for torque/filling limitation
+BMWext_t_GasCatM1Xab_sw,Exhaust gas temperature in the Monolith1 middle catalytic converter (after 5 virtual disks)
+BMWext_t_GasMnfFilCptPronXab,Exhaust gas temperature filtered before turbocharger (for component protection temperature controller)
+BMWext_t_GasP2CatFilXab_sw,filtered exhaust gas temperature pipe ATL to the catalytic converter
+BMWext_t_WallMnfXab_sw,Wall temperature pipe to the ATL
+Bed_bsakt_atl_xab,Condition BS active ATL
+Bed_bsakt_ik_xab,Condition BS active in cat
+Bed_bsakt_vk_xab,Condition BS active before cat
+Bed_bsdeak_xab,Component protection is deactivated
+Dta_bs_atl_xab,Setpoint deviation exhaust gas temperature ATL
+Dta_bs_ik_xab,Setpoint deviation exhaust gas temperature in cat
+Dta_bs_vk_xab,Setpoint deviation of exhaust gas temperature before cat
+F_octan,Factor adapted fuel quality (0=RON98 / 1.0=RON91)
+La_bs_soll_atl_xab,BS lambda setpoint ATL
+La_bs_soll_ik_xab,BS lambda setpoint in cat
+La_bs_soll_vk_xab,BS lambda setpoint before cat
+Nkw_atm,Speed crankshaft ATM
+Rf_atm,Relative air filling ATM
+Tabg_vl_xab,Exhaust gas temperature before charger
+Tatlsoll_xab,Setpoint exhaust gas temperature ATL
+BMWext_b_RednCtlrTcXab,Activation of the temperature controller (for exhaust gas temperature ATL entry) via reduction factor (to torque or filling)
+BMWext_fac_AcvRednPctlXab,"Activation factor for reduction factor pre-control (1=use pre-control factors), affects fader"
+BMWext_fac_InttLoadMax_sw,integration constant for load limitation during component protection
+BMWext_fac_RednCptPronXab,Reduction factor for total component protection (controller + pilot control)
+BMWext_fac_RednCtlrTcXab,Reduction factor component protection pilot control
+BMWext_fac_RednPctlXab,Reduction factor component protection pilot control
+BMWext_ti_CptPronIdl_ub,time during B_ll in component protection
+B_bslalbt,Lambda limitation condition in component protection through Lean Best Torque
+La_bs_roh_xab,Lambda set point in component protection from limitation
+La_bslalbt,Lambda Lean Best Torque
+La_bslalbt_roh,Lambda Lean Best Torque before gradient limitation
+St_bsvst,Status byte component protection precontrol for Noxkat
+St_bsvst.B_bslgf,BS regulator at the grease stop
+St_bsvst.B_bsvst,Condition for component protection for Noxkat
+B_bslalbt_xab,Condition Lambda limitation in component protection through Lean Best Torque for each exhaust bank
+Bed_bs_xab,Component protection condition active
+Frfmxbsld,Factor filling limitation due to component protection at the grease limit
+La_bs_xab,Component protection lambda
+St_zwbts1,Status byte component protection function
+St_zwbts1.B_bs1,Condition component protection bank 1 active
+St_zwbts1.B_bs2,Condition component protection bank 2 active
+St_zwbts1.B_lklpsbs_vk,Air flap open by pre-cat
+KL_MDRED_NKW,Factor for reducing the engine target torque depending on the engine speed
+CW_USECASE_WMK_TMSGET,Code word for hiding parts of the Status_usecase_wmk for the gearbox intervention function
+CW_USECASE_WMK_WRNH,Code word for hiding parts of the Status_usecase_wmk for the upshift notification function
+KF_MDRED_T,Factor for reducing the target motor torque depending on the temperatures
+KL_MDAC_TANS,Maximum released torque for the air conditioning compressor from the WMK depending on the intake air temperature
+KL_MDAC_TMOT,Maximum released torque for the air conditioning compressor from the WMK depending on the engine temperature
+KL_MDAC_TOEL,Maximum released torque for the air conditioning compressor from the WMK depending on the engine oil temperature
+KL_MDRED_MN,Minimum actual clutch torque released by the WMK depending on the engine speed
+KL_NKWMAX_TMOT,Characteristic curve for reducing the internal combustion engine speed from heat management via the coolant temperature.
+KL_NKWMAX_TOEL,Characteristic curve for reducing the combustion engine speed from heat management via the oil temperature.
+KL_USECASE_WMK_TMSGET,Selection of the heat management use cases in which the gearbox intervention should be enabled.
+KL_USECASE_WMK_WRNH,Selection of the heat management use cases in which the upshift notification should be activated.
+K_ETA_KUEHL_AP,Factor for reducing the motor target torque to reduce heat input in the application operating class
+K_MDREDMD_AP,Minimum actual clutch torque released by the WMK in the Application operating class
+K_MDREDTMSGET_FS_TMOT,Minimum coolant temperature to enable torque reduction or gearbox intervention
+K_MDREDTMSGET_FS_TOEL,Minimum engine oil temperature to enable torque reduction or gearbox intervention
+K_MD_AC_VMA_AP,Maximum released torque for the air conditioning compressor from the WMK in the VMA in the Application operating class
+K_MD_AC_VMA_RG,Maximum released torque for the air conditioning compressor from the WMK in the VMA in the regulation and control operating class
+K_NKWMAX_AP,Maximum combustion engine speed in application mode.
+K_NKWMAX_MN,Lowest permissible reduction in combustion engine speed from thermal management.
+K_NKWMAX_MOT,Maximum possible combustion engine speed that the engine can have.
+K_TD_WRNG_AUS,Length of time that the output of the yellow warning lamps is suppressed
+K_TD_WRNR_AUS,Length of time that the output of the red warning lamps is suppressed
+K_TMSGET_V,Minimum vehicle speed to activate the thermal engine protection in the transmission in the escalation operating class
+K_TMSGET_V_HYS,Hysteresis offset for the minimum vehicle speed to activate the thermal engine protection in the transmission in the escalation operating class
+K_WRNG_TMOT,Minimum engine temperature to activate the yellow warning lamp
+K_WRNG_TOEL,Minimum engine oil temperature to activate the yellow warning lamp
+K_WRNH_TOEL,Minimum engine oil temperature to activate the upshift warning
+K_WRNR_TMOT,Minimum engine temperature to activate the red warning lamp
+K_WRNR_TOEL,Minimum engine oil temperature to activate the red warning lamp
+K_WRN_TMOT_EL,Reduction of the limit motor temperature to activate the warning lamps (yellow and red) in the event of an e-fan error
+S_TMSGET_AP,Activation of thermal motor protection in the gearbox in the Application operating class
+S_WRNG_AP,Activation of the yellow warning lamp in the Application operating class
+S_WRNH_AP,Activation of the upshift warning lamp in the Application operating class
+S_WRNR_AP,Activation of the red warning lamp in the Application operating class
+Ba_vma_ist,Operating mode of the WMK for the VMA
+Ba_vma_kla,Operating class of the WMK for the VMA
+Ba_vma_zus,Operating status of the WMK for the VMA
+Mdi_zw_soll_wm,internal target torque in the WMK
+Nkw_wm,Combustion engine speed in WMK
+St_wmeingfz_in1,Internal status word
+St_wmeingfz_in1.B_el_fehler_wm,"E-fan error in the WMK [0=no error, 1=error exists]"
+St_wmeingfz_in1.B_ewp_fehler_wm,"EWP error in WMK [0=no error, 1=error exists]"
+St_wmeingfz_in1.B_fahrbereit_wm,"Status of readiness to drive in the WMK [0=not ready to drive, 1=ready to drive]"
+St_wmeingfz_in1.B_kl15_start_wm,Bit for detection activation terminal 15
+St_wmeingfz_in1.B_kl15_wm,"Status terminal 15 in WMK [0=inactive, 1=active]"
+St_wmeingfz_in1.B_puls_sek_wm,Second pulse in WMK is true once per second
+St_wmeingfz_in1.B_wadu_wm,Request to close the KKS when water crossing is detected.
+St_wmeingfz_in1.B_wischerakt_wm,"Status of the windshield wipers in the WMK [0=inactive, 1=active]"
+St_wmeinvma_in2,internal status word
+St_wmeinvma_in2.B_kwdreht_start_wm,Crankshaft begins to rotate (rising edge B_kwdreht)
+St_wmeinvma_in2.B_kwdreht_wm,"Rotation of the crankshaft in WMK [0=no rotation, 1=rotation]"
+St_wmeinvma_in2.B_msastop_wm,"Motor in MSA stop phase in WMK [0=no MSA stop, 1=MSA stop]"
+St_wmeinvma_in2.B_prail_wm,Request to the WMK to lower the temperatures due to the rail pressure
+St_wmeinvma_in2.B_tegs_akt_vma,T_egs temperature present and current (automatic transmission installed / bus reports T_egs present)
+St_wmeinvma_in2.B_tegs_fehler_vma,Error detection/invalidity detection in the signal from T_egs
+St_wmeinvma_in2.B_vskr_f,"Fuel filtering calculation [0=no calculation, 1=calculation]"
+St_wmeinvma_in2.B_zel_fehler_vmgen,"Additional E-fan error in the WMK of VMGEN [0=no error, 1=error exists]"
+St_wmeinvma_in5,internal status word
+St_wmeinvma_in5.B_dkg_wm,"DKG gearbox detected in WMK [0=no DKG, 1=DKG detected]"
+St_wmeinvma_in5.B_handget_wm,"Manual gearbox detected in WMK [0=no HS, 1=HS detected]"
+Status_usecase_wmk,Detected thermal management use case
+Tans_wm,Plausibility-checked intake air temperature in the WMK
+Tmot_wm,Internal combustion engine coolant temperature in the WMK
+Toel_wm,Engine oil temperature in the WMK
+V_wm,Vehicle speed in WMK
+Ba_vma_mdac_ist,Operating mode of the WMK for climate reduction in the VMA
+Ba_vma_mdac_kla,Operating class of the WMK for climate reduction in the VMA
+Ba_vma_mdac_zus,Operating status of the WMK for climate reduction in the VMA
+Ba_vma_mdred_ist,Operating mode of the WMK for torque reduction in the VMA
+Ba_vma_mdred_kla,Operating class of the WMK for torque reduction in the VMA
+Ba_vma_mdred_zus,Operating state of the WMK for torque reduction in the VMA
+Ba_vma_tmsget_ist,Operating mode of the WMK for gearbox intervention in the VMA
+Ba_vma_tmsget_kla,Operating class of the WMK for gearbox intervention in the VMA
+Ba_vma_tmsget_zus,Operating state of the WMK for gearbox intervention in the VMA
+Ba_vma_wrng_ist,Operating mode of the WMK for the yellow warning lamp in the VMA
+Ba_vma_wrng_kla,Operating class of the WMK for the yellow warning lamp in the VMA
+Ba_vma_wrng_zus,Operating status of the WMK for the yellow warning lamp in the VMA
+Ba_vma_wrnh_ist,Operating mode of the WMK for the upshift message in the VMA
+Ba_vma_wrnh_kla,Operating class of the WMK for the upshift message in the VMA
+Ba_vma_wrnh_zus,Operating state of the WMK for the upshift message in the VMA
+Ba_vma_wrnr_ist,Operating mode of the WMK for the red warning lamp in the VMA
+Ba_vma_wrnr_kla,Operating class of the WMK for the red warning lamp in the VMA
+Ba_vma_wrnr_zus,Operating status of the WMK for the red warning lamp in the VMA
+Eta_kuehl_es,Factor for reducing the motor target torque to reduce the heat input in the escalation operating class (is limited to 1 in ASCET)
+Eta_kuehl_mx,Factor for reducing the motor target torque to reduce heat input (limited to 1 in ASCET)
+Fmdred_nkw,Factor for reducing the engine target torque depending on the engine speed
+Fmdred_t,Factor for reducing the target motor torque depending on the temperatures
+Md_ac_tans,Maximum released torque for the air conditioning compressor from the WMK depending on the intake air temperature
+Md_ac_tmot,Maximum released torque for the air conditioning compressor from the WMK depending on the engine temperature
+Md_ac_toel,Maximum released torque for the air conditioning compressor from the WMK depending on the engine oil temperature
+Md_ac_vma_es,Maximum released torque for the air conditioning compressor from the WMK in the VMA in the escalation operating class
+Mdk_kuehl_es,Maximum actual clutch torque released by the WMK
+Mdk_kuehl_es_p,Maximum actual clutch torque released by the WMK as a product of Mdi and Eta without taking the minimum torque into account
+Nkw_max_anf,Maximum combustion engine speed from heat management
+Nkw_max_temp,Maximum combustion engine speed calculated from the temperatures from the thermal management
+St_wmschutzvma_in2,internal status word
+St_wmschutzvma_in2.B_mdredtmsget_fs,Activation of torque reduction and gearbox intervention.
+St_wmschutzvma_in2.B_usecase_wmk_tmsget,The gearbox intervention is requested using the thermal management use case.
+St_wmschutzvma_in2.B_usecase_wmk_wrnh,The upshift message is requested based on the thermal management use case.
+St_wmschutzvma_in2.B_wrnh_ba_wm,Activation of the upshift message for the driver based on the operating mode
+St_wmschutzvma_in2.B_wrnh_es,Activation of the upshift warning in the escalation operating class
+St_wmschutzvma_in2.B_wrnr_es,Activation of the red warning lamp in the escalation operating class
+St_wmschutzvma_in2.B_wrnr_es_tmot,Activation of the red warning lamp in the escalation operating class due to the engine temperature
+St_wmschutzvma_in2.B_wrnr_es_toel,Activation of the red warning lamp in the escalation operating class by the engine oil temperature
+Status_usecase_wmk_tmsget,Detected heat management use case for the gearbox intervention function
+Status_usecase_wmk_wrnh,Detected thermal management use case for the upshift warning function
+Md_ac_vma,Maximum released torque for the air conditioning compressor from the WMK in the VMA
+Mdk_kuehl_mx_wm,Maximum actual clutch torque released by the WMK
+Nkw_max_wm,Maximum combustion engine speed specified by heat management
+St_wmschutzvma_in1,internal status word
+St_wmschutzvma_in1.B_tmsget_es,Activation of the thermal motor protection in the transmission in the escalation operating class
+St_wmschutzvma_in1.B_tmsget_wm,Activation of thermal engine protection in the transmission by adapting the switching strategy
+St_wmschutzvma_in1.B_wrng_es,Activation of the yellow warning lamp in the escalation operating class
+St_wmschutzvma_in1.B_wrng_es_tmot,Activation of the yellow warning lamp in the escalation operating class due to the engine temperature
+St_wmschutzvma_in1.B_wrng_es_toel,Activation of the yellow warning lamp in the escalation operating class due to the engine oil temperature
+St_wmschutzvma_in1.B_wrng_wm,Activation of the yellow warning lamp
+St_wmschutzvma_in1.B_wrnh_wm,Activation of the upshift warning for the driver
+St_wmschutzvma_in1.B_wrnr_wm,Activation of the red warning lamp
+St_wmschutzvma_in3,internal status word
+St_wmschutzvma_in3.B_mdr_akt_wm,Torque reduction active
+St_wmschutzvma_in3.B_mdredtmsget_fs_tmot,Activation of torque reduction and gearbox intervention via the coolant temperature.
+St_wmschutzvma_in3.B_mdredtmsget_fs_toel,Activation of torque reduction and gearbox intervention via the engine oil temperature.
+St_wmschutzvma_in3.B_nkwmax_r,Resetting the flip-flop for the information memory entry speed reduction WM
+St_wmschutzvma_in3.B_tmsget_v,Activation of the thermal engine protection in the transmission depending on the vehicle speed
+St_wmschutzvma_in3.B_wrng_anf_wm,Request to activate the yellow warning lamp
+St_wmschutzvma_in3.B_wrnh_aktiv_wm,"Upshift advice enabled [1=upshift warning enabled, 0=upshift warning disabled]"
+St_wmschutzvma_in4,internal status word
+St_wmschutzvma_in4.B_nkwmax_s,Setting the flip-flop for the information memory entry speed reduction WM
+St_wmschutzvma_in4.B_nkwmax_wm,Setting the information memory entry speed reduction WM
+K_Anteil_PWG,Weighting of the PWG share for calculation BMWosc_fac_DfcoDrvgSit_ub
+K_F_SOT_RUECKBLICK_RS,Offset for factor for burbles when downshifting
+K_F_SOT_RUECKBLICK_STAND,Factor for burbles when stationary
+K_MDKIST_SOT_MX,Normalization for Mdk_ist_sot_mem_mx
+K_PWGIST_SOT_MX,Normalization for Pwg_ist_sot_mem_mx
+K_SOT_N_MEM,Number of past values of Mdk_ist and Pwg_ist
+K_V_SOT_MN,Minimum driving speed for burbles
+S_SOT_CALC,Calculation of the factor for burbles
+Mdk_ist,Current crankshaft torque on axle with combustion engine
+Pwg_ist,Pedal value driver's request
+St_egsprog_kor,corrected EGS program
+B_sot_rs,Backshift detected
+Cnt_sot_mem,Counter for stored values of Pwg_ist and Mdk_ist
+Mdk_ist_sot_mem,Stored values of Mdk_ist
+Mdk_ist_sot_mem_mx,Largest stored value of Mdk_ist
+Pwg_ist_sot_mem,Stored values of Pwg_ist
+Pwg_ist_sot_mem_mx,Largest stored value of Pwg_ist
+BMWosc_fac_DfcoDrvgSit_ub,Factor for burbles
+Md_emk_ist_Haxl,Current torque from electric motor on crankshaft from rear axle
+Mdk_ist_vm,Actual VM torque on the crankshaft averaged over the number of cylinders
+Mdk_ist_m,Current crankshaft torque on axle with combustion engine
+Mdk_ist_Haxl,Current crankshaft torque from the combustion engine on the rear axle
+Absch_korr,[SS_EXP] Correction value shutdown
+Aepmsadiag_fr,[SS_EXP] Rescue some values from MSAINFO that need to be flash resistant
+Anz_stvar_comfstart,"Number of ""Comfort"" MSA starts"" carried out"
+Anz_stvar_keystart,Number of key starts performed
+Anz_stvar_normalstart,"Number of ""Normal"" MSA starts"" performed"
+Anz_stvar_respstart,"Number of response ""MSA starts"" carried out"
+Anz_stvar_sicherstart,"Number of ""Safe"" MSA starts"" performed"
+Anz_zyl_aus_nl_mot,Total number of cylinders switched off due to errors and active additional shutdown due to rough running related to the engine
+Array_bzs_vm_deak,Effective disablers for VM
+Array_bzs_vm_ea,Effective power-on prompts for VM
+Array_bzs_vm_ev,Effective power-on preventers for VM
+Array_vm_fav,Effective driver shutdown preventers for VM
+Array_vm_sav,Effective system shutdown preventers for VM
+Aspr,Outlet spread setpoint
+Aspr_noncsers,Exhaust spread setpoint (nonCSERS for CSERS diagnosis MY2013)
+Atlsvc_dpvdk1,Differential pressure before DC of both turbochargers
+Atlsvc_dpvdk2,Differential pressure before DK with turbocharger 1
+Atlsvc_dpvdk3,Differential pressure before DK with turbocharger 2
+BMWMonChain_ag_CmOfsOv_sw,Output offset NW adaptation
+BMWMonChain_ag_CmStr_uw,Starting values of the NW flanks
+BMWMonChain_ag_StcStd_uw,Standard deviation of the NW adaptations in the last evaluation interval
+BMWMonChain_ag_StrValFild_sw,Starting value for calculating the output value
+BMWMonChain_ag_TrigImme_sw,Update history last display value before correction
+BMWMonChain_ag_UpdHist_sw,Update history correction value
+BMWMonChain_milg_TrgOld_uw,Update history includes the previous calculation
+BMWMonChain_milg_TrigImme_uw,Update history kmst when corrected
+BMWMonChain_qlf_CmOfs_ub,Qualifier for offset NW adaptation
+BMW_acvn_PclFilHtr,This signal requests an adapted hybrid operating strategy for heating the gasoline particulate filter
+BMW_acvn_PclFilRecu,This signal requests an adapted hybrid operating strategy to regenerate the gasoline particle filter
+BMW_st_AdpHvsSocMin,Signal requires an increase in SOCmin depending on HVS temperature
+BMWaep_b_FbExtRqrt_bo,replaces St_aepubnkor.B_can_ovrakt
+BMWas_st_Em1OpmSp_ub,Target operating mode of the electric machine 1 (0: Standby 1:Torque control 3: Electric machine voltage control 5:Speed control with torque precontrol 6:HV battery current control 8:Active short circuit 10:Free running)
+BMWas_st_StruModEdr_ub,Status configuration start-up mode hybrid
+BMWausy_p_PclFilAft_uw,"Pressure after particulate filter (gasoline particulate filter, OPF), seen in mass flow direction"
+BMWcbsoz_b_AcvnCfmAvlMoOil_bo,Activation_Confirmation-Availability_Motoreol_Ist
+BMWchc_b_GcWup_bo,request warm-up gear shift (lower gears - higher engine speed)
+BMWchc_b_HtClsFlp_bo,Exhaust flap closure request due to Kat-Heating
+BMWchc_st_OpmDt_ub,Catalyst heating coordinator operating mode for drivetrain (ST_CAT_HT)
+BMWchc_ti_DlyGearEngdDid_ub,Remaining time preventing gear engagement due to emissions
+BMWchdiag_b_1DiagEndTot_bo,t.b.d
+BMWchdiag_fac_ObdNormTot_sw,t.b.d
+BMWchdiag_st_OpmTst_ub,Feedback tester in the event of an error Demo CSERS diagnosis combustion engine load point reduction.
+BMWchhyb_b_St_bo,Release status for the ability to select E-mode
+BMWchm_stb_1_ub,"Codeword for Catalyst heating - maintain temperature, (0: BMWchm_b_Ena_bc, 1: BMWchm_b_lam_Splt_bc, 2: BMWchm_TqRsv_bc, 3: BMWchm_PucInh_bc, 4: BMWchm_InjPuc_bc, 5: BMWchm_b_GcWup_bc, 6: BMWchm_b_OpmTc_bc)"
+BMWchm_stb_1_ub.BMWchm_b_GcWup_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) gear change(gear change) warmup(warm up) Bit in carrier byte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_InjPuc_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) injection pull fuel cut off Bit in carrierbyte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_OpmTc_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) operating mode turbo charger Bit in carrierbyte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_PucInh_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) pull fuel cut off inhibit bit in carrier byte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_TqRsvDyn_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) torque(torque) reserve(reserve, reserve, reserve, stock) dynamic(dynamic) Bit in carrierbyte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_TqRsv_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) torque(torque) reserve(reserve) Bit in carrierbyte (bit)"
+BMWchm_stb_1_ub.BMWchm_b_VvtDi_bc,throttled operation mode requested.
+BMWchm_stb_1_ub.BMWchm_b_lam_Splt_bc,"Catalyst heating maintain temperature() bit, boolean, flag, binary message or variable(log. condition) a/fratio (lambda)(a/fratio (lambda)) split bit in carrier byte (bit)"
+BMWchm_tq_Rsv_sw,Catalyst heating maintain temperature() torque(torque) reserve(reserve) signed Word (sint16)
+BMWcluspd_n_LstMaxAttdn_uw,Last known maximum clutch speed in danger zone
+BMWcluspd_nr_ClasMaxAttdnAry_ub,Classification of maximum attained value from CluSpd
+BMWclutemp_t_Clu_sw,temperature clutch
+BMWcpena_b_Ena_bo,general Enable condition for canister purge
+BMWcpsup_stb_PTank_ub,carrier for bits
+BMWcpsup_stb_PTank_ub.BMWcpsup_b_CcPgEfcEna_bc,Enable efficient canister purge measures (general enable from the driving condition point of view).
+BMWcpsup_stb_PTank_ub.BMWcpsup_b_CcPgEfcPsbl_bc,efficient canister purge possible (for pressure tank)
+BMWcpsup_stb_PTank_ub.BMWcpsup_b_CcPgEfc_bc,Efficient carbon canister purge active.
+BMWcpsup_stb_PTank_ub.BMWcpsup_b_CcSocRstPTank_bc,Reset CcSoc due to requested pressure release occurred.
+BMWctb_ag_ExcrCtlOutAry_sw,Angle of excenter correction to apply to cylinders with index from BMWctb_idx_ExcrClcdAry - output value
+BMWctb_ag_ExcrCtlStatAry_sw,Statistical eccentric angle correction values
+BMWctb_ag_IgOutXcy_sw,Ignition angle offset per cylinder - output value
+BMWctb_amp_Eo05_uw,Amplitude of engine order 0.5
+BMWctb_amp_Eo10_uw,Amplitude of engine order 1.0
+BMWctb_amp_Eo15_uw,Amplitude of engine order 1.5
+BMWctb_amp_Eo20_uw,Amplitude of engine order 2.0
+BMWctb_amp_Eo25_uw,Amplitude of engine order 2.5
+BMWctb_amp_Eo30_uw,Amplitude of engine order 3.0
+BMWctb_ct_ChkEfc_uw,Current counter value for check whether Ctb is effective
+BMWctb_ct_ExcrCtlAcvStatXcy_uw,Counter stroke correction active for respective cylinder
+BMWctb_ct_ExcrPermDgraT_ub,Counter excenter angle correction degraded due to VVT temperature or overload
+BMWctb_idx_ExcrCtlOutAry_ub,Index of cylinders to apply excenter angle correction - output value
+BMWctb_idx_ExcrCtlStatAry_ub,Cylinders most frequently selected for stroke correction according to statistics
+BMWctb_lur_DifXcs_sw,"Filtered Lur values of cylinders (comparing cylinders among each other), all cylinders"
+BMWctb_lur_RndXcs_sw,"Filtered absolute delta Lur values of each cylinder (current cycle vs. previous cycle, due to random combustion variation), all cylinders"
+BMWctb_pct_CrtnAdpXcy_sw,Adapted correction percentage
+BMWctb_pct_CrtnOutXcy_sw,Correction percentage output value
+BMWctb_pct_ExcrCtlAcvStatAry_ub,Relative frequency stroke correction according to statistics active on one and two cylinders
+BMWctb_pct_InjOutXcy_sw,Injection correction per cylinder - output value
+BMWctb_st_TstrOut_uw,Status word Combustion Torque Balancing for Tester output
+BMWdor_b_TherMgrSpAcv_bo,Control of the WMM by DorDiag is currently active
+BMWdrl_nr_SwVer_ub,Internal Software Version of DrlGbk to be read out by SGBD-Job
+BMWeisy_b_InltCsNotPlau_bo,Status inlet cross section implausible threshold
+BMWeisy_mf_LeakNormDiag_sw,"standardized leakage mass flow between the compressor outlet and inlet valve (normalized: based on reference temperature and critical pressure ratio, i.e. this mass flow is a measure of the leakage cross section)."
+BMWeng_b_Str_bo,Start condition
+BMWext_b_DewPclFilXab_bo,The end of the dew point on the particle filter has been reached
+BMWext_t_GasEngFilXab_sw,"Exhaust gas temperature at the manifold inlet from AMOT, filtered via DynFlt"
+BMWext_t_GasInPclFilXab_sw,Exhaust gas temperature in the middle of the particle filter
+BMWfanstc_cnt_StcAftRunRly,Statistic Array 2 of Fanstc: Accumulated Numbers of E-Fan Afterruns and Relay Switching Cycles
+BMWfanstc_pct_StcThd,E-fan statistics thresholds
+BMWfanstc_ti_StcCtlDur,Statistic Array 1 of Fanstc: Accumulated Time of Control Duration.
+BMWfcovvt_b_Deac_bo,Deactivation of variable valve train (max. valve lift)
+BMWfcovvt_b_VvtLiho_bo,VVT system in limphome mode (throttle engine operation requested).
+BMWgpf_b_CrtnSootReq,Correction of soot model: request
+BMWgpf_b_GcRgnHt_bo,  The same as warmup gearshift (higher rpm) request for heating particular filter
+BMWgpf_b_HtAcvInfoForMsfDet,Triggers an expansion of the thresholds for misfire detection during OPF heating
+BMWgpf_b_IntpRgnReq,OPF: Request interruption of an active regeneration
+BMWgpf_b_PfTstrSootPcgCmpl,Status tester job for preconditioning OPF sufficiently filled
+BMWgpf_m_AshXab,Total ash in the particle filter (Mdl+Adp) (exhaust bank-specific)
+BMWgpf_m_CrtnSootRelValXab,Correction of soot model: relative value
+BMWgpf_m_LoadXab,Total load (soot + ash) in the particle filter (exhaust bank-specific)
+BMWgpf_m_SootRgnUrNrm,Normalization value to determine the urgency after loading
+BMWgpf_rat_RgnUr_sw,Regeneration urgency from BMW software
+BMWgpf_st_PclFilRgnTstrEva,"Gasoline particulate filter(Otto particle filter) status, state(status, condition, bit string) Particle(particle) filter(filter) regeneration(regeneration) Workshop Tester(tester, workshop tester) evaluate(evaluate, assess)"
+BMWgpfdiag_dst_AshLifeEnd,Estimated distance until OPF will be fully loaded with ash
+BMWgpfdiag_m_gra_Asch,Ash gradient (g/1000km)
+BMWgpfdiag_st_GpfBltnRdy,Process information for installation diagnosis of particle filter (OPF)
+BMWgpfheat_b_HtClsFlp_bo,Exhaust flap closure request due to OpfHeating
+BMWhip_ag_MonHppSp_Ary,Ring buffer rail monitoring - HDP control
+BMWhip_dst_MonTrig_Ary,Ring storage rail monitoring - mileage
+BMWhip_gra_MonPSp_Ary,Ring buffer rail monitoring - rail pressure dynamics
+BMWhip_n_MonN_Ary,Ring buffer rail monitoring - speed
+BMWhip_p_MonEfpSp_Ary,Ring storage rail monitoring - EKP pre-feed pressure
+BMWhip_p_MonPAct_Ary,Ring buffer rail monitoring - actual pressure
+BMWhip_p_MonPSp_Ary,Ring buffer rail monitoring - target pressure
+BMWhip_rat_MonEfpPwm_Ary,Ring buffer rail monitoring - EKP control
+BMWhip_t_MonFu_Ary,Ring buffer rail monitoring - fuel temperature
+BMWhip_volf_MonFu_Ary,Ring storage rail monitoring - volume flow
+BMWign_b_BasDyn_bo,Dynamic detection for basic ignition angle
+BMWign_b_BasKnkLimd_bo,Basic ignition angle is limited to knock
+BMWign_b_ag_KnkCtlOut_bo,Ignition angle from Knock Control is being output
+BMWign_ct_PlugSootEstdRst,Counter-protected free-burning processes of spark plug soot
+BMWign_fac_PlugSootEstd_uw,Factor protected ZK soot
+BMWign_t_PlugEstd,Rudimentary estimated spark plug temperature
+BMWilauim_i_AltAct_sw,Generator current (according to USM)
+BMWilauim_n_Alt_sw,Speed machine
+BMWilauim_pct_AltLoad_uw,Electrical utilization machine
+BMWilauim_tq_AltMdl_sw,Generator torque
+BMWinjafs_fac_AirStoi_uw,Actual value air stoichiometric
+BMWisc_b_tq_InttBol_bo,Condition I portion of the BMW LLR is stopped due to lower system limits
+BMWisgusm_i_AltPwrClas_ub,
+BMWlam_rat_FacMixAdp2BndXak_sw,Ratio of the current mixture adaptation factor F_lradap_xak to the min or max limit (1.0 means: limit value has been reached)
+BMWlhm_b_HiPLihoRpsErr_bo,Emergency running with high pressure due to high pressure sensor error (common rail pressure sensor)
+BMWlhm_st_EdrRngDispOff,Status word request to hide the electric range display in the station wagon (temporary / permanent).
+BMWlhm_st_HybRea_ub,Status hybrid reactions bit-coded
+BMWlhm_st_HybRea_ub.BMWlhm_b_FuRngDispOff_bc,Request for station wagon: deactivate fuel reserve display
+BMWlhm_st_HybRea_ub.B_egshy_def_mdlim,Disable crawling
+BMWlhm_st_notl_eme_3_ub,Status bit-coded request for emergency running reactions from the DME to the EME 3
+BMWlpa_rat_EfpPwm_sw,EKP control
+BMWlpi_t_FuEsDeltEngStop_sw,Differential temperature of the respective cooling requirement when the engine is stopped
+BMWlpi_t_FuEsDelt_sw,Differential temperature of the respective cooling requirement
+BMWlpi_t_FuEsMax_sw,predicted maximum temperature at the HDP when switched off (engine)
+BMWlpi_ti_LstRfu_uw,Time since last refueling
+BMWlpi_volf_FuFild_sw,Fuel volume flow filtered
+BMWlpsc_p_RailCrtd_uw,Rail pressure corrected by learned rail pressure sensor offset
+BMWls_ag_ExcrSp_uw,"Setpoint eccentric shaft angle (1ms task),"
+BMWls_ag_ExcrUnc_uw,"Setpoint eccentric shaft angle before stroke correction through combustion control,"
+BMWls_b_VnsInh_bo,Condition general VANOS ban. Signal for suppliers to move quickly towards the stop.
+BMWmonstr_ct_ColdStrDfct_uw,Counter for start procedures evaluated as deficient (cold starts). Value available per tester job.
+BMWmonstr_ct_WrmStrDfct_uw,Counter for start procedures evaluated as deficient (warm starts). Value available per tester job.
+BMWmsa_b_EdrStgyCatHt_bo,E-driving restriction due to emissions
+BMWmsa_ct_MsaDiagVer_uw,Indicates the current version of the MSA diagnostics
+BMWmsa_st_CdnMsaExtd_ub,Status information from the engine control for MSA state machines in the transmission control.
+BMWmsa_st_HisSaveLongTiAry_ub,Msa history storage long term storage
+BMWmsa_st_HisSaveLongTiAry_uw,Msa history storage long term storage
+BMWmsa_st_HisSaveShoTiAry_ub,MSA history memory short-term memory
+BMWmsa_st_HisSaveShoTiAry_ul,MSA history memory short-term memory
+BMWmsa_st_HisSaveShoTiAry_uw,MSA history memory short-term memory
+BMWmsa_st_StrVarMsa_ub,Starting variant for engine application (AUTOSAR name)
+BMWmsa_stb_MsaDrr_ub,Readiness to drive information
+BMWmsa_stb_MsaDrr_ub.B_fahrbereit,Drive is ready to drive (combustion engine/electric/hybrid).
+BMWmsa_stb_MsaDrr_ub.B_fahrbereit_pwf,B_ready for parking-living_driving
+BMWond_t_OilDisp_sw,Oil temperature display for CAN
+BMWosc_acvn_ModEpFlp_ub,Configuration of the AGK as the output of the drive coordinator
+BMWosc_gear_RqrtSpaRgnPclFil_ub,Requirement_Switching point adjustment_Gearbox_Regeneration_Particle filter
+BMWosc_mod_LockCfgDxp_ub,Configuration lock mode driving experience
+BMWosc_mod_ReqDxp_ub,Requirement mode driving experience
+BMWosc_n_TarMaxEng_ub,Target maximum speed without single tip suppression
+BMWosc_st_AvlDxpBatCtl_ub,Status availability BatteryControl driving experience
+BMWosc_st_AvlDxpEdr_ub,Status availability Electric world driving experience
+BMWosc_st_AvlDxpResiMod_ub,Status Availability Other-world driving experience
+BMWosc_tq_CmbEngDynAssiMax_sw,combustion engine limit maximum assist torque
+BMWosc_tq_CmbEngDynChaMax_sw,combustion engine limit maximum charge torque
+BMWosd_a_LgSptDisp_sw,"Sports displays longitudinal acceleration, 100% = 2g"
+BMWosd_a_TrvSptDisp_sw,"Sports displays lateral acceleration, 100% = 2g"
+BMWosd_pwr_MaxSptDisp_uw,Sports displays end of range performance
+BMWosd_tq_MaxSptDisp_uw,Sports displays end of range torque
+BMWpim_ct_AfrInjMplReqXcy_ub,Number of triggers enrichment or multiple injection
+BMWpim_ct_Evt_ub,Event counter irregular burns (volatile)
+BMWpim_fac_GlbReaSelf_ub,"Factor engine global measures due to pre-ignition/hot ignition, own control unit"
+BMWpim_st_GlwCylOffReq_ub,Request cylinder cutoff due to glow ignition
+BMWpim_st_SknkCylOffReq_ub,Request cylinder cutoff due to super knocking
+BMWsdc_b_KeyStr_bo,Starter Diagnosis: key start detected
+BMWsdc_i_BatDiagDebEnd_uw,Environmental condition battery current t3
+BMWsdc_n_CrkShftDiagDebEnd_sw,Environmental condition engine speed t3
+BMWsdc_nr_StcAry_ul,"Statistic Array of SDC (starter): Accumulated numbers of starts regarding to start duration, pause between two starts and period of life cycle."
+BMWsdc_rc_StcAryNrStrThd_ul,Summarized time thresholds for calculating the statistical matrix: Thresholds for time duration and pause between two starts.
+BMWsdc_rc_StcAryTiThd_uw,Summary life cycle period thresholds
+BMWsdc_ti_StrrDiTmr_ub,Timer for the disabled starter due to component protection (CCM2145)
+BMWsdc_ti_StrtDur_uw,Start duration
+BMWsdc_u_12bBefStr_uw,Environmental condition on-board network voltage t1
+BMWsdc_u_12bDiagDebEnd_uw,Environmental condition on-board network voltage t3
+BMWsdc_u_12bDiagStr_uw,Environmental condition on-board network voltage t2
+BMWstat_avg_DrvCftMod_uw,Average consumption in comfort mode
+BMWstat_avg_DrvEcoMod_uw,Average consumption in ECO mode
+BMWstat_avg_DrvGstMod_uw,Total average consumption
+BMWstat_avg_DrvSptMod_uw,Average consumption in sport mode
+BMWstat_avg_IdlMod_uw,Fuel consumption at idle
+BMWstat_dst_DrvCftMod_ul,Distance comfort fashion
+BMWstat_dst_DrvEcoMod_ul,Distance ECO mode
+BMWstat_dst_DrvGstMod_ul,Total distance traveled
+BMWstat_dst_DrvSptMod_ul,Distance sport fashion
+BMWstat_ti_IdlMod_ul,Idle time
+BMWtmc_b_AcvnGbxShfStgy_bo,Activation of thermal engine protection in the transmission by adapting the switching strategy
+BMWtmc_b_BldAcv_bo,Filling-venting operating mode is active in the WMK
+BMWtmc_b_RqrtSwilWtrPmp_bo,Request to control the VSWP
+BMWtos_t_BauteilKorrKalkKonv_sw,Storage temperature
+BMWtqc_b_EngStopReq_bo,Stop request for combustion engine (stop command)
+BMWtqc_b_EngStrReq_bo,Start request for combustion engine (start command)
+BMWtqc_b_MsaEngStop_bo,Ankï¿½ndigung_MSA_Verbrennungsmotor_Stopp
+BMWtqc_b_NfyCrkEng_bo,Announcement for turning the crankshaft
+BMWtqc_b_PrenMsaEngStop_bo,Announcement of MSA stop
+BMWtqc_b_ReqAcvnIsc_bo,"torque coordination bit, boolean, flag, binary message or variable request activation idle speed controller boolean/logical value (bool)"
+BMWtqc_b_RevLimEngAcv_bo,"torque coordination () bit, boolean, flag, binary message or variable (log. condition) revolution (rotation, rotation, rotation) limit (limitation) engine (combustion engine) active (active) boolean/logical value (bool)"
+BMWtqc_b_StrrDi_ub,Disable starter
+BMWtqc_fac_CtlSouAsd_uw,"torque coordination () factor, dimensionless (factor, dimensionless) control (control) sound (tone, sound) Active Sound Design (Active Sound Design) unsigned Word (uint16)"
+BMWtqc_n_Em1CtlrSp_sw,BMWtqc_n_Em1CtlrGelSp_sw
+BMWtqc_st_CluClsFas_bo,Quick K0 close for BB
+BMWtqc_st_DiagStrSysAvl_ub,Availability of selected starting system
+BMWtqc_st_Em1CtlrPrm_ub,BMWtqc_st_Em1CtlrGelPrmSp_ub
+BMWtqc_st_SelnStopVar_ub,"torque coordination () status, state (status, state, bit string) selection (selection) stop (shutdown, stop) variant (variant) unsigned byte (uint8)"
+BMWtqc_tq_Em1CtlrMax_sw,Maximum controller limit of the electric machine 1
+BMWtqc_tq_Em1CtlrMin_sw,Minimum controller limit of the electric machine 1
+BMWtqc_tq_Em1Sp_sw,Torque setpoint for the electric machine 1
+BMWtqc_tq_EngStatFildSp_sw,BMWtqc_tq_EngStatFildSp_sw
+BMWtqc_tqg_DrvrDmdFild,Gearbox input torque after taking into account connection speed control and starting function for layers
+BMWtqe_b_EnaDfcoCanPg_bo,"Torque Engine bit, boolean, flag, binary message or variable(logic condition) enable deceleration fuel cutoff canister purge boolean/logical Value (bool)"
+BMWtqe_b_LamSp_bo,"Torque Engine (torque combustion engine) bit, boolean, flag, binary message or variable (log. condition) lambda (lambda) setpoint (setpoint) boolean/logical value (bool)"
+BMWtqe_b_Noise_bo,Thrust bubbling requirement
+BMWtqe_b_TqEngLimdEmi,"Torque Engine bit, boolean, flag, binary message or variable torque engine limited emission"
+BMWtqe_b_VehIdl_bo,"Torque Engine bit, boolean, flag, binary message or variable vehicle idle"
+BMWtqe_st_tq_LimSrc_ul,"Torque Engine (torque combustion engine) status, state (status, status, bit strip) torque (torque) limit (limitation) source (source) unsigned Long (uint32)"
+BMWtqe_tq_CkAct_qu,Torque Engine torque crankshaft actual Qualifier unsigned Byte
+BMWtqw_b_CdnActTqWhl_bo,"A wheel torque is currently being output, formerly B_mdrad_aktiv"
+Ba_poelr_ist,Actual oil pressure control operating mode
+Ba_subist,Actual operating mode
+Ba_wm_ist,[ss_exp]
+Baltinfo,Battery aging info
+Baw_ist,Baw_ist
+Bed_atmtpe_nk_xab,Dew point lambda sensors according to cat
+Bed_atmtpe_vk_xab,Dew point lambda sensors in front of cat
+Bed_la_stopp_xab,Condition Switch off lambda controller
+Bed_lradap_mn_xak,Min condition not met
+Bed_lradap_mx_xak,Condition Max exceeded
+Bed_lradapzwa_mn_xak,Condition lambda adaptation limit forced adaptation Min undershot
+Bed_lradapzwa_mx_xak,Condition lambda adaptation limit forced adaptation max exceeded
+Betriebsart_em1_lesen,Operating mode of the electric machine 1 as a return value for the CONTROL job
+Bzd_battalterung,Index for the current aging status of the battery (SoH)
+Bzd_battcnt,Number of battery changes carried out so far
+Bzd_btzust,Condition of the battery / replacement recommendation
+Bzd_caktsl,Current battery capacity for key data
+Bzd_cistsl,Actual capacity of the battery for key data
+Bzd_cnenn_a,Rated capacity of the first battery installed
+Bzd_soc_qelad,weighted discharge counter depending on the SoC
+Bzd_sohcist,Aging index based on C_act
+Bzd_sohh2o,Aging index based on Qv_h2o_zg
+Bzd_sohqabst,Aging index based on discharge histogram while stationary
+Bzd_sohqfahrt,Aging index based on charging histogram while driving
+Bzd_sohqmsa,Aging index based on discharge histogram in MSA stop
+Bzd_sohsocqelad,Aging index based on SoC-dependent cycle counters
+Bzd_sohsulfind,Aging index based on Bzd_sulfind
+Bzd_sohtiefentl,Aging index based on Bzd_tiefentlabs
+Bzd_tagbt,Day of last battery change
+Bzd_tiefentlabs,Index for the degree of damage of all deep discharges
+Bzd_tiefentlind,Index for the degree of damage of the current deep discharge
+Bzd_zyklen,Battery full cycle counter. Discharge is weighted depending on the SoC
+Bzediag_info1,Info memory 1 for BZEDIAG
+Bzediag_info1a,Info memory 1 for BZEDIAG
+Bzediag_info1b,Info memory 1b for BZEDIAG
+Bzediag_info1c,Info memory 1c for BZEDIAG
+Bzediag_info1d,Info memory 1d for BZEDIAG
+Bzediag_info2,History memory 2 for BZEDIAG
+Bzediag_info2a,Info memory 2 for BZEDIAG
+Bzediag_info3,Information memory for energy balance while driving and stationary
+Bzediag_info4,Information memory for energy balance during MSA stop
+Bzetomsa2,Info storage AEPBZE vs BZE3 (version 2)
+Cnt_pakmx,Counter of the PAKMX individual tests (exhaust gas pressure too high)
+Cnt_pakmx_dc,Counter (in this DC) of the PAKMX individual tests
+Cnt_pakmx_soll,Counter of the necessary PAKMX individual checks for FSP output (mirror of K_CNT_PAKMX_SOLL)
+Coz_kmverbr,Route traveled for Coz_kvbverbrabs
+Coz_kvbverbrabs,Absolute amount of fuel consumed
+Coz_vfbszc,Availability from the operating hours meter calculation for the client
+Coz_vfkvbc,Availability from fuel consumption for the client
+Ctr_disp_shli_fls,Shift lights flash on/off
+Ctr_disp_shli_seg,Number of segments shift lights
+Ctrcbr,Control_current branches
+Ctrpcos,Control_stand load
+Ctrpwrcos,Control_Performance_Consumer
+Ctrpwspcos,Control_Performance_Special consumers
+D_nkw_stat,stationary speed deviation
+D_soc,Distance to the starting capability limit
+Desprs,"Correction of intake spread due to intake valve lift, only with SY_VVT=1"
+Df_lakor_svc3,Lambda controller difference between state 2 minus state 1 in workshop test intake manifold differential pressure specification (only with St_dps_svc=3)
+Dfdsn,"Secondary map (storage in NVRam, for all trips)"
+DispGrPt,Output coordinated display gear to station wagon
+Dla_soll_puls_xab,Lambda difference from pulsation
+Dmshfm_svc3,Mshfm Difference between state 2 minus state 1 related to state 1 in workshop test intake manifold differential pressure specification (only with St_dps_svc=3)
+Dpssol,"Setpoint differential pressure, intake manifold pressure to ambient pressure"
+Drf_soll,Rf_soll Gardient (in 10ms against Rf_soll filtered with K_ZK_RFSOLL1 and then filtered with K_ZK_RFSOLL2)
+Drf_spuel,"Delta Rf, as it is flushed through in the overlap"
+Drl_anz_pwf,Number of NvRam errors since the last FASTA readout
+Drl_anz_save,Number of data changes since first flashing
+Drl_ggw_dat,Frequency of gear changes
+Drl_km_bzg,Cumulative distance with active DAROL classification. Used for SGBD output (Layer) and only kilometer precise.
+Drl_kprb_dat,Distribution of clutch friction and clutch temperature
+Drl_tggl_dat,Temperature distribution transmission bell
+Drl_tgoe_dat,Temperature distribution transmission oil
+Drl_ueb_fdat,Matrix of transmission classification forward gears
+Drl_ueb_rdat,Matrix of gearbox classification reverse gear
+Dzw_annm,Reference value for B_kftkr
+Dzw_krann,Ignition angle change from knock control adaptation
+Dzw_tot_kr,Total retraction angle from the best ignition angle value
+Eco2_i_diffwert,Eco2 current difference
+Eco2_i_messwert,Eco2 integration value
+Eco2_jobstat,Ecos2 status to tester
+Eco2_n_transi,Ecos2 Number of measured values in the buffer
+Eco2_st_bew,Eco2 status flags
+Eco2_transi_trbuf,Eco2 array transient values consumer current measurement
+Eco_i_result,Result of ECOS current measurement PL6
+Eco_i_status,Tester status ECOS current measurement PL6
+Eco_jobstat1,Tester status ECOS quiescent current measurement PL6
+Eco_result1,Result ECOS quiescent current measurement PL6
+Eda_ist_pos,Position of the EDA pointer
+Eda_ist_pos_id,Info for final value of the efficient range
+Eda_md_anz_sport,This signal/parameter is used to transmit the torque in relation to the base scaling value
+Eda_md_anz_sport_bs_scal,The display starts at 0 and has 6 scaling levels (1 to 6).
+Eda_p_anz_sport,This signal/parameter is used to transmit the motor power in relation to the base scaling value.
+Eda_p_anz_sport_bs_scal,The display starts at 0 and also has 6 scaling levels (1 to 6).
+Eda_po_pwr_drv,Position_Power_Drive
+Eda_soll_bereich_pos,Width of the target area
+Eda_soll_pos,Center of the target range
+Eda_soll_pos_id,Eda_soll_pos_id
+Eisydk_kor_fak,"Ms/Ps controller output, factor for Msdk"
+Eisydk_kor_off,"Ms/Ps controller output, offset for Msdk"
+Eisyev_kor_fak,"Ms controller output, factor for Mszyl_nn"
+Eisyev_kor_off,"Ms controller output, offset for Mszyl_nn"
+Energyklst,Energy status for terminal control
+Es_mod_soll_xzyl,Injection modes individual to each cylinder
+Es_puls_soll_xpls,Injection modes cylinder-specific target
+Espr,Inlet spread setpoint
+Espr_noncsers,Inlet spread setpoint (nonCSERS for CSERS diagnosis MY2013)
+Eta_kh_soll,Should be catalytic heating efficiency
+Eta_zwist_xab,Ignition angle actual efficiency bank-selective (=Eta_zw_ist_xab)
+F_kat_tpezyk,Factor progress extended TPE after cat cleaning (1=finished)
+F_lradap1_c_xmod,Factors from the KLANN survey at applied centers Bank1
+F_lradap_mslamadp_xak,Adaptation factor with F_mslamadp for mixture error consideration
+F_lradap_st_xab,Factor from KLANN for start/post-start correction exhaust gas bank (NV-Ram)
+F_lradap_xab,Lambda adaptation value
+F_lrlza_xab,Lambda long-term adaptation
+F_mkupd_neg,Factor for weighting the reduced (negative) Rk correction
+F_mkupd_pos,Factor for weighting the increasing (positive) Rk correction
+F_mradhubakt_time,"Relative time of the hub adaptation, Mradhubakt_time related to K_MRADHUBAKT_TIME_MN"
+F_ms_hfmplcd_last_io,"Mass flow quotient for diagnosis HFM in Coast Down, last NV-RAM value"
+F_mslamadp,Adaptation portion of the mass flow adaptation in Mslam systems (B_mrmslam=true) for inclusion in the mixture adaptation diagnosis
+F_pakmx_err,Statistical error of the PAKMX (exhaust gas pressure too high)
+F_tvdk,Air density correction factor due to temperature before throttle valve (for Msdk)
+F_uebl_sgrstart,Hybrid with EM1. Crossfade dynamic connection speed control VM (at start) to Md coordination (1)
+F_umsrfn,Factor conversion from mass flow in (kg/h) to relative air filling in (-) (F_umsrfn= Nkw_eisy * K_UFAK_MS_RF)
+Ftu,Factor temperature environment
+Fupsrf,Conversion of intake manifold pressure into relative air filling (unit % / hPa)
+Hubad_mr_ofs,Stroke adaptation (= mass flow adaptation offset)
+Hubev_ist,"Inlet valve lift (calculated from eccentric angle, with lift adaptation and with lift prediction)"
+Hubev_soll,"Inlet valve lift, target value (before conversion to Exwink_soll, without Dhubtm)"
+I_batt,Battery current measured by the IBS
+I_hal_ha,"HA translation, I_hal_ha"
+Ibhwversi,IBS hardware version
+Ibsderrs2,Error counter IBS EBSD communication
+Ibsinfo,Ibsinfo
+Ibsl_buffer,"ELIN data buffer, bidirectional"
+Ibsl_message,"ibs_ctrl() return value, contains desired message number."
+Ibswbase,IBS Software Baseline
+Ibswchang,IBS versioning reserve
+Ielpwm_frequenz,Frequency PWM signal to PWM driver
+Ielpwm_nelsoll,Fan target speed in percent to PWM driver
+Ielusm_nelueftsoll,Fan target speed in percent from WMK
+Ielusm_nlsoll,Required DME total follow-up time iEL
+Igrinfo,Info storage iGR
+Isgktl_htschw,Offset control threshold VDA-LIN generator
+Isgktl_ierrgrenz,Excitation current limitation LIN generator
+Isgktl_rrz,Loadresponse ramp LIN generator
+Isgktl_rrzschw,Load response switch-off threshold
+Isgktl_usoll,Target voltage specification LIN generator
+Isgsdm_sgbd,Isgsdm_sgbd
+Isgsdm_statakt,temporary operating hours counter in seconds
+Isgsdm_statistik,Data array over vehicle lifespan in flash-resistant NV-RAM.
+Isgusm_chipherst,chip manufacturer
+Isgusm_chipvers,Chip version
+Isgusm_df,Electrical utilization machine
+Isgusm_herst,Manufacturer identification
+Isgusm_i,E-machine output current
+Isgusm_ierrgrenz,Limit excitation current (according to USM)
+Isgusm_ierrgrenzz,Timer limit exciter current due to high temperature
+Isgusm_m,Generator torque
+Isgusm_makenn,Machine ID (according to USM)
+Isgusm_sgrstartz,Counter SGR starts
+Isgusm_tchip,Chip temperature increased (via offset map)
+Isgusm_typ,"Currently installed type (BSD, LIN, SGR)"
+Isgusm_uist,E-machine terminal voltage
+Isgusm_usoll,Specification of machine target voltage (output value) (according to USM)
+Klann_test_xak,Lambda adaptation value for testers
+Kmbatttausch,Mileage at last battery replacement
+Krnn_test,Ignition angle change from adaptation of knock control for tester query
+Ksu_mdkist_schlupf,Saved actual clutch torque
+Ksu_zrdiag,Activation counter for slip suppression for error memory
+Ksu_zrdiagcc,Activation counter for error memory CC message of slip suppression
+Ksu_zrdiageinkupp,Counter for diagnosis
+Ksu_zrdiagsh,Activation counter slip suppression for shadow storage
+Ktupcsctr,Counter for IBS parameters downloads
+La_ist_xab,Actual lambda from probe
+La_soll_br_h_xab,"Target lambda combustion chamber, exhaust gas bank-specific"
+La_soll_so_h_xab,"Target lambda probe, exhaust gas bank-specific"
+Leminfo,LEM information storage
+Md_antr_em1_wunsch,"Desired drive torque of the EM1 (registration request for service coordinator, component basis)"
+Md_em1_soll_roh,Target torque of the EM1 before deceleration (VM or transmission input basis)
+Md_llr_ad_gk_ka,"Torque for adaptation with climate, with speed level"
+Md_llr_ad_gk_norm,"Torque for adaptation without air conditioning, with speed level"
+Md_llr_ad_nic,"Torque for adaptation without air conditioning, with stationary decoupling (speed engaged - NIC)"
+Md_llr_ad_nic_ka,"Torque for adaptation with air conditioning, with stationary decoupling (drive gear engaged - NIC)"
+Md_llr_ad_ok_ka,"Torque for adaptation with air conditioning, without gear"
+Md_llr_ad_ok_norm,"Torque for adaptation without air conditioning, without speed level"
+Md_llr_di,Torque delta (I component)
+Md_llr_i_max,Air path maximum torque (I component)
+Md_llr_i_min,Air path minimum torque (I component)
+Md_llrad,Torque of torque adaptation
+Md_llri,I share LLR controller (air and ignition)
+Md_max_klima,Air conditioning compressor limiting torque
+Md_na_ges,delta moment auxiliary units
+Md_rad_brems_antr_max_pred,Predicted max. braking torque on the drive wheel
+Md_rad_dynverl,Wheel torque internal dynamic losses without efficiency
+Md_rad_dynverl_ha,Internal dynamic losses without efficiency related to the wheels of the rear axle
+Md_rad_erramp,Error amplitude current wheel torque
+Md_rad_fzdyn,Load impact dashpot filtered driver request with limitation of the total wheel torque
+Md_rad_ist,Actual wheel torque of the entire vehicle
+Md_rad_ist_ha,Is the wheel torque on the wheels of the rear axle
+Md_rad_istlm,Actual wheel torque from air mass without external intervention
+Md_rad_istlmmin,Actual wheel torque from air mass with Eta_zwmin
+Md_rad_max,Maximum wheel torque for the entire vehicle
+Md_rad_max_ha,Maximum dynamic wheel torque on the rear axle wheels
+Md_rad_min,Minimum wheel torque for the entire vehicle
+Md_rad_min_ha,Minimum dynamically adjustable wheel torque on the wheels of the rear axle
+Md_rad_mxk_ges,Coordinated target wheel torque of the entire vehicle
+Md_rad_mxk_ha,Coordinated target wheel torque on the rear axle wheels
+Md_rad_pedal,Desired accelerator pedal torque on the wheel
+Md_rad_rekupmx,Wheel torque recuperation
+Md_rad_rsoll,Target wheel torque on wheel
+Md_rad_schlepp,unfired wheel drag torque
+Md_rad_wunsch_ge,Unfiltered wheel torque request from gearbox output of hybrid axle
+Md_rad_wunsch_lim,Limited driver desired torque on the wheel (MADMK)
+Md_res,Should be torque reserve
+Md_vm_max,#NAME?
+Md_vm_min,Minimum VM moment
+Mdg_can_dmee,Enter description
+Mdg_fzdyn,Transmission input torque after taking into account connection speed control and starting function
+Mdg_ist,Current transmission input torque on axle with combustion engine
+Mdg_max_dyn,Maximum short-term torque at transmission input of axle with combustion engine
+Mdg_max_stat,Maximum long-term torque at transmission input from axle with combustion engine
+Mdg_min_dyn,Minimum short-term torque at transmission input of axle with combustion engine
+Mdg_min_stat,Minimum long-term torque at transmission input from axle with combustion engine
+Mdg_wunsch_bus,"Desired unfiltered torque value at gearbox input of hybrid axle, as sent on the CAN bus"
+Mdi_fzdyn,Enter description
+Mdi_ist_m,Internal actual VM torque averaged over the number of cylinders
+Mdi_llri,I-share idle speed controller
+Mdi_llrzw,LLR ignition angle intervention without limitation
+Mdi_llrzw_bmw,Ignition angle intervention LLR without limitation Historical for layer
+Mdi_ml_soll,to set the internal target torque via the air
+Mdi_zw_soll,to set the internal target torque via the Zw
+Mdk_em_sa,E-machine torque on crankshaft input during fuel cut-off
+Mdk_k0_wunsch,Desired/target moment for K0 (DME -> EGS)
+Mdk_reib_zustart,Breakaway torque of the VM in the current operating state
+Mdk_rekup_brems_soll,[SS_EXP]: Plugged to 0
+Mdk_soll_vm,Target torque internal combustion engine
+Mdk_wunsch_ladmax,Mdk_wunsch_ladmax
+Mdk_wunsch_ladmin,Mdk_wunsch_ladmin
+Mk_kgh,Fuel mass flow
+Mk_soll_xpls,Target fuel mass homogeneous pulse-specific target
+Mradhubakt_time_nv,"Timer for stroke adaptation active (summation since last B_eisy_clrad=True, NV-RAM)"
+Mrnn_test_dk,"Mass flow adaptation DK, read from the Lolimot for testers"
+Mrnn_test_vvt,"Mass flow adaptation hub, read from the Lolimot for testers"
+Msa_anzav,MSA AV display
+Msa_anzrdyled,MSA Ready indicator
+Msa_anzsteco,MSA ECO display
+Msa_bszdegs,Operating hours counter in s
+Msa_ecotipp,SPA-N display
+Msa_ngang,Zero gear status for the CAN (ST_AVL_PENG_CENG_ENGMG)
+Msa_predsohsgr,predictive SGR SOH dependent factor for degradation in EME
+Msa_startsystt,Starting system intermediate size
+Msa_strtz,Counter MSA start
+Msa_strtzges,Counter total start
+Msa_strtzges0,Start number for the total number of starts
+Msa_strtzkm0,Starting mileage for the starting counters
+Msa_strtzrfl,Reflex start counter
+Msa_strtzrfl0,Start number for the reflex start counter
+Msa_swdfspf,Pending deactivators filtered based on FSP entry
+Msa_swdw,Effective deactivators
+Msa_sweaw,Effective EAs
+Msa_swevw,Effective EVs
+Msa_swfavw,"Attached FAV filtered, effective"
+Msa_swsavw,"Applied SAV filtered, effective"
+Msa_ttstrt,Low temperature start
+Msainfo2,Info storage MSA (version 2)
+Msdk,Mass flow through the throttle valves
+Msdk_diag,"Mass flow into the intake manifold (like Msdk, but without Eisydk_kor_fak and with Ps_ist)"
+Msev_diag,"Mass flow at the inlet valve (like Mszyl, but without Eisyev_kor_fak and with Ps_ist)"
+Mshfm_ist,Mass flow from HFM as average (depending on K_ANZMW_MSHFM)
+Mslam,Total air mass flow through the DK from measured lambda and target fuel mass (= average value of Mslam_xab)
+Mslam_xab,Total air mass flow through the DC from measured lambda and target fuel mass
+Mssol,Target air mass flow (=sum Mssol_i)
+Mszyl,Mass flow cylinder (total through intake valves)
+Mszyl_diag,"Mass flow at the inlet valve (like Mszyl, but without Eisyev_kor_fak)"
+N_dzm,dynamic speed is displayed
+N_kw_soll,Profiled target crankshaft speed
+N_vm_max,Max. speed VM
+Nelueft_motor_vma,Request for electric fan through idle speed control in the VMA
+Nelueft_motor_wm,Request for electric fan through idle speed control in the WMK
+Nelueft_wm,Target speed of e-fan
+Newp_20_soll,Setpoint of EWP20 from WMK
+Newp_22_soll,Setpoint of the EWP22 from the WMK
+Newp_23_soll,Setpoint of EWP23 from WMK
+Newp_heiz,Requested speed of the heating water pump from the WMK (in service)
+Nkw_ll_soll_kh,Idle speed specification from the catalytic converter heater manager
+Nkw_ll_soll_okh,LL target speed without LL increase via cat heaters
+Nkw_poel_soll,"Target LL speed from oil pressure control (for HLL, tester operation...)"
+Nkw_soll_bmw,Speed setpoint of the idle speed controller
+Nkw_we,Restart speed (Nwe)
+Nsa,Speed for SA release
+Nslb,N-target correction of battery charge balance
+Nstat,stationary target speed of the combustion engine
+Nstat_grb,Bent target speed for the gearbox (forward-looking) / TAR_RPM_IDLG_DRV_EXT
+Num_msaav_lowtbatt,Frequency MSA AV due to low battery temperature
+Num_msaea_inlwm,Frequency MSA EA due to high starting current of e-fan
+On_ausg_kmalt,Old km reading at detection Min25
+On_minerk_letztesniv,Last nv saved level MinErk
+On_minerk_nivmw,Corr. level from TP in MinErk
+On_oelniveau,ABK oil level interface
+On_oeltemp_korr,Corrected On_oeltemp with Tmot
+On_qntmssg_nivmw,Niv mean value QntMssg
+Onabk_nachfuelmnge_srv,Oil refill quantity in 0.1 liter resolution for service
+Onabk_niveau,Input variable evaluation of oil level
+Onabk_nivkrit_betrstdzaehler,Elapsed operating seconds since yellow warning - flash resistant
+Onabk_oldst,Last known condition of the oil level - flash resistant
+Onabk_qntmssg_bed,Output: Boundary condition for QNT measurement fulfilled Coding: 0 Boundary condition not met 1 Boundary condition fulfilled
+Oz_bsz,Operating hours counter (in seconds)
+Oz_kvbsm_ul,Total fuel quantity
+Oz_rwpeil,Remaining distance in the event of a sensor error
+P_oel_soll,Setpoint oil pressure
+P_oelist_abs,Oil pressure actual value (absolute pressure)
+P_stabw_psenspl,Standard deviation for the pressure sensor values of each existing pressure sensor
+P_tol_psenspl,Minimum standard deviation for the pressure sensor values for calculating the error limits
+Pak,Exhaust manifold pressure
+Pe,effective combustion engine performance in the WMK
+Pe_max_ac_wm,Maximum performance of the air conditioning compressor approved by the WMK
+Pe_startstopp_vorhalt_em1,Power reserve for start with EM1
+Pel_spec_max_eps,Performance target Eps
+Perc_wmm_soll,"Request from the WMK to control the WMM (now from the new DorDiag, for FuMu purposes)"
+Pirg_abgd,Residual gas partial pressure
+Pkat,Print before cat
+Pld_diff_xeb,Rule difference - bank specific
+Pmbackup,array to
+Pminfo1,Info storage 1
+Pminfo2,Info storage 2
+Poel_fpwm,Frequency PWM control oil pressure control valve
+Poelreg_d,Oil pressure regulator D share
+Poelreg_i,Oil pressure regulator I portion
+Poelreg_p,Oil pressure regulator P share
+Pr_bn_soll,Should be priority
+Pr_bn_sollpm,Should be priority
+Pr_entlfktakt,Priority of the relief function
+Pr_igr_soll,Priority iGR target voltage request
+Prail_soll,Setpoint for rail pressure regulator
+Prail_soll_ub,"Setpoint rail pressure unlimited, before gradient limitation"
+Ps,"Intake manifold pressure, modeled"
+Psens_mw,Average of the pressure sensor values of all existing pressure sensors
+Psenspl_state,Status of pressure sensor diagnosis (1: engine stopped; 2: engine in LL; 3: engine in VL; 0: no dual comparison possible)
+Pssol,Target intake manifold pressure
+Pwg_max,Maximum selection of Pwg_act and virtual accelerator pedal
+Q_iruhe2,Discharge quantity during time with increased quiescent current
+Q_rekupah,Your long identifier could be here
+Qelad_ges,Total discharge amount
+Qlad_geswerk,"Total charge quantity battery idem Qelad_ges, but flash resistant."
+Qv_h2o_zg,Qv_h2o_zg
+Rf,Relative air filling
+Rf_ist,relative air filling
+Rf_min,minimal Rf
+Rf_soll,"Target filling (from Rf_soll_md, limited between Rf_max and Rf_min)"
+Rf_vl,Relative filling at full load
+Rk_ges_h_mw_xlb,Total relative fuel mass (correction + TEV)
+Rk_gesbas_h_mw_xlb,"Total relative fuel mass (correction, without TEV)"
+Rqpcos,Requirement_Stand Consumer
+Selspcos,Selection_special consumers
+Snibs,Serial number read from IBS
+Soc_hvb_rel,Relative SoC
+Soc_hvb_rel_cs,current rel. SOC for the transition CD --> CS
+Soc_quali,Counter accuracy charge status determination
+Soc_rel,Relative counter for SoC charge level
+Soc_reltuerk,Relative counter for charge status SoCan adapted for the display
+Spa_art,Advertisement
+Spa_gang,Gear shift point display with offset of 4 because of CAN
+St_aepbze2,Status word
+St_aepbze2.B_Tnabstellplau,Shutdown time plausible
+St_aepbze2.B_Tsaiscalc,Start season calculation
+St_aepbze2.B_aep_nachladeanf,Reload request to HVPM
+St_aepbze2.B_codieraep,Coding
+St_aepbze2.B_fitstfgk,Soc_fit value detected at the Stfgk limit due to seasonal temperature
+St_aepbze2.B_pmsqrdy,kt_ibs.dat
+St_aepbze2.B_pmstartq,Condition start quality
+St_aepbze_nv,Status word
+St_aepbze_nv.B_bze3nanf,"If true the values from BZE3 are good, if false you have to switch to the initial values"
+St_aepbze_nv.B_firstsw2pow,Your long identifier could be here
+St_aepbze_nv.B_soc_npl,Condition SoC value not plausible
+St_aepdiag,Status word
+St_aepdiag.B_dtctest,Your long identifier could be here
+St_aepdiag.B_licht,Light active
+St_aepdiag.B_msabze3_av,co2mng.dat
+St_aepdiag.B_tagescalc,Your long identifier could be here
+St_aepdiag.B_tageswechsel,Your long identifier could be here
+St_aepdiag.B_thistdone,Your long identifier could be here
+St_aepdiag.B_wupenir,Your long identifier could be here
+St_aepdiag0,Status word
+St_aepdiag0.B_ccbtnachaep,CC message: Battery recharge
+St_aepdiag0.B_ccbttdfkaep,CC message: Battery worn out
+St_aepdiag0.B_ccbttkntaep,CC message: Check battery contact
+St_aepdiag0.B_ccpmerraep,CC message: Powermgm out of service
+St_aepdiag0.B_ccprioaep,CC message: Comfort consumer restricted
+St_aepdiag0.B_codierpmaep,Request to CAS to send the coding data again for PM.
+St_aepdiag0.B_tiefrset,"Delete deep discharge bit, B_tiefset, in the IBS."
+St_aepdiag1,Status word
+St_aepdiag1.B_batttrue,Reset deep discharge
+St_aepdiag1.B_ccruhveraep,CC message: increased quiescent current
+St_aepdiag1.B_ruhverl7,Quiescent current violation currently exists.
+St_aepdiag1.B_ubatthigh,Your long identifier could be here
+St_aepdiag1.B_ubattlow,Your long identifier could be here
+St_aepigroutnv,Status word
+St_aepigroutnv.B_cdigronraep,Coding iGR
+St_aepigroutnv.B_cdxenonraep,Coding iGR
+St_aeplabi,St_aeplabi
+St_aeplabi.B_aeplabi1000,Your long identifier could be here
+St_aeplabi.B_aeplabi607v15,Version identification
+St_aeplabi.B_ccschlabi,Your long identifier could be here
+St_aeplabi.B_energie_gr,Your long identifier could be here
+St_aeplabi.B_fsschlabi,Your long identifier could be here
+St_aeplabi.B_hilftnix,Your long identifier could be here
+St_aeplabi.B_schlabi_gr,Your long identifier could be here
+St_aeplabi.B_schlabibereit,Your long identifier could be here
+St_aepsze,Status input bits for Gen2 function in AEP
+St_aepsze.B_ladakt_zse,DME sends whether the ZSE battery is currently being charged
+St_aepzse3,Status word
+St_aepzse3.B_bcus2aktion,AEP BCU S2 emergency closing request
+St_aepzse3.B_s2erststartv,First start attempt active for BCU S2 command
+St_aepzse3.B_s2idiff,Current difference I_batt_zse - I_bcuist
+St_antrieb_verfuegbar,"Availability state without drive torque requirement (combustion engine, clutch K0, traction gear 1, traction gear 2)"
+St_as_out_dmelay,Status word for bits in P_as_out_dmelay
+St_as_out_dmelay.B_rennstart_dsc,Bit race start for DSC
+St_atldiag_10ms,Status word
+St_atldiag_10ms.B_beratllek,ATL leak detection active
+St_atldiag_rbm,Status word
+St_atldiag_rbm.B_atlr_denom,Condition denominator for RBM monitoring boost pressure diagnosis fulfilled
+St_atldiag_rbm.B_atlr_nom_b1,Condition nominator for RBM monitoring boost pressure diagnosis on bank 1 fulfilled
+St_atlsvc,Status during the diagnosis of the exhaust gas turbochargers
+St_atlsvc_pvdk,Result of the exhaust gas turbocharger diagnostic function
+St_aval_sail_dme,[SS_EXP]: Plugged to 0
+St_b_eda_eco_pwg,B_eda_eco_pwg
+St_b_eda_eco_pwg.B_eda_eco_pwg,Load too high for ECO mode
+St_bcu_cmd,AEPZSE - slow target status BCU
+St_betriebsbereit_ae,Operational readiness request for the EM1 [Bit0] and the EM2 [Bit1]
+St_bgkuppl1.B_ll,Idle condition
+St_bls_reku,Brake light ON during recuperation braking
+St_bzediag0,Status word
+St_bzediag0.B_bzd_agmva,Marker of the type of battery first installed
+St_bzediag0.B_bzd_btdfkt,Bad battery flag
+St_bzediag0.B_bzd_cc,NV flag for CC message 304
+St_bzediag0.B_bzd_lad,The signal indicates whether the battery needs to be charged or not
+St_bzediag0.B_bzd_qcaktsl,CAN signal quality current capacity
+St_bzediag0.B_bzd_qcistsl,"CAN signal quality, actual capacity"
+St_bzediag0.B_bzd_te,Variable deep discharge exists
+St_bzediag0.B_bzdtlflag,Flag for one-time calculation of the deep discharge function
+St_bzediag1,Status word
+St_bzediag1.B_bzd_bzeibs,Indicates whether an IBS with BZE3 was detected and the BZE data is therefore relevant.
+St_bzediag1.B_bzd_ccbttdfk,Bit to display CC message 304 Check battery status
+St_bzediag1.B_bzd_sulf,Bit is set at init and reset after Sulfind is added up
+St_bzediag1.B_bzd_test,True when tested.
+St_bzediag1.B_bzd_tiefrset,Message B_tiefset evaluated to AEP
+St_bzediag1.B_bzd_tlabs,Indicator for absolute deep discharge
+St_bzediag1.B_bzd_wrgbat,Display whether an approved battery has been installed
+St_bzediag1.B_bzd_zdfkt,Bit that indicates whether there is a cell defect
+St_cbsozout_nv0,B_ozpeilerr(1)
+St_cbsozout_nv0.B_ozpeilerr,"In the event of an error, the forecast is displayed"
+St_dordiag,State of Dordiag
+St_dp_ber,Description
+St_dps_svc_fs,Status during the diagnosis of the crankcase leak (0: not started; 1: requested but no release; 5: function running; 6: ended without result; 7: aborted due to TimeMax; 8: finished and no suspicion of error; 9: finished and suspected on error)
+St_dsc_mradist,St_dsc_mradist
+St_eisy_hfm,Status byte (Bit0: B_mrmslam; Bit1-7: n/a)
+St_eisy_hfm.B_mrmslam,Condition mass flow adjustment with Mslam
+St_eisyad_read,Status byte EisyMsReg (Bit0: n/a; Bit1: B_mareghub_ad; Bit2: B_maregdk_ad; Bit3-7: n/a)
+St_eisyad_read.B_maregdk_ad,Condition mass flow adaptation DKNN released (at least once in this driving cycle)
+St_eisyad_read.B_mareghub_ad,Condition for mass flow adaptation HubNN enabled (at least once in this driving cycle)
+St_evmode_out,Status word for bits
+St_evmode_out.B_bsaabk_evmode_led_delay,Bit EV Mode LED on (although mode already dropped)
+St_evmode_out.B_evmode_led,Bit for controlling LED EV button
+St_evmode_out.B_evmode_wechsel_disp,Bit for controlling EV panel MMI
+St_fas_mradist,Status wheel torque actual
+St_fgr,Status FGR
+St_fgr.B_fgr_akt,FGR condition active
+St_fgr.B_sport_aktiv,Sports business
+St_fhrt_rchtg,Direction of travel with N
+St_fw,St_fw
+St_fw.B_hschalt_komb,St_fw
+St_fw.B_ldm_akt04,Torque reserve status
+St_fw.B_ldm_off,Torque reserve status
+St_fw.B_ldm_offhs,Torque reserve status
+St_fw.B_ldm_offreg,Torque reserve status
+St_fw.B_ldm_offrs,Torque reserve status
+St_fw.B_rschalt_komb,St_fw
+St_gen,Status word
+St_hal_func,Rear axle ratio qualifier
+St_hal_intern,internal status HAL
+St_ibserr,Status word IBS error
+St_ibserr.B_ibdiag,IBS diagnostic information available
+St_ibserr.B_ibfebsd,IBS extended communication error
+St_ibserr.B_ibunplau,IBS SW implausible
+St_ibserr.B_ierr1,IBS power error 1
+St_ibserr.B_ierr2,IBS power error 2
+St_ibserr.B_ierr3,IBS power error 3
+St_ibsl_envi0,Bitbase IBS environment flags
+St_ibsl_envi0.B_efiistop,EFII current measurement stop flag
+St_ibsl_envi1,Environment variable for IBS
+St_ibsl_envi2,Environment variable for IBS
+St_ibsl_envi3,Environment variable for IBS
+St_ielusm,Bitter
+St_ielusm.B_ielusm_nlende,Extend DME overrun condition ended
+St_ielusm.B_ielusm_relais,Relay control
+St_ielusm2,Bitter
+St_ielusm2.B_ielusm_ccgelb,CC message minor fan error
+St_ielusm2.B_ielusm_fabus,"Communication line error (PWM, LIN, etc.)"
+St_ielusm2.B_ielusm_fabusverz,Communication line error (pre-bounced)
+St_ielusm2.B_ielusm_fahrbereit,Ready to drive established
+St_ielusm2.B_ielusm_farelais,Relay error condition active
+St_ielusm2.B_ielusm_farelaiskm,Condition relay error short circuit to ground
+St_ielusm2.B_ielusm_farelaiskp,Condition relay error short circuit to supply
+St_ielusm2.B_ielusm_farelaisub,Condition relay error line interrupted
+St_ielusm2.B_ielusm_fasum,At least one e-fan error is active
+St_ielusm2.B_ielusm_fpsum,At least one error in the e-fan has been debounced in the FSP
+St_ielusm2.B_ielusm_kl15,Condition terminal 15
+St_ielusm2.B_ielusm_montagemod,Montage or flash mode active
+St_ielusm2.B_ielusm_motlaeuft,Condition engine is running
+St_ielusm2.B_ielusm_relaisanf,Relay control requested
+St_ielusm2.B_ielusm_startende,Starting end reached
+St_ielusm2.B_ielusm_testernelsollfg,Enable terster control
+St_ielusm4,Bitter
+St_ielusm4.B_ielpwm_fgakt,  B_ielpwm_fgakt
+St_ielusm4.B_ielusm_elnormakt,iEL interface size for WMK size B_elueft_normakt
+St_ielusm4.B_ielusm_fla,Flash mode active
+St_ielusm4.B_ielusm_kwdreht,Condition Crankshaft is rotating
+St_ielusm4.B_ielusm_motstart,Motor start condition active
+St_ielusm4.B_ielusm_msastops,Condition Motor in MSA stop phase
+St_ielusm4.B_ielusm_testernelsoll,Tester control active
+St_ielusm4.B_ielusm_testerrelais,Tester control for relay active
+St_ielusm4.B_ielusm_tmrgueltig,Engine compartment temperature signal plausible
+St_ielusm_testerrelais,Feedback status to relay tester job
+St_igr1,Status word
+St_igr1.B_aepigr100,Process control
+St_igr1.B_aepigrini2,Process control
+St_igr1.B_ba_igrhigh,Your long identifier could be here
+St_igr1.B_ba_igrmed,Your long identifier could be here
+St_igr1.B_igrlow,Condition iGR LOW
+St_igr1.B_regelakt,Condition battery current control active
+St_igr1.B_sa_loc,Your long identifier could be here
+St_igr1.B_zykl_igrh,Cyclization limit iGR-High reached
+St_igr2,Status word
+St_igr2.B_igr_avhigh,Your long identifier could be here
+St_igr2.B_igr_avmed,Your long identifier could be here
+St_igr2.B_igrhigh,Your long identifier could be here
+St_igr2.B_igrmed,Your long identifier could be here
+St_igr2.B_zykl_igrm,Cyclization limit iGR-Med reached
+St_igr3,Status word
+St_igr3.B_aepigr607v0,Version identification
+St_igr3.B_igr_avlow,Process control
+St_igr3.B_sa_igr,Your long identifier could be here
+St_igr3.B_sa_igr_disp,Your long identifier could be here
+St_igr3.B_sailaktigr,Sailing detection active at igr
+St_info_pedfas,Status information pedal position
+St_isgdia0,Status word
+St_isgdia0.B_isgdia_fffg,Enable error memory debounce by flip flop
+St_isgdia0.B_isgdia_ffrs,Reset flip flop for error memory debouncing
+St_isgdia0.B_isgdia_fg,Pre-release error memory debouncing
+St_isgdia0.B_isgdia_fpakt1,General release condition error entry FSP
+St_isgdia0.B_isgdia_fpakt2,General release condition error entry FSP
+St_isgdia0.B_isgdia_fpakt3,General release condition error entry FSP
+St_isgdia0.B_isgdia_fpsum,Error debounced sum (el or mech or?)
+St_isgdia0.B_isgdia_lkl,Charging indicator light
+St_isgdia0.B_isgdia_nkwfg,Enable diagnosis due to speed threshold being exceeded
+St_isgdia0.B_isgdia_nlade,Condition: no charger connected
+St_isgdia0.B_isgdia_ud,Undervoltage detected
+St_isgdia0.B_isgdia_udfabusverz,Delayed bus error for undervoltage diagnosis
+St_isgdia0.B_isgdia_udfafg,Error-dependent release of the undervoltage diagnostic
+St_isgdia0.B_isgdia_udfgusoll,Enable undervoltage diagnosis based on target voltage
+St_isgdia0.B_isgdia_udierrg0A,Undervoltage diagnosis no excitation current limitation
+St_isgdia0.B_isgdia_udsond,Special case undervoltage diagnosis detected
+St_isgktl,Status word
+St_isgktl.B_isgktl_battlos,Switching control in battery-free operation (VDA-LIN)
+St_isgktl.B_isgktl_bz,Blind zone specification (VDA-LIN)
+St_isgusm_diag,Current error status of the electric machine
+St_isgusm_fa,Error bits Error currently present (according to USM)
+St_isgusm_status,Current status of the electric machine
+St_isgusm_testersgr,St_isgusm_testersgr
+St_kat_tpezyk,Status of the TPE function after cat cleaning (feedback for tester job)
+St_kge,Status byte crankcase ventilation
+St_kge.B_koel,B_koel
+St_krann,Status word CRANE
+St_krann.B_foctan_rdy,Condition F_octane is valid (KR has adapted long enough)
+St_krann.B_foctan_zk,Condition F_octan_zk
+St_krann.B_nnlern,KRANN adaptation condition released
+St_ksuhadme,[SS_EXP] Status byte HA plausi DME
+St_ldm_kupp,Status of adhesion
+St_ldm_kupp_bn2010,Status of adhesion
+St_ldm_sa,Status word for bits
+St_ldm_sa.B_igrlow_enable,Enabling IGR low when ACC/DCC/HDC is active
+St_ldm_sa.B_igrlow_int,St_ldm_sa
+St_ldm_sa.B_sa_enable,Enabling fuel cut-off when ACC/DCC/HDC is active
+St_ldm_sa.B_sa_enable_int,St_ldm_sa
+St_ldstgen,Machine condition
+St_llr_hyb,St_llr_hyb
+St_llr_hyb.B_em1_max_xctl,Enter description
+St_llr_hyb.B_em1_nctl_akt,Enter description
+St_llr_hyb.B_em1_nctl_akt_k0zu,Enter description
+St_llr_hyb.B_em1_nctl_akt_os,Enter description
+St_loadresp,Status word
+St_loadresp.B_lroff,No long identifier assigned
+St_loadresp.B_lrspgwena,Enable charge controller voltage monitor
+St_loadresp.B_lrstrttyp,Loadresponse start type
+St_loadresp.B_mdres_chg,Condition: Change in the filter constant of the torque reserve for the steering power prediction
+St_loadresp.B_subst_eps_ak,Value B_eps_ak or replacement value if AEP is omitted
+St_loadresp.B_subst_mdef,Value B_mdef or replacement value if AEP is omitted
+St_mdkw_hyb_gen2,St_mdkw_hyb_gen2
+St_mdkw_hyb_gen2.B_com_ueblsgrstart,Change of mind in the VM storage process in the P2 hybrid
+St_mdkw_hyb_gen2.B_efahren_stk0,Condition eDriving active from view K0
+St_mdnreg_hyb2,St_mdnreg_hyb2
+St_mdnreg_hyb2.B_stegs_vmnctlakt,Enter description
+St_mdnreg_hyb2.B_vm_nctl_akt_k0auf,Enter description
+St_mdrk2,"Status word mdrk2. ES enable (layer)(Bit0: B_hd_start, Bit1: B_espr_start, Bit2-7 n.v.)"
+St_mdrk2.B_espr_start,Condition B_espr_start
+St_mdrk2.B_hd_start,Condition of high fuel pressure during startup
+St_mdrk2.B_hd_start_hdp,HDP control at HD/ND start
+St_msaa,Status word
+St_msaa.B_msa_req_ews,Requirement for activation of EWS
+St_msaa.B_msaprestopp,Condition MSA Stop Announcement
+St_msaa.B_msastart,Start request MSA
+St_msaa.B_msastopp,Stop request MSA
+St_msaa.B_msavmkssoll,Requirement as to whether there should be a power connection to the combustion engine
+St_msaa.B_msavmstsoll,Target state of the combustion engine (off/running)
+St_msabs4,Status word
+St_msabs4.B_msaeaoev,EA active and relevant EV's inactive
+St_msabs4.B_msaemmgrenze,Condition for setting the drag start bit
+St_msabs4.B_msagefabstlaeuft,Guided parking is running
+St_msabs4.B_msak0zu,K0 still closed
+St_msabs4.B_msaqureqilk,Bit - Qualifier requirement for complete freedom from adhesion
+St_msabs4.B_msasolldrehzahl,Target speed OK
+St_msabs4.B_msastarta_tmp,Temporary start announcement
+St_msabs4.B_msastoppa_tmp,Temporary stop notification of the VM
+St_msabs5,Status word
+St_msabs5.B_msagefabst,Guided parking possible
+St_msabs5.B_msastart_sep,Separate start command for Bosch to detect a stop abort
+St_msaimpl,Status word
+St_msaimpl.B_mbsemsa,Vehicle with MBSE MSA
+St_msamoegl,Status word
+St_msamoegl.B_msastartnm,MSA start probably not possible in the next 20s
+St_msamoegl.B_msastoppnm,MSA stop probably not possible in the next 20s
+St_msasiko.B_fahrbereit_siko,xxx
+St_msasiko.B_msa_fb_erl,St_msasiko: Status word for 10 ms task
+St_msasiko.B_msaakt_siko,tbd
+St_msasiko.B_msastart_siko,Condition for engine start confirmed by MSA-Siko
+St_msasiko.B_msastopp_siko,Condition for engine stop confirmed by MSA-Siko
+St_msasiko.B_msavmkssoll_siko,Condition target state K0 (approved by MSA SIKO)
+St_msasiko.B_msavmstsoll_siko,xxx
+St_msasiko.B_sgrhwl_siko,xxx
+St_msasiko_compl,Status word for the 10 ms task
+St_msasiko_compl.B_fahrbereit_siko_compl,Complement to B_fahrReady_siko
+St_msasiko_compl.B_msa_fb_erl_compl,Complement to B_msa_fb_erl
+St_msasiko_compl.B_msaakt_siko_compl,Complement to B_msaakt_siko
+St_msasiko_compl.B_msastart_siko_compl,Complement to B_msastart_siko
+St_msasiko_compl.B_msastopp_siko_compl,Complement to B_msastopp_siko
+St_msasiko_compl.B_msavmkssoll_siko_compl,Complement to B_msasvmstsoll_siko
+St_msasiko_compl.B_msavmstsoll_siko_compl,Complement to B_msasvmstsoll_siko
+St_msasiko_compl.B_sgrhwl_siko_compl,Complement to B_sgrhwl_siko
+St_ngang,Zero gear detection status
+St_ngang0,Status word
+St_ngang0.B_gangnull,Transmission in zero gear
+St_ngang0.B_gangnullerw,Transmission in zero gear (extended range)
+St_ngang0.B_ngangdok,Zero gear sensor diagnosis ok
+St_ngang0.B_nggelernt,Zero gear position learned or programmed
+St_ngang0.B_ngimlf,Zero gear signal in the learning window
+St_ngang0.B_nglernakt,Zero gear learning active
+St_notl_baluft,Status word air operating mode request emergency run
+St_notl_eme_2,Status bit-coded request for emergency running reactions from the DME to the EME 2
+St_oelniveau_lsb,LSB status for on_oil level
+St_oelniveau_msb,MSB status for on_oil level
+St_oelnivena,Bit-coded feedback on request for oil level measurement
+St_on_lay,Status word ON module for layer
+St_on_lay.B_onqntmssg_vrteh,Locking of the tank ventilation at high level AKF when oil level detail measurement is running
+St_on_lay.B_onqntmssg_vrtel,Locking of the tank ventilation at low level AKF when oil level detail measurement is running
+St_on_lay.B_onqntmssg_vrten,Locking of the tank ventilation during emergency operation when oil level detail measurement is running
+St_on_nv1,B_onausg_25detected(0)
+St_on_nv1.B_onausg_25erkannt,St_on_nv1
+St_onabk_1,Output variable: Display of St_oelebene_lsb
+St_onabk_2,Output variable: Display of St_oelebene_msb
+St_pmaepvsu,Status word
+St_pmaepvsu.B_pmaepmsa10,Toggle bit
+St_pmaepvsu.B_pmaepvsuans,Control VSU HWL
+St_poelfunc,Status word for bits
+St_poelfunc.B_poelfunc_on,Switch S_POELFUNC_ON
+St_poelreg2,Status oil pressure control 2
+St_poelreg2.B_poel_gelb,Condition yellow oil pressure indicator light (CC ID 427)
+St_poelreg2.B_poel_rot,Condition red oil pressure indicator light (CC ID 212)
+St_prio_efarn,Priority e-driving
+St_rad_ist,Status Md_rad_ist
+St_rennst,"Status race start part 1, layer interface"
+St_rennst.B_rennstart,Race start condition
+St_rkaddinst,"Status word MDRK, BA enrichment by Rk_add_inst"
+St_rkaddinst.B_rkaddinst_neg,DI wall film correction neg. active
+St_rkaddinst.B_rkaddinst_neg_lo,Strong delayed emaciation
+St_rkaddinst.B_rkaddinst_on,DI wall film correction active
+St_rkaddinst.B_rkaddinst_pos,DI wall film correction pos. active
+St_rkaddinst.B_rkaddinst_pos_hi,Strong acceleration enrichment
+St_rkaddinst.B_rkinst_ena,Rk_add_inst release
+St_rkaddinst.B_rkinst_init,Rk_add_inst Initialize filter with Rk_addinst_roh
+St_rkaddinst.B_rkinstpar_neg,DI wall film correction neg. active
+St_sail_drv,Represents the current status of the sailing function of the entire vehicle. Serves for display in the station wagon and is sent in the drive train speed display message. The St_Sail_drv is served from the same layer size
+St_sleep,Status word sleep behavior
+St_sleep.B_sleepwait,Signal delay sleep indication
+St_sondenheiz,Status word
+St_sondenheiz.B_flo_akt,Condition active almost light off
+St_sondenheiz.B_hlsf_sst,Condition heating active NK in silent start
+St_sondenheiz.B_hlsh1_off,Condition: Switch off probe heater LSU post-cat bank 1
+St_sondenheiz.B_hlsh2_off,Condition: Switch off probe heater LSU post-cat bank 2
+St_sondenheiz.B_hlsu1_off,Condition: Switch off probe heater LSU Vorkat Bank 1
+St_sondenheiz.B_hlsu2_off,Condition: Switch off probe heater LSU Vorkat Bank 2
+St_sondenheiz.B_hlsu_sst,Condition heating active VK in silent start
+St_sondenheiz.B_hnox_off,Condition: Switch off heating Nox sensor
+St_sq_rekup,Service qualifier for brake recuperation
+St_stabbr_restart,Status word detected failed start or engine stalled with unknown cause (Bit0: B_stabbr_restart)
+St_stabbr_restart.B_stabbr_restart,Condition for mixture enrichment by detected failed start or engine stalled with unknown cause
+St_statmkor1,Status word
+St_statmkor1.B_entluadapt,Condition
+St_statmkor1.B_entlulager,Condition
+St_statmkor1.B_entlumdentl,Condition
+St_statmkor1.B_entlutred,Condition
+St_statmkor1.B_mdentluimmer,Condition
+St_statmkor1.B_mdkwvoff2,Condition
+St_statmkor1.B_notafu,Bed emergency starting support
+St_stdrvveh,Status word STDRVVEH
+St_stdrvveh.B_espr_aktiv,Release injection
+St_stdrvveh.B_motaus_cas,Engine stops due to request from CAS
+St_stdrvveh.B_motlaeuft_bmw,Engine running condition calculated on BMW site
+St_stdrvveh.B_motlaeuft_out,Condition engine running calculated on BMW/supplier side
+St_stdrvveh.B_msamanreq,manual request for ST_DRV_VEH
+St_stdrvveh.B_soft_shoff,Soft shutoff condition
+St_testpoelsys,Status word for checking oil system in tester mode
+St_testpoelsys2,Additional information about checking the oil pressure system in tester mode
+St_ubn_err,Status central under/overvoltage detection
+St_ubn_err.B_ubnerre,central overvoltage
+St_ubn_err.B_ubnerrm,central undervoltage active at MSA
+St_ubn_err.B_ubnerrn,central undervoltage
+St_ugenkor0,Status word
+St_ugenkor0.B_genoff,Generator off
+St_vbrzyl_aus,status
+St_vbrzyl_aus.B_gl_aktiv,Active adjustment function (CYBL_HOM) is enabled
+St_vvt,Status byte VVT (Bit0: B_vvtablegen_lastdc; Bit1-7: n.a.)
+St_vvt.B_vvtabgelegt_lastdc,"Condition during the last driving cycle, the storage position was reached during the follow-up."
+St_zwdiag,[SS_EXP] Status word for ignition angle diagnosis
+St_zwdiag.B_zwdiag_deak,[SS_EXP] Condition deactivation ZW diagnosis
+Stat_aep_nl,Your long identifier could be here
+Stat_bnserr,Your long identifier could be here
+Stat_igr_opmo,Status iGR operating mode
+Stat_llr_tester,Status tester control LL speed increase
+Stat_segel_fehler_ext,Bit list of errors for all service messages
+Stat_segel_hybrid,Bit list of hybrid sail preventers
+Stat_segel_verhinderer,Bit list of all sail preventers
+Stat_sv_reg1,[SS_EXP] Status consumer registered part 1
+Stat_sv_reg2,HiByte Stat_sv_reg for environmental conditions
+Stat_zyl_aus,Cylinder skip request. Bit by bit in firing order: 0 = cylinder is on.
+Stat_zyl_aus_eza_mot,"Engine-related cylinder suppression patterns (without taking emergency running cylinder suppression into account) (0= cylinder is on, 1 = cylinder is off)"
+Stat_zyl_aus_mot,"Engine-related cylinder skip patterns (0 = cylinder is on, 1 = cylinder is off)"
+Status_antrieb_ziel,"Desired state of the drive (combustion engine, clutch K0, traction transmission 1, traction transmission 2)"
+Status_asd_akt,Active status of the ASD function (DME output)
+Status_betriebsart_em1_lesen,"Return status value for CONTROL job E-machine 1 Specify operating modes"" (0: Function not yet started 5:Function running 8:Function completed and no error detected 9:Function complete and error detected"""
+Status_boost_rekup,Enter description
+Status_evmode_akt,Status EV Mode: not set/set/not forcibly activated/forcibly activated
+Status_mdrekup,[SS_EXP]: Plugged to 0
+Status_tgl_avai_disp,Status toggle button Ev and SOC Hold: Status availability (1 = not available)
+Status_tgl_disp_prio,Status toggle button Ev and SOC Hold: Trigger for display HU - prioritizing the display even if switched off by the customer (bad case)
+Status_tgl_grund_disp,Status toggle button Ev and SOC Hold: Reason for drop/prevention
+Status_tgl_kombi_avai_disp,Status toggle button Ev and SOC Hold: Display combination availability
+Status_tgl_kombi_disp,Status toggle button Ev and SOC Hold: drive panel for station wagon
+Status_tgl_kombi_pos_disp,Status toggle button Ev and SOC Hold: Position combination
+Status_tgl_kombi_update_disp,Status toggle button Ev and SOC Hold: Display trigger combination
+Status_tgl_tafel_disp,Status toggle button Ev and SOC Hold: drive panel
+Status_tgl_update_disp,Status toggle button Ev and SOC Hold: Trigger for display HU
+Status_usecase_antr_2,Only for sending on a new BUS signal!!! No functional connection please!!!!!!!!!!
+Status_usecase_soc,Status use case for soc Output size of the ASM for eBS SOC Master and EV Master
+Stdrvveh_bmw,Status of VM and E-machine
+T2histshort,T2 histogram (80 - 200 mA) as environmental condition. in case of quiescent current violation
+T3histshort,T3 histogram (200 - 1000 mA) as environmental condition. in case of quiescent current violation
+T4histshort,T4 histogram (> 1000 Ah) as environmental condition. in case of quiescent current violation
+T_batt,Battery temperature measured by the IBS
+T_batt_sme_filt,T_batt_sme_filt
+T_fahrbereit,"Time counter after setting B_ready to drive (general readiness to drive, electric or combustion engine)."
+T_ikat_stat_xab,Temperature in the catalytic converter stationary
+T_ikat_xab,Temperature in the catalytic converter dynamic
+T_prail_mon_xb,Rail pressure monitor
+T_saison,Season temperature
+Tabg_r9,Exhaust gas temperature after pipe 9
+Tabg_vk_xab,Exhaust gas temperature before cat
+Tans_b1,percentage time in which the following applies: intake air temperature <= 30ï¿½C
+Tans_b2,percentage time in which the following applies: 30ï¿½C < intake air temperature <= 50ï¿½C
+Tans_b3,percentage time in which the following applies: 50ï¿½C < intake air temperature <= 60ï¿½C
+Tans_b4,percentage time in which the following applies: 60ï¿½C < intake air temperature <= 70ï¿½C
+Tans_b5,percentage time in which the following applies: 70ï¿½C < intake air temperature
+Tget_b1,percentage time in which the following applies: transmission oil temperature <= 80ï¿½C
+Tget_b2,percentage time in which the following applies: 80ï¿½C < gear oil temperature <= 110ï¿½C
+Tget_b3,percentage time in which the following applies: 110ï¿½C < gear oil temperature <= 133ï¿½C
+Tget_b4,percentage time in which the following applies: 133ï¿½C < gear oil temperature <= 137ï¿½C
+Tget_b5,percentage time in which the following applies: 137ï¿½C < transmission oil temperature
+Tkwsoll,Coolant target temperature
+Tlrgenschw,"Speed threshold for load response (VDA-LIN generator, SGR)"
+Tmot_b1,percentage time in which the following applies: coolant temperature <= 80ï¿½C
+Tmot_b2,percentage time in which the following applies: 80ï¿½C < coolant temperature <= 117ï¿½C
+Tmot_b3,percentage time in which the following applies: 117ï¿½C < coolant temperature <= 120ï¿½C
+Tmot_b4,percentage time in which the following applies: 120ï¿½C < coolant temperature <= 125ï¿½C
+Tmot_b5,percentage time in which the following applies: 125ï¿½C < coolant temperature
+Tnh_ewp_20,Remaining follow-up time of the EWP20
+Tnh_ewp_22,Remaining follow-up time of the EWP22
+Tnh_ewp_23,Remaining follow-up time of the EWP23
+Toel,Output value engine oil temperature for LoCAN
+Toel_b1,percentage time in which the following applies: engine oil temperature <= 80ï¿½C
+Toel_b2,percentage time in which the following applies: 80ï¿½C < engine oil temperature <= 110ï¿½C
+Toel_b3,percentage time in which the following applies: 110ï¿½C < engine oil temperature <= 135ï¿½C
+Toel_b4,percentage time in which the following applies: 135ï¿½C < engine oil temperature <= 145ï¿½C
+Toel_b5,percentage time in which the following applies: 145ï¿½C < engine oil temperature
+Tpoel_reg,Input temperature Poel_reg
+Tumg_b1,percentage time in which the following applies: ambient temperature <= -20ï¿½C
+Tumg_b2,percentage time in which the following applies: -20ï¿½C < ambient temperature <= 0ï¿½C
+Tumg_b3,percentage time in which the following applies: 0ï¿½C < ambient temperature <= 20ï¿½C
+Tumg_b4,percentage time in which the following applies: 20ï¿½C < ambient temperature <= 45ï¿½C
+Tumg_b5,percentage time in which the following applies: 45ï¿½C < ambient temperature
+Tv_av_heizkr,Duty cycle for controlling the HAV
+Tv_kft,Duty cycle KFT
+Tv_poel,Duty cycle oil pressure control valve
+Tvneutral,Duty cycle of the zero gear sensor in the learned neutral position
+Tvulv,ULV control
+Tvwg,Duty cycle - wastegate control
+Tw_m_xab,Pipe wall temperature at mixing section in front of cat
+Tw_nk_xab,Pipe wall temperature according to cat
+Tzyl,Temperature of intake air for relative air filling
+U_batt,Battery voltage measured by the IBS
+U_bcusoll,AEPZSE - target voltage for BCU
+U_gen,Specification of generator target voltage (output value)
+Ulev,voltage level
+Verbredinfo,Ring memory for storing consumer reduction information
+Vollzyklen,Your long identifier could be here
+Vs_ewp_ae,Target volume flow of the electric water pump
+Wdk_soll,Throttle valve setpoint
+Wes_es_mod_frz,Angle Freeze injection mode
+Wes_soll_xpls,Vector with all target injection angles
+Wes_upd_h,Update angle
+Zbibs,Add-on number
+Zr_klst_nk,Counter for first start without dew point detection after catalytic converter in the previous driving cycle
+Zr_klst_vk,Counter for first start without dew point detection before catalytic converter in the previous driving cycle
+Zr_kstart_lam,Cold start counter for fuel in oil
+Zr_rennstart,Counter race start
+Zr_stabbr,Counter for detected failed starts or engine stalled with unknown cause (set only for key starts and before lambda controller become active plus a calibratable time delay)
+Zr_stabbr_ges,"Counter for detected failed starts or engine stalled with unknown cause (considers key starts, msa-starts and engine stalled even if lambda controller already active)"
+Zst_kks,Requested opening level of the KKS from the WMK
+Zw_grund,Basic ignition angle
+Zw_opt,Average Optimal ignition angle
+Zw_out,Ignition angle output (array)
+Zw_soll,Average target ignition angle
+Zyknlendgrd,Charging end reason for cyclic reloading
+Zyknlhist,Histogram for cyclic reloading
+Zyknlinfo,Information memory for cyclical reloading
+A_laengs_ist_siko,Actual acceleration (from Siko)
+A_laengs_mx_siko,permissible acceleration (from Siko)
+A_quer,Lateral acceleration
+Acfzgl,Vehicle longitudinal acceleration
+Akt_zyl_sst,Target cylinder index for direct start
+Akt_zyl_sst_mot,Target cylinder index for direct start (from an engine perspective)
+Als_dcdc,HVT utilizationPCU DCDC utilization
+Als_dcdc_raw,Current utilization of the DCDC converter (raw value)
+Anf_getr_deakt_ada,Transmission request to deactivate active vibration damping
+Array_vmavdi,VM shutdown preventers which should be ignored due to diagnostic testers
+Array_vmddi,VM deactivators which should be ignored due to diagnostic testers
+Array_vmeadi,VM power-on prompts which should be ignored due to diagnostic testers
+Array_vmevdi,VM switch-on preventers which should be ignored due to diagnostic testers
+BMWDtt_b_OfsIdlAcv_bo,Active condition for BMWDttnOfsIdlsw
+BMWDtt_n_OfsIdl_sw,Speed offset tester to check diagnosis
+BMWFl_n_EngTstrSpReqd_sw,Target idle speed during BDE test
+BMWFl_p_PRailCtlr_sw,Output value rail pressure regulator
+BMWFl_p_PTank_uw,Pressure in the pressure tank
+BMWFl_p_TstrSpReqd_uw,LP target pressure request during BDE test
+BMWFl_rat_FanTstrSpReqd_ub,E-fan setpoint during BDE test
+BMWFl_st_CodEfp_ub,Coding EKP in the fuel low pressure system
+BMWFl_st_PTankFuFlp_ub,Status of pressure tank fuel filler flap
+BMWFl_st_PTankMod_ub,Status mode refueling pressure tank 2
+BMWFl_st_TankCod_ub,Coding tank variants in the low-pressure fuel system
+BMWFl_st_TstrAcv_ub,BDE test requested by tester job
+BMWFl_st_TstrSpReqd_ub,BDE test requested by tester job
+BMWFl_stb_FpcStFb_uw,Status byte from FPC
+BMWFl_stb_FpcStFb_uw.BMWFl_b_DfhReq_bo,Diesel filter heater was activated at the request of the DDE
+BMWFl_stb_FpcStFb_uw.BMWFl_b_EfpIntFlt_bo,FPC Internal error
+BMWFl_stb_FpcStFb_uw.BMWFl_b_EfpOvrTLvl2_bo,Overtemperature level 2
+BMWFl_stb_FpcStFb_uw.BMWFl_b_EfpOvrTLvl3_bo,Overtemperature level 3
+BMWFl_stb_FpcStFb_uw.BMWFl_b_EfpShoCkt_bo,Short circuit EKP
+BMWFl_stb_FpcStFb_uw.BMWFl_b_FpcNoCrshSig_bo,FPC did not receive a crash signal
+BMWFl_stb_FpcStFb_uw.BMWFl_b_FpcNoPrmSet_bo,FPC no parameter set active
+BMWFl_stb_FpcStFb_uw.BMWFl_b_i_EfpHi_bo,EKP current too high
+BMWFl_stb_FpcStFb_uw.BMWFl_b_i_EfpLo_bo,EKP current too low
+BMWFl_stb_FpcStFb_uw.BMWFl_b_u_EfpHi_bo,EKP voltage too high
+BMWFl_t_HppDamp_sw,Modeled fuel temperature pressure damper
+BMWFl_t_PTank_sw,Status pressure tank temperature 2
+BMWMsa_st_CodMSAStarter,Distinction Ksopt150Ksopt0 and starter lock active not active
+BMWMsa_st_CodMSAVersion,Distinguishing the MSA version
+BMWSys_agGc_geMtChg_uw,RNGS selection angle
+BMWSys_agGc_geMtQly_ub,Quality bit for selection angle and switching angle of the RNGS
+BMWSys_agGc_geMtSel_uw,Switching angle of the RNGS
+BMWSys_agGc_geMtSta_ub,current shift lever position
+BMWSys_st_MtSensPret_ub,Sensor activation type SENT - Sensor
+BMWSys_tGbx_geMtTmp_sw,current transmission temperature
+BMW_b_FanRlySp,Condition of fan relay DxE
+BMW_b_FanStcRst,Tester job reset e-fan statistics data active
+BMW_posn_SelCfgRecuLvlTrig,Trigger for event position set in the vehicle recuperation level setting checkbox
+BMW_st_FanAftRunAcv,Status fan overrun active DxE
+BMWaep_b_GearDwnsReqExt_bo,Status word external request for switching threshold adjustment
+BMWaep_st_IncIdlSpdExt_ub,External request for minimum speed
+BMWaep_stb_U12bMin_ub,Status word for minimum vehicle electrical system voltage to reduce power loss in the control unit
+BMWaep_stb_U12bMin_ub.BMWaep_b_U12bMin_bc,Requirement of the minimum on-board electrical system voltage to reduce the power loss in the control unit
+BMWaep_u_CmdExt_ub,External requirement for minimum voltage
+BMWags_st_StrrReqd_ub,Influence of the starting system used by the transmission
+BMWas_ag_AccrUnfAct_uw,Accelerator pedal actual angle
+BMWas_fac_Em1CtlrSpdStatMax_ub,Percentage-based long-term maximum torque limits for electric motor 1 based on TORQMAXMOT1OSTR
+BMWas_fac_Em1CtlrSpdStatMin_ub,Percentage-based long-term maximum torque limits for electric motor 1 based on TORQMINMOT1OSTR
+BMWas_n_RaRdtOutAct_sw,Actual rear axle speed redundant
+BMWas_n_SpdForGcMaxEna_ub,Maximum permissible engine speed for the switching process
+BMWas_qlf_ag_AccrUnfAct_ub,Status accelerator pedal actual angle
+BMWas_qlf_n_EngCkSpdAct_ub,Status is engine speed crankshaft
+BMWas_qlf_n_RaRdtOutAct_ub,Status of the actual speed of the rear axle. Redundant
+BMWas_st_Clu_ub,Clutch switch status
+BMWas_st_SpdRedn_ub,Speed reduction status
+BMWas_tq_Em1CtlSpdDynMax_sw,Short-term maximum torque limit of the electric motor 1 drive strategy
+BMWas_tq_Em1CtlSpdDynMin_sw,Short-term minimum torque limits of the electric motor 1 drive strategy
+BMWbdy_acvn_ReAxlWhlSpdLimn_ub,Activation of rear axle speed limits
+BMWbdy_acvn_StruModEdrTrig_ub,Counter for incoming message for operation configuration start-up mode hybrid
+BMWbdy_acvn_StruModEdr_ub,Operation configuration start-up mode hybrid
+BMWbdy_acvn_TqRecuDrvrAssc_ub,Qualifier request Recu torque from FAS systems 1 Do not implement setpoint 2 Implement setpoint
+BMWbdy_b_CluOp10_bo,Condition clutch switch 10-position
+BMWbdy_b_CluOp90_bo,Condition clutch switch 90 position
+BMWbdy_b_EgFlp_bo,Exhaust flap circuit condition (True flap opened)
+BMWbdy_b_GcSpdProfAcv_bo,Speed control active
+BMWbdy_dst_RngBat_uw,Battery range
+BMWbdy_posn_WinDrvr_ub,This signal indicates how wide the window is currently open (in cm)
+BMWbdy_st_DrvWinDrvr_ub,The signal indicates the status of the FH drive
+BMWbdy_st_posn_WinDrvr_ub,The signal indicates the opening status of the window
+BMWbdy_tqw_TarRecuDrvrAssc_sw,Request Recu Moment from FAS systems
+BMWbdy_v_SpdWip_ub,This signal outputs the currently activated wiper speed
+BMWcbsoz_COD_RESTL_MAXSTR_ub,Coded maximum value CBS ï¿½l
+BMWcbsoz_COD_RESTL_MINSTR_ub,Coded minimum value CBS ï¿½l
+BMWcbsoz_COD_RESTL_STR_ub,Coded remaining distance in KM
+BMWcbsoz_COD_RESTL_ZT_ub,Coded remaining distance in months
+BMWchhyb_b_ReqElModDetIntp_bo,Hard request Set E-mode off Misfire detection
+BMWchhyb_b_ReqElModPLamDrop_bo,Hard request Set E-Mode from BBEVABTL
+BMWcodprm_b_EslAcv_bo,ESL coding active
+BMWcodprm_st_CodMSACnct_ub,Coding of the individual use cases depending on the construction status and derivative
+BMWctb_st_TstrCmdPrmnt_ub,Status word with commands from tester permanently non-volatile
+BMWctb_st_TstrCmd_ub,Status word with commands from tester
+BMWdgt_b_BcuSpReq_bo,Request for DiagJob STARTBCUUCMD
+BMWdgt_b_CthTqRsvRedIdl_bo,Activation reduction of the KH torque reserve for errors Demo CSERS via tester (idle)
+BMWdgt_b_CthTqRsvRedPl_bo,Activation reduction of the KH torque reserve for errors Demo CSERS via tester (partial load)
+BMWdgt_b_IdlSpdSp_bo,Function request speed change by tester
+BMWdgt_b_NoiseOff_bo,Condition Sound tuning switched off via tester
+BMWdgt_b_PlugSootEstdRst,Reset protected ZK displacement
+BMWdgt_b_RevCtlDeac_bo,Enabling the connection speed control via diagnostic job 1 ADR active 0 ADR inactive The function is active ex works
+BMWdgt_b_TqEngLimdEmi,Tester job for torque limitation diagnosis active
+BMWdgt_b_TqLimDec_bo,Expansion of the combustion engine load point increase for errors Demo CSERS active via tester
+BMWdgt_b_TqLimInc_bo,Expansion of the combustion engine load point reduction for errors Demo CSERS active via tester
+BMWdgt_st_DiagStrSysSeln_ub,Selection of starting system through diagnostic job
+BMWdgt_tq_TqEngLimdEmi,Torque difference for trimming Mdi
+BMWdgt_tq_TqLimDec_sw,Expansion of the combustion engine load point increase for errors Demo CSERS via tester
+BMWdgt_tq_TqLimInc_sw,Expansion of the combustion engine load point reduction for errors Demo CSERS via tester
+BMWdtt_b_IscAdpClr_bo,Condition of tester service Delete adaptation values
+BMWemm_st_EpmSeq_ub,Boschgrï¿½e EpmSeqnumInt for detecting the first segment after the motor starts
+BMWeng_ag_CmRawOutl_uw,Exhaust camshaft angle
+BMWeng_ag_ExcrAct_uw,Eccentric angle actual value
+BMWeng_ag_HppSp_sw,"Delivery time for high-pressure pump, quantity control valve in degrees KW"
+BMWeng_ag_InjBgActXpl_sw,Injection start angle is pulse-specific
+BMWeng_ag_InjEndActXpl_sw,Injection end angle is pulse-specific
+BMWeng_b_AcoCmpr2_bo,Air conditioning compressor condition - stage 2
+BMWeng_b_AcvnAvlMoOilAct_bo,Change in the availability of station wagon or tester engine oil
+BMWeng_b_BrkBoosDepSnsrDetd_bo,Pressure sensor installed in brake booster detected
+BMWeng_b_ClrAdpEisy_bo,Remove Eisy adaptation values via tester
+BMWeng_b_CluSpdStcRstDiag_bo,Reset the clutch speed statistics via SGBDTester
+BMWeng_b_DetVehJerkAcv_bo,Vehicle rear monitoring debounce active
+BMWeng_b_DiDfcoPclFil_bo,Fuel cut-off ban due to OPF temperature and loading condition
+BMWeng_b_EngRvsTurn_bo,Reverse rotation of the VM detected
+BMWeng_b_MsfErrInc,Description Misfire Error counter incremented during active injection
+BMWeng_b_PclFilExchSnsr_bo,OPF exchange (pressure sensor)
+BMWeng_b_PclFilExch_bo,OPF exchange (filter unit)
+BMWeng_b_PclFilMsaDi_bo,MSA switch-off preventer for more urgent OPF regeneration
+BMWeng_b_PclFilRgnSpLamVld_bo,Validation bit for lambda setpoint for OPF regeneration
+BMWeng_b_PclFilRgnSpTVld_bo,Validation bit for temperature setpoint for OPF regeneration
+BMWeng_b_PclFilSnsrCorrVld_bo,Validity of the OPF state detection
+BMWeng_b_PfTstrSootPcg,Status tester job for preconditioning OPF
+BMWeng_b_RailMonTstrRst,Reset via tester from the rail monitoring ring buffer
+BMWeng_b_RdyLamCtlXab_bo,Enable (continuous) lambda control
+BMWeng_b_RstAvlMoOilAct_bo,CBS reset - engine oil
+BMWeng_b_VvtOpLiho_bo,VVT is opened automatically under control due to VVT errors
+BMWeng_ct_CkTth_ub,Current crankshaft tooth (0119)
+BMWeng_ct_CmAdOutl_ub,Adaptation counter NW outlet
+BMWeng_ct_LotQlyEvtTrig,Number of triggered LZQ events
+BMWeng_ct_Msf_uw,Fault counter sum counts emissions-relevant misfires across all cylinders Bosch page MisfDetstcEmiMisfCntrSum
+BMWeng_ct_VvtTherOvld_uw,Total thermal load VVT
+BMWeng_lam_PclFilRgnSpLam_uw,Lambda setpoint for OPF regeneration
+BMWeng_lur_MsfDetXcs_sw,Lur values from misfire detection (supplier)
+BMWeng_m_SootPclFilXab,Soot mass in the particle filter
+BMWeng_mf_SootLoadOxdXab,Soot burns off in the particle filter during regeneration
+BMWeng_mf_SootRawXab,Ru raw mass flow
+BMWeng_n_CtlrMaxSp_uw,Target speed for NMAX control
+BMWeng_p_SnsrDeltPclFilXab_sw,Sensor value differential pressure particle filter
+BMWeng_posn_RadrFlpAct_sw,Status stepper motor actual position ShtrEcuStpEngPos
+BMWeng_rat_PclFilAshXab,OPF ash loading
+BMWeng_rat_PclFilRgnPrgs_ub,Progress display of an ongoing OPF regeneration
+BMWeng_rat_PclFilRgnUr_sw,OPF regeneration urgency
+BMWeng_rat_PclFilSnsrCorr_sw,OPF state detection via cross-correlation formation
+BMWeng_st_CcPgEfcReqd_ub,Request from DME to TFM for canister purge (0 no request 1 normal cc purge 2 efficient cc purge 3 signal error)
+BMWeng_st_CstNeutAvl_ub,Stand decoupling available
+BMWeng_st_FasStrrDi_bo,Request starter out tracks for kick start
+BMWeng_st_OpmPTank_ub,Operation mode of the pressure tank
+BMWeng_st_PTankCtl_ub,Pressure tank control status
+BMWeng_st_PTankDiagReq_ub,Status diagnostic request TFM
+BMWeng_st_PclFilRgnTstrStEnd,Status completed OPF regeneration
+BMWeng_st_PclFilRgnTstrStRun,Status of ongoing OPF regeneration
+BMWeng_st_PclFilSnsrTyp_ub,New RB PFltstActv (OPF sensor type)
+BMWeng_st_PclFilTyp_ub,New RB PFltstActv (OPF filter type)
+BMWeng_st_RstrtEngStrFasStrr_bo,successful kick start
+BMWeng_stb_CanPgInp_ub,Bit carrier for Input Bits to the CpSup Function
+BMWeng_stb_CanPgInp_ub.BMWeng_b_RstVlvBefPgEfc_bc,Valves of the pressure tank have switched to default position before pressure release due to request from CpSup
+BMWeng_t_PclFilRgnSpT_sw,Temperature setpoint for OPF regeneration
+BMWeng_t_VvtIpdLnkMdl_sw,VVT temperature of the soldering point on the shunt resistor
+BMWeng_t_VvtPelMdl_sw,VVT final stage temperature from model
+BMWeng_ti_InjPauActXpl_uw,"Pause time for the previous injection pulse, individual to the pulse"
+BMWeng_ti_StrtEndOff,Shutdown time after engine running (with end of start)
+BMWeng_u_Ecu_uw,Voltage level at the ECU
+BMWermgr_b_IniCfmd_bo,Status DSM init
+BMWext_b_RdyO2SensAftCatXab_bo,Probe behind catalytic converter ready for operation
+BMWext_lam_DeltSpXab_sb,Delta lambda setpoint for continuous lambda control
+BMWfl_b_TstrEngOffReq_bo,Request to switch off motor during BDE test pressure maintenance phase
+BMWgbx_b_SptGbxBltn_bo,Condition sports gearbox installed
+BMWgbx_fac_ReinGbx_uw,"Gearbox reinforcement (with rear-wheel drive without rear axle ratio, with front-wheel drive including axle ratio)"
+BMWgbx_lim_tq_GraNeg_sb,Specification Gradient Torque Minimum
+BMWgbx_lim_tq_GraPos_ub,DefaultGradientTorqueMaximum
+BMWgbx_st_RlsMsaExtd_ub,Current approval from Gearbox for the use of MSA functions
+BMWgbx_tq_CkVirtPrdn,Contains a calculated virtual and predicted automatic transmission creep torque (without losses) for use in the MSA operating strategy. The signal is only sent in vehicles with BK Tï¿½1 engines at SP2015
+BMWglda_ti_SysCntRel_ul,Relative time since the start of the system time
+BMWlhm_st_FltGbx1_ub,Error information about the ZF system network
+BMWmsa_st_HisSaveRst_ub,Reset MSA history memory
+BMWose_st_UcElDrvg_ub,Status use case e-vehicle
+BMWose_st_UcEngStop_ub,Status Usecase VM Store
+BMWosp_st_PTankEngAcv_ub,Predictive venting of pressure tank possible
+BMWpm_pwr_HvPsblSwil_ub,Power of the HV consumers that can potentially be switched off
+BMWpm_pwr_Hv_ub,HV on-board power supply
+BMWpt_st_GbxGearAct_ub,Transmission gear selection status
+BMWsf_st_DrvTq0Req_ub,Allow torque buildup from RB level 2 (Pre-Postdrive) or BMW level 2 (VRFDRDIDRVG)0 INIT1 Do not allow torque buildup Kl502 Allow torque buildup Kl503 Signal invalid
+BMWsf_st_Em1Tq0Req_ub,Request for torque freedom EM1 from RB level 2 or BMW level 20 INIT1 Do not allow torque build-up Kl502 Allow torque build-up Kl503 Signal invalid
+BMWstrr_b_StcRst_bo,Reset the statistics function
+BMWstrr_st_StrrAcv_ub,Starter is energized (KL-50 signal)
+BMWstrts_n_EngBuffAry_sw,Motor speed array averaged over 30 segments
+BMWstrts_ti_CallAct_ul,current segment time (system time of the EPM module)
+BMWstrts_ti_CallOld_ul,Storage time of the youngest saved speed (BMWstrtnEng0Buffsw)
+BMWtos_p_Psen_Rfci_ub,Sensor pressure of the refrigeration circuit
+BMWtos_tmp_CompEps_sw,Temperature of EPS control unit
+BMWtqw_st_GbxDasSp_ub,Status setpoint FAS level 1 from Bosch
+BMWveh_b_TranDrp_bo,Driving level condition
+BMWveh_st_PwrVarCod_ub,Coded performance land gearbox variant
+BMWveh_st_VehTyp_ub,Vehicle type
+BMWveh_v_VarCodMax_uw,Coded Vmax from Bosch
+BMWvm_st_PeBrkg_ub,Status information about the brake pedal intervention by the driver
+BMWvm_tq_BrkWishDrvActRaw,"Current wheel-related braking torque that the driver tries to set using the brake pedal. When the brake pedal is pressed, a negative value is transmitted (since the braking torque always acts against the vehicle movement)"
+BMWvm_tq_TarTqWhlStabnFas_sw,fast target torque of the DSC interface
+BMWvm_tq_TarTqWhlStabn_sw,Slow target torque of the DSC interface
+BMWwmk_t_TTarDrvrAco_ub,Contains the driver temperature value currently set by the user
+Ba_em1_ist,Is E-machine operating mode
+Ba_sle_ist,Actual operating mode SLE
+Batt_class,Classification of the battery installed in this vehicle
+Bed_lamson_ok_xab,Readiness of constant lambda probe in front of cat
+Bed_lrad_akt_xak,Lambda adaptation condition active
+Bed_lrad_deak_xak,Lambda adaptation condition deactivated due to lambda sensor error
+Bed_pruef_xab,Lambda request for plausibility test
+Bed_zylaus_xab,Cylinder suppression in homogeneous operation Bank 1 and 2 active
+Betriebsart_em1_steuern,EM1 control operating mode
+Br_kraft,Power in the brake booster
+Br_weg,Distance position in the brake booster
+Brtorqdrv,Braking torque requested by the driver via the brake pedal
+Brtorqsum,Actual braking torque generated by the service brake
+CouNavgraph2EvtProfil,CounterxNav-Graph2EventProfile x012345
+CouNavgraph2Profil,Cyclic message counter of the profile package
+Coz_vfset,Instance CbsClient Oil availability value from the combination or tester
+D_la_sa_xab,Lambda correction at the end of fuel cut-off
+Daten_bcu,Info about installed BCU
+DispGrGrb,Display gear in Steptronic mode from the EGS (R gear is communicated from the EGS to the station wagon via DISPPOGRB)
+DispRqGrGrb,SPA gear from EGS calculation
+Dlareg_vk_xab,Correction of the lambda measurement value before the catalytic converter from rapid adaptation of the post-catalytic converter control control
+Dm_ab_fws,Driving resistance
+Dm_rad_figa,SetpointDrivetrainTorqueGradientLimitation
+Dps_soll_svcreq,Setpoint intake manifold pressure difference from the tester
+Dzw_kr,Ignition angle intervention through knock control
+Eco2_i_tolo,Ecos2 upper current threshold
+Eco2_i_tolu,Ecos2 lower current threshold
+Eco2_i_trigaus,Ecos2 stop trigger value
+Eco2_i_trigein,Ecos2 start trigger value
+Eco2_n_messp,Ecos2 number of measuring points
+Eco2_td_filtmess,Ecos2 measuring filter
+Eco2_td_filttrig,Ecos2 trigger filter
+Eco2_td_mess,Ecos2 measurement time
+Eco2_td_posttrig,Ecos2 post-trigger recording
+Eco2_td_timo,Ecos2 timeout time
+Eco2_td_tot,Ecos2 current measurement holdoff time
+Eco_i_holdoff,Holdoff Ecos current measurement
+Eco_i_messzeit,Duration Ecos current measurement
+Eco_i_schwelle,Trigger threshold current measurement
+Eco_i_timeout,Timeout Ecos current measurement
+Eco_max_i,Max quiescent current threshold
+Eco_msb,Ecos measurement start condition
+Eco_mz,Duration of average measurement
+Eco_timo,Ecos measurement timeout
+Err_bcu,BCU status error
+Es_inj_stat_ist_xzyl,Status injection mode compressed
+Es_mod_ist_xzyl,The injection mode is cylinder-specific
+Eta_zyl_aus,Current efficiency through cylinder blanking
+EvtInfoNavgraph2,EventInformationxNav-Graph2 x012345
+EvtInfoSrcNavgraph2,EventInformationSourcexNav-Graph2 x1
+EvtLNavgraph2,EventLaengexNav-Graph2 x13
+EvtOffsNavgraph2,EventOffsetxNav-Graph2 x012345
+EvtProNavgraph2,EventProbabilityxNav-Graph2 x012345
+F_lakor,Factor Lin lambda controller
+F_lrad_in_xak,Factor for lambda adaptation
+F_mdreskhll_tester,Factor reduction of the KH torque reserve for errors Demo CSERS via tester (idle)
+F_mdreskhtl_tester,Factor reduction of the KH torque reserve for errors Demo CSERS via tester (partial load)
+F_mk_korr_ext_xzyl,Factor for mixture intervention by equalization and tester
+F_soc_hv,Factor for hiding the boost function depending on the battery charge level
+F_teblg,Loading level AKF
+Fahrtrichtung_wunsch_siko,Direction of travel as desired by the driver (1 forward -1 backward) (from Siko)
+Fakf,Loading the activated carbon filter
+Fetraflamode,Submodes of the FeTraFla mode
+Fetrawe,"Implementation of manufacturing, transport and workshop mode with tester"
+Fho,Correction factor height
+Frk_st_comf,Array index corresponding to firing order example SYZYLZA4 - fstaw03
+Gangi_at,Gear displayed in the station wagon
+Gangi_roh,Raw value gear
+I_batt_zse,Battery current of ZSE battery measured by ZSE-IBS
+I_dcdc,Current DCDC converter
+I_eff_gs,Drive train reinforcement
+I_ibsl,Battery power from IBS
+I_pcuist_n1,Current measured by PCU
+I_pcuist_n2,Current measured by PCU
+Ibsl_status,Status input for IBSCTRL
+IdxSegNavgrph2,Reference to the segment ID of the ADAS Horizon v14 extended information
+Ieltst_testernelsoll,E-fan setpoint from the tester job
+Ieltst_testerrelais,E-fan relay control value from the tester job
+Ierr_grenz_ext,Limit excitation current from the tester
+Isglkt_chipherst,Chip manufacturer VDA-LIN generator
+Isglkt_chipvers,Chip version VDA-LIN generator
+Isglkt_dfreg,Utilization of VDA-LIN generator
+Isglkt_herst,Manufacturer code VDA-LIN generator
+Isglkt_ierrgrenzok,Copy limit excitation current VDA-LIN generator
+Isglkt_ierrreg,Excitation current VDA-LIN generator
+Isglkt_makenn,Machine type VDA-LIN generator
+Isglkt_rrzok,Copy of load response time VDA-LIN generator
+Isglkt_tchipreg,Chip temperature VDA-LIN generator
+Isglkt_uist,Actual voltage VDA-LIN generator
+Isglkt_uok,Copy of target voltage VDA-LIN generator
+Isgtst_testerierrg,Setpoint specification of limit excitation current from tester
+Isgtst_testerrrz,Setpoint load response time from tester
+Isgtst_testersgr,Setpoint specification SGR operating mode from tester
+Isgtst_testerusoll,Target voltage specification from tester
+Km_restrwrex,"Transfer of the current range extender range based on the current tank content. In this range value, the range due to the battery charge level is not taken into account"
+Km_st_1,Distance km accurate to 1km
+Kvaverbr,Fuel consumption (injection quantity in microliters)
+Kw_pos,Absolute engine position
+Kw_pos_em1,Position EM1
+Kw_pos_sst,Distance of the target cylinder (at the moment of observation) from its ZOT (from an engine perspective)
+Kw_umdr_em1,Revolution counter EM1
+LSegNavgrph2,This signal contains the length of the current segment
+L_pwmout,Duty cycle e-fan
+La_diag_xab,Lambda for plausibility check specific to exhaust gas pandemic
+La_puls_xab,Excitation of linear lambda controllers (forced la stimulation) specific to the exhaust gas bank
+La_soll_tester_xab,Lambda requirement tester exhaust gas bank specific
+La_vk_xab,Lambda measurement value before catalytic converter
+LimVNavgrph2,This signal contains the speed limit of the current segment
+M_ges_fzg,Weight mass vehicle
+Md_em1_ist,Actual torque of the electric motor
+Md_em1_max_siko_dme,Max limit for EM1 from RB level 2 or BMW level 2
+Md_em1_max_xctl_egs,Maximum controller limit for drag start
+Md_em1_min_siko_dme,Min limit for EM1 from RB level 2 or BMW level 2
+Md_em1_min_xctl_egs,Minimum controller limit for drag start
+Md_em1_res_vm_start,Reserve starting torque
+Md_em1_soll_ebs,Charge and assist request EM1
+Md_em_nctl_stat,Stationary slow torque component of the EM12 speed controller (EM12 project-specific)
+Md_gb1_l,Slow torque intervention from the gearbox
+Md_gb1_s,Fast torque intervention from the gearbox
+Md_getriebe,Gearbox input torque
+Md_lmv_v_ist,Actual moment of the longitudinal moment distribution to the front (relative to the shaft)
+Md_lmv_v_soll,Target torque of the longitudinal torque distribution to the front (relative to the shaft)
+Md_loss_grb,Torque loss of the gearbox based on the gearbox input interface in Nm
+Md_na_ac,Air conditioning compressor torque loss
+Md_na_ars,Torque loss active roll stabilization
+Md_na_ef,Torque loss EF (steering and ARS)
+Md_na_efmax,Maximum torque loss EF (steering and ARS)
+Md_na_efprae,Predicted torque loss EF (steering and ARS)
+Md_na_mlad,Torque loss of mechanical loaders
+Md_na_sl,Torque loss servo pump
+Md_rad_brems_antr_soll,Target wheel braking torque of the drive
+Md_rad_ges_max_fd,TargetMaximumWheel torqueDriving dynamicsDrivetrain
+Md_rad_ges_min_fd,TargetMinimumWheel torqueDriving dynamicsDrivetrain
+Md_rad_ist_kriechen_gb1,Wheel torque delivered by GB1 during crawling
+Md_rad_soll,Target wheel torque from LDM
+Md_rad_stab,DSC interface (fast path) requested driving sum wheel torque
+Mdg_gsl_minus,Slow torque intervention EGS based on transmission input torque reduction
+Mdg_gsl_plus,Slow torque intervention EGS based on transmission input torque increase
+Mdg_gss_minus,Fast torque intervention EGS based on transmission input
+Mdg_gss_plus,EGS quick torque intervention based on transmission input
+Mdg_max_gs,Maximum permissible transmission input torque through EGS emergency running
+Mdi_nmax,Moment of maximum speed reduction
+Mdi_res_ac,Torque reserve for the air conditioning compressor
+Mdi_res_diag,Reserve torque from OBD probe dynamic diagnosis
+Mdi_res_sl,for power steering
+Mdi_res_tev,Torque reserve for the TEV
+Mdi_vmax,Vmax limit
+Mdk_k0_max,Maximum transmittable torque of the separating clutch
+Mox_skvk,Oxygen storage capacity of the pre-cat
+Msa_dienste,Status Services Embassy MSA (ID219)
+Msa_lm,Steering torque
+Msa_pumpl,Pump start status DSC
+Msa_qufdyn,Driving dynamics qualifier
+Msa_qulm,Qualifier steering torque
+Msa_qureqilk,Qualifier requirement: complete freedom from adhesion
+Msa_reqfb,Requirement to establish driving readiness
+Msa_stabs,ABS status
+Msa_stbped,Brake pedal status
+Msa_stfzg,Vehicle standstill status
+Msa_stfzgpbr,Status vehicle standstill parking brake
+Msa_stgrbevreq,EGS switch-on prevention recommendation
+Msa_sthyb,Status from the EME
+Msa_sthyb2,MSA start adhesion request MSA requirements from the AE
+Msa_stkl,Status terminals
+Msa_stldm,Status LDM
+Msa_stled,Status operation MSA button
+Msa_strtzgeschk,queried total number of starts
+Mshfm,Mass flow from HFM
+Mslui,Integr air mass
+Msp_dneng,Speed gradient over current segment
+Mste_xte,Mass flow through tank ventilation valve
+N_ab_m,measured output speed (absolute value)
+N_ab_real,Measured output speed (signed contains information about direction of rotation) Nabm interface is still maintained as an absolute value
+N_em1_ist,Actual speed of the electric motor
+N_em1_max,Maximum speed EM1
+N_em1_min,Minimum speed of the electric motor due to EGS requirement
+N_em1_soll_ebs,Target speed EM1 of the eBSG
+N_gb1_in_max_as,Maximum input speed of gearbox 1 (drive strategy)
+N_k0_in_max_as,Maximum input speed of the clutch K0 (drive strategy)
+N_llr_grb_min,Idle speed increase by M-DKG
+N_llr_soll_dn_ta,Delta target speed from the tester
+N_llr_soll_dn_ta_ac,Delta target speed from tester with AC
+N_llr_soll_dn_ta_bn,Delta target speed from the tester on-board network
+N_llr_soll_dn_ta_fs,Delta target speed from the tester with FS
+N_llr_soll_dn_ta_fsac,Delta target speed from the tester with AC and FS
+N_rad_hl,Wheel speed on the left
+N_rad_hr,Rear right wheel speed
+N_rad_vl,Front left wheel speed
+N_rad_vr,Front right wheel speed
+N_schalt_dkg,Engine speed required by the DKG
+N_soll_getr_ein,Gearbox input target speed
+N_target,Expected engine speed in the target gear after shifting
+N_vm_soll_egs,Target speed of the combustion engine from EGS
+Navgraph2ProEvt,Nav-Graph2Profile switchingEvent
+Navgraph2ProShi,Nav-Graph2 profile switching
+Neig_l,Longitudinal road gradient (protected) in degrees
+Neig_l_qual,Qualifier longitudinal road gradient
+Neig_q,Road slope (protected) in degrees
+Neig_q_qual,Qualifier road cross slope
+Nelueft_klima_anf,Percentage requirement for e-fan speed from the IHKA IHKR
+Nelueft_lenk,E-fan request from the steering aid
+Newp_klima,Electric water pump request by the air conditioner in 0 100
+Nkw_1ms,Speed size (calculation over the last tooth period synchronously every 1ms)
+Nkw_1msXP,Extrapolated speed size (calculation over the last tooth period synchronously every 1ms)
+Nkw_Inc_10ms,Speed in the 10ms ratser from the last crankshaft tooth period
+Nkw_Tooth_10ms,Speed in the 10ms ratser from the last 6 crankshaft tooth periods
+Nkw_can,CAN speed for locking STDRVVEH
+Nkw_grad,Speed gradient
+Nkw_grad_glmi,Speed gradient as a moving average over 2 revolutions (720)
+Nkw_startende_koor,Valid starting end speed used in the functions by the supplier
+Nkw_zahn,Speed from KW teeth
+Nmax_var,red speed range
+Nsolfa,Idle target speed function requirement tester
+Nturb,Speed transmission input
+On_antriebsart_cod,Coding parameters drive type (0no coding 1rear 2all-wheel drive 3front)
+On_niv,Oil level for ON II with a wide range of values
+Oz_lf1c,Country factor 1 coded
+Oz_lf2c,Country factor 2 coded
+Oz_temp,Engine oil temperature from KT
+Oz_tempsmpf,Sump temperature
+Ozvartyp,Oil sensor variant
+P_oel_ist,Is oil pressure
+P_oelsol_tst,Setpoint oil pressure via tester
+Pbremsu,Brake booster vacuum hPa
+Pel_pred_eps,Predicted performance EPS
+Perc_wmm_ist,Actual position WMM from BOSCH function to WMK (0-100)
+Pmrestore,Restore memory
+Pmsv,Registered power management stand consumers
+Pr_bs_soll,Should priority relief request
+Pr_laden_soc,Load prioritization
+Prail_bde_test,Setpoint for rail pressure from BDE test control function
+Prail_ist,Rail pressure
+Prail_soll_cvo,Rail pressure requirement through CVO adaptation
+Prail_soll_tester,Target value for rail pressure from the tester
+Profil1LNavgraph2,Length of segment 1 of the profile package
+Profil1Navgraph2,Segment 1 of the profile package
+Profil2LNavgraph2,Length of segment 2 of the profile package
+Profil2Navgraph2,Segment 2 of the profile package
+Profil3LNavgraph2,Length of segment 3 of the profile package
+Profil3Navgraph2,Segment 3 of the profile package
+Ps_abs,Absolute pressure suction pipe
+Ps_abs_roh,Absolute pressure suction pipe
+Pumg_roh,Ambient pressure raw value
+Pvdkds_roh,Pressure in front of throttle valve from sensor raw value
+Qelad_ibsl,Battery discharge counter
+Qlad_ibsl,Battery charge counter
+Qs_anf_klima,Heat requirement for DME to control eWAPU
+QuanNavgrph2EvtProfil,NumberNavGraph2EventProfile
+QuanNavgrph2RadProfil,NumberNav-Graph2RadiusProfile
+QuanNavgrph2SloProfil,NumberNav-Graph2SlopeProfile
+QuanNavgrph2TypStreetProfil,NumberNav-Graph2TypeStreetProfile
+QuanNavgrph2VEstiProfil,NumberNav-Graph2SpeedProtectedProfile
+QuanNavgrph2VLimProfil,NumberNav-Graph2SpeedLimitProfile
+Rf_dirsta,RB-standardized filling of the first fired cylinder (100 corresponds to the amount of air in the displacement at 1013hPa and 0C)2) Not the entire array is read because rlpw is BMW's responsibility anyway
+Rkte_xte,Fuel correction by TEV
+RtAuinfCntNavgrph2,RouteAdditional informationLandNav-Graph2
+RtOffsNavgrph2,This signal describes the current position in the route profile
+RtProNavgrph2,RouteProbabilityNav Graph2
+Rwdtbls,Raw data brake light signal (RDWTBLS)
+Seg5z,Segment time for 5 teeth
+Segakt_Ign,Current segment from the ignition task
+Segakt_Inj,Current segment from the fill task
+Segeln_dienste,Contains the sailing preventers from the sailing prevention service message
+Soc_hvb_ist,Actual SOC
+Soc_hvb_ist_delta,High-resolution SOC value (intermediate value to previous SOC)
+Soc_hvb_max,Max SOC
+Soc_hvb_min,Min SOC
+Soc_quali_zse,Quality of charge status of ZSE battery
+Soc_zse,Charge status of ZSE battery
+St_ablauf_egs,EGS sequence control
+St_aepllctrlin,Status word Staepllctrlin
+St_aepllctrlin.B_llanhsec,LL increase request from the safety control unit
+St_aepmod_in,Status input bits for HybGen functions in AEP
+St_aepmod_in.B_hybsysnio_zse,EME (GEN2) AE (I12GEN3) sends converter defective and AEP must display the CCM213
+St_aepzse_in,Status input bits for AEPZSE
+St_aepzse_in.B_ibsnok_zse,EME does not send ZSE IBS OK
+St_aepzse_in.B_ibssukrdy_zse,EME sends ZSE IBS start-up communication ready
+St_akt_betriebsart_em_steuern,Petitioner
+St_akt_betriebsart_em_steuern.B_akt_betriebsart_em1_steuern,Activation of EM1 control mode
+St_akt_betriebsart_em_steuern.B_akt_betriebsart_em2_steuern,Activation of EM2 control mode
+St_anf_em1_ebs,EM1 operating mode requirement
+St_anman1,Status Anman
+St_anman1.B_ldm_ena,Enable moment request from LDM
+St_anman1.B_nosa,Condition SA prohibited by LDM
+St_asiko,Bittrï¿½ger A-Siko for level 1
+St_asiko.B_asiko_nakt,TRUE Acceleration comparison deactivated FALSE Acceleration comparison activated
+St_atldiag2_in,Status byte interface input
+St_atldiag2_in.B_atlsvc_if,Tester requirement for diagnostic function of the exhaust gas turbocharger
+St_bcu,Status BCU
+St_bls.B_bls,Brake light switch condition
+St_btvns,Status word tester intervention in BlsResidual gas
+St_btvns.B_btvsa,Condition tester control AVANOS
+St_btvns.B_btvse,Condition tester control EVANOS
+St_ckl15,Status byte terminal signals from CAN
+St_ckl15.B_ckl30,Condition terminal R (via CAN)
+St_ckl15.B_ckl50,Condition terminal 50 (from CAN)
+St_ckl15_compl,
+St_ckl15_compl.B_ckl30_compl,Condition terminal R (via CAN)
+St_ckl15_compl.B_ckl50_compl,Condition terminal 50 (from CAN)
+St_codier_la,1 status word from coding table for LA-dependent function control
+St_cvo,Status word
+St_cvo.B_cvo_akt,Injection specification changed by CVO
+St_cvo.B_cvo_anf,CVO adaptation requirement
+St_cvo.B_cvo_anf_high,Urgent CVO adaptation requirement
+St_diag,
+St_diag.B_btvvta,Condition component control VVT control
+St_diag_ewp_20,Status feedback of the electric coolant pump for ATL cooling (0 OK 3 NOK)
+St_diag_ewp_22,Status feedback of the EWP22 (0 OK 3 NOT OK)
+St_diag_ewp_23,Status of the electric coolant pump for cooling electrical components
+St_diag_te_zse,Status diagnosis of separating element ZSE
+St_diag_werksmodus_phev,Status of the diagnostic job for factory mode for PHEV vehicles
+St_dk_diag,Status TPS diagnosis
+St_dk_diag.B_dkerr_2pot,Condition: both DK pots are defective
+St_dk_diag.B_ska,"SKA actively triggered via level 1, 2 or 3"
+St_dk_notl,Dk emergency running status
+St_dor_frei,Status register for enabling DOR diagnosis by external conditions
+St_dor_frei.B_var_dor,Variant DOR detected
+St_dps_svc,Status of the tester request for target intake manifold differential pressure specification (0 nothing 1 gd requirement 2 Dpssollsvcreq 3 workshop test with KDPSSVC31 and 2 4 undercionstruction 4 nv)
+St_drlin,Status byte layer input DAROL
+St_drlin.B_drl_rstanf,Reset request for DAROL
+St_dsc_can_pre,Unprocessed status of the DSC control unit
+St_dsc_ist,Is status DSC
+St_dsc_mradsoll,Status of target wheel torque DSC
+St_dtev,Status TEV diagnosis
+St_dtev.B_dteaavz,Condition for control check for TEV diagnosis active (time delayed)
+St_dtev.B_dtest,Start for TEV control
+St_dtev.B_dtesvz,Active diagnosis of tank ventilation system (time delayed)
+St_dtev.B_dtev_aktiv,Condition disables DPS controller through TEV diagnostics
+St_dyndzm,Status word
+St_dyndzm.B_dzm_dyn,Speed dynamization requirement
+St_ebn_fahrbereit,Release status of the readiness to drive from the HVPM
+St_eco2_buffer,Eco2 acknowledgment diagnostic buffer from RB
+St_eco2_buffer.B_eco2_tbufrdy,Ecos2 condition diagnostic buffer can be filled
+St_ecostat1,Ecos status byte 1
+St_ecostat1.B_eco2_job,Ecos2 is set by the supplier for 1s in the diagnosis job
+St_ecostat1.B_eco2_stop,Control command flag from tester jobefiistop
+St_ecostat1.B_ecojob1,Ecos Job1 active again delete again after 1 second
+St_ecostat1.B_ecojob2,Bed I- measurement start
+St_egs,Automatic transmission status byte
+St_egs.B_csn_egs,EGS in ColdStartNeutral mode (delayed first gear engagement)
+St_egs.B_egs_khl1,Condition request cooling level 1 from transmission control
+St_egs.B_egs_khl2,Condition requirement for cooling level 2 from transmission control
+St_egs.B_nic_egs,EGS in NIC mode
+St_egs_prog,Automatic transmission program status
+St_einh_md_sport,Unit of the torque display in the performance display
+St_einh_p_sport,Unit of performance in the performance display
+St_eisydiag_pakmx_lay,Status word EisyDiagPakmx Layer
+St_eisydiag_pakmx_lay.B_pakmx_clear,Condition Reset Diagnosis Exhaust pressure too high
+St_eluefehler,Bitter
+St_eluefehler.B_farelais,Relay error
+St_eluefehler.B_farelaiskm,E-fan relay control line short circuit to ground
+St_eluefehler.B_farelaiskp,E-fan relay control line short circuit to Ubatt
+St_eluefehler.B_farelaisub,E-fan relay control line interrupted
+St_eluefehler.B_ielpwm_fabus,PWM line error
+St_eluefehler.B_ielpwm_fabuskm,E-fan PWM cable short circuit to ground
+St_eluefehler.B_ielpwm_fabuskp,E-fan PWM line short circuit to Ubatt
+St_eluefehler.B_ielpwm_fabusub,E-fan PWM line interrupted
+St_eluefehler.B_ielpwm_masse,PWM signal pulled to ground
+St_espr,Status word
+St_espr.B_espr_syn,Condition injection can take place (including synchronization)
+St_est_ist,Is the status of the electric steering
+St_evab_misfire,Cylinders of the own SG switched off due to misfires
+St_falls,Summarized statuses for speed increase of diagnosesCat diagnosisPre-cat probe diagnosis (dynamics)Pre-cat probe diagnosis (offset)Post-cat probe (swap)Post-cat probe (vibration test stuck check)Post-cat probe (transition time)Post-cat probe (response t
+St_fas_mradsoll,LDM request qualifier
+St_fds_config,Driving dynamics switch configuration
+St_fes,Driving experience switch status
+St_fg_overboost,Bitter
+St_fg_overboost.B_fg_overboost_em2,Bit for enabling the overboost via the electric machine 2
+St_fg_overboost.B_fg_rennstart_gb1,Bit for enabling the race start from gearbox 1
+St_fg_socr_diag_obd,Status of the release of the OBD diagnosis by the SOC control
+St_fg_startsystem_em1,Status of the release of the electric machine 1 as a start system
+St_fzg_1,Vehicle variant
+St_fzg_2,Vehicle variant
+St_fzg_zstd,Driving status from DSC
+St_gang,Direction and gear information (almost PRND)
+St_gangplaus,Status byte gear information
+St_gangplaus.B_gang_rueck_upl,Gear information invalid (on-board network signal)
+St_generator,Status byte generator
+St_generator.B_crashgen,Condition: Switch off generator in the event of a crash
+St_getriebe,Gearbox status word
+St_getriebe.B_autget,Condition automatic transmission installed
+St_getriebe.B_dkgget,Condition automatic transmission installed
+St_gl_zsk_ein,Status word for bits
+St_gl_zsk_ein.B_gl_zsk_testerena,Bit cylinder equality tester job was requested
+St_hal_diag_adapt,Status byte rear axle learning function can be activated via diagnostics
+St_hal_diag_adapt.B_hal_reset_adaptionen,Activate rear axle learning function
+St_ibsl_chg,4 bytes of charging statusStatusIBSLIN
+St_ibsl_diag0,IBS status error byte
+St_ibsl_diag1,IBS status error byte
+St_ibsl_diag2,IBS status error byte
+St_ibsl_diag3,IBS status error byte
+St_ibsl_stat0,IBS status byte
+St_ibsl_stat1,IBS status byte
+St_ibsl_stat2,IBS status byte
+St_icm_acfzgl,Qualifier vehicle longitudinal acceleration
+St_ieltester,Bitter
+St_ieltester.B_ieltst_testernelsoll,Tester job for e-fan control active
+St_ieltester.B_ieltst_testerrelais,Tester job for electric fan relay control active
+St_igrin,Status word Stigrin
+St_igrin.B_fe,Implementation Enable production mode
+St_igrin.B_fetrawedeak,"Implementation of deactivate production, transport and workshop mode"
+St_igrin.B_tra,Implementation Enable transport mode
+St_igrin.B_we,Implementation Activate workshop mode
+St_igrinnv,Status word Stigrinnv
+St_igrinnv.B_cdigronw,Write or read IGR coding data into the DDEDME
+St_igrinnv.B_cdxenonw,Write xenon assembly coding data
+St_igrinnv.B_diagigr,ActivationDeactivation iGR (Bit true - diagnostic job set - Igr deactivated)
+St_ipmnapraein,Bitter
+St_ipmnapraein.B_koakt,Air conditioning compressor condition
+St_isglin,Status byte VDA-LIN generator
+St_isglin.B_isglkt_fabus,VDA-LIN generator bus communication error
+St_isglin.B_isglkt_fael,Electrical error VDA-LIN generator
+St_isglin.B_isglkt_faht,High temperature VDA-LIN generator error
+St_isglin.B_isglkt_fakom,Error communication VDA-LIN generator
+St_isglin.B_isglkt_fame,Mechanical error in VDA-LIN generator
+St_isglin.B_isglkt_fato,VDA-LIN generator timeout error
+St_isgtst,Tester request status register
+St_isgtst.B_isgtst_datenreset,Condition for resetting the generator statistics
+St_isgtst.B_isgtst_testerierrg,Condition setpoint limit excitation current from tester active
+St_isgtst.B_isgtst_testerrrz,Condition setpoint load response time from tester active
+St_isgtst.B_isgtst_testersgr,Condition SGR operating mode specification from tester active
+St_isgtst.B_isgtst_testerusoll,Condition of target voltage specification from tester active
+St_khm_in,Status word
+St_khm_in.B_kh_disbl_tester,Cat heaters locked by the tester
+St_khm_in.B_kh_getafu,Status word
+St_kl15.B_dc_new,New driving cycle with clamp change
+St_kl15.B_kl15_ep,Bit size condition KL15 set
+St_kl15.B_kl15_vorab,Condition KL15 pressed
+St_klopfen,Status word knock
+St_klopfen.B_klopfen,Knock detected
+St_kr,Knock control condition
+St_kr.B_krdws,Condition Knock control safety delay adjustment
+St_kr.B_krndy,Speed dynamics condition for knock control active
+St_kr.B_warml_zykl,Warm-up cycle completed
+St_kr1,Knock control status byte
+St_kr1.B_krakt,Knock control condition active
+St_kupp_dkg,Condition of the starting clutch
+St_kwsync,Status byte combustion engine synchronization
+St_kwsync.B_kwsync,Combustor fully synchronized
+St_kwsync.B_kwsync_pre,"For example, the combustion engine synchronizes due to a safe engine shutdown position"
+St_laden,Current status loading
+St_lam_ad,Lambda adaptation status
+St_lam_ad.B_lrad_fvlra,Suspected lambda adaptation error
+St_lam_ad.B_lrad_tank,Refueling process
+St_lam_ad.B_lrad_tankg,Bit refueling process valid
+St_lin_akt,Status word
+St_lin_akt.B_lin_akt,LIN condition active
+St_ll_in,Status word bits
+St_ll_in.B_icm_disable,Condition ICM generally disabled
+St_ll_in.B_var_afs,Condition: AFS module present in the vehicle
+St_m_ges_fzg,Qualifier weight mass vehicle
+St_minhubad0,Status word MINHUBAD
+St_minhubad0.B_dtes,TE diagnosis condition active
+St_minhubad0.B_fa,Condition Function requirement (general)
+St_minhubad0.B_mdarv,Critical dropout rate exists
+St_mod_egs,Operating mode switching torque speed control of the DME by EGS
+St_montage,Status bearer
+St_montage.B_montagemod_akt,Assembly mode currently active
+St_motzustd,Motor status status word
+St_motzustd.B_motlaeuft,Condition Motor is running
+St_msae,Status word msae
+St_msae.B_fagurt,Driver's belt buckle closed
+St_msae.B_ftauf1,Driver door 1 open condition
+St_msae.B_hkauf,Bit tailgate open
+St_msae.B_mhauf1,Condition bonnet 1 open
+St_msae.B_msa_av_zl,MSA shutdown prevention
+St_msae.B_msa_deakt_zl,MSA deactivation
+St_msae.B_msa_ea_zl,MSA deactivation after previous switch-on request
+St_msae.B_msafzg,Vehicle with MSA HW
+St_msae.B_msahistrst,Reset MSA history memory (tables and ring buffers)
+St_msae.B_msaobdav,Condition onboard diagnostics active
+St_msae.B_msasw,Deactivate MSA condition until the next ignition change
+St_msae.B_msavadapt,MSR adaptation condition active
+St_msae.B_nglern,Delete neutral position learned condition
+St_msae.B_schlok,Key (ID transmitter) recognized
+St_msae.B_zmsoff,Injection blocked by DMF protection function
+St_msae2,Status word msae 2
+St_msae2.B_ewsok,Activation status EWS
+St_msae2.B_msastrtzrst,Request to save start counter readings
+St_msavmkssoll_ziel,Feedback from the transmission that the power connection request has been accepted
+St_msavmstsoll_ist,Feedback from the transmission about the target combustion engine status
+St_msavmstsoll_ziel,Feedback from the transmission that the VM status request has been implemented
+St_nachladen_hvpm,Status of the reload request
+St_ndrin,Status byte layer input NDR
+St_ndrin.B_ndrhddiagon,Condition Diagnosis Fuel supply system active
+St_nm_ein,Bitter
+St_nm_ein.B_nm_aktiv,Condition network management (on-board network communication) active
+St_no_ccm,The signal contains the number of the check control message currently shown on the display
+St_notl_hybrid,Emergency running request from the hybrid control unit
+St_notl_hybrid_2,Request from the emergency running manager AE to the emergency running manager DME
+St_notl_hybrid_3,Emergency running request from EME to the DME 3Part
+St_nradcan,Status word
+St_nradcan.B_err_n_rad_hl,Error identifier wheel speed HL
+St_nradcan.B_err_n_rad_hr,Error identifier wheel speed HR
+St_nradcan.B_err_n_rad_vl,Error identifier wheel speed VL
+St_nradcan.B_err_n_rad_vr,Fault identifier wheel speed VR
+St_oelsensor,Byte carrier
+St_oelsensor.B_oenslerr,Bozlerr (OENS Level out of Range)
+St_on,Status carrier ON
+St_on.B_on_dtlmssgsrv,Werkstadttester requests a detailed level measurement
+St_onabkin,Bit carrier control engine oil level measurement
+St_onabkin.B_Mhaube_off,Hood open
+St_onabkin.B_Moth_sok,valid bonnet signal
+St_onabkin.B_onabk_ozdeaktiv,Bypass oil sensor error via diagnostics
+St_onabkin.B_onabk_qntmssg_anf,Start oil measurement from MMI
+St_opmo_grb,Status of gearbox operating mode
+St_ozstatus,Bit-carry status engine oil level sensor
+St_ozstatus.B_ozerr,Condition Engine oil level sensor error
+St_ozstatus.B_oztemp,Condition engine oil temperature from cylinder head valid
+St_ozstatus.B_ozterr,Condition Engine oil sensor error in the temperature detection system
+St_ozstatus1,Bit carrier status engine oil level sensor
+St_ozstatus1.B_oensstktok,Bstktoensok (component driver ï¿½NS does not report any RM from the sensor)
+St_panne,Bitter breakdown data storage
+St_panne.B_crashsig,Crash signal from airbag control unit
+St_panne.B_trigeve,Bit for triggering the storage of static header files
+St_pmi,Status byte LCP inputs
+St_pmi.B_fabttreg,Register battery replacement condition
+St_pmi.B_fahisrst,Histogram reset condition
+St_pmi.B_pmrestore,Condition Data written back
+St_pmi_nv,Status byte LCP inputs n/a
+St_pmi_nv.B_fapmmess,Condition measurement method PM
+St_pmi_nv.B_ulcp,ULCP Active
+St_poelreg1,Status oil pressure control 1
+St_poelreg1.B_poelsoltst,Condition Setpoint oil pressure via tester
+St_poelreg1.B_testpoelsys,Condition of checking oil system in tester mode
+St_poscab,Status position convertible roof
+St_prail_fusystst,Fuel system test status word
+St_prail_fusystst.B_prail_bdetest,Request to set target pressure value from BDE test control function
+St_prail_mfvd_state,State of the RECAP state machine
+St_prailsoll_tester,Status word for Bprail should tester
+St_prailsoll_tester.B_prailsoll_tester,Condition tester requirement
+St_q_rekup_anf,Quality signal to the qualifier target wheel torque drive train sum recuperation
+St_rail_tester,Rail pressure controller status word
+St_rail_tester.B_prail_mon_clr,Reset rail pressure monitor to 0
+St_rcog_fshup,Status detection forced upshift transmission
+St_rsta_mdkg,Race start gearbox status
+St_sail_grb,Represents the current state of the sailing function of the entire vehicle Is only read by the anti-reb components (drive train encapsulation) The state for the receiver outside the drive is STSAILDRVStSailDrv
+St_sst,Status word MSA
+St_sst.B_sst,Starter-assisted direct starting from a stationary crankshaft is enabled
+St_sst.B_stcom,"ZA of the CoEngstEng goes to COENGSTAUTOSTOPPING If a start request is received in this state, the bit is set"
+St_stabbr_tester,Bitcarrier for tester requests to failed start engine stalled with unknown cause detection function
+St_stabbr_tester.B_stabbr_zrreset,Reset by tester of counters for detected failed startsengine stalled with unknown cause
+St_start,Start status
+St_start.B_jumpstart,Jump start condition
+St_start.B_sta,Automatic start condition
+St_start.B_wst,Repeat start condition
+St_stdrvvehzl,Bitter
+St_stdrvvehzl.B_motaus_cas_zuli,debounced request to stop the engine from CAS (associated signal CTRENGSTOP)
+St_tbt,Status word component temperature sensor
+St_tbt.B_tbtgueltig,Status bit component temperature sensor
+St_te_zse,Status separator ZSE
+St_tevein,Status Tev
+St_tevein.B_rst_teblg,Loading level is discarded and relearned
+St_tevein.B_te,Tank ventilation condition enabled
+St_tevein.B_te_notl,Tank ventilation in emergency mode
+St_tevein.B_tev_erf,Tank ventilation requested
+St_tpe_tester,Status word for tester request to TPE
+St_tpe_tester.B_tpe_tester,Tester requirement for extended TPE after cat cleaning
+St_tsr_chrg,Occurrence of an event for the execution of the TSR service loading status
+St_v_fzg,Status qualifier signal from vehicle
+St_vbr_stat,Status word statistics combustion control
+St_vbr_stat.B_vbr_stat_reset_ext,External (tester) request to reset stroke correction statistics
+St_vbrzyl_ein,Cylinder equalization status
+St_vbrzyl_ein.B_gl_anf,Active adjustment function (CYBLHOM) requires release
+St_vmsasiko,Status word speed MSA-SIKO
+St_vmsasiko.B_err_v_msasiko,Fault identifier speed from ICM QL
+St_vsa_ein,Status outlet Vanos stop adaptation and controller enable INPUT
+St_vsa_ein.B_vsaadok,Stop adaptation Vanos inlet is done in this cycle
+St_vsa_neu,Status outlet Vanos stop adaptation and controller release
+St_vsa_neu.B_vsafr,Regulator release exhaust vanos
+St_vse_ein,Status inlet Vanos stop adaptation and controller enable INPUT
+St_vse_ein.B_vseadok,Stop adaptation Vanos inlet is done in this cycle
+St_vse_neu,Status inlet Vanos stop adaptation and controller release
+St_vse_neu.B_vsefr,Regulator release inlet vanos
+St_vvtlr,Status byte VVT position controller
+St_vvtlr.B_iwfalse,Condition No valid eccentric angle
+St_vvtlr.B_vvt_sicher_oben,It is assumed that the VVT is at the top because it was placed at the top in the last DC and no movement was detected
+St_wk,Status WK
+St_wm,Status byte for WM coordinator input
+St_wm.B_dme_rolle,Vehicle is on roller dynamometer Detection by comparing the wheel speeds of the driven and non-driven axles
+St_wm.B_hz,Heating requirement
+St_wm.B_korel,Air conditioning compressor condition
+St_wm.B_lklps_kl1,Request LKLPS from IHKA
+St_wm.B_lklps_kl2,LKLPS requirement entirely from IHKA
+St_wm.B_nkmtemp,Low coolant temperature condition (from IHKA)
+St_wm.B_ntv_klima,A/C request to close NT transmission cooling shut-off valve0No request to close1Request to close valve
+St_wm_hvrqco,Requirements for stand maintenance climate from IHKA
+St_wuerg,Status word stall detection
+St_wuerg.B_abgewuergt,Engine stalled
+St_zka_idx,Index for ZKA
+St_zseavl,Status availability ZSE facility
+Stat_ct_hb,Handbrake contact status
+Stat_dcdc,DCDC converter status
+Stat_pcu_dat,Status PCU data
+Stat_pcu_lad,Load status PCU
+Stat_rppl_fssp,Status ripple on FFSP
+Stat_sk,Status byte super knocker (in the knock window) Addressing cylinder via bit position
+Stat_sk_ve,Status byte super knocker (in the additional window) Addressing cylinder via bit position
+Stat_zyl_aus_everr,Cylinders switched off due to errors
+Statilkgrb,Transmission starter lock status
+Status_anf_evmode_hyb,Status whether EV On prevention is active with the associated reason
+Status_brems_msa,Prediction whether the vehicle is held at v 0 kmh by the DSC
+Status_err_gb1,The signal content provides information about an active electrical or mechanical emergency transmission program
+Status_fg_emllr,Status information from EME whether idle can be set by EM
+Status_iae,Status of the IAE (transmission starting clutch)
+Status_k0,Status of K0 (disconnecting clutch between VM and transmission input)
+Status_ks_gb1_ist,Actual adhesion gearbox 1
+Status_kwnot,Status KW emergency run
+Status_kwnot.B_kwnotl,Speed sensor emergency operation condition
+Status_mdred_egs,Status MD reduction gearbox
+Status_motaus_cas,Engine shutdown status CAS
+Status_motor,Engine operating condition
+Status_op_evbutton,StatusOperationMSAEV
+Status_stvar_reset,Signal to delete the NV sizes
+Status_wmm,Status WMM from BOSCH function to WMK
+Stdrvveh,Condition of the drive
+Stmotstcas,Engine off by CAS
+T_batt_sme,HV battery temperature (SME)
+T_batt_zse,ZSE battery temperature measured by ZSE-IBS
+T_dcdc1_acansigin,Actual temperature DCDC
+T_ecu_em0,Actual temperature of power electronics generator
+T_egs,Is temperature gear
+T_egs_q,Qualifier of actual temperature of transmission control unit
+T_em2_acansigin,Actual temperature of the electric motor
+T_eme_km,Temperature coolant EME
+T_ibsl,BattTemp from IBS
+T_jahr,Boarding date
+T_monate,Boarding date
+T_motaus_entprel,remaining debounce time of the engine shutdown request
+T_msasspred,Time until the vehicle comes to a standstill
+T_sle_acansigin,Actual temperature SLE
+T_tag,Boarding date
+Ta_agd,Temperature after air filter
+Tans_abstell,Tans during shutdown process
+Tbt_temp,Temperature component temperature sensor
+Td_kl30b_off,remaining time until the power supply is switched off
+Tget,Transmission temperature
+Tic10ms,Shift register for process activation within 10ms task
+Tic20ms,Shift register for process activation within 20ms task
+Ticseg,Shift register for process activation within segment task
+Tka,Cooling water temperature at radiator outlet
+Tkdor_sens,Temperature of the RIS sensor (Radiator Identification Sensor) for SULEV
+Tkst,Fuel temperature
+Tkst_hdp,modeled fuel flow temperature
+Tmot_abstell,Engine shutdown temperature
+Tmot_start_dc,Engine starting temperature per driving cycle
+Tn_abstellm,Shutdown time in minutes
+Toel_mod_rb,Oil temperature from model BGTOL
+Tsg,Temperature control unit
+Tumg_can,Ambient temperature
+Tumg_uf,Ambient temperature unfiltered
+Tvdk,Temperature before throttle valve average
+Tvneutrin,Zero gear value from the tester
+Tvngang,Duty cycle zero gear sensor
+TypStreetNavgrph2,This signal describes the road type of the current segment
+Typ_body,Body type
+U_batt_zse,Voltage measured on the ZSE battery by ZSE-IBS
+U_bcuist,Voltage measured by BCU
+U_bcusolldiag,Target voltage specification to BCU via diagnostic job
+U_bs_soll,Unloading voltage requirement
+U_ecu,On-board power supply voltage from ECU
+U_ibsl,BattVoltage of IBS
+U_maxrq_eps,required maximum voltage EPS
+U_minrq_dsc1,required minimum voltage DSC
+U_minrq_dsc2,required minimum voltage DSC
+U_minrq_eps,required minimum voltage EPS
+U_minrq_icm1,required minimum voltage ICM-QL
+U_minrq_icm2,required minimum voltage ICM-QL
+U_pcuist_n1,Voltage measured by PCU
+U_pcuist_n2,Voltage measured by PCU
+U_shk_xab,Voltage probe behind catalytic converter (trim control)
+Utka,Radiator outlet temperature sensor voltage value
+V_antriebsachse,Vehicle speed of the drive axle
+V_can,Vehicle speed from DSC
+V_can_siko,Vehicle speed from DSC (high resolution)
+V_fzg_max_as,Maximum vehicle speed from drive strategy
+V_msasiko,Vehicle speed for MSA-SiKo from ICM QL
+V_rad,Vehicle speed from DSC wheel speed
+Verbstatus,Consumer status
+Voltank,Tank contents
+Voltank_Li,Tank capacity in liters left chamber
+Voltank_Re,Tank capacity in liters right chamber
+Voltank_fein,High resolution tank level
+Vsa_btsoll,Spread specification tester for AVANOS
+Vsa_spri,Actual value of exhaust spread
+Vse_btsoll,Spread specification tester for EVANOS
+Vse_spri,Actual value of inlet spread
+Vse_sprs,Setpoint inlet spread variable NWS
+Vvtaet,Eccentric angle specification from the tester
+W_afs,Steering wheel angle
+W_dafs,Steering angle gradient
+W_lwskorr,End stop-corrected relative steering angle
+W_radlenk,Wheel steering angle of the front axle
+Wdk_ist,Current throttle valve angle
+Wp_gier,Yaw rate (angular velocity around the vertical axis) of the vehicle from the DSC
+Zr_auss_suma,Dropout sumCARB A
+Zr_auss_sumb,Dropout total CARB B
+Zsystemabs,This counter counts the seconds synchronously with the system clock
+Ztageabs,Day counter from the station wagon
+Zyknlinfodiag,Set final loading end reason via diagnosis
+Zyl_aus,Cylinder blanking pattern (static and dynamic)
+Mdg_ist,Current transmission input torque on axle with combustion engine
+MoFTrqPtd_tqCluMax_C,Maximum combustion torque at the clutch in the function monitoring
+MoFTrqPtd_aCreepOffs_T,Acceleration offset for creep in function monitoring
+MoFTrqPtd_facARoadSlopCmpAPP_T,Accelerator pedal position-dependent scaling of the compensation of the acceleration component due to road inclination
+MoFTrqPtd_facARoadSlopCmp_T,Speed-dependent scaling of the compensation of the acceleration component due to road inclination
+MoFTrqPtd_facDAAt_GM,Map for step factor for tractive force approach for automatic transmission
+MoFTrqPtd_facDAMt_GM,Map for jump factor for tensile force approach for hand switches
+MoFTrqPtd_facDrvDmdPercAt_GM,Driving behavior map for AT vehicles in function monitoring
+MoFTrqPtd_facDrvDmdPercECO_GM,Driving behavior map for ECONormal mode in the function monitoring
+MoFTrqPtd_facDrvDmdPercMt_GM,Driving behavior map for HS vehicles in function monitoring
+MoFTrqPtd_facTqWhlDrvDmdOffs_C,Additional multiplicative offset for absolute driver desired torque in function monitoring
+MoFTrqPtd_pwrMax_C,Maximum performance of the combustion engine in function monitoring
+MoFTrqPtd_ratAppPosMaxGrdtHigh_C,Maximum gradient of the accelerator pedal angle for filtering the permissible torque gradient
+MoFTrqPtd_ratAppPosMaxGrdtLow_C,Minimum gradient of the accelerator pedal angle for filtering the permissible torque gradient
+MoFTrqPtd_ratAppZrTqGbxOut_T,Virtual zero point characteristic for relative pedal position in function monitoring
+MoFTrqPtd_stSwtDrDem_C,Application switch for activating/deactivating various functionalities in driver request monitoring
+MoFTrqPtd_tiARoadSlopFilDwn_C,Time constant filter for filtering the falling edge of compensation for the acceleration component due to road inclination
+MoFTrqPtd_tiARoadSlopFilUp_C,Time constant filter for filtering the rising edge of compensation for the acceleration component due to road inclination
+MoFTrqPtd_tiTqGrdtFltDwn_C,Filter time constant for torque gradients in function monitoring
+MoFTrqPtd_tiTqGrdtFltUp_C,Filter time constant for torque gradients in function monitoring
+MoFTrqPtd_tqMaxDrg_C,Maximum engine drag torque
+MoFTrqPtd_tqPtdGrdtFES_T,Maximum permissible torque gradient on the wheel due to switching with the driving experience switch (FES) in the function monitoring
+MoFTrqPtd_tqWhlDrvDmdMin_C,Minimum driver desired torque on the wheel in function monitoring
+MoFTrqPtd_tqWhlMaxEmac_T,Maximum possible electric machine torque in function monitoring
+MoFAMo_aVehLgt,Vehicle longitudinal acceleration
+MoFAMo_facPtDir,Factor direction of the drive level (drive train)
+MoFAMo_tqWhlBrkRecup,Brake recuperation torque in acceleration monitoring
+MoFAPP_ratHiResl,Position of the accelerator pedal at higher resolution for function monitoring
+MoFESpd_nEngHiRes,High-resolution part of the speed in the function monitoring
+MoFHybRx_nEmac,Speed of the electric machine
+MoFTrqRat_ratTqPt,Drive train gear ratio in function monitoring
+MoFTrqRat_ratTqPtCluTqAppch,Drive train translation for the clutch torque approach in function monitoring
+MoFTrqRat_ratTqReAxle,Rear axle transmission ratio in function monitoring
+MoFVSS_aSecAxle,Wheel acceleration of the secondary axle
+MoFVSS_vPtAxle,Speed of the driven axis
+MoFVSS_vSecAxle,Speed of the secondary axis
+MoF_stVar,Status variant coding in function monitoring
+MoF_vVeh,Vehicle speed in function monitoring
+Mo_stCplChk,Complement check failed
+Mo_stMoC,Status bits for error response requests in computer monitoring
+Mo_stMoCCpl,Double shelf (DA) for Mo_stMoC
+SwSABMW_tqWhlDrvDmd,E1 Driver's desired torque on the wheel
+MoFDrDemCo_bbOutCpl,Double shelf (DA) for MoFDrDemCo_bbOut
+MoFTrqPtd_aCreepOffs_MP,Acceleration offset for creep in function monitoring
+MoFTrqPtd_aRoadSlopCmp,Compensation of the acceleration component due to road inclination
+MoFTrqPtd_aRoadSlopCmpCpl,Double storage (DA) for MoFTrqPtd_aRoadSlopCmp
+MoFTrqPtd_aRoadSlopCmpLo,Lower bits of compensation of the acceleration component due to road inclination
+MoFTrqPtd_aRoadSlopCmpLoCpl,Double shelf (DA) for MoFTrqPtd_aRoadSlopCmpLo
+MoFTrqPtd_facDA1,Jump factor for the tensile force approach in function monitoring
+MoFTrqPtd_facDA1Cpl,Double filing of MoFTrqPtd_facDA1
+MoFTrqPtd_nClthAt_Ax_result,Result of the distribution of points for the clutch speed in the function monitoring
+MoFTrqPtd_nClthAt_Ax_result_Cpl,Double filing of MoFTrqPtd_nClthAt_Ax_result
+MoFTrqPtd_nClthMt_Ax_result,Result of the distribution of points for the clutch speed in the function monitoring
+MoFTrqPtd_nClthMt_Ax_result_Cpl,Double filing of MoFTrqPtd_nClthMt_Ax_result
+MoFTrqPtd_ratAppPosMax,Relative pedal position related to the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMax2_Ax_result,Result for the distribution of support points for the relative pedal position based on the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMax2_Ax_result_Cpl,Double filing of MoFTrqPtd_ratAppPosMax2_Ax_result
+MoFTrqPtd_ratAppPosMaxAt_Ax_result,Result for the distribution of support points for the relative pedal position based on the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMaxAt_Ax_result_Cpl,Double filing of MoFTrqPtd_ratAppPosMaxAt_Ax_result
+MoFTrqPtd_ratAppPosMaxCpl,Double storage (DA) for MoFTrqPtd_ratAppPosMax
+MoFTrqPtd_ratAppPosMaxGrdt,Pedal gradient for relative pedal position related to the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMaxGrdtCpl,Double storage (DA) for MoFTrqPtd_ratAppPosMaxGrdt
+MoFTrqPtd_ratAppPosMaxMt_Ax_result,Result for the distribution of support points for the relative pedal position based on the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMaxMt_Ax_result_Cpl,Double filing of MoFTrqPtd_ratAppPosMaxMt_Ax_result
+MoFTrqPtd_ratAppPosMaxOld,Old saved value for relative pedal position based on the smallest virtual zero point in the function monitoring
+MoFTrqPtd_ratAppPosMaxOldCpl,Double storage (DA) for MoFTrqPtd_ratAppPosMaxOld
+MoFTrqPtd_ratTqGearAt_Ax_result,Result for the distribution of support points for the gear ratio in the function monitoring
+MoFTrqPtd_ratTqGearAt_Ax_result_Cpl,Double filing of MoFTrqPtd_ratTqGearAt_Ax_result
+MoFTrqPtd_ratTqGearMt_Ax_result,Result for the distribution of support points for the gear ratio in the function monitoring
+MoFTrqPtd_ratTqGearMt_Ax_result_Cpl,Double filing of MoFTrqPtd_ratTqGearMt_Ax_result
+MoFTrqPtd_tqPtdGrdtMax,Maximum permissible torque gradient on the wheel in function monitoring
+MoFTrqPtd_tqPtdGrdtMaxCpl,Double storage (DA) for MoFTrqPtd_tqPtdGrdtMax
+MoFTrqPtd_tqPtdGrdtMaxFlt,Maximum permissible torque gradient on the wheel in function monitoring
+MoFTrqPtd_tqPtdGrdtMaxFltCpl,Double storage (DA) for MoFTrqPtd_tqPtdGrdtMaxFlt
+MoFTrqPtd_tqPtdGrdtMaxFltLo,Low component for filtered size MoFTrqPtd_tqPtdGrdtMaxFlt
+MoFTrqPtd_tqPtdGrdtMaxFltLoCpl,Double storage (DA) for MoFTrqPtd_tqPtdGrdtMaxFltLo
+MoFTrqPtd_tqRoadSlopCmp_MP,Compensation of the torque component due to road inclination
+MoFTrqPtd_tqWhlBrkRecup,Brake recuperation torque without engine drag torque in acceleration monitoring
+MoFTrqPtd_tqWhlBrkRecupCpl,Double storage (DA) for MoFTrqPtd_tqWhlBrkRecup
+MoFTrqPtd_tqWhlDrvDmd2_MP,Additional permissible driver desired torque with tractive force approach (without offset) in the function monitoring
+MoFTrqPtd_tqWhlDrvDmdCpl,Double storage (DA) for MoFTrqPtd_tqWhlDrvDmd
+MoFTrqPtd_tqWhlDrvDmdGrdtLim,Gradient-limited permissible driver desired torque in function monitoring
+MoFTrqPtd_tqWhlDrvDmdGrdtLimCpl,Double storage (DA) for MoFTrqPtd_tqWhlDrvDmdGrdtLim
+MoFTrqPtd_tqWhlDrvDmdL1,E1 Driver desired torque on the wheel in the function monitoring
+MoFTrqPtd_tqWhlDrvDmdL1Cpl,Double storage for E1 driver desired torque on the wheel in the function monitoring
+MoFTrqPtd_tqWhlDrvDmdL1Grdt,E1 driver desired torque gradient in function monitoring
+MoFTrqPtd_tqWhlDrvDmdL1GrdtCpl,Double tray (DA) for MoFTrqPtd_tqWhlDrvDmdL1Grdt
+MoFTrqPtd_tqWhlDrvDmdL1Old,Old stored value for E1 driver desired torque gradient in the function monitoring
+MoFTrqPtd_tqWhlDrvDmdL1OldCpl,Double tray (DA) for MoFTrqPtd_tqWhlDrvDmdL1Old
+MoFTrqPtd_tqWhlDrvDmd_MP,Permissible driver desired torque with tractive force approach (without offset) in the function monitoring
+MoFTrqPtd_tqWhlMax,Maximum adjustable wheel torque in function monitoring
+MoFTrqPtd_tqWhlMaxCpl,Double shelf (DA) for MoFTrqPtd_tqWhlMax
+MoFTrqPtd_tqWhlMaxWoDA,Maximum possible wheel torque in the function monitoring
+MoFTrqPtd_tqWhlMaxWoDACpl,Double filing of MoFTrqPtd_tqWhlMaxWoDA
+MoFTrqPtd_tqWhlPtdDrvDmd,Permissible maximum driver desired torque in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmd2,Additional permissible driver desired torque with tractive force approach in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmd2Cpl,Double storage (DA) for MoFTrqPtd_tqWhlPtdDrvDmd2
+MoFTrqPtd_tqWhlPtdDrvDmd2Grdt,Gradient of the additional permissible driver desired torque with traction force approach in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmd2GrdtCpl,Double tray (DA) for MoFTrqPtd_tqWhlPtdDrvDmd2Grdt
+MoFTrqPtd_tqWhlPtdDrvDmd2Old,Old stored value for driver desired torque gradient of the additional driver desired torque in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmd2OldCpl,Double tray (DA) for MoFTrqPtd_tqWhlPtdDrvDmd2Old
+MoFTrqPtd_tqWhlPtdDrvDmdCpl,Double storage (DA) for MoFTrqPtd_tqWhlPtdDrvDmd
+MoFTrqPtd_tqWhlPtdDrvDmdGrdt,Gradient of the permissible driver desired torque with traction force approach in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmdGrdtCpl,Double tray (DA) for MoFTrqPtd_tqWhlPtdDrvDmdGrdt
+MoFTrqPtd_tqWhlPtdDrvDmdOld,Old stored value for driver desired torque gradient of the driver desired torque in the function monitoring
+MoFTrqPtd_tqWhlPtdDrvDmdOldCpl,Double tray (DA) for MoFTrqPtd_tqWhlPtdDrvDmdOld
+MoFTrqPtd_vVeh2_Ax_result,Result of the distribution of points for the vehicle speed in the function monitoring
+MoFTrqPtd_vVeh2_Ax_result_Cpl,Double filing of MoFTrqPtd_vVeh2_Ax_result
+MoFTrqPtd_vVehAt_Ax_result,Result of the distribution of points for the vehicle speed in the function monitoring
+MoFTrqPtd_vVehAt_Ax_result_Cpl,Double filing of MoFTrqPtd_vVehAt_Ax_result
+MoFTrqPtd_vVehMt_Ax_result,Result of the distribution of points for the vehicle speed in the function monitoring
+MoFTrqPtd_vVehMt_Ax_result_Cpl,Double filing of MoFTrqPtd_vVehMt_Ax_result
+MoFTrqPtd_flgTqGrdtFltLim,Active limitation of the filtered torque gradient in function monitoring
+MoFTrqPtd_flgTqGrdtLim,Active limitation of the torque gradient in function monitoring
+MoFTrqPtd_flgTqLvlLim,Active limitation of the absolute driver desired torque in the function monitoring
+MoFTrqPtd_tqWhlDrvDmd,Driver desired moment in function monitoring
+MoFTrqPtd_tqWhlDrvDmdMsg,Driver's desired moment as a message for level 1
+KF_MDIOP_1_TQE,KF_MDIOP_1
+K_MD_SIKO_ML_LIM,Max. MD correction (countercompensation) of the Siko error activation caused in the MDVALZ
+K_SLA_RF_MDI_BAS_DELAY,Delay time for the control unit coupling Mdi_bas for Rf when the cylinder is not on the control unit
+S_CW_MD_SIKO_AUS,Switch for switching off the counter-compensation of the Siko error activation caused in the MDVALZ
+B_zylakt_igninj_enable,Bit indicates whether current syncro is served on this DME (2SG)
+Rf_zh_ber,Relative air filling for the calculation of the ignition hook parameters
+Mdi_opt_max,"Max. optimal internal VM torque from the current filling, taking into account a possible Siko error activation"
+Mdi_opt_max_self,Mdi_opt_max on this control unit
+Rf_zh_ber_tqebas,Relative air filling for the calculation of the base moments
+BMWinj_fac_eff_LihoInjCylOff_uw,Engine-related efficiency factor for defective cylinders or cylinders that have been deactivated due to diagnosis by cylinder suppression
+Km_st,Mileage
+Mdi_zw_min_rfmin,Maximum convertible internal VM torque averaged over number of Rf benches from minimum filling with ZW_min
+Md_reib_lwk,Friction torque gas exchange correction
+Stat_vmbm,Status for the states of the VM state machine in the MD structure
+K_EDA_P_ANZ_SPORT_BS_SCAL_CODE0,Base scaling per area in the display
+K_EDA_P_ANZ_SPORT_BS_SCAL_CODE1,Base scaling per area in the display
+K_EDA_P_ANZ_SPORT_BS_SCAL_CODE2,Base scaling per area in the display
+K_EDA_P_ANZ_SPORT_BS_SCAL_CODE3,Base scaling per area in the display
+BMWosd_a_LgSptDisp_C,"Sports displays longitudinal acceleration, 100% = 2g"
+BMWosd_a_TrvSptDisp_C,"Sports displays lateral acceleration, 100% = 2g"
+BMWosd_pwr_MaxSptDisp_C,Sports displays end of range performance
+BMWosd_tq_MaxSptDisp_C,Sports displays end of range torque
+BMWtqc_n_MoSpdThd_C,torque coordination () speed (speed) motor (electric motor) speed (speed) threshold (threshold) constant (constant)
+BMWtqc_pct_MoPwrRelDifThd_C,"torque coordination () percentage, relative (percentage size, relative size) motor (electric motor) power (power) relative (relative) difference (difference) threshold (threshold) constant"
+BMWtqc_pct_MoTqRelDifThd_C,"torque coordination () percentage, relative (percentage size, relative size) motor (electric motor, motorized) torque (torque) relative (relative) difference (difference) threshold (threshold) constant ( Constant)"
+BMWtqc_swi_SelEm1TqSrc_C,"torque coordination () switch (only for application data) selective,select (selective, select, operation, operate) electrical machine (E-machine) one (one, 1) torque sour"
+BMWtqc_swi_SelMoPwrRel_C,"torque coordination () switch (only for application data) (switch (only for application variables)) selective,select (selective, select, operation, operate) motor (electric motor, motorized) power (power, performance) relative (relative)"
+BMWtqc_swi_SelMoTqRel_C,"torque coordination () switch (only for application data) (switch (only for application variables)) selective,select (selective, select, operation, operate) motor (electric motor, motorized) torque relative cons"
+BMWtqc_swi_SelTqSrc_C,"torque coordination () switch (only for application data) selective,select (selective, select, operation, operate) torque (torque) source (source) constant"
+BMWtqc_tq_TqApplVal_C,torque coordination () torque torque application value constant constant
+CW_EDA_KS_EM2,Adhesive connection EM2
+KF_EDA_ANZ_SPORT_FILT_KONST,Filter constant for the power and torque display
+KF_EDA_ANZ_SPORT_MDK_IST,Adjustment of the moment for the performance display
+KF_EDA_ANZ_SPORT_MD_EM1_IST,Adjustment of the moment for the performance display
+KF_EDA_ANZ_SPORT_MD_EM2_IST,Adjustment of the moment for the performance display
+KL_EDA_MD_BSSCAL2BUS,Re-scaling for communication
+KL_EDA_P_BSSCAL2BUS,Re-scaling for communication
+K_EDA_ANZ_SPORT_BEREICHE,Number of areas in the display
+K_EDA_MD_ANZ_BS_SCAL_CODE0,Base scaling per area in the display
+K_EDA_MD_ANZ_BS_SCAL_CODE1,Base scaling per area in the display
+K_EDA_MD_ANZ_BS_SCAL_CODE2,Base scaling per area in the display
+K_EDA_MD_ANZ_BS_SCAL_CODE3,Base scaling per area in the display
+K_EDA_MD_ANZ_BS_SCAL_CODE4,Base scaling per area in the display
+K_EDA_MD_FAKT_CODE0,Factor for the state0 of the unit signal St_einh_md_sport
+K_EDA_MD_FAKT_CODE1,Factor for the state1 of the unit signal St_einh_md_sport
+K_EDA_MD_FAKT_CODE2,Factor for the state2 of the unit signal St_einh_md_sport
+K_EDA_MD_FAKT_CODE3,Factor for the state3 of the unit signal St_einh_md_sport
+K_EDA_MD_FAKT_CODE4,Factor for the state4 of the unit signal St_einh_md_sport
+K_EDA_MD_FILT,tbd
+K_EDA_NKW_FILT,tbd
+K_EDA_PWG_GRENZ_L,Limit value Pwg for LDA display
+K_EDA_PWG_GRENZ_R,Limit value Pwg for LDA display
+K_EDA_P_FAKT_CODE0,Factor for the state0 of the unit signal St_einh_p_sport
+K_EDA_P_FAKT_CODE1,Factor for the state1 of the unit signal St_einh_p_sport
+K_EDA_P_FAKT_CODE2,Factor for the state2 of the unit signal St_einh_p_sport
+K_EDA_P_FAKT_CODE3,Factor for the state3 of the unit signal St_einh_p_sport
+K_EDA_P_MAX_MOT,Limitation of the calculated motor power
+K_EDA_V_GRENZ_L,Limit speed for LDA display
+K_EDA_V_GRENZ_R,Limit speed for LDA display
+S_LIM_MDKEDAFILT,Switch to limit Mdk_eda_filt to maximum VM torque in BMW_SWC_Abk_Tqc
+S_TQSRC,Switch to select input torque
+Fahrstufe_ist,Actual gear level (gearbox 1 (hybaxle) and gearbox 2 (eaxle))
+Md_em1_ist_plaus,Plausibility-checked actual torque of the electric machine 1
+Md_em1_soll_dme,Target torque of EM1 (component basis)
+Mdg_soll_ogb,Target torque of gearbox input without gearbox and controller interventions (for formation Md_can_dmee)
+Mdk_ist_can,Current transmission input torque on axle with combustion engine
+Mdk_vm_max_stat,maximum combustion torque stationary
+Eda_anz_sport_filt,Filter variable from KF_EDA_ANZ_SPORT_FILT_KONST for Eda_md_anz_sport_roh
+Eda_anz_sport_md_em1,E-motor torque according to KF_EDA_ANZ_SPORT_MD_EM1_IST
+Eda_anz_sport_md_em2,E-motor torque according to KF_EDA_ANZ_SPORT_MD_EM2_IST
+Eda_anz_sport_mdk_ist,Actual clutch torque according to KF_EDA_ANZ_SPORT_MDK_IST
+Eda_em1_leistung,Calculated electric motor power in kW
+Eda_em2_leistung,Input for calculated electric motor power in kW
+Eda_md_max_anz,Maximum value of the MD display
+Eda_mdk_ist,Total moment EM+VM
+Eda_mdk_ist_anz,Relative moment for display in percent
+Eda_mdk_ist_mod,"Actual clutch torque modified (KL_EDA_ANZ_SPORT_MDK_IST, unit)"
+Eda_mot_leistung,Calculated engine power in kW
+Eda_mot_leistung_anz,Power in relation to the maximum displayed power in percent
+Eda_mot_leistung_mod,Calculated power in kW or HP
+Eda_mot_leistung_rel,Performance in relation to the maximum displayed power
+Eda_p_max_anz,Maximum value of the power display
+Eda_vm_leistung_in,Input for calculated VM power in W
+Md_em1_eda_filt,tbd
+Md_em2_eda_filt,tbd
+Mdk_eda_filt,tbd
+N_em1_eda_filt,tbd
+N_em2_eda_filt,tbd
+Nkw_eda_filt,tbd
