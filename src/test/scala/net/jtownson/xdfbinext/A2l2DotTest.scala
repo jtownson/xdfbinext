@@ -19,6 +19,15 @@ class A2l2DotTest extends AnyFlatSpec {
 //    a2l2Dot.asCommentCsv(name => name.toLowerCase.contains("ewg"))
 //  }
 
+  it should "create a graph for KL_RF_MAX" in {
+    valueCentredGraphWith(a2l2Dot, _ == "KL_RF_MAX", "KL_RF_MAX.svg")
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_BlsRfMax_10ms", "BMW_MOD_BlsRfMax_10ms.svg")
+  }
+
+  it should "grpah BMWtchsp_fac_mf_CmprNorm_uw" in {
+    valueCentredGraphWith(a2l2Dot, _ == "BMWtchsp_fac_mf_CmprNorm_uw", "BMWtchsp_fac_mf_CmprNorm_uw.svg")
+  }
+  
   it should "create BMW_SWC_Ewg graph" in {
     val namePredicate: String => Boolean = s => s != "BMWewgco_st_Opm_ub"
     val fnPredicate: String => Boolean   = s => s.startsWith("BMW_SWC_Ewg")
@@ -141,6 +150,10 @@ class A2l2DotTest extends AnyFlatSpec {
   it should "graph K_EDA_P_ANZ_SPORT_BS_SCAL_CODE" in {
     valueCentredGraphWith(a2l2Dot, _.contains("K_EDA_P_ANZ_SPORT_BS_SCAL_CODE"), "K_EDA_P_ANZ_SPORT_BS_SCAL_CODE.svg")
     functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_Abk_Tqc_Lda", "Abk_Tqc_Lda.svg")
+  }
+
+  it should "graph MfVDTypC_tiPullinReCur_CUR" in {
+    valueCentredGraphWith(a2l2Dot, _ == "MfVDTypC_tiPullinReCur_CUR", "MfVDTypC_tiPullinReCur_CUR.svg")
   }
 }
 

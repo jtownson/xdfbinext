@@ -78,7 +78,7 @@ class A2l2Dot(a2lUrl: URL) {
       outMeasurements.exists(namePredicate)
     }.keySet
 
-    functionCentredGraph(fnName => applicableFns.contains(fnName), namePredicate)
+    functionCentredGraph(fnName => applicableFns.contains(fnName), _ => true)
   }
 
   def functionCentredGraph(fnPredicate: String => Boolean, namePredicate: String => Boolean): MutableGraph = {
@@ -161,14 +161,14 @@ class A2l2Dot(a2lUrl: URL) {
       gn.add(
         mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
         RECTANGLE,
-        Image.of("src/main/resources/axis-xyz.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
+//        Image.of("./axis-xyz.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else if (c.getType == CharacteristicType.CURVE) {
       gn.add(
         mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
         RECTANGLE,
-        Image.of("src/main/resources/axis-xy.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
+//        Image.of("./axis-xy.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else {

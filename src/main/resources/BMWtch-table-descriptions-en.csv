@@ -4126,3 +4126,267 @@ Mdk_eda_filt,tbd
 N_em1_eda_filt,tbd
 N_em2_eda_filt,tbd
 Nkw_eda_filt,tbd
+KL_RF_MAX,Characteristic curve for maximum permissible filling vs engine speed
+BMWls_cw_UsrCaseFiMax_C,Code word for selection of filling limitation via ignition angle retard
+BMWls_cw_rf_MaxModEng_C,Code word to activate a separate filling limit at the start of the race
+BMWls_cw_rf_MaxModGbx_C,Code word for activating a separate filling limit at the start of the race depending on the transmission variant
+BMWls_fac_FiMaxIgOfsAt_M,Blending factor in the automatic transmission for the filling limitation characteristic curve depending on the ignition angle retard
+BMWls_fac_FiMaxIgOfsMt_M,Blending factor in the manual gearbox for the filling limitation characteristic curve depending on the ignition angle retard
+BMWls_fac_FilFuOctIntkT_C,Filter constant for the filling reduction factor
+BMWls_fac_IgOfsFil_C,Filter constant for Dzw_tot_kr to calm the filling limit
+BMWls_fac_rf_RednFuOctIntkT_M,Base value for the charge reduction factor depending on fuel quality and intake air temperature.
+BMWls_fac_rf_RednGearAt_M,Correction of the filling reduction factor depending on the gait at AT
+BMWls_fac_rf_RednGearMt_M,Correction of the filling reduction factor depending on the gait in MT
+BMWls_pct_FiMaxIgOfsSpt_M,Characteristic curve of filling limit depending on ignition angle advance in sport mode
+BMWls_pct_FiMaxIgOfs_M,Characteristic curve for filling limitation depending on ignition angle retard
+BMWls_rf_MaxEgT_M,Maximum filling when limited by the component protection controller
+BMWls_rf_MaxFuOctIntkTSpt_M,Maximum filling depending on the speed and the filling reduction factor at late center of gravity positions due to poor fuel and high collector temperatures in sport mode.
+BMWls_rf_MaxFuOctIntkT_M,Maximum filling depending on the speed and the filling reduction factor at late center of gravity positions due to poor fuel and high collector temperatures.
+BMWls_rf_MaxModEng_M,Filling cap for temporary limitation at the start of the race.
+KL_LAMX,"maximum, relative filling"
+KL_RF_MAX_UESP,Characteristic curve maximum permissible filling over speed when flushing
+K_ATLDYNGRD_RF_MX,Constant max. gradient for blending factor when blending
+BMWeisy_st_ReIniAcv_10ms_bo,Activation condition for initialization
+BMWlpa_rat_AirLim_sw,Filling limitation due to EKP
+F_tzylkor,Air density correction factor due to temperature at the inlet valve (for Mszyl_nn)
+Rf_max_pldmax,max. possible filling for Rf_set limitation due to boost pressure limitation Pld_max
+Rf_max_ti,"Relative air filling, maximum"
+BMWls_fac_rf_RedFil_uw,Filling reduction factor after filtering
+BMWls_pct_FiMaxIgOfs_uw,Filling limit depending on ignition angle retard
+BMWls_rf_MaxEgT,Maximum relative filling from the exhaust gas temperature component protection controller.
+BMWls_rf_MaxModEng_uw,Filling limitation due to ignition angle draw and driving behavior
+BMWls_st_rf_MaxModEng_ub,Status word for recognizing the start of the race
+BMWls_st_rf_MaxModGbx_ub,Status word for releasing the racing start filling cap depending on the transmission variant
+F_rfmax_atl_uebl,Blending factor for filling limitation when blending
+Rfv_vl_max,Relative filling at full suction load under Normbed with correction only via engine temperature
+Rf_max,max. possible filling to the Rf_set limit
+Rf_vlsaug_max,"Relative filling at full suction load under Normbed with correction via engine temperature, altitude and temperature"
+DWMSVOMX,Maximum angle of control end MSV (open)
+MfVDTypC_AdpnTV1Offs_C,Adaptation offset for duty cycle 1 (pick-up current)
+MfVDTypC_AdpnTV2Offs_C,Adaptation offset for duty cycle 2 (holding current)
+MfVDTypC_agHldgPh_CUR,Angle holding time MSV control in KW
+MfVDTypC_BetrOffsTV1_C,Operating offset for duty cycle 1
+MfVDTypC_BgnCSSAdpnTV2Offs_C,Offset TV2 at the beginning of the CSS adaptation
+MfVDTypC_CSSDurAdap_C,Large angle from TDC to TDC (suction phase) during CSS adaptation
+MfVDTypC_CSSDurNorm_C,Normal angle between OT and UT when no CSS adaptation is running
+MfVDTypC_CSSFailIncThd_C,Error counter threshold to deactivate CSS when pressure increases (protective function).
+MfVDTypC_cssincMax_C,Maximum duty cycle increment for current soft stop
+MfVDTypC_cssincThd_C,"Threshold for permissible deviation of the duty cycle increment CSS, so that CSS adaptation is still valid"
+MfVDTypC_CSSNomDtyCycl_MAP,Duty cycle for PWM phase 2 with nominal pump
+MfVDTypC_CSSPRSOLSW_C,Threshold for permissible pressure deviation for CSS adaptation
+MfVDTypC_CSSrkThd_C,Threshold for the permissible effective relative volumetric fuel mass with CSS adaptation
+MfVDTypC_CSSSWPRDIFF_C,Threshold for permissible printing for CSS adaptation
+MfVDTypC_CSStiWaitAfttStrtd_C,Waiting time after start until CSS adaptation can be released
+MfVDTypC_dwmsvdThdCSSAdap_C,Threshold for permissible conveyor angle for CSS adaptation
+MfVDTypC_dwmsvdThdPrDropIn_C,Threshold for permissible delivery angle when pressure drops
+MfVDTypC_DyclCSSAdpnOffsTV2_C,Adaptation offset for duty cycle 2 for CSS adaptation
+MfVDTypC_DyclCSSAdpnOffsTV3_C,Adaptation offset for duty cycle 3 for CSS adaptation
+MfVDTypC_DyclCSSAdpStep_C,Adaptation step size during CSS adaptation
+MfVDTypC_FacPullin_Map,Map for the correction factor of the pull-in phase depending on the engine speed and delivery time.
+MfVDTypC_HldAgAftTDC_CUR,Bracket after pump TDC with CSS activated
+MfVDTypC_iPullin_MAP,Lower limit of the starting current of the MSV
+MfVDTypC_KLVZMSVUB,MSV delay time depending on the battery voltage
+MfVDTypC_LwrThdAdpnTV1Val,Permissible lower threshold for saved duty cycle 1
+MfVDTypC_LwrThdAdpnTV2,Permissible lower threshold for saved duty cycle 2
+MfVDTypC_maxDtyCyclTV1_MAP,Map for maximum starting current
+MfVDTypC_maxHldCrntDtyCycl_MAP,Map for maximum holding current.
+MfVDTypC_nEngDiffAdapMax_C,Maximum permitted change in engine speed during ReCur adaptation
+MfVDTypC_nEngDwmsvd_CUR,Characteristic curve for the conveyor angle
+MfVDTypC_nEngMaxAdap_C,Maximum speed for ReCur adaptation
+MfVDTypC_nEngMaxCSSAdap_C,Threshold for maximum permissible speed with CSS adaptation
+MfVDTypC_nEngMaxCSSDelta_C,Maximum delta speed current soft stop
+MfVDTypC_nEngMaxHot_C,Maximum speed when the engine is warm
+MfVDTypC_nEngReCApEnblMax_C,Maximum permissible engine speed for adaptation
+MfVDTypC_nEngReCApEnblMin_C,Minimum required engine speed for adaptation
+MfVDTypC_NomDtyCycl_MAP,Duty cycle for nominal pump
+MfVDTypC_prdiffThd2_C,Threshold for differential pressure in the event of a pressure drop
+MfVDTypC_PrDiffThdHighValue_C,Threshold for detecting a large pressure drop
+MfVDTypC_PrDiffThdLowValue_C,Threshold for detecting small pressure drops
+MfVDTypC_prdiffThd_C,Threshold for differential pressure when pressure increases
+MfVDTypC_PRDIFRCURH,Pressure deviation for current-reduced control Active
+MfVDTypC_PRDIFRECUR,Pressure threshold for current-reduced control Active
+MfVDTypC_PrDropIn_tiDly_C,Waiting time for pressure to stabilize
+MfVDTypC_PRMINMSV,Minimum rail pressure to keep the MSV self-holding
+MfVDTypC_PrMsvCSSAdpnEnd,Pressure threshold for the detection end CSS adaptation
+MfVDTypC_PRMSVRCADE,Pressure threshold for adaptation termination
+MfVDTypC_PrSlprkThd_C,Threshold for injected effective relative volumetric fuel mass during pressure increase
+MfVDTypC_PrSlpThd_C,Pressure increase threshold for CSS error detection
+MfVDTypC_PrSlpThd_C_1,Threshold pressure increase CSS error
+MfVDTypC_PRSOLSW,Pressure deviation for current-reduced control adaptation Active
+MfVDTypC_PrStabStep_CUR,Characteristic curve for rail pressure stabilization
+MfVDTypC_ReCurTV1Init_C,Default value for duty cycle 1
+MfVDTypC_safHldCrntDtyCycl_MAP,Reliable duty cycle for the holding phase
+MfVDTypC_SftyTiPreUT_C,Safety time before UT
+MfVDTypC_SWPRDIFF,Threshold pressure deviation for current-reduced control adaptation Active.
+MfVDTypC_tdel_CUR,Characteristic curve for delay time
+MfVDTypC_tiDlyBmsvact_C,Time-delayed shutdown of B_msvact
+MfVDTypC_tiDlyCSSAdpnTV2_C,Waiting time for rail pressure stabilization before CSS adaptation starts
+MfVDTypC_tiDlyCSSAdpn_C,Delayed release condition for CSS adaptation
+MfVDTypC_tiDlyNPrDropIn_C,Time delay at medium pressure drop
+MfVDTypC_tiDlyPrSlpDetn_C,Delayed detection of pressure increase
+MfVDTypC_tiDlyReCurAdpnTV1_C,Waiting time after which the ReCur adaptation can begin
+MfVDTypC_tiDlySetbPrDiffDropInitWaitTi_C,Waiting time for setting MfVDTypC_tiDlySetbPrDiffDropInitWaitTi_C
+MfVDTypC_tiNormToReCur_C,Waiting time for the transition from normal mode to current-reduced control
+MfVDTypC_tiPullinReCur_CUR,Pick-up time for current-reduced control
+MfVDTypC_tiWaitAfttStrtd_CUR,Waiting time after the start until adaptation can be released
+MfVDTypC_TMSVRECURO,Upper threshold for motor temperature for current-reduced control
+MfVDTypC_TMSVRECURU,Lower threshold for motor temperature for current-reduced control
+MfVDTypC_TV2Init_C,Initialization duty cycle 2.
+MfVDTypC_uBattAdapMax_C,Maximum permissible battery voltage for ReCur adaptation
+MfVDTypC_uBattAdapMin_C,Minimum required battery voltage for ReCur adaptation
+MfVDTypC_uBattCSSAdapMax_C,Maximum permissible battery voltage for CSS adaptation
+MfVDTypC_uBattCSSAdapMin_C,Minimum required battery voltage for CSS adaptation.
+MfVDTypC_UpprThdAdpnTV1Val,Permissible upper threshold for saved duty cycle 1
+MfVDTypC_UpprThdAdpnTV2,Permissible upper threshold for saved duty cycle 2
+MfVDTypC_VAdpnThd_C,Vehicle speed adaptation threshold
+MfVDTypC_vfzgMaxRecur_C,Maximum speed for current-reduced control
+MfVDTypC_vfzgMaxRedNumMsvDelta_C,Maximum speed change for control with a reduced number of pumps
+MfVD_redcurincMax_C,Maximum duty cycle increment for ReCur
+MfVD_tdelReCur_C,Delay time ReCur
+Mfvlv_DycReCurAdpOf_C,Offset duty cycle after RECUR adaptation
+Mfvlv_DycReCurAdpStep_C,Increased duty cycle with RECUR adaptation
+MfVlv_iHold_C,Lower limit of the holding current of the MSV
+MfVlv_iHysHld_C,Hysteresis of the holding current of the MSV
+MfVlv_iHysPu_C,Hysteresis of the starting current of the MSV
+MfVlv_iPullinHyst_C,Difference from which the locally calculated starting current is adopted
+MfVlv_MfVDTypCNVHCfg_C,Configuration MfVDTypC
+MfVlv_minDtyCyclPh1_C,Minimum duty cycle for pick-up phase
+MfVlv_pressure_tiDly_C,Time delay pressure signal
+MfVlv_rkDiffAdapMax_C,Maximum permitted change in injected effective relative volumetric fuel mass
+MfVlv_rkvmeeff_wMax_C,Maximum allowable injected effective relative volumetric fuel mass
+MfVlv_rkvmeeff_wMin_C,Minimum required injected effective relative volumetric fuel mass
+MfVlv_RstnT0_C,Electrical resistance of the MSV at 20 degrees C
+MfVlv_tiAdapDrvEnbl_C,Release time for adaptation outside of idle
+Mfvlv_tiDelOffsetAdptRdy_C,Offset time for duty cycle 1 after closing the valve after adaptation
+Mfvlv_tiDelOffsetAdptRun_C,Offset time for duty cycle 1 after closing the valve during adaptation
+MfVlv_tiDwmsvdTn_C,Time constant for low-pass filtering of the feed angle
+MfVlv_tiEnblRedCurSpst_C,Waiting time for electricity reduced activation at start-stop after activation conditions are met
+MfVlv_tiEnblRedCur_C,Waiting time until Reduced current mode is activated after the switch-on conditions have been met.
+MfVlv_tiUBattTn_C,Time constant for low-pass filtering of the battery voltage
+MfVlv_uBattMinReCur_C,Minimum battery voltage for ReCur mode
+NENGMSVRECURH,Motor speed deviation limited for current-reduced control
+NENGMSVRECURS,Motor speed threshold for current-reduced control
+TMSVRECUR,Threshold for time counter from end of start (16bit) for current-reduced control
+TPRMNMSVMX,Max. time for extension of the holding phase of the MSV control at low rail pressures
+BattU_u,Battery voltage
+BattU_uFild,Filtered battery voltage
+B_kh_msg,Catalytic converter heating condition
+B_ll_msg,Idling condition from the driver's perspective
+B_msastarta_msg,MSA start
+B_msvact_msg,MSV control active
+B_sa_msg,Fuel cut-off condition
+B_stendes_msg,End of start condition also reached for injection
+B_tmsvmg_msg,MSV temperature from model valid
+CEngDsT_t,Temperature of the coolant at the engine outlet
+dwmsvd_w_msg,Funding period MSV in degrees KW
+Epm_nEng,Average engine speed over a cylinder segment
+Epm_nEngLRes,Motor speed with low resolution
+FlSplG_flgLimpHpActv,High pressure emergency running condition active
+FuPHi_pHpRglnDe,Control deviation of the rail pressure control
+FuPHi_pRail,Filtered rail pressure actual value (absolute pressure)
+FuPHi_pRailSp,Setpoint rail pressure control
+FuPHi_pRailSpUnlim,Setpoint rail pressure control
+FuPHi_pRawAbslt,unfiltered rail pressure actual value (abs.)
+gangsist_msg,Gear currently engaged (actual gear)
+InjSys_flgReqSpRailCvo,CVO rail pressure setpoint requirement
+MfPsDia_bstClockOk_msg,Cycle quantity control valve output stage OK
+mfpsdia_efMsv_u8_msg,MSV error channel specific
+prdiff_w_msg,Control deviation of the rail pressure control
+prist_w_msg,Filtered rail pressure actual value (absolute pressure)
+prroh_w_msg,unfiltered rail pressure actual value (abs.)
+prsollu_w_msg,Setpoint rail pressure control
+prsoll_w_msg,Setpoint rail pressure control
+rkvmeeff_w_msg,Bank medium injected effective relative volumetric fuel mass (including reduction stage)
+SyC_stSub,Current system/ECU sub-state
+tmsvm_msg,Calculated coil temperature of the quantity control valve
+tnse_w_msg,Time counter from start end (16bit)
+VehV_v,Vehicle speed
+MfVDTypC_AdapTV2val,PWM duty cycle 2 during adaptation
+MfVDTypC_AdpnTV1Val,Adaptation result for duty cycle 1 with current-reduced control
+MfVDTypC_AdpnTV2,Adaptation result for duty cycle 2 at current soft stop
+MfVDTypC_bAdapPrevCSS,Successful CSS adaptation from a previous driving cycle
+MfVDTypC_bAdapPrevReCur,Successful ReCur adaptation from a previous driving cycle
+MfVDTypC_bCSSAdapEnbl,Switch-on condition for CSS adaptation fulfilled
+MfVDTypC_bCSSAdapInitTV2,Initialization bit for the one-time duty cycle initialization per driving cycle at the beginning of a CSS adaptation
+MfVDTypC_bCSSAdaptmp1,Partial release of the CSS adaptation
+MfVDTypC_bCSSAdaptmp2,Partial release of the CSS adaptation
+MfVDTypC_bCSSAdpnDne,Successfully completed CSS adaptation in the current driving cycle
+MfVDTypC_bCSSEnbl,Enable current soft stop control
+MfVDTypC_bCSSErrFlg,Current soft stop error flag
+MfVDTypC_bNormPrDropIn,Detection of a medium pressure drop
+MfVDTypC_bPrDiffDropElpdWaitTi,Detection of the elapsed waiting time after increasing duty cycle 1 to stabilize pressure
+MfVDTypC_bPrDiffDropInitWaitTi,Initialization bit for the first calculation run if no waiting time for pressure stabilization has expired
+MfVDTypC_bPrDiffVld,Detection of valid print
+MfVDTypC_bReCur,General switch-on condition for current-reduced control
+MfVDTypC_bReCurAdpEnbl,General switch-on condition for current-reduced control
+MfVDTypC_bReCurAdpnTV1Dne,ReCur adaptation successfully completed in the current driving cycle
+MfVDTypC_bSpPrDyn,Detection of target pressure dynamics
+MfVDTypC_bswitchNormToReCur,Enabled to switch from normal control to current-reduced control
+MfVDTypC_btiDlyCSSAdpnTV2,Bit waiting time expired for rail pressure stabilization before CSS adaptation starts
+MfVDTypC_btiDlyNPrDropIn,Bit time delay at medium pressure drop
+MfVDTypC_btiDlyReCurAdpnTV1,Waiting time has expired for the start of the ReCur adaptation
+MfVDTypC_bWaitTi,Activation of a waiting time after increasing duty cycle 1 to stabilize pressure
+MfVDTypC_CSSFailrInc,Error counter CSS
+MfVDTypC_cssinc,Duty cycle increment for current soft stop
+MfVDTypC_cssincOld,Old duty cycle increment for current soft stop to detect valid CSS adaptation
+MfVDTypC_dwmsvd_w,Funding period MSV in degrees KW
+MfVDTypC_MfVlv_DtyCycl1,Duty cycle pickup current
+MfVDTypC_MfVlv_DtyCycl2,Duty cycle holding current
+MfVDTypC_MfVlv_DtyCycl3,Duty cycle Current CSS
+MfVDTypC_MfVlv_redcuradp,Duty cycle 1 during ReCur adaptation
+MfVDTypC_MfVlv_tiDlyMfvOpn,Delay time from the start of control until the valve closes
+MfVDTypC_MfVlv_tvzmsv,Suit time
+MfVDTypC_nEngAdap,Current engine speed at the time of adaptation
+MfVDTypC_numCamReal,Number of cams used to control the high pressure pump (HDP).
+mfvdtypc_prdiff_loc,Local size control deviation rail pressure
+mfvdtypc_prist_loc,Filtered rail pressure actual value (absolute pressure)
+mfvdtypc_prroh_loc,unfiltered rail pressure actual value (abs.)
+mfvdtypc_prsollu_loc,Setpoint rail pressure control
+mfvdtypc_prsoll_loc,Setpoint rail pressure control
+MfVDTypC_prsoll_switch,Stored target pressure when pressure changes
+MfVDTypC_PrStabStep,Step size for rail pressure stabilization
+MfVDTypC_uBattFild,Filtered battery voltage
+MfVDTypC_uBattFildLoResl,Filtered battery voltage
+Mfvd_adapTV1Val,PWM duty cycle1 during adaptation
+MfVD_bPrDiffCond,alternative release condition
+Mfvd_redcurinc,Duty cycle increment for RECUR
+MfVD_sycStSubOld,ALter SyC_stSub for MfVD to detect a state change
+MfVD_tdelmfv,Delay time MSV
+MfVD_TV1,Duty cycle 1 starting current
+MfVD_TV2,Duty cycle 2 holding current
+MfVD_TV3,Duty cycle 3 Current-Soft-Stop
+MfVlv_bAdapDrvEnbl,Enable bit for adaptation outside of idle
+MfVlv_bAdapEnbl,Adaptation allowed
+MfVlv_bReCApEnbl,Reduced current mode adaptation switched on
+MfVlv_bReCApEnvDvt,Leave ReCAp trust zone
+MfVlv_bReCurEnbl,Reduced Current mode is permitted
+MfVlv_dwmsvdFild,Filtered conveyor angle
+MfVlv_gangsistAdap,Actual gear at the time of adaptation
+MfVlv_rkAdap,Currently injected effective relative volumetric fuel mass at the time of adaptation
+MfVlv_rMsvGes,Electrical resistance of the MSV
+MfVlv_tiEnblRedCur,Waiting time for power-reduced activation
+MfVlv_TvAdpGrenz,Adapted duty cycle for the starting current
+tempi1,Temporary variable
+tempi2,Temporary variable
+tempi3,Temporary variable
+whzmsv_w,Angle holding time of the MSV control in ï¿½KW
+MfVD_iPickupLowOld_msg,Lower limit of the starting current of the previous MSV control (hysteresis)
+MfVlv_iHoldHigh_msg,Upper limit of the holding current of the MSV
+MfVlv_iHoldLow_msg,Lower limit of the holding current of the MSV
+MfVlv_iPickupHigh_msg,Upper limit of the starting current of the MSV
+MfVlv_iPickupLow_msg,Lower limit of the starting current of the MSV
+B_msvrecur_msg,Condition for current-reduced control MSV active
+dwmsvo_w_msg,Angle controlling MSV (open)
+dwmsvs_w_msg,Angle of control start MSV including control delay (closing)
+MfVDTypC_bSpPrHld,Target pressure maintenance for adaptation
+MfVD_state_msg,Current state of the state machine
+MfVlv_bCSSOn,CSS enabled
+MfVlv_DeltaEnerEndAg,Delta angle from pump TDC for CSS
+MfVlv_DeltaEnerEndAg2,Delta angle 2 from pump TDC for CSS
+MfVlv_DtyCycl1_msg,Duty cycle pickup current
+MfVlv_DtyCycl2_msg,Duty cycle holding current
+MfVlv_DtyCycl3_msg,Duty cycle braking pulse
+MfVlv_redcuradp_msg,Duty cycle 1 during ReCur adaptation
+MfVlv_tDelayOffset_msg,Offset time for duty cycle 1 after closing the valve
+MfVlv_tiDlyMfvOpn_msg,Delay time from the start of control until the valve closes
+MfVlv_tvzmsv_msg,Suit time
