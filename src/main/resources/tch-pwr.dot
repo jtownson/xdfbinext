@@ -1,0 +1,19 @@
+graph "tch_pwr" {
+    graph ["rankdir" = "LR"]
+
+    "Feed-forward compressor power" [label="Feed-forward compressor power\n(kW)","color"="green"]
+    "P term" [label = "P term\n(kW)",color="green"]
+    "D term" [label="D term\n(kW)",color=green]
+    "I term" [label="I term\n(kW)",color=green]
+
+    "Target compressor power" [label="Target compressor power\n(kW)","color"="red"]
+
+    "plus" [label="+"]
+
+    "Feed-forward compressor power" -- plus
+    "P term" -- plus
+    "D term" -- plus
+    "I term" -- plus
+
+    plus -- "Target compressor power"
+}

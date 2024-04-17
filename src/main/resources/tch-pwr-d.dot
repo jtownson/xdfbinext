@@ -1,0 +1,26 @@
+graph "tch_pwr" {
+    graph ["rankdir" = "LR"]
+
+    "Boost error" [label="Boost error\n(hPa)","color"="green"]
+    "Boost error gradient" [label="Boost error gradient (normalized)\n(hPa)",color=green]
+    "Feed-forward compressor power" [label="Feed-forward compressor power\n(kW)",color=green]
+
+    "Feed-forward compressor power" -- "D-Correction"
+
+    subgraph "cluster_3" {
+        label="D term"
+
+        "D-Factor" [label="D-Factor\n(kW)\n(BMWtchctr_pwr_Dp_M)",color="blue"]
+        "D-Correction" [label="D-Correction\n(unitless)\n(BMWtchctr_fac_Dp_T)","color"="blue"]
+        "D term" [label="D term\n(kW)",color=red]
+
+        "Mul1" [label="X"]
+
+        "D-Factor" -- "Mul1"
+        "D-Correction" -- "Mul1"
+        Mul1 -- "D term"
+    }
+
+    "Boost error" -- "D-Factor"
+    "Boost error gradient" -- "D-Factor"
+}

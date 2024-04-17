@@ -1,0 +1,33 @@
+graph "tch_pwr" {
+    graph ["rankdir" = "LR"]
+
+    "Target pressure ratio" [label = "Target pressure ratio\n(unitless)","color" = "green"]
+    "Target MAF" [label = "Target MAF\n(g/s)","color" = "green"]
+    "Target exhaust massflow" [label = "Target exhaust massflow\n(g/s)","color" = "green"]
+    "Pressure before compressor" [label = "Pressure before compressor\n(hPa)","color" = "green"]
+    "Boost error" [label = "Boost error\n(hPa)","color" = "green"]
+
+    "Target pressure ratio" -- "P-Factor"
+    "Target MAF" -- "P-Factor"
+    "Target exhaust massflow" -- "P-Correction"
+    "Boost error" -- "P-Correction"
+    "Pressure before compressor" -- "Div1"
+
+    subgraph "cluster_2" {
+        label = "P term"
+
+        "P-Factor" [label = "P-Factor\n(kW)\n(BMWtchctr_pwr_CmprGra_M)","color" = "blue"]
+        "P-Correction" [label = "P-Correction\n(hPa)\n(BMWtchctr_p_DifCrtnPp_M)","color" = "blue"]
+        "Div1" [label = "/\n(kW/hPa)"]
+        "Mul2" [label = "X"]
+        "P term" [label = "P term\n(kW)",color="red"]
+
+        "P-Factor" -- "Div1"
+
+        "Div1" -- "Mul2"
+        "P-Correction" -- "Mul2"
+
+        "Mul2" -- "P term"
+    }
+
+}

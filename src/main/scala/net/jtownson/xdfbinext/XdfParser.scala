@@ -241,4 +241,10 @@ object XdfParser:
     )
   }
 
+  private def decode(s: String): Integer = {
+    if (s.trim.isEmpty)
+      0
+    else Integer.decode(s)
+  }
+
   private def fail(msg: String): Nothing = throw new IllegalArgumentException(msg)

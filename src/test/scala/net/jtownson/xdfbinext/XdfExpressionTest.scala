@@ -39,7 +39,7 @@ class XdfExpressionTest extends AnyFlatSpec {
       }
     }
   }
-  
+
   "XdfExpression" should "read a virtual table metadata" in {
     // we want to define a model structure which has discoverable input variables
     // the user can then provide values or ranges of values for those variables
@@ -74,5 +74,27 @@ class XdfExpressionTest extends AnyFlatSpec {
     lobeSep.xAxis.toSeq shouldBe vanosInW1.data.xAxis.toSeq
     lobeSep.yAxis.toSeq shouldBe vanosInW1.data.yAxis.toSeq
     lobeSep.values.toSeq shouldBe expected.toSeq
+  }
+
+  it should "simulate D component" ignore {
+    val dCorrection = binAdapter.tableRead1D("WGDC D correction").data
+    val dFactor     = binAdapter.tableRead2D("WGDC D-Factor").data
+
+    val boostError         = (-400 to 400) by 40
+    val boostErrorGradient = (-30 to 30) by 10
+    val compressorPower    = (1 to 25) by 3
+
+    def dFactorCalc(boostError: BigDecimal, boostErrorGradient: BigDecimal, compressorPower: BigDecimal): BigDecimal = {
+      (dFactor.atXY(boostError, boostErrorGradient) * dCorrection.atX(compressorPower))
+        .setScale(3, RoundingMode.HALF_UP)
+    }
+    println(s"Boost Error (hPa),Boost Error Gradient (hPa),Compressor Power (kW)")
+    for {
+      be  <- boostError
+      beg <- boostErrorGradient
+      cp  <- compressorPower
+    } {
+      println(s"$be,$beg,$cp,${dFactorCalc(be, beg, cp)}")
+    }
   }
 }

@@ -1,0 +1,21 @@
+graph "tch_pwr" {
+    graph ["rankdir" = "LR"]
+
+    "Target pressure ratio" [label="Target pressure ratio\n(unitless)","color"="green"]
+    "Target MAF" [label="Target MAF\n(g/s)","color"="green"]
+
+    "Target pressure ratio" -- "Compressor characteristic"
+    "Target MAF" -- "Compressor characteristic"
+
+    subgraph "cluster_1" {
+        label="Feedforward"
+        "Compressor characteristic" [label="Compressor characteristic\n(kW)\n(BMWtchctr_pwr_Pctl_M)","color"="blue"]
+        "Temp correction factor" [label="Temp correction factor\n(unitless)","color"="green"]
+        "Mul1" [label="x"]
+        "Feed-forward compressor power" [label="Feed-forward compressor power\n(kW)","color"="red"]
+
+        "Compressor characteristic" -- "Mul1"
+        "Temp correction factor" -- "Mul1"
+        "Mul1" -- "Feed-forward compressor power"
+    }
+}

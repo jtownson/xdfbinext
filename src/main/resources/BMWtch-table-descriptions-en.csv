@@ -36,7 +36,7 @@ BMWtchbas_p_DifAmbBefCmpr_T,Differential pressure Pu - Pvld
 BMWtchbas_pct_AccrFlGcMin_C,Min. pedal angle for detection of a full load shift
 BMWtchbas_pct_AccrFlGcMin_T,Min. pedal angle for detection of a full load shift
 BMWtchbas_pct_AccrGradNoiseMin_C,Minimum accelerator pedal angle gradient to activate the sound function (
-BMWtchbas_pct_AccrGraFlGcMax_C,Min. neg. pedal value gradient for detection of a full load switching
+BMWtchbas_pct_AccrGraFlGcMax_C,Min. neg. pedal value gradient for detection of a full load gear change
 BMWtchbas_pct_AccrNoiseMin_C,Minimum accelerator pedal angle to activate the sound function
 BMWtchbas_pct_AccrRaceStrt_C,Minimum accelerator pedal value to activate ATL racing start
 BMWtchbas_pct_AccrRaceStrtDly_C,Threshold accelerator pedal for deceleration race start condition.
@@ -47,12 +47,12 @@ BMWtchbas_rat_p_TcBascEco_T,Basic boost pressure with preload via the Eco map
 BMWtchbas_rat_p_TcBascRoofOp_T,Factor for basic boost pressure with preload via the convertible map
 BMWtchbas_rat_p_TcBascSpt_T,Basic boost pressure with preload via the sports map
 BMWtchbas_swi_RaceVarSel_C,Use of the condition St_rsta_mdkg for the start of the race (previously bracketed via SY_MDKG)
-BMWtchbas_ti_DlyAccr0FlGcDi_C,"Delay, Pwg = 0 for full load switching"
-BMWtchbas_ti_DlyFlGcCluDi_C,Max. time of a detected full load switching
-BMWtchbas_ti_DlyFlGcEna_C,"Delay, Pwg for full load switching"
+BMWtchbas_ti_DlyAccr0FlGcDi_C,"Delay, Pwg = 0 for full load gear change"
+BMWtchbas_ti_DlyFlGcCluDi_C,Max. time of a detected full load gear change
+BMWtchbas_ti_DlyFlGcEna_C,"Delay, Pwg for full load gear change"
 BMWtchbas_ti_DlyFlGcHld_C,Delay time to hold full load gear shift
 BMWtchbas_ti_DlyFlGcLock_C,Locking time after full load gear shift to activate it again.
-BMWtchbas_ti_DlyFlGcMax_C,Max. time of a detected full load switching
+BMWtchbas_ti_DlyFlGcMax_C,Max. time of a detected full load gear change
 BMWtchbas_ti_DlyFlGcPucDi_C,Max. reaction time for active fuel cut-off
 BMWtchbas_ti_DlyNoiseOff_C,Time delay for switching off the sound function after the speed is below the switch-off threshold again.
 BMWtchbas_ti_DlyRaceStr_C,Delay time for maintaining the race start.
@@ -191,7 +191,7 @@ BMWtchctr_pct_WgClsdMin_C,Threshold value Atlvst for delayed locking EEC
 BMWtchctr_pct_WgClsdPl_C,Position setpoint of wastegate for partload at acoustic critical velocity
 BMWtchctr_pct_WgDeltRaceStr_C,Offset to the partial load precontrol for increased preload of the ATL at the start of the race
 BMWtchctr_pct_WgDyn_C,Threshold feedforward dynamics
-BMWtchctr_pct_WgFlGc_M,Pre-control value wastegate position at full load switching
+BMWtchctr_pct_WgFlGc_M,Pre-control value wastegate position at full load gear change
 BMWtchctr_pct_WgIpLimMax_T,Max. Limit I share
 BMWtchctr_pct_WgIpLimMin_T,Min. Limit I share
 BMWtchctr_pct_WgIpLimPlMin_C,Limitation of the I component in the partial load range in the negative direction
@@ -455,7 +455,7 @@ BMWtchbov_rat_p_Cmpr_uw,Pressure ratio across compressor (actual value).
 BMWtchtbc_fac_EngHot_ub,Factor for warming up the engine compartment after shutdown time and mass flow integral
 BMWtchscv_b_Ena_bo,global enablement of scavenging.
 BMWtchco_b_ClcCtlr_bo,Calculate condition of performance-based controller.
-BMWtchbas_b_FlGc_bo,Full load switching
+BMWtchbas_b_FlGc_bo,Full load gear change (y/n)
 BMWtchctr_fac_pwr_Real_uw,Conversion factor from the standardized to the real compressor performance.
 BMWtchsvc_b_CthReq_bo,Catalyst heating requested
 BMWtchdiag_st_Opm_ub,Operating status emergency running charging. 0: normal operation; 1: Limitation to feedforward control; 2: Shutdown charging; 3: Shutdown charging and strong filling limitation (charger protection).
@@ -1388,7 +1388,7 @@ BMWeng_b_StrEnd_bo,Start end condition
 BMWeng_u_SplWg_uw,Supply voltage for electrical wastegate
 Msakzu,Mass flow into the exhaust manifold (air plus fuel mass flow)
 Msa_startsyst,Starting system selection
-Pvdkds,if asymmetrical firing sequence pressure in front of throttle valve from each sensor moving average over 2-8 (applicable) values
+Pvdkds,pressure in front of throttle smoothed over over 2-8 (applicable) values
 St_kl15,Status byte terminal 15
 St_msasiko,"Status word MSASIKO for the 10 ms task (Bit0: B_msastoppsiko, Bit1: B_msastart_siko, Bit2: n.a., Bit3: B_msa_fb_erl, Bit4: B_msaakt_siko, Bit5-6: n.a., Bit7: B_msavmkssoll_siko)"
 Tn_start_10,Time after start end resolved in 10ms
@@ -4390,3 +4390,9 @@ MfVlv_redcuradp_msg,Duty cycle 1 during ReCur adaptation
 MfVlv_tDelayOffset_msg,Offset time for duty cycle 1 after closing the valve
 MfVlv_tiDlyMfvOpn_msg,Delay time from the start of control until the valve closes
 MfVlv_tvzmsv_msg,Suit time
+BMWtqe_b_DfcoFas_bo,"Requirement for rapid fuel cut-off (without pattern and ZW ramp)"
+St_ba_agf,"Status word for switchover"
+St_ba_agf.B_kath_korr,"B_kath is set or any cath subba is active"
+St_progression,"St_progression"
+St_progression.B_eco,"Bit for eco mode active"
+St_progression.B_sport,"Bit for sports mode active"

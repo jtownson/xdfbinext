@@ -6,28 +6,53 @@ import org.scalatest.flatspec.AnyFlatSpec
 import java.io.File
 import scala.jdk.CollectionConverters.*
 import guru.nidi.graphviz.engine.Graphviz
+import guru.nidi.graphviz.model.MutableGraph
+import guru.nidi.graphviz.parse.Parser
 import net.jtownson.xdfbinext.A2l2DotTest.{functionCentredGraphWith, valueCentredGraphWith}
+import org.scalatest.prop.TableDrivenPropertyChecks.*
+
+import scala.util.Using
 
 class A2l2DotTest extends AnyFlatSpec {
 
   behavior of "A2l2Dot"
 
-  val a2lUrl  = getClass.getResource("/DME861_R1C9J9E3B.a2l").toURI.toURL
+  private val a2lUrl  = getClass.getResource("/DME861_R1C9J9E3B.a2l").toURI.toURL
   val a2l2Dot = new A2l2Dot(a2lUrl)
 
-//  it should "print node types" in {
-//    a2l2Dot.asCommentCsv(name => name.toLowerCase.contains("ewg"))
-//  }
+  private val handGraphs = Table[String](
+    "filename",
+    "tch-pwr-ff.dot",
+    "tch-pwr-p.dot",
+    "tch-pwr-d.dot",
+    "tch-pwr.dot"
+  )
+
+  it should "render hand drawn graphs" in forAll(handGraphs) { filename =>
+    A2l2DotTest.resourcesGraph(filename)
+  }
+
+  it should "graph BMW_MOD_TchBas_P_10ms" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_TchBas_P_10ms", "BMW_MOD_TchBas_P_10ms.svg")
+  }
+
+  it should "graph BMW_MOD_TchBas_Misc_10ms" in {
+    functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_TchBas_Misc_10ms", "BMW_MOD_TchBas_Misc_10ms.svg")
+  }
 
   it should "create a graph for KL_RF_MAX" in {
     valueCentredGraphWith(a2l2Dot, _ == "KL_RF_MAX", "KL_RF_MAX.svg")
     functionCentredGraphWith(a2l2Dot, _ => true, _ == "BMW_MOD_BlsRfMax_10ms", "BMW_MOD_BlsRfMax_10ms.svg")
   }
 
-  it should "grpah BMWtchsp_fac_mf_CmprNorm_uw" in {
+  it should "graph BMWtchsp_fac_mf_CmprNorm_uw" in {
     valueCentredGraphWith(a2l2Dot, _ == "BMWtchsp_fac_mf_CmprNorm_uw", "BMWtchsp_fac_mf_CmprNorm_uw.svg")
   }
-  
+
+  it should "graph St_einh_md_sport" in {
+    valueCentredGraphWith(a2l2Dot, _ == "St_einh_md_sport", "St_einh_md_sport.svg")
+  }
+
   it should "create BMW_SWC_Ewg graph" in {
     val namePredicate: String => Boolean = s => s != "BMWewgco_st_Opm_ub"
     val fnPredicate: String => Boolean   = s => s.startsWith("BMW_SWC_Ewg")
@@ -35,9 +60,7 @@ class A2l2DotTest extends AnyFlatSpec {
   }
 
   it should "create BMW_MOD_TchCtr_Pwr_10ms graph" in {
-    val namePredicate: String => Boolean = s => true
-    val fnPredicate: String => Boolean   = s => s == "BMW_MOD_TchCtr_Pwr_10ms"
-    functionCentredGraphWith(a2l2Dot, namePredicate, fnPredicate, "TchCtr_Pwr_10ms.svg")
+    functionCentredGraphWith(a2l2Dot, _ => true, s => s == "BMW_MOD_TchCtr_Pwr_10ms", "BMW_MOD_TchCtr_Pwr_10ms.svg")
   }
 
   it should "create a graph for the ATL controller" in {
@@ -158,6 +181,14 @@ class A2l2DotTest extends AnyFlatSpec {
 }
 
 object A2l2DotTest {
+
+  def resourcesGraph(filename: String): Unit = {
+    Using.resource(classOf[A2l2DotTest].getResourceAsStream(s"/${filename}")) { dot =>
+      val g: MutableGraph = new Parser().read(dot)
+
+      Graphviz.fromGraph(g).render(Format.SVG).toFile(new File(s"${filename}.svg"))
+    }
+  }
 
   def valueCentredGraphWith(
       a2l2Dot: A2l2Dot,

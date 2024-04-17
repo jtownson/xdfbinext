@@ -337,7 +337,7 @@ object BinAdapter {
       sb.append(pad(yAxisData(row), len))
       val rowStr = (0 until cols).map { col =>
         val i = row * cols + col
-        pad(tableDataStr(i), len)
+          pad(tableDataStr(i), len)
       }.mkString
       sb.append(rowStr).append("\n")
     }
