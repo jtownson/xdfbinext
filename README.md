@@ -128,3 +128,9 @@ java -cp .\target\scala-3.3.1\xbc.jar net.jtownson.xdfbinext.A2L2SVG -f --a2l .\
 ```
 Produces the tch diagram as follows:
 ![TchCtr_Pwr_10ms](src/main/resources/testmodel.svg "testmodel")
+
+
+### Limitations
+
+This (and MapCompare) lie somewhere between fully-fledged utilities and scripts I've hacked together. They exist
+to get to grips with the B58 ECU rather than well supported reverse engineering tools.
