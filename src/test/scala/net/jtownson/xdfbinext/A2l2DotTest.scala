@@ -4,11 +4,8 @@ import guru.nidi.graphviz.engine.Format
 import org.scalatest.flatspec.AnyFlatSpec
 
 import java.io.File
-import scala.jdk.CollectionConverters.*
-import guru.nidi.graphviz.engine.Graphviz
-import guru.nidi.graphviz.model.MutableGraph
 import guru.nidi.graphviz.parse.Parser
-import net.jtownson.xdfbinext.A2l2DotTest.{functionCentredGraphWith, valueCentredGraphWith}
+import net.jtownson.xdfbinext.A2l2Dot.{functionCentredGraphWith, valueCentredGraphWith}
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 
 import scala.util.Using
@@ -18,14 +15,15 @@ class A2l2DotTest extends AnyFlatSpec {
   behavior of "A2l2Dot"
 
   private val a2lUrl  = getClass.getResource("/DME861_R1C9J9E3B.a2l").toURI.toURL
-  val a2l2Dot = new A2l2Dot(a2lUrl)
+  private val a2l2Dot = new A2l2Dot(a2lUrl)
 
   private val handGraphs = Table[String](
     "filename",
     "tch-pwr-ff.dot",
     "tch-pwr-p.dot",
     "tch-pwr-d.dot",
-    "tch-pwr.dot"
+    "tch-pwr.dot",
+    "wg-basc.dot"
   )
 
   it should "render hand drawn graphs" in forAll(handGraphs) { filename =>
@@ -183,31 +181,9 @@ class A2l2DotTest extends AnyFlatSpec {
 object A2l2DotTest {
 
   def resourcesGraph(filename: String): Unit = {
-    Using.resource(classOf[A2l2DotTest].getResourceAsStream(s"/${filename}")) { dot =>
+    Using.resource(classOf[A2l2DotTest].getResourceAsStream(s"/$filename")) { dot =>
       val g: MutableGraph = new Parser().read(dot)
-
-      Graphviz.fromGraph(g).render(Format.SVG).toFile(new File(s"${filename}.svg"))
+      Graphviz.fromGraph(g).render(Format.SVG).toFile(new File(s"$filename.svg"))
     }
-  }
-
-  def valueCentredGraphWith(
-      a2l2Dot: A2l2Dot,
-      namePredicate: String => Boolean,
-      filename: String
-  ): Unit = {
-    val graph = a2l2Dot.valueCentredGraph(namePredicate)
-
-    Graphviz.fromGraph(graph).render(Format.SVG).toFile(new File(filename))
-  }
-
-  def functionCentredGraphWith(
-      a2l2Dot: A2l2Dot,
-      namePredicate: String => Boolean,
-      fnPredicate: String => Boolean,
-      filename: String
-  ): Unit = {
-    val graph = a2l2Dot.functionCentredGraph(fnPredicate, namePredicate)
-
-    Graphviz.fromGraph(graph).render(Format.SVG).toFile(new File(filename))
   }
 }

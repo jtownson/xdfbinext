@@ -5,12 +5,14 @@ import guru.nidi.graphviz.attribute.Rank.RankDir
 import guru.nidi.graphviz.attribute.Rank.RankDir.LEFT_TO_RIGHT
 import guru.nidi.graphviz.attribute.Shape.RECTANGLE
 import guru.nidi.graphviz.attribute.{Color, Font, Image, Label, Rank, Style}
+import guru.nidi.graphviz.engine.{Format, Graphviz}
 import guru.nidi.graphviz.model.Factory.{mutGraph, mutNode}
 import guru.nidi.graphviz.model.MutableGraph
 import net.alenzen.a2l.enums.CharacteristicType
 import net.alenzen.a2l.{Unit as A2lUnit, *}
 import org.apache.commons.text.WordUtils
 
+import java.io.File
 import java.net.URL
 import scala.jdk.CollectionConverters.*
 import scala.util.Using
@@ -91,40 +93,41 @@ class A2l2Dot(a2lUrl: URL) {
       mutGraph(a2l.getProject.getName).setDirected(true).graphAttrs().add(Rank.dir(LEFT_TO_RIGHT))
 
     a2l.iterator().asScala.foreach {
-      case n: net.alenzen.a2l.Function if (fnPredicate(n.getName)) =>
-        val gn = mutNode(n.getName).add(Style.lineWidth(4))
+      case n: net.alenzen.a2l.Function =>
+        if (fnPredicate(n.getName)) {
+          val gn = mutNode(n.getName).add(Style.lineWidth(4))
 
-        val defCharacteristics = nfm(n.getDefCharacteristics)
-        val inMeasurements     = nfm(n.getInMeasurments)
-        val locMeasurements    = nfm(n.getLocMeasurments)
-        val outMeasurements    = nfm(n.getOutMeasurments)
+          val defCharacteristics = nfm(n.getDefCharacteristics)
+          val inMeasurements     = nfm(n.getInMeasurments)
+          val locMeasurements    = nfm(n.getLocMeasurments)
+          val outMeasurements    = nfm(n.getOutMeasurments)
 
-        defCharacteristics.foreach { cn =>
-          characteristics.get(cn).foreach { c =>
-            val node = characteristicNode(c, graph).addLink(gn)
+          defCharacteristics.foreach { cn =>
+            characteristics.get(cn).foreach { c =>
+              val node = characteristicNode(c, graph).addLink(gn)
+              graph.add(node)
+            }
+          }
+          inMeasurements.foreach { m =>
+            val a2lM = measurements(m)
+            val node = measurementNode(a2lM).addLink(gn)
             graph.add(node)
           }
-        }
-        inMeasurements.foreach { m =>
-          val a2lM = measurements(m)
-          val node = measurementNode(a2lM).addLink(gn)
-          graph.add(node)
-        }
-        locMeasurements.foreach { m =>
-          val a2lM = measurements(m)
-          val node = measurementNode(a2lM)
-          gn.addLink(node)
-          graph.add(node)
-        }
-        outMeasurements.foreach { m =>
-          val a2lM = measurements(m)
-          val node = measurementNode(a2lM)
-          gn.addLink(node)
-          graph.add(node)
-        }
+          locMeasurements.foreach { m =>
+            val a2lM = measurements(m)
+            val node = measurementNode(a2lM)
+            gn.addLink(node)
+            graph.add(node)
+          }
+          outMeasurements.foreach { m =>
+            val a2lM = measurements(m)
+            val node = measurementNode(a2lM)
+            gn.addLink(node)
+            graph.add(node)
+          }
 
-        graph.add(gn)
-
+          graph.add(gn)
+        }
       case n =>
     }
     graph
@@ -284,5 +287,27 @@ class A2l2Dot(a2lUrl: URL) {
       val ld   = n.getLongIdentifier
       print(name, ld, namePredicate)
     case n =>
+  }
+}
+
+object A2l2Dot {
+
+  def valueCentredGraphWith(
+      a2l2Dot: A2l2Dot,
+      namePredicate: String => Boolean,
+      filename: String
+  ): Unit = {
+    val graph = a2l2Dot.valueCentredGraph(namePredicate)
+    Graphviz.fromGraph(graph).render(Format.SVG).toFile(new File(filename))
+  }
+
+  def functionCentredGraphWith(
+      a2l2Dot: A2l2Dot,
+      namePredicate: String => Boolean,
+      fnPredicate: String => Boolean,
+      filename: String
+  ): Unit = {
+    val graph = a2l2Dot.functionCentredGraph(fnPredicate, namePredicate)
+    Graphviz.fromGraph(graph).render(Format.SVG).toFile(new File(filename))
   }
 }
