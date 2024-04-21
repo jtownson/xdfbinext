@@ -1,10 +1,9 @@
 package net.jtownson.xdfbinext
 
-import guru.nidi.graphviz.attribute.Image.{Position, Scale}
 import guru.nidi.graphviz.attribute.Rank.RankDir
 import guru.nidi.graphviz.attribute.Rank.RankDir.LEFT_TO_RIGHT
 import guru.nidi.graphviz.attribute.Shape.RECTANGLE
-import guru.nidi.graphviz.attribute.{Color, Font, Image, Label, Rank, Style}
+import guru.nidi.graphviz.attribute.*
 import guru.nidi.graphviz.engine.{Format, Graphviz}
 import guru.nidi.graphviz.model.Factory.{mutGraph, mutNode}
 import guru.nidi.graphviz.model.MutableGraph
@@ -55,12 +54,6 @@ class A2l2Dot(a2lUrl: URL) {
     .collect { case f: Function => f }
     .map(f => f.getName -> f)
     .toMap
-
-  //    axisPts.foreach { (n, m) =>
-  //      if (namePredicate(n))
-  //        println(s"""$n,"${m.getLongIdentifier}"""")
-  //    }
-  //    fail()
 
   def valueCentredGraph(namePredicate: String => Boolean): MutableGraph = {
 
@@ -144,13 +137,8 @@ class A2l2Dot(a2lUrl: URL) {
     Label.lines(s"$name", s"Units: $units", WordUtils.wrap(longDescription, 80))
   }
 
-  private def getObjectDescription(name: String): String = {
-    BmwTchDescriptions.table.get(name) match
-      case Some(value) =>
-        value
-      case None =>
-//        println(s"Missing $name")
-        ""
+  private def getObjectDescription(name: String, default: String): String = {
+    BmwTchDescriptions.table.getOrElse(name, default)
   }
 
   private def characteristicNode(c: Characteristic, graph: MutableGraph) = {
@@ -162,21 +150,31 @@ class A2l2Dot(a2lUrl: URL) {
     val units = compuMethods.get(c.getConversion).map(_.getUnit).getOrElse("-")
     if (c.getType == CharacteristicType.MAP) {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
+        mapLabel(
+          name = c.getName,
+          units = units,
+          longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
+        ),
         RECTANGLE,
-//        Image.of("./axis-xyz.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else if (c.getType == CharacteristicType.CURVE) {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
+        mapLabel(
+          name = c.getName,
+          units = units,
+          longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
+        ),
         RECTANGLE,
-//        Image.of("./axis-xy.png").position(Position.TOP_RIGHT).scale(Scale.NONE),
         Color.BLUE
       )
     } else {
       gn.add(
-        mapLabel(name = c.getName, units = units, longDescription = getObjectDescription(c.getName)),
+        mapLabel(
+          name = c.getName,
+          units = units,
+          longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
+        ),
         RECTANGLE,
         Color.BLUE
       )

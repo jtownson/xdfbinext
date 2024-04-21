@@ -1,14 +1,23 @@
-## XdfBinCompare: A tunerpro XDF and bin comparison utility
+## XdfBinCompare and A2L2SVG: B58 tuning utilities 
+
+Repo with two utilities to help B58 tuning tasks
+1. net.jtownson.xdfbinext.MapCompare A utility for comparing two bin files with respect to a tunerpro XDF which applies to both.
+2. net.jtownson.xdfbinext.A2L2SVG Graphs functions, characteristics and measurements from an a2l.
 
 ### Motivation
 
-The idea is to compare bins, according to an XDF so that you can
+The idea of MapCompare is to compare bins, according to an XDF so that you can
 see the changes you or another tuner have made to a bin relative to some starting point.
 
 This helps to take stock of your changes before flashing and in reverse engineering
 changes made by others.
 
-### Usage
+A2L2SVG draws graphs of a2l functions, with their inputs and outputs in order to help vizualize a2ls.
+In addition it can also help in studying FR docs. Although A2L2SVG only shows black box diagrams (rather
+than white box computation paths) it will add comments and descriptions (with translation where available)
+thus you can use the tool as a study companion which saves having to remember so many variable names.
+
+### Usage MapCompare
 ```shell
 Usage: xbc [options]
 
@@ -94,3 +103,28 @@ map breakpoints.
 
 2. Nicer rendering
 Text works okay but HTML rendering with coloured graphs would be nicer.
+
+### Limitations
+
+1. Some older XDFs do not parse since they are missing fields with are mandatory in the current model.
+
+### Usage A2L2SVG
+
+Note, for technical reasons, A2L2SVG requires a 17+ JRE installed on your system.
+
+```shell
+Creates a graph based around an a2l function, characteristic or measurement.
+Usage: a2l2svg [options]
+
+  --help                 Display usage text
+  -f, --function         Use this option to graph a function with its inputs and outputs. Otherwise graphs the named characteristic/measurement
+  --a2l <value>          Filename for a2l to parse
+  --object-name <value>  name of function if -f is set or other object otherwise.
+  --out <value>          output file
+```
+For example
+```shell
+java -cp .\target\scala-3.3.1\xbc.jar net.jtownson.xdfbinext.A2L2SVG -f --a2l .\src\test\resources\DME861_R1C9J8B3B.a2l --object-name BMW_MOD_TchCtr_Pwr_10ms --out testmodel.svg
+```
+Produces the tch diagram as follows:
+![TchCtr_Pwr_10ms](src/main/resources/testmodel.svg "testmodel")

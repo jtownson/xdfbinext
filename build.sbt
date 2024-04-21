@@ -25,5 +25,13 @@ lazy val root = project
     resolvers += Resolver.mavenLocal,
     libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
     assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare"),
-    assemblyJarName      := "xbc.jar"
+    assemblyJarName      := "xbc.jar",
+    assemblyMergeStrategy := {
+      case PathList("module-info.class") =>
+        MergeStrategy.last
+      case path if path.endsWith("/module-info.class") =>
+        MergeStrategy.last
+      case _ =>
+        MergeStrategy.first
+    }
   )
