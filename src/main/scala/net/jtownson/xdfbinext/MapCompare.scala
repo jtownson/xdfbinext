@@ -106,7 +106,7 @@ object MapCompare {
 
   private def allTablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
     xdf.tables
-      .map(table => (table, table.categoryMems.map(_.category).last))
+      .map(table => (table, table.categoryMems.map(_.category).last)) // TODO will break for tables without category
       .sortBy((_, cat) => Integer.decode(cat.index))
       .map(_._1)
   }
