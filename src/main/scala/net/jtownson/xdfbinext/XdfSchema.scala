@@ -7,9 +7,8 @@ import scala.collection.immutable.Seq
 object XdfSchema:
 
   val undefinedAddress: Long = -1
-
-  val floatingPointFlag = 0x10000
-  val signedFlag        = 0x01
+  val floatingPointFlag: Int = 0x10000
+  val signedFlag: Int = 0x01
 
   case class XdfModel(
       version: String,

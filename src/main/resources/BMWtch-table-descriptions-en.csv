@@ -4397,3 +4397,28 @@ St_progression,"St_progression"
 St_progression.B_eco,"Bit for eco mode active"
 St_progression.B_sport,"Bit for sports mode active"
 BMWeisy_p_PreThrPlau_uw,"Pressure in front of throttle valve checked for plausibility"
+KL_FPKATREL_PUMG,Factor on the mass flow through the exhaust system to take the ambient pressure into account (unitless)
+BMWausy_gra_PEgFlpDwn_C,Gradient for the blender of the back pressure of the exhaust flap in the closed direction.
+BMWausy_gra_PEgFlpOp_C,Gradient for the blender of the back pressure of the exhaust flap in the open direction.
+BMWausy_p_DifCat_T,Pressure loss of the exhaust system above the catalyst depending on the mass flow
+BMWausy_p_DifEgFlpClsd_T,"Pressure loss above the closed exhaust flap, silencers and possibly underbody catalyst depending on the mass flow. "
+BMWausy_p_DifEgFlpOp_T,"Pressure loss above the open exhaust flap, silencers and possibly underbody catalyst depending on the mass flow"
+BMWausy_p_DifPclFil_M,Pre-control of the pressure difference via the OPF (depending on mass flow and soot load)
+BMWausy_swi_p_DifCatTot_C,Switch application. 1: Pressure loss above the catalyst is corrected based on the absolute pressure after the catalyst (recommendation). 0: Correction based on the ambient pressure.
+CW_MS_TURB_MAN,Selection of mass flow through the exhaust system for addressing KL_AUSYKAT_AKxx (=0: Mshfm_f; =1:Msturb; =2:Mslam; )
+K_FK_PKAT,Time constant filtering Pkat_rel (takes thermal effects into account in particular)
+K_PKAT_MAN,Application value pressure before cat (only with S_PKAT_MAN=1)
+S_PKAT_MAN,Switch application for pressure before cat (=1: Pkat=K_PKAT_MAN; 0: recommended)
+BMWext_t_GasP2PclFilXab_sw,Exhaust temperature after pipe from catalyst to particle filter
+BMWtchsp_b_PclFil_bo,Particle filter present.
+BMWtchsp_fac_AdpPclFil_uw,Adaptation factor loading factor OPF (1 means: pressure loss exactly as stored in BMWtchsp_p_DifPclFil_M).
+BMWtchsp_m_SootLoad_sw,Soot mass in particle filter
+Mshfm_f,Filtered mass flow HFM
+Msturb,Exhaust mass flow through the turbo (wastegate plus turbine)
+BMWausy_fac_FadePDifEgFlp_ub,"Factor for the exhaust flap differential pressure blending. At 1 the flap is open, at 0 it is closed. "
+BMWausy_p_AftCat_uw,Modeled absolute pressure after the catalyst
+Pkat_rel,Pressure loss of the entire exhaust system from before the catalyst to the tailpipe
+BMWausy_mf_Cat,AUSY: selected total mass flow through the catalyst
+BMWausy_p_DifPclFilRaw_uw,"Pressure difference across the gasoline particle filter (only OPF; excluding exhaust flap, catalyst,...)"
+BMWausy_p_DifPclFil_sw,"Pressure difference across the gasoline particle filter (only OPF; excluding exhaust flap, catalyst,...)"
+BMWausy_volf_AftPclFil_uw,Volume flow after the particle filter

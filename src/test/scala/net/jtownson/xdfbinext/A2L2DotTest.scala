@@ -3,19 +3,23 @@ package net.jtownson.xdfbinext
 import guru.nidi.graphviz.engine.{Format, Graphviz}
 import guru.nidi.graphviz.model.MutableGraph
 import guru.nidi.graphviz.parse.Parser
-import net.jtownson.xdfbinext.A2l2Dot.{functionCentredGraphWith, valueCentredGraphWith}
+import net.jtownson.xdfbinext.A2L2Dot.{functionCentredGraphWith, valueCentredGraphWith}
+import org.scalatest.Assertion
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 
 import java.io.File
 import scala.util.Using
 
-class A2l2DotTest extends AnyFlatSpec {
+class A2L2DotTest extends AnyFlatSpec {
 
   behavior of "A2l2Dot"
 
-  private val a2lUrl  = getClass.getResource("/DME861_R1C9J9E3B.a2l").toURI.toURL
-  private val a2l2Dot = new A2l2Dot(a2lUrl)
+  def withA2L(test: A2L2Dot => Any): Unit = {
+    val a2lUrl  = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
+    val a2l2Dot = new A2L2Dot(a2lUrl)
+    test(a2l2Dot)
+  }
 
   private val handGraphs = Table[String](
     "filename",
@@ -28,6 +32,7 @@ class A2l2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
+    "BMW_MOD_AusyKat_10ms",
     "BMW_MOD_TchSp_P_10ms",
     "BMW_MOD_TchBas_P_10ms",
     "BMW_MOD_TchBas_Misc_10ms",
@@ -54,22 +59,22 @@ class A2l2DotTest extends AnyFlatSpec {
   )
 
   it should "render hand drawn graphs" ignore forAll(handGraphs) { filename =>
-    A2l2DotTest.resourcesGraph(filename)
+    A2L2DotTest.resourcesGraph(filename)
   }
 
   it should "render fn centred graphs" ignore forAll(fnCentredGraphs) { fnName =>
-    functionCentredGraphWith(a2l2Dot, _ => true, _ == fnName, s"${fnName}.svg")
+    withA2L(a2l => functionCentredGraphWith(a2l, _ => true, _ == fnName, s"$fnName.svg"))
   }
 
   it should "render value centred graphs" ignore forAll(valueCentredGraphs) { objName =>
-    valueCentredGraphWith(a2l2Dot, _ == objName, s"${objName}.svg")
+    withA2L(a2l => valueCentredGraphWith(a2l, _ == objName, s"${objName}.svg"))
   }
 }
 
-object A2l2DotTest {
+object A2L2DotTest {
 
   def resourcesGraph(filename: String): Unit = {
-    Using.resource(classOf[A2l2DotTest].getResourceAsStream(s"/$filename")) { dot =>
+    Using.resource(classOf[A2L2DotTest].getResourceAsStream(s"/$filename")) { dot =>
       val g: MutableGraph = new Parser().read(dot)
       Graphviz.fromGraph(g).render(Format.SVG).toFile(new File(s"$filename.svg"))
     }

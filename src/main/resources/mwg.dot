@@ -1,0 +1,30 @@
+graph "mwg" {
+    graph ["rankdir" = "LR"]
+
+    // Maps
+    "KF_AUSY_TURB" [label="Turbine+WG 'mass' flow\n(kg/s * sqrt(°K) / kPa)\nKF_AUSY_TURB",color="green"]
+    "KL_AUSY_TURB" [label="Turbine 'mass' flow\n(kg/s * sqrt(°K) / kPa)\nKL_AUSY_TURB",color="green"]
+
+    // Inputs
+    Prat_turb [label="Turbine pressure ratio\n(unitless)", color="green"]
+    wgpos [label="wastegate position\n(%)", color="green"]
+    pak [label="Exhaust manifold pressure\n(hPa)", color="green"]
+    KL_TABG2TABG_WZINV [label="1/sqrt(Temp exhaust)\n()", color="green"]
+    f_msredturb2msturb [label="f_msredturb2msturb\n()", color="green"]
+
+    // Outputs
+    "Msturb" [label="Exhaust mass flow WG plus turbine\n(kg/h)\n",color="red"]
+    "Msturb_diff" [label="Derivate WG+Trb massflow\n(kg/h/hPa)\n",color="red"]
+    "Msturbine" [label="Exhaust mass flow turbine\n(kg/h)\n",color="red"]
+    "Mswg" [label="Exhaust mass flow WG\n(kg/h)\n",color="red"]
+
+
+    "sqrt" [label="√"]
+
+
+    Prat_turb -- KF_AUSY_TURB
+    wgpos -- KF_AUSY_TURB
+
+
+
+}

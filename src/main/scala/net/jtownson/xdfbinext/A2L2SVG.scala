@@ -15,12 +15,12 @@ object A2L2SVG {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CommandLine()) match {
       case Some(config) =>
-        val a2l2Dot    = new A2l2Dot(config.a2lFile.toURI.toURL)
+        val a2l2Dot    = new A2L2Dot(config.a2lFile.toURI.toURL)
         val objectName = config.objectName
         if (config.isFnCentred)
-          A2l2Dot.functionCentredGraphWith(a2l2Dot, _ => true, _ == objectName, config.outFile.toString)
+          A2L2Dot.functionCentredGraphWith(a2l2Dot, _ => true, _ == objectName, config.outFile.toString)
         else
-          A2l2Dot.valueCentredGraphWith(a2l2Dot, _ == objectName, config.outFile.toString)
+          A2L2Dot.valueCentredGraphWith(a2l2Dot, _ == objectName, config.outFile.toString)
 
       case _ =>
 
