@@ -1,8 +1,8 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.BinAdapter.BinAdapterCompare
+import net.jtownson.xdfbinext.XDFBinAdapter.BinAdapterCompare
 import net.jtownson.xdfbinext.XdfSchema.*
-import net.jtownson.xdfbinext.{BinAdapter, XdfParser}
+import net.jtownson.xdfbinext.{XDFBinAdapter, XdfParser}
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
@@ -33,13 +33,11 @@ object TableNotes {
               categoryExclusions = config.categoryExclusions
             )
 
-        val comparisons = BinAdapter.compare(xdf, config.baseBin, config.modBin)
+        val comparisons = XDFBinAdapter.compare(xdf, config.baseBin, config.modBin)
 
         val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
         val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))
 
-//        val output: PrintStream = config.output.fold(System.out)(f => new PrintStream(f))
-//        var currentCat          = ""
         val catMap: mutable.Map[String, StringBuilder] = mutable.Map.empty[String, StringBuilder]
 
         tablesOrderedAndFiltered.foreach { table =>

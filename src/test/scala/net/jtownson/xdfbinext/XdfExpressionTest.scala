@@ -21,7 +21,7 @@ class XdfExpressionTest extends AnyFlatSpec {
     getClass.getClassLoader.getResource("00003076501103_original.bin").toURI
   )
 
-  private val binAdapter = new BinAdapter(originalBin, xdf)
+  private val binAdapter = new XDFBinAdapter(originalBin, xdf)
 
   it should "process report" ignore {
     val tables    = xdf.tablesByName.keySet

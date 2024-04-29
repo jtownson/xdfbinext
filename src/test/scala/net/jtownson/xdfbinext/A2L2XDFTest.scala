@@ -23,19 +23,26 @@ class A2L2XDFTest extends AnyFlatSpec {
   }
 
   it should "output an XDF snippet for KF_AUSY_TURB" ignore {
-    withA2L(a2l => println(a2l.characteristic2XDF(_ == "KL_FPKATREL_PUMG").head))
+    withA2L(a2l => println(a2l.characteristic2XDF(_ == "BMWausy_swi_p_DifCatTot_C").head))
   }
 
   it should "output XDF snippets for new XDF tables" ignore {
     val newTables =
       Set(
+        "BMWausy_p_DifCat_T",
+        "KL_FPKATREL_PUMG",
+        "KF_AUSY_TURB_DIFF",
+        "KL_AUSY_TURB",
+        "KF_AUSY_TURB",
         "BMWtchctr_fac_TrbEffIvs_T",
         "BMWtchctr_fac_TrbExp_T",
-        "BMWtchctr_cpp_ExGas_T",
         "BMWtchctr_t_ExGasMdl_M",
         "BMWtchout_f_GasWg_M"
       )
-    withA2L(a2l => println(a2l.characteristic2XDF(newTables.contains).mkString("\n")))
+    withA2L(a2l => println(a2l.characteristic2XDF(newTables.contains).mkString("\n\n")))
   }
 
+  it should "create tables for every characteristic without crashing" in {
+
+  }
 }

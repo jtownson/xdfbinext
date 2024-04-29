@@ -152,6 +152,7 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
         xAddr,
         xElSzBits,
         xTypeFlag,
+        xDp,
         xColCount,
         xUnits,
         xEq
@@ -197,8 +198,8 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
     val xTitle      = xAxis.getName
     val xDesc       = xAxis.getLongIdentifier
     val xDp         = format2DecimalPl(xAxis.getFormat)
-    val xMin        = BigDecimal(xAxisDescr.getLowerLimit).setScale(xDp.toInt, HALF_UP).toString
-    val xMax        = BigDecimal(xAxisDescr.getUpperLimit).setScale(xDp.toInt, HALF_UP).toString
+    val xMin        = BigDecimal(xAxisDescr.getLowerLimit).setScale(xDp, HALF_UP).toString
+    val xMax        = BigDecimal(xAxisDescr.getUpperLimit).setScale(xDp, HALF_UP).toString
     val xAddr       = offsetAddress(xAxis.getAddress)
     val xElSzBits   = getSizeBits(xAxis)
     val xTypeFlag   = getTypeFlag(xAxis)
@@ -213,8 +214,8 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
     val yTitle      = yAxis.getName
     val yDesc       = yAxis.getLongIdentifier
     val yDp         = format2DecimalPl(yAxis.getFormat)
-    val yMin        = BigDecimal(yAxisDescr.getLowerLimit).setScale(xDp.toInt, HALF_UP).toString
-    val yMax        = BigDecimal(yAxisDescr.getUpperLimit).setScale(xDp.toInt, HALF_UP).toString
+    val yMin        = BigDecimal(yAxisDescr.getLowerLimit).setScale(yDp, HALF_UP).toString
+    val yMax        = BigDecimal(yAxisDescr.getUpperLimit).setScale(yDp, HALF_UP).toString
     val yAddr       = offsetAddress(yAxis.getAddress)
     val yElSzBits   = getSizeBits(yAxis)
     val yTypeFlag   = getTypeFlag(yAxis)
@@ -239,12 +240,14 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
         xAddr,
         xElSzBits,
         xTypeFlag,
+        xDp,
         xColCount,
         xUnits,
         xEq,
         yAddr,
         yElSzBits,
         yTypeFlag,
+        yDp,
         yColCount,
         yUnits,
         yEq
@@ -270,7 +273,7 @@ object A2L2XDF {
                         title: String,
                         description: String,
                         units: String,
-                        decimalPl: String,
+                        decimalPl: Int,
                         outputType: String,
                         min: String,
                         max: String,
@@ -282,6 +285,8 @@ object A2L2XDF {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
+       |    <CATEGORYMEM index="0" category="1" />
+       |    <CATEGORYMEM index="1" category="3" />
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>-</units>
@@ -327,7 +332,7 @@ object A2L2XDF {
                         title: String,
                         description: String,
                         units: String,
-                        decimalPl: String,
+                        decimalPl: Int,
                         outputType: String,
                         min: String,
                         max: String,
@@ -338,6 +343,7 @@ object A2L2XDF {
                         xAddr: String,
                         xElSzBits: Int,
                         xTypeFlag: Int,
+                        xDp: Int,
                         xColCount: String,
                         xUnits: String,
                         xEquation: String
@@ -345,11 +351,13 @@ object A2L2XDF {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
+       |    <CATEGORYMEM index="0" category="1" />
+       |    <CATEGORYMEM index="1" category="3" />
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA ${typeFlagAll(xTypeFlag)} mmedaddress="$xAddr" mmedelementsizebits="$xElSzBits" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$xUnits</units>
        |      <indexcount>$xColCount</indexcount>
-       |      <decimalpl>0</decimalpl>
+       |      <decimalpl>$xDp</decimalpl>
        |      <embedinfo type="1" />
        |      <datatype>0</datatype>
        |      <unittype>0</unittype>
@@ -390,7 +398,7 @@ object A2L2XDF {
                       title: String,
                       description: String,
                       units: String,
-                      decimalPl: String,
+                      decimalPl: Int,
                       outputType: String,
                       min: String,
                       max: String,
@@ -401,12 +409,14 @@ object A2L2XDF {
                       xAddr: String,
                       xElSzBits: Int,
                       xTypeFlag: Int,
+                      xDp: Int,
                       xColCount: String,
                       xUnits: String,
                       xEquation: String,
                       yAddr: String,
                       yElSzBits: Int,
                       yTypeFlag: Int,
+                      yDp: Int,
                       yColCount: String,
                       yUnits: String,
                       yEquation: String
@@ -414,34 +424,36 @@ object A2L2XDF {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
+       |    <CATEGORYMEM index="0" category="1" />
+       |    <CATEGORYMEM index="1" category="3" />
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA ${typeFlagAll(xTypeFlag)} mmedaddress="$xAddr" mmedelementsizebits="$xElSzBits" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$xUnits</units>
        |      <indexcount>$xColCount</indexcount>
-       |      <decimalpl>0</decimalpl>
+       |      <decimalpl>$xDp</decimalpl>
        |      <embedinfo type="1" />
        |      <datatype>0</datatype>
        |      <unittype>0</unittype>
        |      <DALINK index="0" />
-       |      <MATH equation="X">
+       |      <MATH equation="$xEquation">
        |        <VAR id="X" />
        |      </MATH>
        |    </XDFAXIS>
        |    <XDFAXIS id="y" uniqueid="0x0">
-       |      <EMBEDDEDDATA ${typeFlagAll(yTypeFlag)} mmedaddress="$yAddr" mmedelementsizebits="$yElSzBits" mmedcolcount="$yColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
+       |      <EMBEDDEDDATA ${typeFlagAll(yTypeFlag)} mmedaddress="$yAddr" mmedelementsizebits="$yElSzBits" mmedrowcount="$yColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$yUnits</units>
        |      <indexcount>$yColCount</indexcount>
-       |      <decimalpl>1</decimalpl>
+       |      <decimalpl>$yDp</decimalpl>
        |      <embedinfo type="1" />
        |      <datatype>0</datatype>
        |      <unittype>0</unittype>
        |      <DALINK index="0" />
-       |      <MATH equation="X">
+       |      <MATH equation="$yEquation">
        |        <VAR id="X" />
        |      </MATH>
        |    </XDFAXIS>
        |    <XDFAXIS id="z">
-       |      <EMBEDDEDDATA ${typeFlagAll(typeFlag)} mmedaddress="$address" mmedelementsizebits="$elSzBits" mmedrowcount="1" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
+       |      <EMBEDDEDDATA ${typeFlagAll(typeFlag)} mmedaddress="$address" mmedelementsizebits="$elSzBits" mmedrowcount="$yColCount" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$units</units>
        |      <decimalpl>$decimalPl</decimalpl>
        |      <min>$min</min>
@@ -473,7 +485,7 @@ object A2L2XDF {
                        address: String,
                        count: String,
                        units: String,
-                       decimalPl: String,
+                       decimalPl: Int,
                        min: String,
                        max: String,
                        eq: String,
@@ -483,6 +495,9 @@ object A2L2XDF {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
+       |    <CATEGORYMEM index="0" category="1" />
+       |    <CATEGORYMEM index="1" category="3" />
+       |    <CATEGORYMEM index="2" category="4" />
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
        |      <indexcount>$count</indexcount>
@@ -506,7 +521,7 @@ object A2L2XDF {
        |      </MATH>
        |    </XDFAXIS>
        |    <XDFAXIS id="z">
-       |      <EMBEDDEDDATA ${typeFlagAll(typeFlag)} mmedaddress="$address" mmedelementsizebits="$elSizeBits" mmedrowcount="1" mmedcolcount="14" mmedmajorstridebits="0" mmedminorstridebits="0" />
+       |      <EMBEDDEDDATA ${typeFlagAll(typeFlag)} mmedaddress="$address" mmedelementsizebits="$elSizeBits" mmedrowcount="1" mmedcolcount="$count" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$units</units>
        |      <decimalpl>$decimalPl</decimalpl>
        |      <min>$min</min>
@@ -522,9 +537,9 @@ object A2L2XDF {
 
   private val formatExpr = """%(\d+)\.(\d+)""".r
 
-  private def format2DecimalPl(format: String): String = {
+  private def format2DecimalPl(format: String): Int = {
     format match
       case formatExpr(pre, suf) =>
-        suf
+        suf.toInt
   }
 }

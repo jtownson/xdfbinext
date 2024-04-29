@@ -6,7 +6,7 @@ import org.scalatest.matchers.should.Matchers.*
 import java.io.File
 import scala.io.Source
 
-class BinAdapterTest extends AnyFlatSpec {
+class XDFBinAdapterTest extends AnyFlatSpec {
 
   private val xdfModel = XdfParser.parse(Source.fromResource("00003076501103.xdf").mkString)
 
@@ -24,7 +24,7 @@ class BinAdapterTest extends AnyFlatSpec {
     getClass.getClassLoader.getResource("mppsk.bin").toURI
   )
 
-  private val binAdapter = new BinAdapter(mapSwitchBaseBin, xdfModel)
+  private val binAdapter = new XDFBinAdapter(mapSwitchBaseBin, xdfModel)
 
   "BinAdapter" should "read a scalar short" in {
     val expected = Array(240)

@@ -1419,7 +1419,7 @@ Tmotraum,Engine compartment temperature modeled
 Tn_abstell,Shutdown time
 Tumg,Ambient temperature
 Gangi_stat,Current internal gear (including neutral and reverse)
-Nkw,number of revolutions
+Nkw,engine RPM
 Var_at,Vehicle variant with automatic transmission
 Var_dkg,Vehicle variant with dual clutch transmission
 BMWeisy_b_DiagAirFlowCoaEnd_bo,"Condition mass flow diagnosis HFM in Coast Down, number of measurements reached"
@@ -2488,7 +2488,7 @@ Pe_startstopp_vorhalt_em1,Power reserve for start with EM1
 Pel_spec_max_eps,Performance target Eps
 Perc_wmm_soll,"Request from the WMK to control the WMM (now from the new DorDiag, for FuMu purposes)"
 Pirg_abgd,Residual gas partial pressure
-Pkat,Print before cat
+Pkat,Pressure before cat
 Pld_diff_xeb,Rule difference - bank specific
 Pmbackup,array to
 Pminfo1,Info storage 1
@@ -4422,3 +4422,6 @@ BMWausy_mf_Cat,AUSY: selected total mass flow through the catalyst
 BMWausy_p_DifPclFilRaw_uw,"Pressure difference across the gasoline particle filter (only OPF; excluding exhaust flap, catalyst,...)"
 BMWausy_p_DifPclFil_sw,"Pressure difference across the gasoline particle filter (only OPF; excluding exhaust flap, catalyst,...)"
 BMWausy_volf_AftPclFil_uw,Volume flow after the particle filter
+BMWausy_p_DifCat_Ax,Mass flow through catalytic converter for pressure loss across cat (X)
+BMWausy_p_DifEgFlpOp_Ax,Mass flow through exhaust system (X)
+Rk_soll,Relative target fuel mass (%)

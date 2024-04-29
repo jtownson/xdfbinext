@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.BinAdapter.{
+import net.jtownson.xdfbinext.XDFBinAdapter.{
   BinConst,
   BinTable1D,
   BinTable2D,
@@ -18,7 +18,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 
-class BinAdapter(val bin: File, xdfModel: XdfModel) {
+class XDFBinAdapter(val bin: File, xdfModel: XdfModel) {
 
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 
@@ -288,7 +288,7 @@ class BinAdapter(val bin: File, xdfModel: XdfModel) {
 
 }
 
-object BinAdapter {
+object XDFBinAdapter {
 
   def data2StrConst(tableData: BigDecimal): String = {
     new StringBuilder().append(f"$tableData%9s").append("\n").toString
@@ -347,8 +347,8 @@ object BinAdapter {
   case class BinAdapterCompare(lhs: String, diff: String, rhs: String) {}
 
   def compare(xdfModel: XdfModel, lhs: File, rhs: File): Map[String, BinAdapterCompare] = {
-    val lhsb = new BinAdapter(lhs, xdfModel)
-    val rhsb = new BinAdapter(rhs, xdfModel)
+    val lhsb = new XDFBinAdapter(lhs, xdfModel)
+    val rhsb = new XDFBinAdapter(rhs, xdfModel)
 
     xdfModel.tablesByName.keySet
       .map(tableName => tableName -> compare(tableName, xdfModel, lhsb, rhsb))
@@ -357,10 +357,10 @@ object BinAdapter {
   }
 
   private def compare(
-      tableName: String,
-      xdfModel: XdfModel,
-      lhsb: BinAdapter,
-      rhsb: BinAdapter
+                       tableName: String,
+                       xdfModel: XdfModel,
+                       lhsb: XDFBinAdapter,
+                       rhsb: XDFBinAdapter
   ): Option[BinAdapterCompare] = {
     val table = xdfModel.tablesByName(tableName)
 

@@ -27,7 +27,7 @@ object MapCompare {
               categoryExclusions = config.categoryExclusions
             )
 
-        val comparisons = BinAdapter.compare(xdf, config.baseBin, config.modBin)
+        val comparisons = XDFBinAdapter.compare(xdf, config.baseBin, config.modBin)
 
         val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
         val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))
@@ -106,8 +106,8 @@ object MapCompare {
 
   private def allTablesByCategory(xdf: XdfModel): Seq[XdfTable] = {
     xdf.tables
-      .map(table => (table, table.categoryMems.map(_.category).last)) // TODO will break for tables without category
-      .sortBy((_, cat) => Integer.decode(cat.index))
+      .map(table => (table, table.categoryMems.map(_.category).lastOption.map(_.index).getOrElse("0")))
+      .sortBy((_, index) => Integer.decode(index))
       .map(_._1)
   }
 
