@@ -1,10 +1,9 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.LinearInterpolate.Interpolated2D
-
 class XdfExpressionParser(aliases: Map[String, Interpolated2D]) {
 
-  import fastparse._, NoWhitespace._
+  import fastparse.*
+  import NoWhitespace.*
 
   type Expressable = Interpolated2D | BigDecimal
 

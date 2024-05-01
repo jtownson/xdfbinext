@@ -22,8 +22,8 @@ class A2L2XDFTest extends AnyFlatSpec {
     withA2L(a2l => println(a2l.characteristic2XDF(_ == "BMWtchctr_p_DifCrtnPp_M").head))
   }
 
-  it should "output an XDF snippet for KF_AUSY_TURB" ignore {
-    withA2L(a2l => println(a2l.characteristic2XDF(_ == "BMWausy_swi_p_DifCatTot_C").head))
+  it should "output an XDF snippet for KF_AUSY_TURB" in {
+    withA2L(a2l => println(a2l.characteristic2XDF(_ == "BMWtchsp_fac_SqrtTBefTc_T").head))
   }
 
   it should "output XDF snippets for new XDF tables" ignore {
@@ -42,7 +42,5 @@ class A2L2XDFTest extends AnyFlatSpec {
     withA2L(a2l => println(a2l.characteristic2XDF(newTables.contains).mkString("\n\n")))
   }
 
-  it should "create tables for every characteristic without crashing" in {
-
-  }
+  it should "create tables for every characteristic without crashing" in {}
 }

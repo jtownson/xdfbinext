@@ -1,0 +1,41 @@
+graph "mwg" {
+    graph ["rankdir" = "LR"]
+
+    // Maps
+    "KF_AUSY_TURB" [label="Turbine+WG 'mass' flow\n(kg/s/°K/kPa)\nKF_AUSY_TURB",color="blue"]
+
+    // Inputs
+    Prat_turb [label="Turbine pressure ratio\n(unitless)", color="green"]
+    Prat_turb2 [label="Turbine pressure ratio\n(unitless)", color="green"]
+    Prat_turb3 [label="Turbine pressure ratio\n(unitless)", color="green"]
+    wgpos [label="wastegate position\n(%)", color="green"]
+    wgpos3 [label="wastegate position\n(%)", color="green"]
+
+    "eq1" [label="Equation 1"]
+
+    // Outputs
+    "Msturb" [label="Exhaust mass flow wastegate + turbine\n(kg/h)\n",color="red"]
+
+    Prat_turb -- KF_AUSY_TURB
+    wgpos -- KF_AUSY_TURB
+    KF_AUSY_TURB -- "eq1"
+    "eq1" -- Msturb
+
+    "Msturbine" [label="Exhaust mass flow turbine\n(kg/h)\n",color="red"]
+    "KL_AUSY_TURB" [label="Turbine 'mass' flow\n(kg/s/°K/kPa)\nKL_AUSY_TURB",color="blue"]
+
+    "eq2" [label="Equation 2"]
+
+    Prat_turb2 -- KL_AUSY_TURB
+    KL_AUSY_TURB -- "eq2"
+    "eq2" -- Msturbine
+
+    "KF_AUSY_TURB_DIFF" [label="Turbine 'mass' flow slope\n(kg/s/°K/kPa^2)\nKL_AUSY_TURB_DIFF",color="blue"]
+    "Msturb_diff" [label="Derivate WG+Trb massflow\n(kg/h/hPa)\n",color="red"]
+    "eq4" [label="Equation 4"]
+
+    Prat_turb3 -- KF_AUSY_TURB_DIFF
+    wgpos3 -- KF_AUSY_TURB_DIFF
+    KF_AUSY_TURB_DIFF -- "eq4"
+    "eq4" -- Msturb_diff
+}

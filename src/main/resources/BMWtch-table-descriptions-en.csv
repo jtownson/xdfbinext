@@ -140,8 +140,8 @@ BMWtchctr_fac_FadeAdpMax_T,Overlay of the calculation of the ATL adaptation at E
 BMWtchctr_fac_FadeAdpMin_C,Threshold inclusion of the adaptation values from which the adaptation can be enabled
 BMWtchctr_fac_FadeDyn_M,fading factor between general (0) and dynamic controller parameters.
 BMWtchctr_fac_FadeDynSpt_M,Crossfade to other control parameters for dynamics in Sport-FES
-BMWtchctr_fac_FadeFlowSpAcv_M,Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position.
-BMWtchctr_fac_FadeFlowSpSpt_M,Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position (for sport).
+BMWtchctr_fac_FadeFlowSpAcv_M,(Unused) Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position.
+BMWtchctr_fac_FadeFlowSpSpt_M,(Unused) Factor for blending between the target (0) and actual (1) value of the exhaust manifold mass flow when calculating the target Wg position (for sport).
 BMWtchctr_fac_FadeTExGas_C,Starting value for the blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation
 BMWtchctr_fac_FadeTExGas_M,Blending factor between exhaust gas temperature from the ATM (in stationary operation) and simple ATL exhaust gas temperature model in dynamic operation
 BMWtchctr_fac_FadeTExGasGc_C,Starting value for the blending factor between ATM (in stationary operation) and the simple ATL exhaust gas temperature model in dynamic operation
@@ -517,7 +517,7 @@ BMWtchdiag_pct_WgDif_sw,Manipulating variable share through feedforward control 
 BMWtchsvc_p_DeltMin_uw,Ambient temperature
 BMWtchsp_p_DifReqMax_sw,"Difference between maximum and current target charging pressure, filtered."
 BMWtchctr_b_IpStop_bo,Condition for stopping the I component of the boost pressure control
-BMWtchdiag_b_LimPctl_bo,Lymphomas. Limit turbocharger to precontrol.
+BMWtchdiag_b_LimPctl_bo,"Limp mode: limit turbocharger to precontrol (no PID control)."
 BMWtchctr_pwr_CmprGra_uw,P component of the performance-based boost pressure regulator
 BMWtchco_fac_FadePlRaw_ub,Blending factor between partial load (1) and charged operation (0).
 BMWtchsp_mf_CmprNorm_uw,Target mass flow corrected for boost pressure control
@@ -585,7 +585,7 @@ BMWtchctr_b_IpRst2_bo,Condition for resetting the I component of the boost press
 BMWtchbas_rat_p_BascBefCmpr_uw,Pressure ratio of basic boost pressure to pressure before compressor
 BMWtchco_b_TOilEco_bo,Eco bias due to low oil temperature.
 BMWtchsp_rat_p_CmprLim_uw,Target boost factor - boost pressure target value for pressure in front of the compressor
-BMWtchctr_pct_WgRaw_uw,Control shared apartment
+BMWtchctr_pct_WgRaw_uw,Wastegate position
 BMWtchtbc_ti_EngStopOld_uw,Shutdown time in minutes - f. Engine compartment temperature modeling
 BMWtchctr_p_BefTrb_uw,required exhaust gas back pressure for turbine performance
 BMWtchtbc_t_ExDif_sw,Difference exhaust gas temperature - load < the stationary load
@@ -4425,3 +4425,22 @@ BMWausy_volf_AftPclFil_uw,Volume flow after the particle filter
 BMWausy_p_DifCat_Ax,Mass flow through catalytic converter for pressure loss across cat (X)
 BMWausy_p_DifEgFlpOp_Ax,Mass flow through exhaust system (X)
 Rk_soll,Relative target fuel mass (%)
+Pld_soll,"Target boost pressure (hPa) (based on target intake manifold pressure, with ATL preload, without limitations). Average of the two intake banks when SY_ANZ_EISY=2"
+F_msturb_kor_inv,"Correction factor on turbine mass flow - inverse (unitless)"
+Tabg_mw,"Exhaust gas temperature average, filtered (°C)"
+Drft_uk,"Nonlinear Rf component of the target Rf (at the Ps_soll_nl iteration)"
+Fupsrf_kor_f,"Factor conversion of intake manifold pressure to relative filling (for VVT from KL_FUPSRF_TRANS) filtered"
+Pirg_kor_f,"Residual gas partial pressure (in GD: =Pirg_abgd, in VVT: = KL_PIRG_TRANS), filtered"
+BMWgpfp_b_PclFil_bo,"Particle filter available (y/n)."
+BMWgpfp_fac_AdpPclFil_uw,"Adaptation factor for OPF loading factor (1 means: pressure loss exactly as stored in BMWtchsp_p_DifPclFil_M)."
+BMWgpfp_m_SootLoad_sw,"Soot mass in the particle filter"
+BMWign_ag_OutMv_sw,"Output ignition angle averaged over a working cycle"
+Vsa_spri_f,"Mean outlet spread variable NWS"
+Zwstat,"stat. Basic ignition angle"
+BMWeisy_b_PSnsrPreThrPlau_bo,"Switch to plausible pressure value in case of sensor error (y/n)"
+BMWgpfdiag_rf_LimPclFil_sw,"Load limit due to loading of particle filter"
+Fupsrf_kl,"Conversion factor from intake manifold pressure to load from KL_FUPSRF_TRANS"
+Pirg_kl,"Residual gas partial pressure from KL_PIRG_TRANS and Fho"
+Rf_mdk_max,"Load at maximum torque"
+Wgpos_ist_xwg,Position feedback electrical wastegate (measured value)
+KL_TABG2TABG_WZINV,1/sqrt(tabg_mw)

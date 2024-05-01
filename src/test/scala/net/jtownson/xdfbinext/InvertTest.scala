@@ -2,7 +2,6 @@ package net.jtownson.xdfbinext
 
 import net.jtownson.xdfbinext.Invert.tableInvertX
 import net.jtownson.xdfbinext.InvertTest.max
-import net.jtownson.xdfbinext.LinearInterpolate.Interpolated2D
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 

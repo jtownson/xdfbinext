@@ -1,6 +1,5 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.LinearInterpolate.Interpolated2D
 import org.scalatest.Inside.inside
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*

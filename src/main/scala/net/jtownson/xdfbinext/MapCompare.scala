@@ -27,7 +27,7 @@ object MapCompare {
               categoryExclusions = config.categoryExclusions
             )
 
-        val comparisons = XDFBinAdapter.compare(xdf, config.baseBin, config.modBin)
+        val comparisons = BinAdapterCompare.compare(xdf, config.baseBin, config.modBin)
 
         val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
         val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))

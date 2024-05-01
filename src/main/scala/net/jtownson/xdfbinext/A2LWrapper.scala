@@ -54,6 +54,16 @@ case class A2LWrapper(a2lUrl: URL) {
     .map(f => f.getName -> f)
     .toMap
 
+  def characteristicUsage(name: String): Set[String] = {
+    def nn(l: IdentReferenceList): Set[String] = {
+      Option(l).fold(Set.empty[String])(_.iterator().asScala.toSet)
+    }
+
+    functions.filter { (fnName, fn) =>
+      val fnCharacteristics: Set[String] = nn(fn.getDefCharacteristics) ++ nn(fn.getRefCharacteristics)
+      fnCharacteristics.contains(name)
+    }.keySet
+  }
 }
 
 object A2LWrapper {

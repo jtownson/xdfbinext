@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.DataType
+import net.alenzen.a2l.enums.{ConversionType, DataType}
 import net.alenzen.a2l.{Unit as A2lUnit, *}
 import net.jtownson.xdfbinext.A2L2XDF.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getObjectDescription}
@@ -50,9 +50,9 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
 
   private def getTypeFlag(r: RecordLayout): Int = {
     val dataType = Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype)
-    if (dataType == DataType.UWORD || dataType == DataType.ULONG)
+    if (dataType == DataType.UBYTE || dataType == DataType.UWORD || dataType == DataType.ULONG)
       0
-    else if (dataType == DataType.SWORD || dataType == DataType.SLONG)
+    else if (dataType == DataType.SBYTE || dataType == DataType.SWORD || dataType == DataType.SLONG)
       XdfSchema.signedFlag
     else if (dataType == DataType.FLOAT32_IEEE || dataType == DataType.FLOAT64_IEEE)
       XdfSchema.floatingPointFlag
@@ -167,8 +167,13 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
   }
 
   private def getFormula(c: Characteristic): String = {
-    val coeffs = compuMethods(c.getConversion).getCoeffs
-    RatFunFormula.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+    val compuMethod = compuMethods(c.getConversion)
+    if (compuMethod.getConversionType == ConversionType.RAT_FUNC) {
+      val coeffs = compuMethods(c.getConversion).getCoeffs
+      RatFunFormula.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+    } else {
+      "X"
+    }
   }
 
   private def getFormula(axis: AxisPts): String = {
@@ -268,6 +273,10 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
 }
 
 object A2L2XDF {
+
+//  private val catMap: Map[String, String] = Map(
+//    "
+//  )
   // format: off
   private def xdfValueTemplate(
                         title: String,
@@ -327,6 +336,7 @@ object A2L2XDF {
        |  </XDFTABLE>
        |""".stripMargin
   }
+
 
   private def xdfCurveTemplate(
                         title: String,

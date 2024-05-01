@@ -1,15 +1,12 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.XDFBinAdapter.BinAdapterCompare
 import net.jtownson.xdfbinext.XdfSchema.*
-import net.jtownson.xdfbinext.{XDFBinAdapter, XdfParser}
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
 import scala.collection.mutable
 import scala.io.Source
 import scala.util.Using
-import scala.util.matching.{Regex, UnanchoredRegex}
 
 /** Prints table notes suitable for adding to b58.wiki
   */
@@ -33,7 +30,7 @@ object TableNotes {
               categoryExclusions = config.categoryExclusions
             )
 
-        val comparisons = XDFBinAdapter.compare(xdf, config.baseBin, config.modBin)
+        val comparisons = BinAdapterCompare.compare(xdf, config.baseBin, config.modBin)
 
         val unmodifiedTables = tablesOrderedAndFiltered.filterNot(table => comparisons.keySet.contains(table.title))
         val excludedTables   = allTablesSorted.filterNot(t => tablesOrderedAndFiltered.contains(t))

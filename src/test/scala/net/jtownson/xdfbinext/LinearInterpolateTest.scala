@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.LinearInterpolate.{Interpolated2D, linearInterpolate}
+import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.prop.TableDrivenPropertyChecks.*
@@ -58,6 +58,6 @@ class LinearInterpolateTest extends AnyFlatSpec {
   it should "interpolate this" in {
     val x = Array[BigDecimal](486, 520)
     val y = Array[BigDecimal](140, 150)
-    println(LinearInterpolate.Interpolated1D(x, y).atX(500))
+    println(Interpolated1D(x, y).atX(500))
   }
 }

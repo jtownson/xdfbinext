@@ -43,7 +43,7 @@ class A2L2Dot(a2lUrl: URL) {
       outMeasurements.exists(namePredicate)
     }.keySet
 
-    functionCentredGraph(fnName => applicableFns.contains(fnName), _ => true)
+    functionCentredGraph(fnName => applicableFns.contains(fnName), namePredicate)
   }
 
   def functionCentredGraph(fnPredicate: String => Boolean, namePredicate: String => Boolean): MutableGraph = {
