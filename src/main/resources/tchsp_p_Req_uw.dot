@@ -1,0 +1,43 @@
+graph "pwr_fade" {
+    graph ["rankdir" = "LR"]
+
+    rank1 [style=invisible]
+    rank2 [style=invisible]
+    rank3 [style=invisible]
+    rank1 -- rank2 [color=white]
+    rank2 -- rank3 [color=white]
+
+
+    mf_CmprNorm_uw [label="Target MAF\nmf_CmprNorm_uw\n(kg/h)",color=green]
+    BMWtchbas_p_BefCmpr_uw [label="Pressure before compressor\nBMWtchbas_p_BefCmpr_uw\n(hPa)",color=green]
+    BMWtchtbc_t_BefCmpr_sw [label="Temp before compressor\nBMWtchtbc_t_BefCmpr_sw\n(°C)",color=green]
+
+    BMWtchsp_rat_p_CmprPmp_T [label="Upper limit for pressure ratio setpoint\nBMWtchsp_rat_p_CmprPmp_T",color=orange,style=filled]
+    BMWtchsp_rat_p_CmprMax_M [label="Temperature dependent pressure ratio limit\nBMWtchsp_rat_p_CmprMax_M",color=orange,style=filled]
+
+    min1 [label="min"]
+    min2 [label="min"]
+    mul1 [label="×"]
+
+    BMWtchsp_p_ReqMax_C [label="Boost limit\nBMWtchsp_p_ReqMax_C\n(hPa)",color=orange,style=filled]
+
+    Pld_soll [label="Unlimited boost pressure target\nPld_soll\n(hPa)",color=green]
+
+    BMWtchsp_p_Req_uw [label="Target boost pressure\nBMWtchsp_p_Req_uw\n(hPa)",color=red]
+
+
+    mf_CmprNorm_uw -- BMWtchsp_rat_p_CmprPmp_T -- min1
+    mf_CmprNorm_uw -- BMWtchsp_rat_p_CmprMax_M -- min1
+    BMWtchtbc_t_BefCmpr_sw -- BMWtchsp_rat_p_CmprMax_M
+
+    min1 -- mul1
+
+    BMWtchbas_p_BefCmpr_uw -- mul1
+
+    mul1 -- min2
+    BMWtchsp_p_ReqMax_C -- min2
+    Pld_soll -- min2
+
+    min2 -- BMWtchsp_p_Req_uw
+
+}

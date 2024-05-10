@@ -7,13 +7,30 @@ import org.scalatest.matchers.should.Matchers.*
 class A2LWrapperTest extends AnyFlatSpec {
 
   behavior of "A2LWrapper"
-  it should "Get functions for a characteristic" ignore withA2L { a2l =>
+
+  it should "Get functions for a characteristic" in withA2L { a2l =>
     a2l.characteristicUsage("KL_AUSY_TURB") shouldBe Set("BMW_MOD_AusyTurb_Seg")
+    a2l.characteristicUsage("KF_AUSY_TURB") shouldBe Set("BMW_MOD_AusyTurb_Seg", "BMW_MOD_TchCtr_Pwr2Pos_10ms")
     a2l.characteristicUsage("BMWtchsp_p_DifIco_T") shouldBe Set("BMW_MOD_TchSp_P_10ms")
   }
 
-  it should "get functions for tch maps" ignore withA2L { a2l =>
-    println(tchCharacteristics.flatMap(c => a2l.characteristicUsage(c)).distinct.mkString("\n"))
+  it should "get functions for tch maps" in withA2L { a2l =>
+    val tchMaps = a2l.characteristics.filter((name, _) => name.startsWith("BMWtch"))
+
+    val fns = tchMaps.flatMap((n, c) => a2l.characteristicUsage(n)).toSeq.distinct.sorted
+
+    val cats =
+      fns.zip((0x48 to 0x48 + 36)).map((s, i) => s"""<CATEGORY index="0x${i.toHexString.toUpperCase}" name="$s" />""")
+    println(cats.mkString("\n"))
+  }
+
+  it should "find all tch maps" in withA2L { a2l =>
+    println(a2l.characteristics.filter((name, _) => name.startsWith("BMWtch")).keySet.toList.sorted.mkString(",\n"))
+//    a2l.characteristics.filter((name, _) => name.startsWith("BMWtch")).keySet shouldBe tchCharacteristics.toSet
+  }
+
+  it should "generate indexes" in {
+    println((0x48 to 0x48 + 36).map(_.toHexString.toUpperCase).mkString("\n"))
   }
 }
 
@@ -162,8 +179,10 @@ object A2LWrapperTest {
     "BMWtchdiag_ti_DlyDiagCmpl_C"
   )
 
+  val a2lUrl          = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
+  lazy val a2lWrapper = A2LWrapper(a2lUrl)
+
   def withA2L(test: A2LWrapper => Any): Unit = {
-    val a2lUrl = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
-    test(A2LWrapper(a2lUrl))
+    test(a2lWrapper)
   }
 }

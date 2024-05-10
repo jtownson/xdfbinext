@@ -8,6 +8,49 @@ import scala.io.Source
 import scala.util.Using
 
 object MapCompare {
+
+  def table2Str(bin: XDFBinAdapter, tableName: String): String = {
+    val xdf              = bin.xdfModel
+    val table            = xdf.table(tableName)
+    val cats             = xdf.tablesByName(tableName).categoryMems.map(_.category.name)
+    val o: StringBuilder = new StringBuilder
+    xdf.table(tableName) match {
+      case t: XdfTable =>
+        o.append(s"\n=== $tableName ===\n")
+        o.append(s"\n'''Brief description''': ${t.description}\n")
+        o.append(s"\n'''Dimension''': constant\n")
+        o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+        o.append(s"\n'''Units''': ${t.zUnits}\n")
+        o.append('\n')
+        o.append("\n'''Data''':\n\n")
+        o.append(bin.tableReadStr(tableName))
+
+      case t: XdfTable1D =>
+        o.append(s"\n=== $tableName ===\n")
+        o.append(s"\n'''Brief Description''': ${t.table.description}\n")
+        o.append(s"\n'''Dimension''': 1D, vector\n")
+        o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+        o.append(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
+        o.append(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
+        o.append('\n')
+        o.append("\n'''Data''':\n\n")
+        o.append(bin.tableReadStr(tableName))
+
+      case t: XdfTable2D =>
+        o.append(s"\n=== $tableName ===\n")
+        o.append(s"\n'''Brief description''': ${t.table.description}\n")
+        o.append(s"\n'''Dimension''': 2D, table\n")
+        o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
+        o.append(s"\n'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")
+        o.append(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
+            .fold("<labels>")(_.title)}")
+        o.append('\n')
+        o.append("\n'''Data''':\n\n")
+        o.append(bin.tableReadStr(tableName))
+    }
+    o.toString
+  }
+
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CommandLine()) match {
       case Some(config) =>

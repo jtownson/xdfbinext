@@ -2,6 +2,19 @@ package net.jtownson.xdfbinext
 
 object RatFunFormula {
 
+  case class RatFun(a: BigDecimal, b: BigDecimal, c: BigDecimal, d: BigDecimal, e: BigDecimal, f: BigDecimal) {
+    def apply(x: BigDecimal): BigDecimal = {
+      if (a == 0 && d == 0)
+        applyFormulaInvLinear(x)
+      else
+        ???
+    }
+
+    def applyFormulaInvLinear(x: BigDecimal): BigDecimal = {
+      (c - f * x) / (e * x - b)
+    }
+  }
+
   def toFormulaInv(
       a: BigDecimal,
       b: BigDecimal,

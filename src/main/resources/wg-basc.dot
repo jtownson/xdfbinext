@@ -1,27 +1,17 @@
 graph "wgbasc" {
     graph ["rankdir" = "LR"]
 
-    BMWtchctr_pwr_Trb_uw [label="Required turbine power\n(kW)",color="orange"]
-    Pumg [label="Ambient pressure\n(hPa)",color="green"]
-    F_msturb_kor_inv [label="Turbine mass flow correction factor\n(unitless)",color="green"]
-    Nkw [label="RPM",color="green"]
-    Tabg_mw [label="Mean exhaust gas temperature average\n(°C)",color="green"]
-    Rf [label="Load required\n(%)",color="green"]
-    BMWtchsp_p_ReqDyn_sw [label="Boost pressure setpoint\n(hPa)",color="green"]
-    BMWtchbas_b_FlGc_bo [label="Full load gear change\n(y/n)",color="green"]
-    BMWtchctr_pct_WgRaw_uw [label="Wastegate position\n(%)",color="green"]
-    BMWtchsp_mf_Ex_uw [label="Target exhaust manifold mass flow\n(kg/h)",color="green"]
-    BMWtchctr_rat_p_Trb_uw [label="Pressure ratio at turbine\n(unitless)",color="green"]
-    BMWtchco_b_ClcCtlr_bo [label="Enable WG PID controller\n(y/n)",color="green"]
+    BMWtchctr_mf_Trb_uw [label="Turbine massflow\nBMWtchctr_mf_Trb_uw\n(kg/h)",color=green]
+    BMWtchsp_mf_Ex_uw [label="Exhaust manifold mass flow\nBMWtchsp_mf_Ex_uw\n(kg/h)",color="green"]
+    div [label="/"]
 
-    "Turbine flow fraction" [label="Turbine mass flow\n(unitless)","color"="green"]
-    "Total exhaust mass flow" [label="Total exhaust mass flow\n(g/s)","color"="green"]
+    BMWtchctr_pct_WgBasc_M [label="Wastegate position map\n(BMWtchctr_pct_WgBasc_M)",color=orange,style=filled]
 
-    "Wastegate position" [label="Wastegate position map\n(BMWtchctr_pct_WgBasc_M)",color="blue"]
+    BMWtchctr_pct_WgBasc_uw [label="Base wastegate position\n(BMWtchctr_pct_WgBasc_uw)\n(%)",color=red]
 
-    "Feed-forward wastegate position" [label="Feed-forward wastegate position\n(%)",color="red"]
-
-    "Turbine flow fraction" -- "Wastegate position"
-    "Total exhaust mass flow" -- "Wastegate position"
-    "Wastegate position" -- "Feed-forward wastegate position"
+    BMWtchctr_mf_Trb_uw -- div
+    BMWtchsp_mf_Ex_uw -- div
+    div -- BMWtchctr_pct_WgBasc_M
+    BMWtchsp_mf_Ex_uw -- BMWtchctr_pct_WgBasc_M
+    BMWtchctr_pct_WgBasc_M -- BMWtchctr_pct_WgBasc_uw
 }

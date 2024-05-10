@@ -4,19 +4,21 @@ import net.alenzen.a2l.enums.{ConversionType, DataType}
 import net.alenzen.a2l.{Unit as A2lUnit, *}
 import net.jtownson.xdfbinext.A2L2XDF.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getObjectDescription}
+import net.jtownson.xdfbinext.XdfSchema.{CategoryMem, XdfModel}
 
 import java.net.URL
 import scala.jdk.CollectionConverters.*
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 
-class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
+class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
 
   private val a2l = A2LWrapper(a2lUrl)
 
   private val characteristics = a2l.characteristics
   private val compuMethods    = a2l.compuMethods
   private val axisPts         = a2l.axisPts
+  private val catMap          = xdfModel.xdfHeader.categories.map(cat => cat.name -> cat).toMap
 
   private def offsetAddress(a2lAddress: Long): String = {
     s"0x${(a2lAddress - offset).toHexString}"
@@ -75,19 +77,32 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
 
   }
 
+  private def getCategoryMems(c: Characteristic): List[CategoryMem] = {
+    val refFns = a2l.characteristicUsage(c.getName)
+
+    val cats =
+      if (c.getName == "KL_AUSY_TURB")
+        List(catMap("BMW_MOD_TchCtr_Pwr2Pos_10ms"))
+      else
+        refFns.flatMap(catMap.get).filter(_.name != "BMW_MOD_AusyTurb_Seg").toList
+
+    cats.indices.map(i => CategoryMem(i, cats(i))).toList
+  }
+
   def value2Xdf(c: Characteristic): String = {
-    val title       = c.getName
-    val description = getObjectDescription(c.getName, c.getLongIdentifier)
-    val compuMethod = compuMethods(c.getConversion)
-    val units       = compuMethod.getUnit
-    val decimalPl   = format2DecimalPl(compuMethod.getFormat)
-    val outputType  = "1"
-    val min         = BigDecimal(c.getLowerLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val max         = BigDecimal(c.getUpperLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val eq          = getFormula(c)
-    val typeFlag    = getTypeFlag(c)
-    val address     = offsetAddress(c.getAddress)
-    val elSizeBits  = getSizeBits(c)
+    val title        = c.getName
+    val description  = getObjectDescription(c.getName, c.getLongIdentifier)
+    val compuMethod  = compuMethods(c.getConversion)
+    val units        = compuMethod.getUnit
+    val decimalPl    = format2DecimalPl(compuMethod.getFormat)
+    val outputType   = "1"
+    val min          = BigDecimal(c.getLowerLimit).setScale(decimalPl.toInt, HALF_UP).toString
+    val max          = BigDecimal(c.getUpperLimit).setScale(decimalPl.toInt, HALF_UP).toString
+    val eq           = getFormula(c)
+    val typeFlag     = getTypeFlag(c)
+    val address      = offsetAddress(c.getAddress)
+    val elSizeBits   = getSizeBits(c)
+    val categoryMems = getCategoryMems(c)
 
     xdfValueTemplate(
       title,
@@ -100,23 +115,25 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
       eq,
       typeFlag,
       address,
-      elSizeBits
+      elSizeBits,
+      categoryMems
     )
   }
 
   def curve2Xdf(c: Characteristic): String = {
-    val title       = c.getName
-    val description = getObjectDescription(c.getName, c.getLongIdentifier)
-    val compuMethod = compuMethods(c.getConversion)
-    val units       = compuMethod.getUnit
-    val decimalPl   = format2DecimalPl(compuMethod.getFormat)
-    val outputType  = "1"
-    val min         = BigDecimal(c.getLowerLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val max         = BigDecimal(c.getUpperLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val eq          = getFormula(c)
-    val typeFlag    = getTypeFlag(c)
-    val address     = offsetAddress(c.getAddress)
-    val elSizeBits  = getSizeBits(c)
+    val title        = c.getName
+    val description  = getObjectDescription(c.getName, c.getLongIdentifier)
+    val compuMethod  = compuMethods(c.getConversion)
+    val units        = compuMethod.getUnit
+    val decimalPl    = format2DecimalPl(compuMethod.getFormat)
+    val outputType   = "1"
+    val min          = BigDecimal(c.getLowerLimit).setScale(decimalPl, HALF_UP).toString
+    val max          = BigDecimal(c.getUpperLimit).setScale(decimalPl, HALF_UP).toString
+    val eq           = getFormula(c)
+    val typeFlag     = getTypeFlag(c)
+    val address      = offsetAddress(c.getAddress)
+    val elSizeBits   = getSizeBits(c)
+    val categoryMems = getCategoryMems(c)
 
     val xAxisDescr  = c.getAxisDescriptions.asScala(0)
     val xAxisRef    = xAxisDescr.getAxisPoints_ref
@@ -155,12 +172,13 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
         xDp,
         xColCount,
         xUnits,
-        xEq
+        xEq,
+        categoryMems
       )
     )
 
     sb.append(
-      xdfAxisTemplate(xTitle, xDesc, xAddr, xColCount, xUnits, xDp, xMin, xMax, xEq, xTypeFlag, xElSzBits)
+      xdfAxisTemplate(xTitle, xDesc, xAddr, xColCount, xUnits, xDp, xMin, xMax, xEq, xTypeFlag, xElSzBits, categoryMems)
     )
 
     sb.toString
@@ -182,18 +200,19 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
   }
 
   private def map2Xdf(c: Characteristic): String = {
-    val title       = c.getName
-    val description = getObjectDescription(c.getName, c.getLongIdentifier)
-    val compuMethod = compuMethods(c.getConversion)
-    val units       = compuMethod.getUnit
-    val decimalPl   = format2DecimalPl(compuMethod.getFormat)
-    val outputType  = "1"
-    val min         = BigDecimal(c.getLowerLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val max         = BigDecimal(c.getUpperLimit).setScale(decimalPl.toInt, HALF_UP).toString
-    val typeFlag    = getTypeFlag(c)
-    val address     = offsetAddress(c.getAddress)
-    val elSizeBits  = getSizeBits(c)
-    val eq          = getFormula(c)
+    val title        = c.getName
+    val description  = getObjectDescription(c.getName, c.getLongIdentifier)
+    val compuMethod  = compuMethods(c.getConversion)
+    val units        = compuMethod.getUnit
+    val decimalPl    = format2DecimalPl(compuMethod.getFormat)
+    val outputType   = "1"
+    val min          = BigDecimal(c.getLowerLimit).setScale(decimalPl.toInt, HALF_UP).toString
+    val max          = BigDecimal(c.getUpperLimit).setScale(decimalPl.toInt, HALF_UP).toString
+    val typeFlag     = getTypeFlag(c)
+    val address      = offsetAddress(c.getAddress)
+    val elSizeBits   = getSizeBits(c)
+    val eq           = getFormula(c)
+    val categoryMems = getCategoryMems(c)
 
     val xAxisDescr  = c.getAxisDescriptions.asScala(0)
     val xAxisRef    = xAxisDescr.getAxisPoints_ref
@@ -255,16 +274,17 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
         yDp,
         yColCount,
         yUnits,
-        yEq
+        yEq,
+        categoryMems
       )
     )
 
     sb.append(
-      xdfAxisTemplate(xTitle, xDesc, xAddr, xColCount, xUnits, xDp, xMin, xMax, xEq, xTypeFlag, xElSzBits)
+      xdfAxisTemplate(xTitle, xDesc, xAddr, xColCount, xUnits, xDp, xMin, xMax, xEq, xTypeFlag, xElSzBits, categoryMems)
     )
 
     sb.append(
-      xdfAxisTemplate(yTitle, yDesc, yAddr, yColCount, yUnits, yDp, yMin, yMax, yEq, yTypeFlag, yElSzBits)
+      xdfAxisTemplate(yTitle, yDesc, yAddr, yColCount, yUnits, yDp, yMin, yMax, yEq, yTypeFlag, yElSzBits, categoryMems)
     )
 
     sb.toString
@@ -274,9 +294,6 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000) {
 
 object A2L2XDF {
 
-//  private val catMap: Map[String, String] = Map(
-//    "
-//  )
   // format: off
   private def xdfValueTemplate(
                         title: String,
@@ -289,13 +306,13 @@ object A2L2XDF {
                         equation: String,
                         typeFlag: Int,
                         address: String,
-                        elSzBits: Int
+                        elSzBits: Int,
+                        categoryMems: List[CategoryMem]
                       ): String = {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
-       |    <CATEGORYMEM index="0" category="1" />
-       |    <CATEGORYMEM index="1" category="3" />
+       |    ${categoryMems.map(catMem)}
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>-</units>
@@ -356,13 +373,13 @@ object A2L2XDF {
                         xDp: Int,
                         xColCount: String,
                         xUnits: String,
-                        xEquation: String
+                        xEquation: String,
+                        categoryMems: List[CategoryMem]
                       ): String = {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
-       |    <CATEGORYMEM index="0" category="1" />
-       |    <CATEGORYMEM index="1" category="3" />
+       |    ${categoryMems.map(catMem).mkString}
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA ${typeFlagAll(xTypeFlag)} mmedaddress="$xAddr" mmedelementsizebits="$xElSzBits" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$xUnits</units>
@@ -429,13 +446,13 @@ object A2L2XDF {
                       yDp: Int,
                       yColCount: String,
                       yUnits: String,
-                      yEquation: String
+                      yEquation: String,
+                      categoryMems: List[CategoryMem]
                     ): String = {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
-       |    <CATEGORYMEM index="0" category="1" />
-       |    <CATEGORYMEM index="1" category="3" />
+       |    ${categoryMems.map(catMem).mkString}
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA ${typeFlagAll(xTypeFlag)} mmedaddress="$xAddr" mmedelementsizebits="$xElSzBits" mmedcolcount="$xColCount" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>$xUnits</units>
@@ -479,6 +496,10 @@ object A2L2XDF {
 
   private def label(i: Int): String = s"""<LABEL index="$i" value="0.00" />"""
 
+
+  private def catMem(cm: CategoryMem): String = 
+    s"""<CATEGORYMEM index="${cm.index}" category="${Integer.parseInt(cm.category.index.drop(2), 16) + 1}" />"""
+    
   private def typeFlagAll(typeFlag: Int): String = {
     if (typeFlag == XdfSchema.signedFlag)
       """mmedtypeflags="0x01""""
@@ -500,21 +521,20 @@ object A2L2XDF {
                        max: String,
                        eq: String,
                        typeFlag: Int,
-                       elSizeBits: Int
+                       elSizeBits: Int,
+                       categoryMems: List[CategoryMem]
                      ): String = {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
-       |    <CATEGORYMEM index="0" category="1" />
-       |    <CATEGORYMEM index="1" category="3" />
-       |    <CATEGORYMEM index="2" category="4" />
+       |    ${categoryMems.map(catMem).mkString}
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
        |      <indexcount>$count</indexcount>
        |      <datatype>0</datatype>
        |      <unittype>0</unittype>
        |      <DALINK index="0" />
-       |      ${(0 until count.toInt).map(label).mkString(newline)}
+       |      ${(0 until count.toInt).map(label).mkString}
        |      <MATH equation="X">
        |        <VAR id="X" />
        |      </MATH>

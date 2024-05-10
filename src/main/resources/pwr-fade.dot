@@ -1,0 +1,19 @@
+graph "pwr_fade" {
+    graph ["rankdir" = "LR"]
+
+    pwr_Pctl_uw [label="Turbine power from compressor map\n(kW)","color"="green"]
+    mf_CmprNorm_uw [label="Normalized MAF\n(kg/h)","color"=green]
+    BMWtchctr_fac_pwr_CompLimPctl_T [label="Compressor map multiplier\n(unitless)",style=filled,color="orange"]
+    mul1 [label="x"]
+    pwr_Ctr_uw1 [label="Turbine power from PID controller\n(kW)",color="green"]
+    pwr_Ctr_uw2 [label="Turbine power from PID controller\n(kW)",color="green"]
+    min [label="min"]
+
+
+    BMWtchdiag_b_LimPctl_bo [label="Limp mode?\n(y/n)","color"=green]
+    BMWtchsp_p_ReqDyn_sw [label="Required boost pressure\n(hPa)",color=green]
+    BMWtchctr_p_ReqDynLimPctl_C [label="Unused boost limit"]
+
+    BMWtchsp_rat_p_CmprLim_uw [label="Target pressure ratio\n(unitless)",color=green]
+    BMWtchctr_rat_p_ComprLimPctl_T [label="Pressure ratio limit\n(unitless)",color=orange,syle=filled]
+}

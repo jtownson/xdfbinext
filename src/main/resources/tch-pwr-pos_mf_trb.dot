@@ -1,0 +1,45 @@
+graph "pwr_fade" {
+    graph ["rankdir" = "LR"]
+
+    rank1 [style=invisible]
+    rank2 [style=invisible]
+    rank3 [style=invisible]
+    rank1 -- rank2 [color=white]
+    rank2 -- rank3 [color=white]
+
+    BMWtchctr_pwr_Trb_uw [label="Required turbine power\n(kW)","color"="green"]
+    BMWtchctr_rat_p_Trb_uw [label="Required turbine pressure ratio\n(unitless)","color"=green]
+
+    Tabg_in_kelvin [label="Exhaust gas temp in Kelvin\n(°K)",color=green]
+
+    BMWtchctr_fac_TrbEffIvs_T [label="Turbine efficiency curve\nBMWtchctr_fac_TrbEffIvs_T\n(unitless)",color=orange,style=filled]
+    BMWtchctr_fac_TrbExp_T [label="Specific temp change\nfrom turbine expansion\nBMWtchctr_fac_TrbExp_T\n(unitless)",color=orange,style=filled]
+
+    BMWtchctr_mf_Trb_uw [label="Target turbine mass flow\n(kg/h)",color=red]
+    multiplier [label="3600",color=green]
+
+    mul [label="×"]
+    div [label="/"]
+
+    multiplier -- mul
+    BMWtchctr_rat_p_Trb_uw -- BMWtchctr_fac_TrbExp_T -- mul
+    BMWtchctr_rat_p_Trb_uw -- BMWtchctr_fac_TrbEffIvs_T -- mul
+    BMWtchctr_pwr_Trb_uw -- mul
+    mul -- div
+    Tabg_in_kelvin -- div
+
+    div -- BMWtchctr_mf_Trb_uw
+
+
+    {
+    rank = same;
+    // Here you enforce the desired order with "invisible" edges and arrowheads
+    rank2 -- multiplier -- BMWtchctr_pwr_Trb_uw -- BMWtchctr_fac_TrbExp_T -- BMWtchctr_fac_TrbEffIvs_T  [ style=invis ]
+    rankdir = LR;
+    }
+
+    {
+    rank = same;
+    rank3 -- mul -- Tabg_in_kelvin  [style=invis]
+    }
+}

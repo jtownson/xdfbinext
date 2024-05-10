@@ -33,11 +33,13 @@ class A2L2Dot(a2lUrl: URL) {
 
     val applicableFns = functions.filter { (name, fn) =>
       val defCharacteristics = nn(fn.getDefCharacteristics)
+      val refCharacteristics = nn(fn.getRefCharacteristics)
       val inMeasurements     = nn(fn.getInMeasurments)
       val locMeasurements    = nn(fn.getLocMeasurments)
       val outMeasurements    = nn(fn.getOutMeasurments)
 
       defCharacteristics.exists(namePredicate) ||
+      refCharacteristics.exists(namePredicate) ||
       inMeasurements.exists(namePredicate) ||
       locMeasurements.exists(namePredicate) ||
       outMeasurements.exists(namePredicate)
@@ -61,6 +63,7 @@ class A2L2Dot(a2lUrl: URL) {
           val gn = mutNode(n.getName).add(Style.lineWidth(4))
 
           val defCharacteristics = nfm(n.getDefCharacteristics)
+          val refCharacteristics = nfm(n.getRefCharacteristics)
           val inMeasurements     = nfm(n.getInMeasurments)
           val locMeasurements    = nfm(n.getLocMeasurments)
           val outMeasurements    = nfm(n.getOutMeasurments)
@@ -71,20 +74,26 @@ class A2L2Dot(a2lUrl: URL) {
               graph.add(node)
             }
           }
+          refCharacteristics.foreach { cn =>
+            characteristics.get(cn).foreach { c =>
+              val node = characteristicNode(c, graph).addLink(gn)
+              graph.add(node)
+            }
+          }
           inMeasurements.foreach { m =>
             val a2lM = measurements(m)
-            val node = measurementNode(a2lM).addLink(gn)
+            val node = measurementNode(a2lM, Color.GREEN).addLink(gn)
             graph.add(node)
           }
           locMeasurements.foreach { m =>
             val a2lM = measurements(m)
-            val node = measurementNode(a2lM)
+            val node = measurementNode(a2lM, Color.GREY)
             gn.addLink(node)
             graph.add(node)
           }
           outMeasurements.foreach { m =>
             val a2lM = measurements(m)
-            val node = measurementNode(a2lM)
+            val node = measurementNode(a2lM, Color.RED)
             gn.addLink(node)
             graph.add(node)
           }
@@ -115,7 +124,8 @@ class A2L2Dot(a2lUrl: URL) {
           longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
         ),
         RECTANGLE,
-        Color.BLUE
+        Style.FILLED,
+        Color.ORANGE.fill()
       )
     } else if (c.getType == CharacteristicType.CURVE) {
       gn.add(
@@ -125,7 +135,8 @@ class A2L2Dot(a2lUrl: URL) {
           longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
         ),
         RECTANGLE,
-        Color.BLUE
+        Style.FILLED,
+        Color.ORANGE.fill()
       )
     } else {
       gn.add(
@@ -135,7 +146,8 @@ class A2L2Dot(a2lUrl: URL) {
           longDescription = getObjectDescription(c.getName, c.getLongIdentifier)
         ),
         RECTANGLE,
-        Color.BLUE
+        Style.FILLED,
+        Color.ORANGE.fill()
       )
     }
 
@@ -156,7 +168,7 @@ class A2L2Dot(a2lUrl: URL) {
     gn
   }
 
-  private def measurementNode(m: Measurement) = {
+  private def measurementNode(m: Measurement, color: Color) = {
     val gn    = mutNode(m.getName)
     val units = compuMethods.get(m.getConversion).map(_.getUnit).getOrElse("-")
 
@@ -166,7 +178,7 @@ class A2L2Dot(a2lUrl: URL) {
     val longDescription = BmwTchDescriptions.table.getOrElse(m.getName, "")
     gn.add(
       mapLabel(name = m.getName, units = units, longDescription = longDescription),
-      Color.RED
+      color
     )
     gn
   }

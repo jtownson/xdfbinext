@@ -10,7 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 
-class XDFBinAdapter(val bin: File, xdfModel: XdfModel) {
+class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
 
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 

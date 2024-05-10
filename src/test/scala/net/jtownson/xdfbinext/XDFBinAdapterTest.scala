@@ -5,12 +5,11 @@ import org.scalatest.matchers.should.Matchers.*
 
 import java.io.File
 import scala.io.Source
+import scala.util.Using
 
 class XDFBinAdapterTest extends AnyFlatSpec {
 
   private val xdfModel = XdfParser.parse(Source.fromResource("00003076501103.xdf").mkString)
-
-  private val xdfModelTrans = XdfParser.parse(Source.fromResource("00003076501103-jmt.xdf").mkString)
 
   private val mapSwitchBaseBin = new File(
     getClass.getClassLoader.getResource("00003076501103_MapSwitchBase.bin").toURI
@@ -25,6 +24,26 @@ class XDFBinAdapterTest extends AnyFlatSpec {
   )
 
   private val binAdapter = new XDFBinAdapter(mapSwitchBaseBin, xdfModel)
+
+  private def withBinAdapter(xdfFile: File, binFile: File)(test: XDFBinAdapter => Any): Any = {
+    Using.resource(Source.fromFile(xdfFile)) { xdfSource =>
+      val xdf        = XdfParser.parse(xdfSource.mkString)
+      val binAdapter = new XDFBinAdapter(binFile, xdf)
+      test(binAdapter)
+    }
+  }
+
+  private val modifiedXDFFile = new File(
+    "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\BMW-XDFs\\B58gen1\\00003076501103.xdf"
+  )
+
+  it should "output a couple of tables" in withBinAdapter(modifiedXDFFile, originalBin) { binAdapter =>
+//    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_mf_FilCmprNorm_T"))
+//    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPRatCmpr_T"))
+//    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPDyn_C"))
+//    println(MapCompare.table2Str(binAdapter, "Maximaler Sollladedruck wegen Diagnose Ladedrucksensor"))
+    println(MapCompare.table2Str(binAdapter, "BMWtchsp_rat_p_CmprPmp_T"))
+  }
 
   "BinAdapter" should "read a scalar short" in {
     val expected = Array(240)
