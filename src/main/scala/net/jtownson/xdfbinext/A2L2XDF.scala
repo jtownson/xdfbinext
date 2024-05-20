@@ -5,6 +5,7 @@ import net.alenzen.a2l.{Unit as A2lUnit, *}
 import net.jtownson.xdfbinext.A2L2XDF.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getObjectDescription}
 import net.jtownson.xdfbinext.XdfSchema.{CategoryMem, XdfModel}
+import net.jtownson.xdfbinext.a2l.RatFunFormula
 
 import java.net.URL
 import scala.jdk.CollectionConverters.*

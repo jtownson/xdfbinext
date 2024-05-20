@@ -1,6 +1,7 @@
-package net.jtownson.xdfbinext
+package net.jtownson.xdfbinext.a2l
 
-import net.jtownson.xdfbinext.RatFunFormula.RatFun
+import net.jtownson.xdfbinext.a2l.RatFunFormula
+import net.jtownson.xdfbinext.a2l.RatFunFormula.RatFun
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -14,5 +15,10 @@ class RatFunFormulaTest extends AnyFlatSpec {
 
   it should "evaluate a formulate" in {
     RatFun(0, 65536, 0, 0, 0, 1)(1) shouldBe BigDecimal(1) / BigDecimal(65536)
+  }
+
+  it should "have an identity" in {
+    RatFun.identity(0) shouldBe 0
+    RatFun.identity(1) shouldBe 1
   }
 }

@@ -1,7 +1,5 @@
 package net.jtownson.xdfbinext
 
-import org.apache.commons.lang3.StringUtils
-
 extension (s: String) {
   def stripTrailing(): String = {
     s.replaceFirst("\\s++$", "")

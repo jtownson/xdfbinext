@@ -1,0 +1,44 @@
+graph "diag_pressure" {
+    graph ["rankdir" = "LR"]
+
+    BMWtchdiag_pct_WgPHi_M [label="PID correction floor\nBMWtchdiag_pct_WgPHi_M\n(%)",color=orange,style=filled]
+    BMWtchdiag_ti_DlyHiLo_T [label="Error peristence time\nBMWtchdiag_ti_DlyHiLo_T\n(s)\n(=0.2s)",color=orange,style=filled]
+
+    BMWtchctr_pct_WgBefLim_uw [label="(Almost) final WG position\nBMWtchctr_pct_WgBefLim_uw\n(%)",color=green]
+    BMWtchctr_pct_WgCrtd3_uw[label="Feedforward WG position\nBMWtchctr_pct_WgCrtd3_uw\n(%)",color=green]
+
+    BMWtchbas_p_Dif_sw [label="Boost error (target minus actual)\nBMWtchbas_p_Dif_sw\nhPa",color=green]
+
+    Pumg [label="ambient pressure\npumg\n(hPa)"]
+
+    BMWtchctr_pwr_Trb_uw [label="Turbine power from controller\nBMWtchctr_pwr_Trb_uw\n(kW)",color=green]
+    BMWtchctr_pwr_Pctl_uw [label="Turbine power from compressor map\nBMWtchctr_pwr_Pctl_uw\n(kW)",color=green]
+
+    BMWtchdiag_b_PHi_bo [label="Pressure error\nBMWtchdiag_b_PHi_bo\n(y/n)",color=red]
+
+    lt1 [label="<"]
+    minus [label="+\n-"]
+    div [label="/"]
+    long [label="longer than?"]
+
+    BMWtchctr_pct_WgBefLim_uw -- minus
+    BMWtchctr_pct_WgCrtd3_uw -- minus
+
+    minus -- lt1
+
+    BMWtchbas_p_Dif_sw -- BMWtchdiag_pct_WgPHi_M
+
+    BMWtchctr_pwr_Trb_uw -- div
+    BMWtchctr_pwr_Pctl_uw -- div
+
+    div -- BMWtchdiag_pct_WgPHi_M
+
+    BMWtchdiag_pct_WgPHi_M -- lt1
+
+    Pumg -- BMWtchdiag_ti_DlyHiLo_T
+    BMWtchdiag_ti_DlyHiLo_T -- long
+
+    lt1 -- long
+    long -- BMWtchdiag_b_PHi_bo
+
+}

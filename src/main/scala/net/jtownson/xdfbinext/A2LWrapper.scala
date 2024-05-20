@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.{CharacteristicType, DataType}
+import net.alenzen.a2l.enums.{CharacteristicType, DataType, Deposit}
 import net.alenzen.a2l.{Asap2File, Unit as A2lUnit, *}
 import net.jtownson.xdfbinext.A2LWrapper.getA2L
 
@@ -18,6 +18,8 @@ case class A2LWrapper(a2lUrl: URL) {
   val compuMethods: Map[String, CompuMethod] = collectWithPf[CompuMethod](_.getName)
 
   val compuVTabs: Map[String, CompuVTab] = collectWithPf[CompuVTab](_.getName)
+
+  val compuTabs: Map[String, CompuTab] = collectWithPf[CompuTab](_.getName)
 
   val characteristics: Map[String, Characteristic] = collectWithPf[Characteristic](_.getName)
 
@@ -52,21 +54,29 @@ case class A2LWrapper(a2lUrl: URL) {
     getType(layout)
   }
 
-  def getFormat(c: Characteristic): (Int, Int) = {
-    getFormat(c.getFormat)
+  def getXAxisPts(c: Characteristic): AxisPts = {
+    axisPts(c.getAxisDescriptions.get(0).getAxisPoints_ref)
   }
 
-  def getFormat(a: AxisPts): (Int, Int) = {
-    getFormat(a.getFormat)
+  def getYAxisPts(c: Characteristic): AxisPts = {
+    axisPts(c.getAxisDescriptions.get(1).getAxisPoints_ref)
+  }
+
+  def getRecordLayout(c: Characteristic): RecordLayout = {
+    recordLayouts(c.getDeposit)
+  }
+
+  def getRecordLayout(a: AxisPts): RecordLayout = {
+    recordLayouts(a.getDeposit)
   }
 
   def getCellCount(c: Characteristic): Int = {
     if (c.getType == CharacteristicType.VALUE) {
       1
     } else if (c.getType == CharacteristicType.CURVE) {
-      getXAxis(c).getMaxAxisPoints.toInt
+      getXAxisCount(c)
     } else if (c.getType == CharacteristicType.MAP) {
-      getXAxis(c).getMaxAxisPoints.toInt * getYAxis(c).getMaxAxisPoints.toInt
+      getXAxisCount(c) * getYAxisCount(c)
     } else if (c.getType == CharacteristicType.VAL_BLK) {
       c.getNumber.toInt
     } else {
@@ -78,29 +88,26 @@ case class A2LWrapper(a2lUrl: URL) {
     a.getMaxAxisPoints.toInt
   }
 
-  def getXAxis(c: Characteristic): AxisPts = {
-    // ABSOLUTE storage TODO
-    getAxis(c, 0)
+  def getXAxisCount(c: Characteristic): Int = {
+    getAxisCount(c, 0)
   }
 
-  def getYAxis(c: Characteristic): AxisPts = {
-    getAxis(c, 1)
+  def getYAxisCount(c: Characteristic): Int = {
+    getAxisCount(c, 1)
   }
 
-  private def getAxis(c: Characteristic, i: Int): AxisPts = {
+  private def getAxisCount(c: Characteristic, i: Int): Int = {
     val xAxisDescr = c.getAxisDescriptions.asScala(i)
-    val xAxisRef   = xAxisDescr.getAxisPoints_ref
-    if (!axisPts.contains(xAxisRef))
-      println("missing")
-    axisPts(xAxisRef)
-  }
 
-  private val formatExpr = """%(\d+)\.(\d+)""".r
-
-  private def getFormat(format: String): (Int, Int) = {
-    format match
-      case formatExpr(len, dp) =>
-        (len.toInt, dp.toInt)
+    Option(xAxisDescr.getAxisPoints_ref) match
+      case Some(xAxisRef) =>
+        require(
+          xAxisDescr.getMaxAxisPoints == axisPts(xAxisRef).getMaxAxisPoints,
+          s"Mismatched axis points count for ${c.getName}"
+        )
+        axisPts(xAxisRef).getMaxAxisPoints.toInt
+      case None =>
+        xAxisDescr.getMaxAxisPoints.toInt
   }
 
   private def collectWithPf[T: ClassTag](id: T => String): Map[String, T] =
@@ -113,6 +120,39 @@ case class A2LWrapper(a2lUrl: URL) {
 }
 
 object A2LWrapper {
+
+  def getDecimalPlaces(c: Characteristic): Int = {
+    getFormat(c.getFormat)._2
+  }
+
+  def getDecimalPlaces(axisDescr: AxisDescr): Int = {
+    getFormat(axisDescr.getFormat)._2
+  }
+
+  def getDecimalPlaces(a: AxisPts): Int = {
+    getFormat(a.getFormat)._2
+  }
+
+  private def getFormat(c: Characteristic): (Int, Int) = {
+    getFormat(c.getFormat)
+  }
+
+  private def getFormat(axisDescr: AxisDescr): (Int, Int) = {
+    getFormat(axisDescr.getFormat)
+  }
+
+  private def getFormat(a: AxisPts): (Int, Int) = {
+    getFormat(a.getFormat)
+  }
+
+  private val formatExpr = """%(\d+)\.(\d+)""".r
+
+  private def getFormat(format: String): (Int, Int) = {
+    format match
+      case formatExpr(len, dp) =>
+        (len.toInt, dp.toInt)
+  }
+
   private def getA2L(a2lUrl: URL): Asap2File = {
     Using.resource(a2lUrl.openStream()) { i =>
       val parser: Asap2Parser = new Asap2Parser(i)

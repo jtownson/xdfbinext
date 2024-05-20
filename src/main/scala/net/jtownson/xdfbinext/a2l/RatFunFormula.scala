@@ -1,4 +1,4 @@
-package net.jtownson.xdfbinext
+package net.jtownson.xdfbinext.a2l
 
 object RatFunFormula {
 
@@ -13,6 +13,10 @@ object RatFunFormula {
     def applyFormulaInvLinear(x: BigDecimal): BigDecimal = {
       (c - f * x) / (e * x - b)
     }
+  }
+
+  object RatFun {
+    val identity: RatFun = RatFun(0, 1, 0, 0, 0, 1)
   }
 
   def toFormulaInv(

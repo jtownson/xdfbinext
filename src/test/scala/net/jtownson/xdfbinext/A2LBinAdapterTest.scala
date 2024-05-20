@@ -1,7 +1,10 @@
 package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
+import net.jtownson.xdfbinext.a2l.StringValBlk
 import net.jtownson.xdfbinext.A2LBinAdapterTest.{a2LBinAdapter, a2LWrapper}
+import net.jtownson.xdfbinext.a2l.CurveType.{NumberNumberTable1D, NumberStringTable1D, StringNumberTable1D}
+import net.jtownson.xdfbinext.a2l.MapType.{NumberNumberNumberTable2D, NumberNumberStringTable2D}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -19,56 +22,134 @@ class A2LBinAdapterTest extends AnyFlatSpec {
   }
 
   it should "read a SWORD value" in {
-    a2LBinAdapter.readCharacteristic("BMWtchad_fac_IpOfs_C").head shouldBe BigDecimal("0.00500")
+    a2LBinAdapter.readCharacteristic("BMWtchad_fac_IpOfs_C") shouldBe BigDecimal("0.00500")
   }
 
   it should "read a UWORD value" in {
-    a2LBinAdapter.readCharacteristic("BMWtchctr_fac_FilLimPctl_C").head shouldBe BigDecimal("0.07001")
+    a2LBinAdapter.readCharacteristic("BMWtchctr_fac_FilLimPctl_C") shouldBe BigDecimal("0.07001")
   }
 
   it should "read a SWORD curve" in {
-    a2LBinAdapter.readCharacteristic("BMWtchbas_pct_AccrFlGcMin_T").toSeq shouldBe Seq[BigDecimal](
-      120.00,
-      120.00,
-      120.00,
-      70.00
+    val expectedValues = Array[BigDecimal](120.00, 120.00, 120.00, 70.00)
+    val expectedAxis   = Array[BigDecimal](2000, 2500, 4000, 4200)
+
+    a2LBinAdapter.readCharacteristic("BMWtchbas_pct_AccrFlGcMin_T") shouldBe NumberNumberTable1D(
+      expectedAxis,
+      expectedValues
     )
   }
 
   it should "read a UWORD curve" in {
-    a2LBinAdapter.readCharacteristic("BMWausy_p_DifCat_T").toSeq shouldBe Seq[BigDecimal](6.000, 40.000, 100.000,
-      160.000, 280.000, 450.000, 550.000, 660.000)
+    val expectedValues = Array[BigDecimal](6.000, 40.000, 100.000, 160.000, 280.000, 450.000, 550.000, 660.000)
+    val expectedAxis   = Array[BigDecimal](38.094, 120.000, 270.000, 400.000, 600.000, 900.000, 1050.000, 1200.000)
+
+    a2LBinAdapter.readCharacteristic("BMWausy_p_DifCat_T") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
   }
 
   it should "read a SWORD map" in {
-    a2LBinAdapter.readCharacteristic("BMWtchctr_t_ExGasMdl_M").toSeq should contain only BigDecimal(850)
+    val expectedX      = Array[BigDecimal](1, 1000, 2000, 3000, 4000, 5000)
+    val expectedY      = Array[BigDecimal](0.00, 10.00, 20.00, 30.00, 40.00, 50.00)
+    val expectedValues = Array.fill[BigDecimal](36)(850.0)
+
+    a2LBinAdapter
+      .readCharacteristic("BMWtchctr_t_ExGasMdl_M") shouldBe NumberNumberNumberTable2D(
+      expectedX,
+      expectedY,
+      expectedValues
+    )
   }
 
   it should "read a UWORD map" in {
-    a2LBinAdapter.readCharacteristic("BMWtchsp_rat_p_CmprMax_M").toSeq.take(16) shouldBe Seq[BigDecimal](3.000, 3.000,
-      3.000, 2.874, 2.664, 2.329, 2.150, 2.150, 3.000, 3.000, 3.000, 2.874, 2.664, 2.329, 2.150, 2.150)
-  }
-
-  it should "read an axis" in {
-    a2LBinAdapter.readAxis("BMWtchsp_rat_p_CmprMax_Ax").toSeq shouldBe Seq[BigDecimal](1050.000, 1130.000, 1200.000,
-      1300.000, 1350.000, 1400.000, 1450.000, 1525.000)
-  }
-
-  it should "read map with axes" in {
-    val m = a2LBinAdapter.readMap("BMWtchsp_rat_p_CmprMax_M")
-    m.atXY(1050, 25) shouldBe BigDecimal("3.000")
-    m.atXY(1525, 80) shouldBe BigDecimal("2.000")
+    // format: off
+    val expectedX = Array[BigDecimal](1050.000, 1130.000, 1200.000, 1300.000, 1350.000, 1400.000, 1450.000, 1525.000)
+    val expectedY = Array[BigDecimal](25.00, 30.00, 35.00, 40.00, 60.00, 80.00)
+    val expectedValues = Array[BigDecimal](
+      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
+      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
+      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
+      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
+      3.000,	3.000,	3.000,	2.874,	2.650,	2.198,	2.000,	2.000,
+      3.000,	3.000,	3.000,	2.874,	2.650,	2.184,	2.000,	2.000)
+    
+    a2LBinAdapter.readCharacteristic("BMWtchsp_rat_p_CmprMax_M") shouldBe NumberNumberNumberTable2D(expectedX, expectedY, expectedValues)
+    // format: on
   }
 
   it should "read curve with axis" in {
-    val c = a2LBinAdapter.readCurve("BMWtchctr_fac_TrbEffIvs_T")
-    c.values.toSeq shouldBe Seq[BigDecimal](1.59998, 1.62000, 1.65002, 1.71997, 1.75000, 1.79999)
-    c.axis.toSeq shouldBe Seq[BigDecimal](1.70001, 1.79999, 1.90002, 2.20001, 2.59998, 3.99994)
+    val expectedAxis   = Array[BigDecimal](1.70001, 1.79999, 1.90002, 2.20001, 2.59998, 3.99994)
+    val expectedValues = Array[BigDecimal](1.59998, 1.62000, 1.65002, 1.71997, 1.75000, 1.79999)
+    val c =
+      a2LBinAdapter.readCurve("BMWtchctr_fac_TrbEffIvs_T") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
   }
 
   it should "read a val_blk" in {
-    pending
-//    a2LBinAdapter.readCharacteristic("DINH_FId.DFC_Fan1SCB_CA").toSeq shouldBe ???
+    a2LBinAdapter.readCharacteristic("DINH_FId.DFC_Fan1SCB_CA") shouldBe StringValBlk(
+      "FID_BMW_TMK_DRLPLAUS",
+      "FID_CKKOS",
+      "FID_CMLE",
+      "FId_Fan1CircErr",
+      "FId_Fan1Off",
+      "FId_Fan1PsErr",
+      "FId_Fan1PwrStg",
+      "FId_Fan1PwrStgReEnaDis",
+      "FId_FanDiagFan1SCB",
+      "FId_Unused",
+      "FId_Unused",
+      "FId_Unused"
+    )
+  }
+
+  it should "read a map with STD_AXIS" in {
+    val expectedX = Array[BigDecimal](720.00, 1000.00, 1240.00, 1520.00, 2000.00, 2520.00, 3000.00, 3520.00, 4000.00,
+      4520.00, 5000.00, 5520.00, 5800.00, 6000.00, 6520.00, 6960.00)
+    val expectedY      = Array[BigDecimal](45.0, 80.3, 130.5, 160.5)
+    val expectedValues = Array.fill[BigDecimal](expectedY.length * expectedX.length)(BigDecimal(25.50000))
+
+    a2LBinAdapter
+      .readCharacteristic("IKCtl_facRefMxSctn2_M") shouldBe NumberNumberNumberTable2D(
+      expectedX,
+      expectedY,
+      expectedValues
+    )
+  }
+
+  it should "read a single boolean" in {
+    a2LBinAdapter.readCharacteristic("B_VMDEAK397_V") shouldBe "false"
+  }
+
+  it should "read a float32 value" in {
+    a2LBinAdapter.readCharacteristic("K_RFVISTWOUT_BIAS") shouldBe BigDecimal("-56.7423248")
+  }
+
+  it should "read a curve with vtab axis" in {
+    a2LBinAdapter.readCharacteristic("CoEng_nrWpDmdReqIgrThd_CUR") shouldBe StringNumberTable1D(
+      Array("No demand", "ExhCo"),
+      Array(25.0, 25.0)
+    )
+  }
+
+  it should "read a curve with vtab values" in {
+    // format: off
+    val expectedAxis = (0 to 19).map(n => BigDecimal(s"$n.000")).toArray // Array[BigDecimal](0.000, 1.000, 2.000, 3.000, 4.000, 5.000, 6.000, 7.000, 8.000, 9.000, 10.000, 11.000, 12.000, 13.000, 14.000, 15.000, 16.000, 17.000, 18.000, 19.000)
+    val expectedValues = Array[String]("true", "true", "false", "true", "true", "true", "true", "true", "true", "true", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false")
+    a2LBinAdapter.readCharacteristic("KL_SPORT_MDGWF") shouldBe  NumberStringTable1D(expectedAxis, expectedValues)
+    // format: on
+  }
+
+  it should "read a value using tab" in {
+    a2LBinAdapter.readCharacteristic("c_ctr_resp_rep_comc_nvld") shouldBe BigDecimal(3)
+  }
+
+  it should "read a map using tab values" in {
+    val expectedX    = (0 to 9).map(BigDecimal(_)).toArray
+    val expectedY    = (0 to 9).map(n => BigDecimal(s"$n.000")).toArray
+    val expectedVals = Array.fill(100)("false")
+
+    a2LBinAdapter.readCharacteristic("KF_ANSCHLAGREG_NO_POS") shouldBe NumberNumberStringTable2D(
+      expectedX,
+      expectedY,
+      expectedVals
+    )
   }
 
   it should "read all characteristics in the a2l" ignore {
@@ -78,7 +159,8 @@ class A2LBinAdapterTest extends AnyFlatSpec {
         c.getType == CharacteristicType.CURVE ||
         c.getType == CharacteristicType.MAP
       ) {
-        a2LBinAdapter.readCharacteristic(n) shouldBe an[Array[BigDecimal]]
+        println(s"Reading $n")
+        noException shouldBe thrownBy(a2LBinAdapter.readCharacteristic(n))
       }
     }
   }
@@ -87,9 +169,9 @@ class A2LBinAdapterTest extends AnyFlatSpec {
 object A2LBinAdapterTest {
   private val originalBin = new File("src/test/resources/00003076501103_original.bin")
 
-  val a2lUrl = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
+  private val a2lUrl = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
 
-  val a2LWrapper = A2LWrapper(a2lUrl)
+  private val a2LWrapper = A2LWrapper(a2lUrl)
 
-  val a2LBinAdapter = new A2LBinAdapter(originalBin, a2LWrapper)
+  private val a2LBinAdapter = new A2LBinAdapter(originalBin, a2LWrapper)
 }

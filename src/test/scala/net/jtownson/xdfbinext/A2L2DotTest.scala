@@ -23,6 +23,7 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val handGraphs = Table[String](
     "filename",
+    "tchdiag_pressure.dot",
     "tchsp_p_Req_uw.dot",
     "tch-pwr-pos_mf_trb.dot",
     "tch-pwr-ff.dot",
@@ -35,7 +36,8 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
-    "spa"
+    "spa",
+    "P_MDGMK_STMDINFO_10ms"
 //    "BMW_MOD_TchCo_Acv_10ms"
 //    "P_MDGK_EVMKO_S_BGRZ"
 //    "BMW_MOD_TchCtr_PwrFade_10ms"
@@ -58,7 +60,8 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val valueCentredGraphs = Table[String](
     "Object name",
-    "Tabg_mw"
+    "Stat_mdinfo_s_tqc_tmp"
+//    "Tabg_mw"
 //    "K_I_GANG_AT"
 //    "BMWtchbas_b_Noise_bo"
 //    "BMWtchsp_fac_mf_CmprNorm_uw",
@@ -72,15 +75,15 @@ class A2L2DotTest extends AnyFlatSpec {
 //    "K_FRFMXBS_MN"
   )
 
-  it should "render hand drawn graphs" ignore forAll(handGraphs) { filename =>
+  it should "render hand drawn graphs" in forAll(handGraphs) { filename =>
     A2L2DotTest.resourcesGraph(filename)
   }
 
-  it should "render fn centred graphs" ignore forAll(fnCentredGraphs) { fnName =>
+  it should "render fn centred graphs" in forAll(fnCentredGraphs) { fnName =>
     withA2L(a2l => functionCentredGraphWith(a2l, _ => true, _ == fnName, s"$fnName.svg"))
   }
 
-  it should "render value centred graphs" ignore forAll(valueCentredGraphs) { objName =>
+  it should "render value centred graphs" in forAll(valueCentredGraphs) { objName =>
     withA2L(a2l => valueCentredGraphWith(a2l, _ == objName, s"${objName}.svg"))
   }
 

@@ -4784,3 +4784,48 @@ St_spa3.B_prschalt_ldm,Status switching point display
 St_spa3.B_rschalt,Downshift info bit for MDSSM
 St_spa3.B_rschalt_ldm,Status switching point display
 St_spa3.B_td_pwgmax,Condition pedal pressed
+KL_BITPOSGMK_MDINFOLTQC,Characteristic curve for bit assignment Stat_mdinfo_L_tqc
+KL_BITPOSGMK_MDINFOSTQC,Characteristic curve for bit assignment Stat_mdinfo_s_tqc
+KL_BITPOSTQGMIN_MDINFOLTQC,Characteristic curve for bit assignment minimum gear input limitations for Stat_mdinfo_l_tqc
+KL_BITPOSTQGMIN_MDINFOSTQC,Characteristic curve for bit assignment minimum gear input limitations for Stat_mdinfo_s_tqc
+KL_BITPOSTQG_MDINFOLTQC,Characteristic curve for bit assignment Stat_mdinfo_l_tqc
+KL_BITPOSTQG_MDINFOSTQC,Characteristic curve for bit assignment Stat_mdinfo_s_tqc
+KL_BITPOSTQW_MDINFOTQC,Characteristic curve for bit assignment Stat_mdinfo_s_tqc
+K_PRIO_MDINFOTQC,Prioritize MD limits for Stat_mdinfo_s_tqc
+K_TD_GSS_MDINFO,Turn-off delay of the gearbox interventions on Stat_mdinfo_s_tqc (T = 0.01 / K_TD)
+S_GSSINC_AUF_MDINFO_L,GSSINC is included in Stat_mdinfo_tqc_l
+S_BAXCTL_ON,Calculate I component EM
+S_CP254680_MDGMK_L,Activation CP
+S_MDGETRIEBE_EINRECH_TQC,Switch = 0: Calculation of Md_getrverlueb_llr (gear pickup torque) in the potential path
+Md_em_nctl_stat_plaus,Stationary/slow torque component of the EM1/2 speed controller (EM1/2 project-specific) (plausibility checked)
+Md_gb1_gsl_minus,Torque intervention (relatively) reducing air path
+Md_gb1_gsl_plus,Torque intervention (relatively) increasing air path
+Md_gb1_gss,Torque intervention (relative) gear change intervention increasing/reducing
+Md_gb1_kup,"Disturbance torque of the GB1 clutch (Md_trieb, HS)"
+Md_kupp_vorst_L,Clutch torque (pilot control) air path
+Md_kw_soll_bgrz,Starting torque Md_kw_soll limited via Md_gss_minus gearbox intervention.
+Mdg_fzdyn_mdgwf_ziel,Desired torque for air path after load impact/dashpot
+Mdg_gb1_gsl_minus,Torque intervention (absolute) reducing air path
+Mdg_gb1_gss_minus,Torque intervention (absolute) reducing gear change intervention
+Mdg_gb1_gss_plus,Torque intervention (absolute) increasing gear change intervention
+Mdg_max_dyn_Haxl,Maximum dynamic torque (quick path) at the transmission input of the hybrid axle
+Mdg_nregs_minus,Torque requirement connection speed controller for reducing switching interventions
+Mdg_nregs_plus,Torque requirement connection speed controller for increasing switching interventions
+Mdg_soll_oschlepplim,Gearbox input target torque without limitation to Mdg_min_dyn_Haxl
+Mdg_soll_ziel_oschlepplim,Target torque combustion engine transmission input (long-term target torque) without limitation to Mdg_min_stat_Haxl
+St_TqgMaxDynLimHaxlPronTqcEfc,"Status word for displaying the effective source for the maximum dynamic transmission input potential to protect the hybrid axis, for use within the TQC"
+St_TqgMaxStatLimHaxlPronTqcEfc,"Status word for displaying the effective source for the maximum static transmission input potential to protect the hybrid axis, for use within the TQC"
+St_TqgMinDynLimHaxlPronTqcEfc,"Status word for displaying the effective source for the minimum dynamic transmission input potential to protect the hybrid axle, for use within the TQC"
+St_TqgMinStatLimHaxlPronTqcEfc,"Status word for displaying the effective source for the minimum static transmission input potential to protect the hybrid axle, for use within the TQC"
+St_TqwMaxDynLimHaxlPronEfc,Status word for displaying the effective source for the maximum dynamic wheel potential to protect the hybrid axle
+St_TqwMinDynLimHaxlPronEfc,Status word for displaying the effective source for the minimum dynamic wheel potential to protect the hybrid axle
+Stat_mdinfo_s_tqw,Status word with all effective TQW torque interventions
+Tqg_MaxDynLimHaxlPronTqc,"Maximum dynamic transmission input potential to protect the hybrid axle, for use within the TQC"
+Tqg_MaxStatLimHaxlPronTqc,"Maximum static transmission input potential to protect the hybrid axle, for use within the TQC"
+Tqg_MinDynLimHaxlPronTqc,"Minimal dynamic transmission input potential to protect the hybrid axle, for use within the TQC"
+Tqg_MinStatLimHaxlPronTqc,"Minimal static transmission input potential to protect the hybrid axle, for use within the TQC"
+St_EfcSrc_Statmdinfoltqc,Calculation Stat_mdinfo_l_tqc: Status for pending limitation
+St_EfcSrc_Statmdinfostqc,Calculation Stat_mdinfo_s_tqc: Status for pending limitation
+BMWtqc_b_StIntvGbxDlyd_bo,"torque coordination bit, boolean, flag, binary message or variable state intervention gearbox delayed boolean"
+Stat_mdinfo_l_tqc_tmp,Intermediate size information torque interventions TQC air path
+Stat_mdinfo_s_tqc_tmp,Intermediate size information torque interventions TQC ignition path

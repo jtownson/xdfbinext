@@ -1,127 +1,271 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.{ConversionType, DataType}
-import net.alenzen.a2l.{AxisPts, Characteristic, CompuMethod}
-import net.jtownson.xdfbinext.RatFunFormula.RatFun
+import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
+import net.alenzen.a2l.enums.DataType.*
+import net.alenzen.a2l.enums.{CharacteristicType, ConversionType, DataType}
+import net.alenzen.a2l.*
+import net.jtownson.xdfbinext.A2LBinAdapter.{CharacteristicValue, CompuMethodType}
+import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
+import net.jtownson.xdfbinext.a2l.CurveType.*
+import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, NumberNumberNumberTable2D, NumberNumberStringTable2D}
+import net.jtownson.xdfbinext.a2l.PositionWrapper.{AxPtsPosition, FncValuesPosition, FncValuesPositionXY, NoAxPtsPosition}
+import net.jtownson.xdfbinext.a2l.RatFunFormula.RatFun
+import net.jtownson.xdfbinext.a2l.{RecordConsumer1D, RecordConsumer2D, StringValBlk, ValueConsumer}
 
 import java.io.{File, RandomAccessFile}
 import java.nio.ByteBuffer
 import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode
-import scala.math.BigDecimal.RoundingMode.{DOWN, HALF_UP}
+import scala.math.BigDecimal.RoundingMode.HALF_UP
 
 /** What would be nice here would be to convert an a2l+bin to some kind of repr where we are able to answer questions
   * such as 'find axes where the units are kg/h and the values are below 1300 kg/h.
   */
 class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
-  def readValue(cName: String): BigDecimal = {
-    readCharacteristic(cName).head
-  }
-
-  def readCurve(cName: String): Interpolated1D = {
-    val values = readCharacteristic(cName)
-    val axis   = readAxis(a2l.getXAxis(a2l.characteristics(cName)).getName)
-    Interpolated1D(axis, values)
-  }
-
-  def readMap(cName: String): Interpolated2D = {
-    val values = readCharacteristic(cName)
-    val xAxis  = readAxis(a2l.getXAxis(a2l.characteristics(cName)).getName)
-    val yAxis  = readAxis(a2l.getYAxis(a2l.characteristics(cName)).getName)
-    Interpolated2D(xAxis, yAxis, values)
-  }
-
-  def readAxis(aName: String): Array[BigDecimal] = {
-    val a         = a2l.axisPts(aName)
-    val formula   = getFormula(a)
-    val (len, dp) = a2l.getFormat(a)
-    val cellCount = a2l.getCellCount(a)
-
-    a2l.getType(a) match
-      case DataType.SBYTE =>
-        ???
-      case DataType.UBYTE =>
-        ???
-      case DataType.SWORD =>
-        readSWord(offsetAddress(a), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.UWORD =>
-        readUWord(offsetAddress(a), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.SLONG =>
-        ???
-      case DataType.ULONG =>
-        ???
-      case _ =>
-        ???
-
-  }
-
-  def readCharacteristic(cName: String): Array[BigDecimal] = {
+  def readCharacteristic(cName: String): CharacteristicValue = {
     readCharacteristic(a2l.characteristics(cName))
   }
 
-  private def readCharacteristic(c: Characteristic): Array[BigDecimal] = {
-    val formula   = getFormula(c)
-    val (len, dp) = a2l.getFormat(c)
-    val cellCount = a2l.getCellCount(c)
-
-    a2l.getType(c) match
-      case DataType.SBYTE =>
-        readSByte(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.UBYTE =>
-        readUByte(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.SWORD =>
-        readSWord(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.UWORD =>
-        readUWord(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.SLONG =>
-        readSLong(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case DataType.ULONG =>
-        readULong(offsetAddress(c), cellCount)
-          .map(BigDecimal(_))
-          .map(formula.apply)
-          .map(_.setScale(dp, HALF_UP))
-      case _ =>
-        ???
+  def readValue(cName: String): String | BigDecimal = {
+    readValue(a2l.characteristics(cName))
   }
 
-  private def getFormula(c: Characteristic): RatFun = {
+  private def readValue(c: Characteristic): String | BigDecimal = {
+    getFormula(c) match
+      case cvt: CompuVTab =>
+        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyVTab(cvt).head
+
+      case ct: CompuTab =>
+        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyTab(ct).head
+
+      case ratFun: RatFun =>
+        val dp = A2LWrapper.getDecimalPlaces(c)
+        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyFormula(ratFun, dp).head
+  }
+
+  private def readValBlk(c: Characteristic): StringValBlk = {
+    val cellCount = a2l.getCellCount(c)
+    val tpe       = a2l.getType(c)
+
+    getFormula(c) match
+      case cvt: CompuVTab =>
+        val values = ValueConsumer(a2l.getType(c), offsetAddress(c), cellCount, binAccess).applyVTab(cvt)
+        StringValBlk(values: _*)
+      case _ =>
+        ???
+
+  }
+
+  def readCurve(cName: String): CurveValueType = {
+    readCurve(a2l.characteristics(cName))
+  }
+
+  private def compuMethodCata1D(
+      axisCompu: CompuMethodType,
+      axDp: => Int,
+      fnCompu: CompuMethodType,
+      fnDp: => Int,
+      consumer: RecordConsumer1D
+  ): CurveValueType = {
+    (axisCompu, fnCompu) match
+      case (arf: RatFun, frf: RatFun) =>
+        NumberNumberTable1D(consumer.applyAxisFormula(arf, axDp), consumer.applyFuncFormula(frf, fnDp))
+      case (arf: RatFun, frf: CompuVTab) =>
+        NumberStringTable1D(consumer.applyAxisFormula(arf, axDp), consumer.applyFuncVTab(frf))
+      case (arf: CompuVTab, frf: RatFun) =>
+        StringNumberTable1D(consumer.applyAxisVTab(arf), consumer.applyFuncFormula(frf, fnDp))
+      case (arf: CompuVTab, frf: CompuVTab) =>
+        StringStringTable1D(consumer.applyAxisVTab(arf), consumer.applyFuncVTab(frf))
+  }
+
+  private def compuMethodCata2D(
+      xAxisCompu: CompuMethodType,
+      xDp: => Int,
+      yAxisCompu: CompuMethodType,
+      yDp: => Int,
+      fnCompu: CompuMethodType,
+      fnDp: => Int,
+      consumer: RecordConsumer2D
+  ): MapValueType = {
+    (xAxisCompu, yAxisCompu, fnCompu) match {
+      case (xrf: RatFun, yrf: RatFun, frf: RatFun) =>
+        NumberNumberNumberTable2D(
+          consumer.applyXAxisFormula(xrf, xDp),
+          consumer.applyYAxisFormula(yrf, yDp),
+          consumer.applyFuncFormula(frf, fnDp)
+        )
+      case (xrf: RatFun, yrf: RatFun, fvt: CompuVTab) =>
+        NumberNumberStringTable2D(
+          consumer.applyXAxisFormula(xrf, xDp),
+          consumer.applyYAxisFormula(yrf, yDp),
+          consumer.applyFuncVTab(fvt)
+        )
+    }
+  }
+
+  def readCurve(c: Characteristic): CurveValueType = {
+    val fnRecordLayout = a2l.getRecordLayout(c)
+    val fnFormula      = getFormula(c)
+
+    Option(c.getAxisDescriptions.get(0).getAxisPoints_ref) match
+      case Some(axisPtsRef) =>
+        val axisPts          = a2l.getXAxisPts(c)
+        val axisType         = a2l.getType(axisPts)
+        val axisFormat       = axisPts.getFormat
+        val axisRecordLayout = a2l.getRecordLayout(axisPts)
+
+        val consumer = RecordConsumer1D(c, axisType, axisPts, axisRecordLayout, fnRecordLayout, offset, binAccess)
+
+        val axisCompu = getFormula(axisPts)
+
+        compuMethodCata1D(
+          axisCompu,
+          A2LWrapper.getDecimalPlaces(axisPts),
+          fnFormula,
+          A2LWrapper.getDecimalPlaces(c),
+          consumer
+        )
+
+      case None =>
+        val axisDesc   = c.getAxisDescriptions.get(0)
+        val axisFormat = axisDesc.getFormat
+        val consumer   = RecordConsumer1D(c, axisDesc, fnRecordLayout, offset, binAccess)
+        val axDp       = A2LWrapper.getDecimalPlaces(axisDesc)
+        val fnDp       = A2LWrapper.getDecimalPlaces(c)
+        val axisCompu  = getFormula(axisDesc)
+
+        compuMethodCata1D(axisCompu, axDp, fnFormula, fnDp, consumer)
+  }
+
+  def readMap(cName: String): MapValueType = {
+    readMap(a2l.characteristics(cName))
+  }
+
+  def readMap(c: Characteristic): MapValueType = {
+    val fnRecordLayout = a2l.getRecordLayout(c)
+    val fnCompuMethod  = getFormula(c)
+
+    Option(c.getAxisDescriptions.get(0).getAxisPoints_ref)
+      .and(Option(c.getAxisDescriptions.get(1).getAxisPoints_ref)) match {
+      case Some((xAxisPtsRef, yAxisPtsRef)) =>
+        val xAxisPts          = a2l.getXAxisPts(c)
+        val xAxisFormat       = xAxisPts.getFormat
+        val xAxisCompu        = getFormula(xAxisPts)
+        val xAxisType         = a2l.getType(xAxisPts)
+        val xAxisRecordLayout = a2l.getRecordLayout(xAxisPts)
+
+        val yAxisPts          = a2l.getYAxisPts(c)
+        val yAxisFormat       = yAxisPts.getFormat
+        val yAxisCompu        = getFormula(yAxisPts)
+        val yAxisType         = a2l.getType(yAxisPts)
+        val yAxisRecordLayout = a2l.getRecordLayout(yAxisPts)
+
+        val consumer = RecordConsumer2D(
+          c,
+          xAxisType,
+          xAxisPts,
+          xAxisRecordLayout,
+          yAxisType,
+          yAxisPts,
+          yAxisRecordLayout,
+          fnRecordLayout,
+          offset,
+          binAccess
+        )
+
+        compuMethodCata2D(
+          xAxisCompu,
+          A2LWrapper.getDecimalPlaces(xAxisPts),
+          yAxisCompu,
+          A2LWrapper.getDecimalPlaces(yAxisPts),
+          fnCompuMethod,
+          A2LWrapper.getDecimalPlaces(c),
+          consumer
+        )
+
+      case None =>
+        val xAxisDesc   = c.getAxisDescriptions.get(0)
+        val xAxisFormat = xAxisDesc.getFormat
+        val xAxisCompu  = getFormula(xAxisDesc)
+
+        val yAxisDesc   = c.getAxisDescriptions.get(1)
+        val yAxisFormat = yAxisDesc.getFormat
+        val yAxisCompu  = getFormula(yAxisDesc)
+
+        val consumer = RecordConsumer2D(c, xAxisDesc, yAxisDesc, fnRecordLayout, offset, binAccess)
+
+        compuMethodCata2D(
+          xAxisCompu,
+          A2LWrapper.getDecimalPlaces(xAxisDesc),
+          yAxisCompu,
+          A2LWrapper.getDecimalPlaces(yAxisDesc),
+          fnCompuMethod,
+          A2LWrapper.getDecimalPlaces(c),
+          consumer
+        )
+    }
+  }
+
+  private def readCharacteristic(c: Characteristic): CharacteristicValue = {
+    if (c.getType == VALUE) {
+      readValue(c)
+    } else if (c.getType == CURVE) {
+      readCurve(c)
+    } else if (c.getType == MAP) {
+      readMap(c)
+    } else if (c.getType == VAL_BLK) {
+      readValBlk(c)
+    } else {
+      ???
+    }
+  }
+
+  private def getFormula(c: Characteristic): CompuMethodType = {
     val compuMethod = a2l.compuMethods(c.getConversion)
     getFormula(compuMethod)
   }
 
-  private def getFormula(a: AxisPts): RatFun = {
+  private def getFormula(a: AxisPts): CompuMethodType = {
     val compuMethod = a2l.compuMethods(a.getConversion)
     getFormula(compuMethod)
   }
 
-  private def getFormula(compuMethod: CompuMethod): RatFun = {
-    if (compuMethod.getConversionType == ConversionType.RAT_FUNC) {
+  private def getFormula(a: AxisDescr): CompuMethodType = {
+    val compuMethod = a2l.compuMethods(a.getConversion)
+    getFormula(compuMethod)
+  }
+
+  import scala.jdk.CollectionConverters.*
+
+  private def getFormula(compuMethod: CompuMethod): CompuMethodType = {
+    val conversionType = compuMethod.getConversionType
+    if (conversionType == ConversionType.RAT_FUNC) {
       val coeffs = compuMethod.getCoeffs
       RatFun(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+    } else if (conversionType == ConversionType.TAB_VERB) {
+      val entries = a2l
+        .compuVTabs(compuMethod.getCompuTab_ref)
+        .getValuePairs
+        .asScala
+        .map(vp => vp.getInVal.toInt -> vp.getOutVal)
+        .toMap
+
+      CompuVTab(entries)
+
+    } else if (conversionType == ConversionType.TAB_INTP || conversionType == ConversionType.TAB_NOINTP) {
+      val entries = a2l
+        .compuTabs(compuMethod.getCompuTab_ref)
+        .getValuePairs
+        .asScala
+        .map(vp => BigDecimal(vp.getInVal) -> BigDecimal(vp.getOutVal))
+
+      val x  = entries.map(_._1).toArray
+      val fx = entries.map(_._2).toArray
+
+      CompuTab(x, fx)
     } else {
-      RatFun(0, 1, 0, 0, 0, 1) // TODO consider doing this properly
+      ???
     }
   }
 
@@ -133,52 +277,12 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 
-  private def readSByte(offset: Long, len: Int): Array[Byte] = {
-    val a = new Array[Byte](len)
-    binAccess.seek(offset)
-    binAccess.read(a)
-    a
-  }
+}
 
-  private def readUByte(offset: Long, len: Int): Array[Int] = {
-    val a = new ArrayBuffer[Int](len)
-    binAccess.seek(offset)
-    (0 until len).foreach(i => a.addOne(binAccess.readUnsignedByte()))
-    a.toArray
-  }
+object A2LBinAdapter {
 
-  private def readSWord(offset: Long, len: Int): Array[Int] = {
-    val a = new ArrayBuffer[Int](len)
-    binAccess.seek(offset)
-    (0 until len).foreach(i => a.addOne(binAccess.readShort()))
-    a.toArray
-  }
+  type CharacteristicValue = String | BigDecimal | StringValBlk | CurveValueType | MapValueType
 
-  private def readUWord(offset: Long, len: Int): Array[Int] = {
-    val a = new ArrayBuffer[Int](len)
-    binAccess.seek(offset)
-    (0 until len).foreach(i => a.addOne(binAccess.readUnsignedShort()))
-    a.toArray
-  }
+  type CompuMethodType = RatFun | CompuVTab | CompuTab
 
-  private def readSLong(offset: Long, len: Int): Array[Int] = {
-    val a = new ArrayBuffer[Int](len)
-    binAccess.seek(offset)
-    (0 until len).foreach(i => a.addOne(binAccess.readInt()))
-    a.toArray
-  }
-
-  private def readULong(offset: Long, len: Int): Array[Long] = {
-    val a = new Array[Byte](len * 4)
-    binAccess.seek(offset)
-    binAccess.read(a)
-    val wrapped = ByteBuffer.wrap(a).asIntBuffer()
-    val toBuff  = new ArrayBuffer[Long](len)
-    while (wrapped.hasRemaining) {
-      val intVal  = wrapped.get
-      val longVal = intVal & 0xffffffffL
-      toBuff.addOne(longVal)
-    }
-    toBuff.toArray
-  }
 }
