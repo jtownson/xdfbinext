@@ -1,22 +1,16 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
-import net.alenzen.a2l.enums.DataType.*
-import net.alenzen.a2l.enums.{CharacteristicType, ConversionType, DataType}
 import net.alenzen.a2l.*
-import net.jtownson.xdfbinext.A2LBinAdapter.{CharacteristicValue, CompuMethodType}
-import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
+import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
+import net.alenzen.a2l.enums.{CharacteristicType, ConversionType}
+import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
 import net.jtownson.xdfbinext.a2l.CurveType.*
-import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, NumberNumberNumberTable2D, NumberNumberStringTable2D}
-import net.jtownson.xdfbinext.a2l.PositionWrapper.{AxPtsPosition, FncValuesPosition, FncValuesPositionXY, NoAxPtsPosition}
-import net.jtownson.xdfbinext.a2l.RatFunFormula.RatFun
-import net.jtownson.xdfbinext.a2l.{RecordConsumer1D, RecordConsumer2D, StringValBlk, ValueConsumer}
+import net.jtownson.xdfbinext.a2l.MapType.*
+import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
+import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValueBlkType
+import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
 
 import java.io.{File, RandomAccessFile}
-import java.nio.ByteBuffer
-import scala.collection.mutable.ArrayBuffer
-import scala.math.BigDecimal.RoundingMode
-import scala.math.BigDecimal.RoundingMode.HALF_UP
 
 /** What would be nice here would be to convert an a2l+bin to some kind of repr where we are able to answer questions
   * such as 'find axes where the units are kg/h and the values are below 1300 kg/h.
@@ -32,26 +26,31 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
   }
 
   private def readValue(c: Characteristic): String | BigDecimal = {
+
+    val valueConsumer = ValueConsumer(c, a2l.getRecordLayout(c), offset, binAccess)
+
     getFormula(c) match
       case cvt: CompuVTab =>
-        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyVTab(cvt).head
+        valueConsumer.applyFuncVTab(cvt)
 
       case ct: CompuTab =>
-        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyTab(ct).head
+        valueConsumer.applyFuncTab(ct)
 
       case ratFun: RatFun =>
-        val dp = A2LWrapper.getDecimalPlaces(c)
-        ValueConsumer(a2l.getType(c), offsetAddress(c), 1, binAccess).applyFormula(ratFun, dp).head
+        valueConsumer.applyFuncFormula(ratFun, A2LWrapper.getDecimalPlaces(c))
   }
 
-  private def readValBlk(c: Characteristic): StringValBlk = {
-    val cellCount = a2l.getCellCount(c)
-    val tpe       = a2l.getType(c)
+  private def readValBlk(c: Characteristic): ValueBlkType = {
+
+    val consumer = ValBlkConsumer(c, a2l.getRecordLayout(c), offset, binAccess)
 
     getFormula(c) match
       case cvt: CompuVTab =>
-        val values = ValueConsumer(a2l.getType(c), offsetAddress(c), cellCount, binAccess).applyVTab(cvt)
-        StringValBlk(values: _*)
+        consumer.applyFuncVTab(cvt)
+      case ct: CompuTab =>
+        consumer.applyFuncTab(ct)
+      case rf: RatFun =>
+        consumer.applyFuncFormula(rf, A2LWrapper.getDecimalPlaces(c))
       case _ =>
         ???
 
@@ -66,17 +65,30 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       axDp: => Int,
       fnCompu: CompuMethodType,
       fnDp: => Int,
-      consumer: RecordConsumer1D
+      consumer: CurveConsumer
   ): CurveValueType = {
-    (axisCompu, fnCompu) match
-      case (arf: RatFun, frf: RatFun) =>
-        NumberNumberTable1D(consumer.applyAxisFormula(arf, axDp), consumer.applyFuncFormula(frf, fnDp))
-      case (arf: RatFun, frf: CompuVTab) =>
-        NumberStringTable1D(consumer.applyAxisFormula(arf, axDp), consumer.applyFuncVTab(frf))
-      case (arf: CompuVTab, frf: RatFun) =>
-        StringNumberTable1D(consumer.applyAxisVTab(arf), consumer.applyFuncFormula(frf, fnDp))
-      case (arf: CompuVTab, frf: CompuVTab) =>
-        StringStringTable1D(consumer.applyAxisVTab(arf), consumer.applyFuncVTab(frf))
+
+    val xApp = compuMethodCata(
+      rf => consumer.applyAxisFormula(rf, axDp),
+      vt => consumer.applyAxisVTab(vt),
+      ct => consumer.applyAxisTab(ct)
+    )(axisCompu)
+
+    val fApp: NumericArray | StringArray = compuMethodCata(
+      rf => consumer.applyFuncFormula(rf, fnDp),
+      vt => consumer.applyFuncVTab(vt),
+      ct => consumer.applyFuncTab(ct)
+    )(fnCompu)
+
+    (xApp, fApp) match
+      case (NumericArray(x), NumericArray(f)) =>
+        NumberNumberTable1D(x, f)
+      case (NumericArray(x), StringArray(f)) =>
+        NumberStringTable1D(x, f)
+      case (StringArray(x), NumericArray(f)) =>
+        StringNumberTable1D(x, f)
+      case (StringArray(x), StringArray(f)) =>
+        StringStringTable1D(x, f)
   }
 
   private def compuMethodCata2D(
@@ -86,21 +98,51 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       yDp: => Int,
       fnCompu: CompuMethodType,
       fnDp: => Int,
-      consumer: RecordConsumer2D
+      consumer: MapConsumer
   ): MapValueType = {
-    (xAxisCompu, yAxisCompu, fnCompu) match {
-      case (xrf: RatFun, yrf: RatFun, frf: RatFun) =>
-        NumberNumberNumberTable2D(
-          consumer.applyXAxisFormula(xrf, xDp),
-          consumer.applyYAxisFormula(yrf, yDp),
-          consumer.applyFuncFormula(frf, fnDp)
-        )
-      case (xrf: RatFun, yrf: RatFun, fvt: CompuVTab) =>
-        NumberNumberStringTable2D(
-          consumer.applyXAxisFormula(xrf, xDp),
-          consumer.applyYAxisFormula(yrf, yDp),
-          consumer.applyFuncVTab(fvt)
-        )
+
+    val xApp = compuMethodCata(
+      rf => consumer.applyXAxisFormula(rf, xDp),
+      vt => consumer.applyXAxisVTab(vt),
+      ct => consumer.applyXAxisTab(ct)
+    )(xAxisCompu)
+
+    val yApp = compuMethodCata(
+      rf => consumer.applyYAxisFormula(rf, yDp),
+      vt => consumer.applyYAxisVTab(vt),
+      ct => consumer.applyYAxisTab(ct)
+    )(yAxisCompu)
+
+    val fApp = compuMethodCata(
+      rf => consumer.applyFuncFormula(rf, fnDp),
+      vt => consumer.applyFuncVTab(vt),
+      ct => consumer.applyFuncTab(ct)
+    )(fnCompu)
+
+    (xApp, yApp, fApp) match {
+      case (NumericArray(x), NumericArray(y), NumericArray(z)) =>
+        NumberNumberNumberTable2D(x, y, z)
+
+      case (NumericArray(x), NumericArray(y), StringArray(z)) =>
+        NumberNumberStringTable2D(x, y, z)
+
+      case (NumericArray(x), StringArray(y), NumericArray(z)) =>
+        NumberStringNumberTable2D(x, y, z)
+
+      case (NumericArray(x), StringArray(y), StringArray(z)) =>
+        NumberStringStringTable2D(x, y, z)
+
+      case (StringArray(x), NumericArray(y), StringArray(z)) =>
+        StringNumberStringTable2D(x, y, z)
+
+      case (StringArray(x), NumericArray(y), NumericArray(z)) =>
+        StringNumberNumberTable2D(x, y, z)
+
+      case (StringArray(x), StringArray(y), StringArray(z)) =>
+        StringStringStringTable2D(x, y, z)
+
+      case (StringArray(x), StringArray(y), NumericArray(z)) =>
+        StringStringNumberTable2D(x, y, z)
     }
   }
 
@@ -115,7 +157,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         val axisFormat       = axisPts.getFormat
         val axisRecordLayout = a2l.getRecordLayout(axisPts)
 
-        val consumer = RecordConsumer1D(c, axisType, axisPts, axisRecordLayout, fnRecordLayout, offset, binAccess)
+        val consumer = CurveConsumer(c, axisType, axisPts, axisRecordLayout, fnRecordLayout, offset, binAccess)
 
         val axisCompu = getFormula(axisPts)
 
@@ -130,7 +172,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       case None =>
         val axisDesc   = c.getAxisDescriptions.get(0)
         val axisFormat = axisDesc.getFormat
-        val consumer   = RecordConsumer1D(c, axisDesc, fnRecordLayout, offset, binAccess)
+        val consumer   = CurveConsumer(c, axisDesc, fnRecordLayout, offset, binAccess)
         val axDp       = A2LWrapper.getDecimalPlaces(axisDesc)
         val fnDp       = A2LWrapper.getDecimalPlaces(c)
         val axisCompu  = getFormula(axisDesc)
@@ -161,7 +203,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         val yAxisType         = a2l.getType(yAxisPts)
         val yAxisRecordLayout = a2l.getRecordLayout(yAxisPts)
 
-        val consumer = RecordConsumer2D(
+        val consumer = MapConsumer(
           c,
           xAxisType,
           xAxisPts,
@@ -193,7 +235,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         val yAxisFormat = yAxisDesc.getFormat
         val yAxisCompu  = getFormula(yAxisDesc)
 
-        val consumer = RecordConsumer2D(c, xAxisDesc, yAxisDesc, fnRecordLayout, offset, binAccess)
+        val consumer = MapConsumer(c, xAxisDesc, yAxisDesc, fnRecordLayout, offset, binAccess)
 
         compuMethodCata2D(
           xAxisCompu,
@@ -269,20 +311,12 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
     }
   }
 
-  private def offsetAddress(c: Characteristic): Long =
-    c.getAddress - offset
-
-  private def offsetAddress(a: AxisPts): Long =
-    a.getAddress - offset
-
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 
 }
 
 object A2LBinAdapter {
 
-  type CharacteristicValue = String | BigDecimal | StringValBlk | CurveValueType | MapValueType
-
-  type CompuMethodType = RatFun | CompuVTab | CompuTab
+  type CharacteristicValue = ValueType | ValueBlkType | CurveValueType | MapValueType
 
 }

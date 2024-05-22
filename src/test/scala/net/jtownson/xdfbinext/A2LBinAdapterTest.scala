@@ -1,14 +1,20 @@
 package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
-import net.jtownson.xdfbinext.a2l.StringValBlk
 import net.jtownson.xdfbinext.A2LBinAdapterTest.{a2LBinAdapter, a2LWrapper}
 import net.jtownson.xdfbinext.a2l.CurveType.{NumberNumberTable1D, NumberStringTable1D, StringNumberTable1D}
-import net.jtownson.xdfbinext.a2l.MapType.{NumberNumberNumberTable2D, NumberNumberStringTable2D}
+import net.jtownson.xdfbinext.a2l.MapType.{
+  NumberNumberNumberTable2D,
+  NumberNumberStringTable2D,
+  NumberStringNumberTable2D
+}
+import net.jtownson.xdfbinext.a2l.StringArray
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
 import java.io.File
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.HALF_UP
 
 class A2LBinAdapterTest extends AnyFlatSpec {
   behavior of "A2LBinAdapter"
@@ -83,27 +89,29 @@ class A2LBinAdapterTest extends AnyFlatSpec {
   }
 
   it should "read a val_blk" in {
-    a2LBinAdapter.readCharacteristic("DINH_FId.DFC_Fan1SCB_CA") shouldBe StringValBlk(
-      "FID_BMW_TMK_DRLPLAUS",
-      "FID_CKKOS",
-      "FID_CMLE",
-      "FId_Fan1CircErr",
-      "FId_Fan1Off",
-      "FId_Fan1PsErr",
-      "FId_Fan1PwrStg",
-      "FId_Fan1PwrStgReEnaDis",
-      "FId_FanDiagFan1SCB",
-      "FId_Unused",
-      "FId_Unused",
-      "FId_Unused"
+    a2LBinAdapter.readCharacteristic("DINH_FId.DFC_Fan1SCB_CA") shouldBe StringArray(
+      Array(
+        "FID_BMW_TMK_DRLPLAUS",
+        "FID_CKKOS",
+        "FID_CMLE",
+        "FId_Fan1CircErr",
+        "FId_Fan1Off",
+        "FId_Fan1PsErr",
+        "FId_Fan1PwrStg",
+        "FId_Fan1PwrStgReEnaDis",
+        "FId_FanDiagFan1SCB",
+        "FId_Unused",
+        "FId_Unused",
+        "FId_Unused"
+      )
     )
   }
 
   it should "read a map with STD_AXIS" in {
     val expectedX = Array[BigDecimal](720.00, 1000.00, 1240.00, 1520.00, 2000.00, 2520.00, 3000.00, 3520.00, 4000.00,
-      4520.00, 5000.00, 5520.00, 5800.00, 6000.00, 6520.00, 6960.00)
-    val expectedY      = Array[BigDecimal](45.0, 80.3, 130.5, 160.5)
-    val expectedValues = Array.fill[BigDecimal](expectedY.length * expectedX.length)(BigDecimal(25.50000))
+      4520.00, 5000.00, 5520.00, 5800.00, 6000.00, 6520.00, 6960.00).map(_.setScale(2, HALF_UP))
+    val expectedY      = Array[BigDecimal](45.0, 80.3, 130.5, 160.5).map(_.setScale(1, HALF_UP))
+    val expectedValues = Array.fill[BigDecimal](expectedY.length * expectedX.length)(BigDecimal("25.50000"))
 
     a2LBinAdapter
       .readCharacteristic("IKCtl_facRefMxSctn2_M") shouldBe NumberNumberNumberTable2D(
@@ -150,6 +158,27 @@ class A2LBinAdapterTest extends AnyFlatSpec {
       expectedY,
       expectedVals
     )
+  }
+
+  it should "read a map with string axes and numeric values" in {
+    // format: off
+    val expectedX = Array[BigDecimal](1, 2, 4, 6)
+    val expectedY = Array[String]("HDR OR", "HD OR", "HD low", "HD krit")
+    val expectedVals = Array[BigDecimal](
+        0,  1,  0,  1,
+        2,  3,  0,  2,
+        3,  3,  0,  3,
+        4,  4,  4,  4
+    )
+
+    a2LBinAdapter.readCharacteristic("BMWlpsd_st_PRailReq_M") shouldBe NumberStringNumberTable2D(expectedX, expectedY, expectedVals)
+    // format: on
+  }
+
+  it should "read this one" in {
+    val expectedAxis   = Array[BigDecimal](0.000000, 30.078125, 50.000000, 80.078125, 99.609375)
+    val expectedValues = Array[BigDecimal](0.000000, 10.156250, 19.921875, 30.078125, 39.843750)
+    a2LBinAdapter.readCharacteristic("ip_cppwm_inc_nvld") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
   }
 
   it should "read all characteristics in the a2l" ignore {

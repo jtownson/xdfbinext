@@ -5,7 +5,7 @@ import net.alenzen.a2l.{Unit as A2lUnit, *}
 import net.jtownson.xdfbinext.A2L2XDF.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getObjectDescription}
 import net.jtownson.xdfbinext.XdfSchema.{CategoryMem, XdfModel}
-import net.jtownson.xdfbinext.a2l.RatFunFormula
+import net.jtownson.xdfbinext.a2l.FormulaExpressionInverse
 
 import java.net.URL
 import scala.jdk.CollectionConverters.*
@@ -189,7 +189,7 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     val compuMethod = compuMethods(c.getConversion)
     if (compuMethod.getConversionType == ConversionType.RAT_FUNC) {
       val coeffs = compuMethods(c.getConversion).getCoeffs
-      RatFunFormula.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+      FormulaExpressionInverse.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
     } else {
       "X"
     }
@@ -197,7 +197,7 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
 
   private def getFormula(axis: AxisPts): String = {
     val coeffs = compuMethods(axis.getConversion).getCoeffs
-    RatFunFormula.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+    FormulaExpressionInverse.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
   }
 
   private def map2Xdf(c: Characteristic): String = {
