@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext.a2l
 
-import net.alenzen.a2l.RecordLayout
+import net.alenzen.a2l.{AxisDescr, RecordLayout}
 import net.alenzen.a2l.enums.DataType
 import net.alenzen.a2l.enums.DataType.*
 import net.jtownson.xdfbinext.a2l.ByteBlock.{ByteBlockAbs, toRecord}
@@ -19,7 +19,35 @@ trait BlockConsumer {
 }
 
 object BlockConsumer {
-  
+
+  def fixAxisBlockConsumer(axisDescr: AxisDescr): Option[BlockConsumer] = {
+    Option.when(axisDescr.getAttribute == AxisDescr.Attribute.FIX_AXIS) {
+      val fixAxisPar = axisDescr.getFixAxisPar
+      BlockConsumer.fixAxisBlockConsumer(
+        fixAxisPar.getOffset.toInt,
+        fixAxisPar.getShift.toInt,
+        fixAxisPar.getNumberapo.toInt
+      )
+    }
+  }
+
+  private def fixAxisBlockConsumer(offset: Int, shift: Int, numberPoints: Int): BlockConsumer =
+    new BlockConsumer {
+
+      private val axisPoints = (1 to numberPoints).map(i => offset + (i - 1) * BigDecimal(2).pow(shift)).toArray
+
+      override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
+        axisPoints.map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+
+      override def applyVTab(vtab: CompuVTab): Array[String] = throw new UnsupportedOperationException(
+        "Cannot apply vtab to fix_axis"
+      )
+
+      override def applyTab(tab: CompuTab): Array[BigDecimal] = throw new UnsupportedOperationException(
+        "Cannot apply tab to fix_axis"
+      )
+    }
+
   def toTypedConsumableRecord(
       baseAddress: Long,
       nAxisPointsX: Int,

@@ -154,7 +154,6 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       case Some(axisPtsRef) =>
         val axisPts          = a2l.getXAxisPts(c)
         val axisType         = a2l.getType(axisPts)
-        val axisFormat       = axisPts.getFormat
         val axisRecordLayout = a2l.getRecordLayout(axisPts)
 
         val consumer = CurveConsumer(c, axisType, axisPts, axisRecordLayout, fnRecordLayout, offset, binAccess)
@@ -170,14 +169,17 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         )
 
       case None =>
-        val axisDesc   = c.getAxisDescriptions.get(0)
-        val axisFormat = axisDesc.getFormat
-        val consumer   = CurveConsumer(c, axisDesc, fnRecordLayout, offset, binAccess)
-        val axDp       = A2LWrapper.getDecimalPlaces(axisDesc)
-        val fnDp       = A2LWrapper.getDecimalPlaces(c)
-        val axisCompu  = getFormula(axisDesc)
+        val axisDesc  = c.getAxisDescriptions.get(0)
+        val consumer  = CurveConsumer(c, axisDesc, fnRecordLayout, offset, binAccess)
+        val axisCompu = getFormula(axisDesc)
 
-        compuMethodCata1D(axisCompu, axDp, fnFormula, fnDp, consumer)
+        compuMethodCata1D(
+          axisCompu,
+          A2LWrapper.getDecimalPlaces(axisDesc),
+          fnFormula,
+          A2LWrapper.getDecimalPlaces(c),
+          consumer
+        )
   }
 
   def readMap(cName: String): MapValueType = {

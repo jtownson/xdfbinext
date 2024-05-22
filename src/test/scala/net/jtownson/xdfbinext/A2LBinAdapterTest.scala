@@ -175,20 +175,42 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     // format: on
   }
 
-  it should "read this one" in {
+  it should "read ip_cppwm_inc_nvld (which has axis tabs)" in {
     val expectedAxis   = Array[BigDecimal](0.000000, 30.078125, 50.000000, 80.078125, 99.609375)
     val expectedValues = Array[BigDecimal](0.000000, 10.156250, 19.921875, 30.078125, 39.843750)
     a2LBinAdapter.readCharacteristic("ip_cppwm_inc_nvld") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
   }
 
-  it should "read all characteristics in the a2l" ignore {
+  it should "read KLTNMXPRATEXP" in {
+    val expectedAxis   = (-1 to 9).map(n => BigDecimal(s"$n.000000")).toArray
+    val expectedValues = Array.fill(11)(BigDecimal("0.000000"))
+    a2LBinAdapter.readCharacteristic("KLTNMXPRATEXP") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
+  }
+
+  it should "read KFKRINTZ1GF" in {
+    val expectedX      = (0 to 5).map(n => BigDecimal(s"$n.000")).toArray
+    val expectedY      = (0 to 4).map(n => BigDecimal(s"$n.000")).toArray
+    val expectedValues = Array.fill(30)(BigDecimal("1.000"))
+
+    a2LBinAdapter
+      .readCharacteristic("KFKRINTZ1GF") shouldBe NumberNumberNumberTable2D(expectedX, expectedY, expectedValues)
+  }
+
+  it should "read KL_TD_HBA_F" in {
+    val expectedAxis   = Array("Eco", "Normal", "High", "MAX")
+    val expectedValues = Array("5.000", "5.000", "10.000", "15.000").map(BigDecimal(_))
+
+    a2LBinAdapter.readCharacteristic("KL_TD_HBA_F") shouldBe StringNumberTable1D(expectedAxis, expectedValues)
+  }
+
+  it should "read all characteristics in the a2l" in {
     a2LWrapper.characteristics.foreach { (n, c) =>
       if (
         c.getType == CharacteristicType.VALUE ||
         c.getType == CharacteristicType.CURVE ||
-        c.getType == CharacteristicType.MAP
+        c.getType == CharacteristicType.MAP ||
+        c.getType == CharacteristicType.VAL_BLK
       ) {
-        println(s"Reading $n")
         noException shouldBe thrownBy(a2LBinAdapter.readCharacteristic(n))
       }
     }

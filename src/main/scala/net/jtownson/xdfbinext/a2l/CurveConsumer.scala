@@ -2,8 +2,8 @@ package net.jtownson.xdfbinext.a2l
 
 import net.alenzen.a2l.enums.DataType
 import net.alenzen.a2l.{AxisDescr, AxisPts, Characteristic, RecordLayout}
-import net.jtownson.xdfbinext.a2l.ByteBlock.{xLabel, fnLabel}
-import net.jtownson.xdfbinext.a2l.BlockConsumer.toTypedConsumableRecord
+import net.jtownson.xdfbinext.a2l.ByteBlock.{fnLabel, xLabel}
+import net.jtownson.xdfbinext.a2l.BlockConsumer.{fixAxisBlockConsumer, toTypedConsumableRecord}
 
 import java.io.RandomAccessFile
 
@@ -28,7 +28,7 @@ class CurveConsumer(x: BlockConsumer, z: BlockConsumer) {
 }
 
 object CurveConsumer {
-
+  
   def apply(
       c: Characteristic,
       axisType: DataType,
@@ -78,7 +78,7 @@ object CurveConsumer {
       binAccess
     )
 
-    val x = cRec(xLabel)
+    val x = fixAxisBlockConsumer(axisDescr).getOrElse(cRec(xLabel))
 
     val z = cRec(fnLabel)
 

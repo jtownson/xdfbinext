@@ -1,8 +1,9 @@
 package net.jtownson.xdfbinext.a2l
 
-import net.alenzen.a2l.enums.DataType
+import net.alenzen.a2l.enums.{DataSize, DataType}
 import net.alenzen.a2l.enums.DataType.*
-import net.alenzen.a2l.{AxisPtsXYZ45, FncValues, NoAxisPtsXYZ45, RecordLayout}
+import net.alenzen.a2l.{AxisPtsXYZ45, FncValues, NoAxisPtsXYZ45, RecordLayout, Reserved}
+import scala.jdk.CollectionConverters._
 
 object ByteBlock {
 
@@ -12,6 +13,17 @@ object ByteBlock {
   }
 
   case class ByteBlockAbs(label: String, address: Long, dataType: DataType, cellCount: Int)
+
+  private def getDataTypeFromSz(dataSize: DataSize): DataType = dataSize match
+    case DataSize.BYTE =>
+      UBYTE
+    case DataSize.WORD =>
+      UWORD
+    case DataSize.LONG =>
+      ULONG
+
+  private def reservedByteBlocksRel(reserved: List[Reserved]): Seq[ByteBlockRel] =
+    reserved.map(r => ByteBlockRel(unusedLabel, r.getPosition.toInt, getDataTypeFromSz(r.getDataSize), 1))
 
   private def toByteBlockRel(nax: NoAxisPtsXYZ45): ByteBlockRel =
     ByteBlockRel(unusedLabel, nax.getPosition.toInt, nax.getDataType, 1)
@@ -23,13 +35,14 @@ object ByteBlock {
     ByteBlockRel(fnLabel, fn.getPosition.toInt, fn.getDataType, nFnPoints)
 
   private def toByteBlocksRel(nAxisPointsX: Int, nAxisPointsY: Int, rl: RecordLayout): Seq[ByteBlockRel] = {
-    Seq(
-      Option(rl.getNoAxisPtsX).map(toByteBlockRel),
-      Option(rl.getNoAxisPtsY).map(toByteBlockRel),
-      Option(rl.getAxisPtsX).map(toByteBlockRel(xLabel, nAxisPointsX)),
-      Option(rl.getAxisPtsY).map(toByteBlockRel(yLabel, nAxisPointsY)),
-      Option(rl.getFunctionValues).map(toByteBlockRel(nAxisPointsX * nAxisPointsY))
-    ).flatten
+    reservedByteBlocksRel(rl.getReserved.asScala.toList) ++
+      Seq(
+        Option(rl.getNoAxisPtsX).map(toByteBlockRel),
+        Option(rl.getNoAxisPtsY).map(toByteBlockRel),
+        Option(rl.getAxisPtsX).map(toByteBlockRel(xLabel, nAxisPointsX)),
+        Option(rl.getAxisPtsY).map(toByteBlockRel(yLabel, nAxisPointsY)),
+        Option(rl.getFunctionValues).map(toByteBlockRel(nAxisPointsX * nAxisPointsY))
+      ).flatten
   }
 
   def toRecord(baseAddress: Long, nAxisPointsX: Int, nAxisPointsY: Int, rl: RecordLayout): Map[String, ByteBlockAbs] =

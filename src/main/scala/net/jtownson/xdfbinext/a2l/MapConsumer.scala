@@ -2,7 +2,7 @@ package net.jtownson.xdfbinext.a2l
 
 import net.alenzen.a2l.enums.DataType
 import net.alenzen.a2l.{AxisDescr, AxisPts, Characteristic, RecordLayout}
-import net.jtownson.xdfbinext.a2l.BlockConsumer.toTypedConsumableRecord
+import net.jtownson.xdfbinext.a2l.BlockConsumer.{fixAxisBlockConsumer, toTypedConsumableRecord}
 import net.jtownson.xdfbinext.a2l.ByteBlock.{fnLabel, xLabel, yLabel}
 
 import java.io.RandomAccessFile
@@ -92,9 +92,9 @@ object MapConsumer {
       binAccess
     )
 
-    val x = cRec(xLabel) // with axis pts, the axis values are the function values
+    val x = fixAxisBlockConsumer(xAxisDescr).getOrElse(cRec(xLabel))
 
-    val y = cRec(yLabel)
+    val y = fixAxisBlockConsumer(yAxisDescr).getOrElse(cRec(yLabel))
 
     val z = cRec(fnLabel)
 
