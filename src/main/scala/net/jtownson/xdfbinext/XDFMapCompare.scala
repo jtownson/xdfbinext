@@ -1,13 +1,13 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.XdfSchema.{XdfTable1D, XdfTable2D, XdfModel, XdfTable}
+import net.jtownson.xdfbinext.XdfSchema.{XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
 import scala.io.Source
 import scala.util.Using
 
-object MapCompare {
+object XDFMapCompare {
 
   def table2Str(bin: XDFBinAdapter, tableName: String): String = {
     val xdf              = bin.xdfModel
@@ -189,7 +189,7 @@ object MapCompare {
   private val parser: OParser[Unit, CommandLine] = {
     import builder.*
     OParser.sequence(
-      programName("MapCompare"),
+      programName("XDFMapCompare"),
       head(
         "Compare bin files using an XDF and print out a report with the differences.",
         "This allows you to see what you have and have not done when developing a tune.",

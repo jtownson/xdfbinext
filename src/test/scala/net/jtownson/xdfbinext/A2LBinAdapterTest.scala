@@ -3,12 +3,10 @@ package net.jtownson.xdfbinext
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
 import net.jtownson.xdfbinext.A2LBinAdapterTest.{a2LBinAdapter, a2LWrapper}
 import net.jtownson.xdfbinext.a2l.CurveType.{NumberNumberTable1D, NumberStringTable1D, StringNumberTable1D}
-import net.jtownson.xdfbinext.a2l.MapType.{
-  NumberNumberNumberTable2D,
-  NumberNumberStringTable2D,
-  NumberStringNumberTable2D
-}
+import net.jtownson.xdfbinext.a2l.MapType.{NumberNumberNumberTable2D, NumberNumberStringTable2D, NumberStringNumberTable2D}
 import net.jtownson.xdfbinext.a2l.StringArray
+import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
+import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -85,7 +83,10 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     val expectedAxis   = Array[BigDecimal](1.70001, 1.79999, 1.90002, 2.20001, 2.59998, 3.99994)
     val expectedValues = Array[BigDecimal](1.59998, 1.62000, 1.65002, 1.71997, 1.75000, 1.79999)
     val c =
-      a2LBinAdapter.readCurve("BMWtchctr_fac_TrbEffIvs_T") shouldBe NumberNumberTable1D(expectedAxis, expectedValues)
+      a2LBinAdapter.readCharacteristic("BMWtchctr_fac_TrbEffIvs_T") shouldBe NumberNumberTable1D(
+        expectedAxis,
+        expectedValues
+      )
   }
 
   it should "read a val_blk" in {
@@ -203,16 +204,13 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     a2LBinAdapter.readCharacteristic("KL_TD_HBA_F") shouldBe StringNumberTable1D(expectedAxis, expectedValues)
   }
 
+  it should "read the software version" in {
+    a2LBinAdapter.readCharacteristic("CustDiag_dDatasetVer_C") shouldBe "R1C9J8B3BCEDX2"
+  }
+
   it should "read all characteristics in the a2l" in {
     a2LWrapper.characteristics.foreach { (n, c) =>
-      if (
-        c.getType == CharacteristicType.VALUE ||
-        c.getType == CharacteristicType.CURVE ||
-        c.getType == CharacteristicType.MAP ||
-        c.getType == CharacteristicType.VAL_BLK
-      ) {
-        noException shouldBe thrownBy(a2LBinAdapter.readCharacteristic(n))
-      }
+      a2LBinAdapter.readCharacteristic(n)
     }
   }
 }

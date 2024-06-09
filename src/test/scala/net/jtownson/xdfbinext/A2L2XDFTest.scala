@@ -32,30 +32,34 @@ class A2L2XDFTest extends AnyFlatSpec {
     println(a2l.characteristic2XDF(_ == "BMWtchctr_fac_FilRatWg_T").head)
   }
 
-  it should "output XDF snippets for tchsp tables" ignore {
+  it should "output XDF snippets for tchsp tables" in {
     val newTables =
       List(
-        "BMWtchsp_rat_p_CmprPmp_T",
-        "BMWtchsp_rat_p_CmprMax_M",
-        "BMWtchsp_p_ReqMax_C",
-        "BMWtchsp_fac_FilPRatCmpr_T",
-        "BMWtchsp_fac_mf_FilCmprNorm_T",
-        "BMWtchctr_pwr_Pctl_M",
-        "BMWtchctr_pwr_CmprGra_M",
-        "BMWtchctr_p_DifCrtnPp_M",
-        "BMWtchctr_pwr_Dp_M",
-        "BMWtchctr_fac_Dp_T",
-        "BMWtchco_p_HysAcv_C",
-        "BMWtchctr_fac_pwr_CompLimPctl_T",
-        "BMWtchctr_rat_p_ComprLimPctl_T ",
-        "BMWtchctr_p_ReqDynLimPctl_C",
-        "KL_AUSY_TURB",
-        "KF_AUSY_TURB",
-        "KL_AUSY_TURB_DIFF",
-        "KL_TABG2TABG_WZINV",
-        "BMWtchctr_fac_TrbEffIvs_T",
-        "BMWtchctr_fac_TrbExp_T",
-        "BMWtchctr_pct_WgBasc_M"
+        "BMWausy_p_DifCat_T",
+        "BMWausy_gra_PEgFlpDwn_C",
+        "BMWausy_gra_PEgFlpOp_C"
+
+//        "BMWtchsp_rat_p_CmprPmp_T",
+//        "BMWtchsp_rat_p_CmprMax_M",
+//        "BMWtchsp_p_ReqMax_C",
+//        "BMWtchsp_fac_FilPRatCmpr_T",
+//        "BMWtchsp_fac_mf_FilCmprNorm_T",
+//        "BMWtchctr_pwr_Pctl_M",
+//        "BMWtchctr_pwr_CmprGra_M",
+//        "BMWtchctr_p_DifCrtnPp_M",
+//        "BMWtchctr_pwr_Dp_M",
+//        "BMWtchctr_fac_Dp_T",
+//        "BMWtchco_p_HysAcv_C",
+//        "BMWtchctr_fac_pwr_CompLimPctl_T",
+//        "BMWtchctr_rat_p_ComprLimPctl_T ",
+//        "BMWtchctr_p_ReqDynLimPctl_C",
+//        "KL_AUSY_TURB",
+//        "KF_AUSY_TURB",
+//        "KL_AUSY_TURB_DIFF",
+//        "KL_TABG2TABG_WZINV",
+//        "BMWtchctr_fac_TrbEffIvs_T",
+//        "BMWtchctr_fac_TrbExp_T",
+//        "BMWtchctr_pct_WgBasc_M"
       )
 
     newTables.foreach { table =>

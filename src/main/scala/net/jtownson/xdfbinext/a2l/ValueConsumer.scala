@@ -20,7 +20,14 @@ class ValueConsumer(z: BlockConsumer) {
 object ValueConsumer {
 
   type ValueType = BigDecimal | String
-  
+
+  def foldValueType[T](fBd: BigDecimal => T, fStr: String => T)(value: ValueType): T = value match {
+    case bd: BigDecimal =>
+      fBd(bd)
+    case s: String =>
+      fStr(s)
+  }
+
   def apply(
       c: Characteristic,
       fnLayout: RecordLayout,

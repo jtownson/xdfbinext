@@ -21,6 +21,34 @@ object MapType {
   type MapValueType = NumberNumberNumberTable2D | NumberNumberStringTable2D | NumberStringNumberTable2D |
     NumberStringStringTable2D | StringNumberStringTable2D | StringNumberNumberTable2D | StringStringStringTable2D |
     StringStringNumberTable2D
+  
+  def foldMapValueType[T](
+      fnnn: NumberNumberNumberTable2D => T,
+      fnns: NumberNumberStringTable2D => T,
+      fnsn: NumberStringNumberTable2D => T,
+      fnss: NumberStringStringTable2D => T,
+      fsns: StringNumberStringTable2D => T,
+      fsnn: StringNumberNumberTable2D => T,
+      fsss: StringStringStringTable2D => T,
+      fssn: StringStringNumberTable2D => T
+  )(value: MapValueType): T = value match {
+    case v: NumberNumberNumberTable2D =>
+      fnnn(v)
+    case v: NumberNumberStringTable2D =>
+      fnns(v)
+    case v: NumberStringNumberTable2D =>
+      fnsn(v)
+    case v: NumberStringStringTable2D =>
+      fnss(v)
+    case v: StringNumberStringTable2D =>
+      fsns(v)
+    case v: StringNumberNumberTable2D =>
+      fsnn(v)
+    case v: StringStringStringTable2D =>
+      fsss(v)
+    case v: StringStringNumberTable2D =>
+      fssn(v)
+  }
 
   case class NumberNumberNumberTable2D(xAxis: Array[BigDecimal], yAxis: Array[BigDecimal], values: Array[BigDecimal])
       extends MapType[BigDecimal, BigDecimal, BigDecimal] {

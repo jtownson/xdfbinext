@@ -1,6 +1,8 @@
 package net.jtownson.xdfbinext
 
-import net.jtownson.xdfbinext.A2LWrapperTest.{tchCharacteristics, withA2L}
+import net.alenzen.a2l.enums.CharacteristicType
+import net.jtownson.xdfbinext.A2LWrapperTest.withA2L
+import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValueSummary}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -14,23 +16,41 @@ class A2LWrapperTest extends AnyFlatSpec {
     a2l.characteristicUsage("BMWtchsp_p_DifIco_T") shouldBe Set("BMW_MOD_TchSp_P_10ms")
   }
 
-  it should "get functions for tch maps" in withA2L { a2l =>
-    val tchMaps = a2l.characteristics.filter((name, _) => name.startsWith("BMWtch"))
-
-    val fns = tchMaps.flatMap((n, c) => a2l.characteristicUsage(n)).toSeq.distinct.sorted
-
-    val cats =
-      fns.zip((0x48 to 0x48 + 36)).map((s, i) => s"""<CATEGORY index="0x${i.toHexString.toUpperCase}" name="$s" />""")
-    println(cats.mkString("\n"))
+  it should "generate a summary for a value" in withA2L { a2l =>
+    a2l.getSummary("K_FRFMXBS_MN") shouldBe ValueSummary(
+      "K_FRFMXBS_MN",
+      "Factor for load reduction in component protection mode",
+      Set("BMW_MOD_BsPost_200ms"),
+      "-"
+    )
   }
 
-  it should "find all tch maps" in withA2L { a2l =>
-    println(a2l.characteristics.filter((name, _) => name.startsWith("BMWtch")).keySet.toList.sorted.mkString(",\n"))
-//    a2l.characteristics.filter((name, _) => name.startsWith("BMWtch")).keySet shouldBe tchCharacteristics.toSet
+  it should "generate a summary for a curve" in withA2L { a2l =>
+    a2l.getSummary("KL_AUSY_TURB") shouldBe CurveSummary(
+      "KL_AUSY_TURB",
+      "Flow characteristic curve turbine, reduced mass flow (unit kg/s * root [°K] / kPa)",
+      Set("BMW_MOD_AusyTurb_Seg"),
+      "-",
+      "-"
+    )
   }
 
-  it should "generate indexes" in {
-    println((0x48 to 0x48 + 36).map(_.toHexString.toUpperCase).mkString("\n"))
+  it should "generate a summary for a map" in withA2L { a2l =>
+    a2l.getSummary("BMWtchsp_rat_p_CmprMax_M") shouldBe MapSummary(
+      "BMWtchsp_rat_p_CmprMax_M",
+      "KF_FPLDMAX",
+      Set("BMW_MOD_TchSp_P_10ms"),
+      "kg/h",
+      "°C",
+      "-"
+    )
+  }
+
+  it should "generate summaries for all objects" ignore withA2L { a2l =>
+    a2l.characteristics.foreach { (n, c) =>
+      if (c.getType != CharacteristicType.ASCII)
+        println(a2l.getSummary(n))
+    }
   }
 }
 

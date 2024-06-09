@@ -14,7 +14,7 @@ import scala.math.BigDecimal.RoundingMode.HALF_UP
 
 class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
 
-  private val a2l = A2LWrapper(a2lUrl)
+  val a2l: A2LWrapper = A2LWrapper(a2lUrl)
 
   private val characteristics = a2l.characteristics
   private val compuMethods    = a2l.compuMethods
@@ -32,7 +32,7 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
   }
 
   private def characteristic2XDF(c: Characteristic): String = {
-    characteristicFold(c, value2Xdf, curve2Xdf, map2Xdf)
+    characteristicFold(c, value2Xdf, valBlk2Xdf, curve2Xdf, map2Xdf)
   }
 
   private def getTypeFlag(c: Characteristic): Int = {
@@ -82,12 +82,16 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     val refFns = a2l.characteristicUsage(c.getName)
 
     val cats =
-      if (c.getName == "KL_AUSY_TURB")
+      if (c.getName == "KL_AUSY_TURB" || c.getName == "BMWausy_p_DifCat_T")
         List(catMap("BMW_MOD_TchCtr_Pwr2Pos_10ms"))
       else
         refFns.flatMap(catMap.get).filter(_.name != "BMW_MOD_AusyTurb_Seg").toList
 
     cats.indices.map(i => CategoryMem(i, cats(i))).toList
+  }
+
+  def valBlk2Xdf(c: Characteristic): String = {
+    throw new UnsupportedOperationException(s"VAL_BLKs still todo. Can convert ${c.getName} to XDF.")
   }
 
   def value2Xdf(c: Characteristic): String = {
@@ -189,7 +193,14 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     val compuMethod = compuMethods(c.getConversion)
     if (compuMethod.getConversionType == ConversionType.RAT_FUNC) {
       val coeffs = compuMethods(c.getConversion).getCoeffs
-      FormulaExpressionInverse.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+      FormulaExpressionInverse.toFormulaInv(
+        coeffs.getA,
+        coeffs.getB,
+        coeffs.getC,
+        coeffs.getD,
+        coeffs.getE,
+        coeffs.getF
+      )
     } else {
       "X"
     }

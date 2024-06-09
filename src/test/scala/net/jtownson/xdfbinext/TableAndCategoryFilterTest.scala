@@ -37,6 +37,6 @@ class TableAndCategoryFilterTest extends AnyFlatSpec {
   }
 
   "MapCompare" should "split args correctly" in {
-    MapCompare.csvReader.reads.apply("Limits, Boost, Vanos") shouldBe Set("Limits", "Boost", "Vanos")
+    XDFMapCompare.csvReader.reads.apply("Limits, Boost, Vanos") shouldBe Set("Limits", "Boost", "Vanos")
   }
 }

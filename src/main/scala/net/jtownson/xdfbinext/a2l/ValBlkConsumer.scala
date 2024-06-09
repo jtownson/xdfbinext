@@ -1,9 +1,8 @@
 package net.jtownson.xdfbinext.a2l
 
-import net.alenzen.a2l.enums.DataType
-import net.alenzen.a2l.{AxisDescr, AxisPts, Characteristic, RecordLayout}
-import net.jtownson.xdfbinext.a2l.ByteBlock.{fnLabel, xLabel, yLabel}
+import net.alenzen.a2l.{Characteristic, RecordLayout}
 import net.jtownson.xdfbinext.a2l.BlockConsumer.toTypedConsumableRecord
+import net.jtownson.xdfbinext.a2l.ByteBlock.fnLabel
 
 import java.io.RandomAccessFile
 
@@ -21,7 +20,13 @@ class ValBlkConsumer(z: BlockConsumer) {
 
 object ValBlkConsumer {
 
-  type ValueBlkType = NumericArray | StringArray
+  type ValBlkType = NumericArray | StringArray
+
+  def foldValBlkType[T](fna: NumericArray => T, fsa: StringArray => T)(value: ValBlkType): T = value match
+    case v: NumericArray =>
+      fna(v)
+    case v: StringArray =>
+      fsa(v)
 
   def apply(
       c: Characteristic,

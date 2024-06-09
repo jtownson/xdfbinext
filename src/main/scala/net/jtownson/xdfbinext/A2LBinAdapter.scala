@@ -1,15 +1,16 @@
 package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.*
-import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
+import net.alenzen.a2l.enums.CharacteristicType.{ASCII, CURVE, MAP, VALUE, VAL_BLK}
 import net.alenzen.a2l.enums.{CharacteristicType, ConversionType}
 import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
 import net.jtownson.xdfbinext.a2l.CurveType.*
 import net.jtownson.xdfbinext.a2l.MapType.*
 import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
-import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValueBlkType
+import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
 import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
 
+import scala.jdk.CollectionConverters.*
 import java.io.{File, RandomAccessFile}
 
 /** What would be nice here would be to convert an a2l+bin to some kind of repr where we are able to answer questions
@@ -21,8 +22,16 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
     readCharacteristic(a2l.characteristics(cName))
   }
 
-  def readValue(cName: String): String | BigDecimal = {
+  private def readValue(cName: String): String | BigDecimal = {
     readValue(a2l.characteristics(cName))
+  }
+
+  private def readAscii(c: Characteristic): String = {
+    val t  = a2l.getType(c)
+    val n  = c.getNumber.toInt
+    val cm = a2l.getCompuMethod(c)
+    val rl = a2l.getRecordLayout(c)
+    BlockConsumer.readUByte(c.getAddress - offset, n, binAccess).takeWhile(_ != 0).map(_.toChar).mkString
   }
 
   private def readValue(c: Characteristic): String | BigDecimal = {
@@ -40,7 +49,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         valueConsumer.applyFuncFormula(ratFun, A2LWrapper.getDecimalPlaces(c))
   }
 
-  private def readValBlk(c: Characteristic): ValueBlkType = {
+  private def readValBlk(c: Characteristic): ValBlkType = {
 
     val consumer = ValBlkConsumer(c, a2l.getRecordLayout(c), offset, binAccess)
 
@@ -56,7 +65,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
   }
 
-  def readCurve(cName: String): CurveValueType = {
+  private def readCurve(cName: String): CurveValueType = {
     readCurve(a2l.characteristics(cName))
   }
 
@@ -146,7 +155,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
     }
   }
 
-  def readCurve(c: Characteristic): CurveValueType = {
+  private def readCurve(c: Characteristic): CurveValueType = {
     val fnRecordLayout = a2l.getRecordLayout(c)
     val fnFormula      = getFormula(c)
 
@@ -182,11 +191,11 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         )
   }
 
-  def readMap(cName: String): MapValueType = {
+  private def readMap(cName: String): MapValueType = {
     readMap(a2l.characteristics(cName))
   }
 
-  def readMap(c: Characteristic): MapValueType = {
+  private def readMap(c: Characteristic): MapValueType = {
     val fnRecordLayout = a2l.getRecordLayout(c)
     val fnCompuMethod  = getFormula(c)
 
@@ -260,6 +269,8 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       readMap(c)
     } else if (c.getType == VAL_BLK) {
       readValBlk(c)
+    } else if (c.getType == ASCII) {
+      readAscii(c)
     } else {
       ???
     }
@@ -279,8 +290,6 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
     val compuMethod = a2l.compuMethods(a.getConversion)
     getFormula(compuMethod)
   }
-
-  import scala.jdk.CollectionConverters.*
 
   private def getFormula(compuMethod: CompuMethod): CompuMethodType = {
     val conversionType = compuMethod.getConversionType
@@ -318,7 +327,5 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 }
 
 object A2LBinAdapter {
-
-  type CharacteristicValue = ValueType | ValueBlkType | CurveValueType | MapValueType
-
+  type CharacteristicValue = ValueType | ValBlkType | CurveValueType | MapValueType
 }

@@ -18,6 +18,24 @@ object CurveType {
 
   type CurveValueType = NumberStringTable1D | StringNumberTable1D | StringStringTable1D | NumberNumberTable1D
 
+  def foldCurveValueType[T](
+      fnst: NumberStringTable1D => T,
+      fsnt: StringNumberTable1D => T,
+      fsst: StringStringTable1D => T,
+      fnnt: NumberNumberTable1D => T
+  )(
+      value: CurveValueType
+  ): T = value match {
+    case nst: NumberStringTable1D =>
+      fnst(nst)
+    case snt: StringNumberTable1D =>
+      fsnt(snt)
+    case sst: StringStringTable1D =>
+      fsst(sst)
+    case nnt: NumberNumberTable1D =>
+      fnnt(nnt)
+  }
+
   case class NumberNumberTable1D(axis: Array[BigDecimal], values: Array[BigDecimal])
       extends CurveType[BigDecimal, BigDecimal] {
     def atX(x: BigDecimal): BigDecimal = linearInterpolate(axis, values, x)

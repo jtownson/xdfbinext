@@ -1,8 +1,11 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.{CharacteristicType, DataType, Deposit}
+import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
+import net.alenzen.a2l.enums.{CharacteristicType, DataType}
 import net.alenzen.a2l.{Asap2File, Unit as A2lUnit, *}
-import net.jtownson.xdfbinext.A2LWrapper.getA2L
+import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getA2L, getObjectDescription}
+import net.jtownson.xdfbinext.a2l.CharacteristicSummary
+import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValBlkSummary, ValueSummary}
 
 import java.net.URL
 import scala.jdk.CollectionConverters.*
@@ -40,18 +43,79 @@ case class A2LWrapper(a2lUrl: URL) {
     }.keySet
   }
 
-  private def getType(r: RecordLayout): DataType = {
-    Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype)
+  def getSummary(name: String): CharacteristicSummary =
+    getSummary(characteristics(name))
+
+  private def getSummary(c: Characteristic): CharacteristicSummary = {
+
+    def valueSummary(c: Characteristic) =
+      ValueSummary(
+        c.getName,
+        getObjectDescription(c.getName, c.getLongIdentifier),
+        characteristicUsage(c.getName),
+        getUnits(c)
+      )
+
+    def valBlkSummary(c: Characteristic) =
+      ValBlkSummary(
+        c.getName,
+        getObjectDescription(c.getName, c.getLongIdentifier),
+        characteristicUsage(c.getName),
+        getUnits(c)
+      )
+
+    def curveSummary(c: Characteristic) =
+      CurveSummary(
+        c.getName,
+        getObjectDescription(c.getName, c.getLongIdentifier),
+        characteristicUsage(c.getName),
+        getXAxisUnits(c),
+        getUnits(c)
+      )
+
+    def mapSummary(c: Characteristic) =
+      MapSummary(
+        c.getName,
+        getObjectDescription(c.getName, c.getLongIdentifier),
+        characteristicUsage(c.getName),
+        getXAxisUnits(c),
+        getYAxisUnits(c),
+        getUnits(c)
+      )
+
+    characteristicFold(c, valueSummary, valBlkSummary, curveSummary, mapSummary)
+
+  }
+
+  def getUnits(c: Characteristic): String = {
+    val compuMethod = compuMethods(c.getConversion)
+    compuMethod.getUnit
+  }
+
+  def getXAxisUnits(c: Characteristic): String = {
+    getAxisUnits(c.getAxisDescriptions.get(0))
+  }
+
+  def getYAxisUnits(c: Characteristic): String = {
+    getAxisUnits(c.getAxisDescriptions.get(1))
+  }
+
+  def getAxisUnits(axisDescr: AxisDescr): String = {
+    compuMethods(axisDescr.getConversion).getUnit
+  }
+
+  def getCompuMethod(c: Characteristic): CompuMethod = {
+    compuMethods(c.getConversion)
   }
 
   def getType(c: Characteristic): DataType = {
     val layout: RecordLayout = recordLayouts(c.getDeposit)
-    getType(layout)
+    A2LWrapper.getType(layout)
   }
 
   def getType(a: AxisPts): DataType = {
     val layout: RecordLayout = recordLayouts(a.getDeposit)
-    getType(layout)
+    A2LWrapper.getType(layout)
   }
 
   def getXAxisPts(c: Characteristic): AxisPts = {
@@ -71,21 +135,17 @@ case class A2LWrapper(a2lUrl: URL) {
   }
 
   def getCellCount(c: Characteristic): Int = {
-    if (c.getType == CharacteristicType.VALUE) {
+    if (c.getType == VALUE) {
       1
-    } else if (c.getType == CharacteristicType.CURVE) {
+    } else if (c.getType == CURVE) {
       getXAxisCount(c)
-    } else if (c.getType == CharacteristicType.MAP) {
+    } else if (c.getType == MAP) {
       getXAxisCount(c) * getYAxisCount(c)
-    } else if (c.getType == CharacteristicType.VAL_BLK) {
+    } else if (c.getType == VAL_BLK) {
       c.getNumber.toInt
     } else {
       ???
     }
-  }
-
-  def getCellCount(a: AxisPts): Int = {
-    a.getMaxAxisPoints.toInt
   }
 
   def getXAxisCount(c: Characteristic): Int = {
@@ -163,15 +223,18 @@ object A2LWrapper {
   def characteristicFold[T](
       c: Characteristic,
       fValue: Characteristic => T,
+      fValBlk: Characteristic => T,
       fCurve: Characteristic => T,
       fMap: Characteristic => T
   ): T = {
-    if (c.getType == CharacteristicType.VALUE)
+    if (c.getType == VALUE)
       fValue(c)
-    else if (c.getType == CharacteristicType.CURVE)
+    else if (c.getType == CURVE)
       fCurve(c)
-    else if (c.getType == CharacteristicType.MAP)
+    else if (c.getType == MAP)
       fMap(c)
+    else if (c.getType == VAL_BLK)
+      fValBlk(c)
     else
       throw new IllegalStateException(s"Unsupported characteristic type: ${c.getType}")
   }
@@ -180,4 +243,7 @@ object A2LWrapper {
     BmwTchDescriptions.table.getOrElse(name, default)
   }
 
+  private def getType(r: RecordLayout): DataType = {
+    Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype)
+  }
 }

@@ -66,7 +66,7 @@ object BlockConsumer {
   private def apply(bb: ByteBlockAbs, binAccess: RandomAccessFile): BlockConsumer =
     BlockConsumer(bb.dataType, bb.address, bb.cellCount, binAccess)
 
-  private def apply(dataType: DataType, address: Long, cellCount: Int, binAccess: RandomAccessFile): BlockConsumer =
+  def apply(dataType: DataType, address: Long, cellCount: Int, binAccess: RandomAccessFile): BlockConsumer =
     dataType match {
       case SBYTE =>
         SByteBlockConsumer(address, cellCount, binAccess)
@@ -93,7 +93,7 @@ object BlockConsumer {
     a
   }
 
-  private def readUByte(address: Long, len: Int, binAccess: RandomAccessFile): Array[Int] = {
+  def readUByte(address: Long, len: Int, binAccess: RandomAccessFile): Array[Int] = {
     val a = new ArrayBuffer[Int](len)
     binAccess.seek(address)
     (0 until len).foreach(i => a.addOne(binAccess.readUnsignedByte()))

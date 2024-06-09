@@ -36,31 +36,32 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
-    "spa",
-    "P_MDGMK_STMDINFO_10ms"
-//    "BMW_MOD_TchCo_Acv_10ms"
-//    "P_MDGK_EVMKO_S_BGRZ"
-//    "BMW_MOD_TchCtr_PwrFade_10ms"
-//    "BMW_MOD_TchSp_P_10ms",
-//    "BMW_MOD_TchSp_Volf_10ms"
-//    "BMW_MOD_AusyKat_10ms",
-//    "BMW_MOD_TchCtr_Pwr_10ms",
-//    "BMW_MOD_TchCtr_Pwr2Pos_10ms"
-    //    "BMW_MOD_AusyKat_10ms",
-//    "BMW_MOD_TchBas_P_10ms",
-//    "BMW_MOD_TchBas_Misc_10ms",
-//    "BMW_MOD_BlsRfMax_10ms",
-//    "BMW_SWC_Ewg",
-//    "BMW_MOD_TchCtr_Pwr_10ms",
-//    "BMW_MOD_TchCtr_PosAdIp_10ms",
-//    "BMW_MOD_TchOut_10ms",
-//    "BMW_MOD_TqeLimStatMaxMdk_10ms",
-//    "BMW_MOD_BsPost_200ms"
+    "BMW_MOD_AusyKat_10ms",
+    "P_MDGMK_STMDINFO_10ms",
+    "BMW_MOD_TchCo_Acv_10ms",
+    "P_MDGK_EVMKO_S_BGRZ",
+    "BMW_MOD_TchCtr_PwrFade_10ms",
+    "BMW_MOD_TchSp_P_10ms",
+    "BMW_MOD_TchSp_Volf_10ms",
+    "BMW_MOD_AusyKat_10ms",
+    "BMW_MOD_TchCtr_Pwr_10ms",
+    "BMW_MOD_TchCtr_Pwr2Pos_10ms",
+    "BMW_MOD_AusyKat_10ms",
+    "BMW_MOD_TchBas_P_10ms",
+    "BMW_MOD_TchBas_Misc_10ms",
+    "BMW_MOD_BlsRfMax_10ms",
+    "BMW_SWC_Ewg",
+    "BMW_MOD_TchCtr_Pwr_10ms",
+    "BMW_MOD_TchCtr_PosAdIp_10ms",
+    "BMW_MOD_TchOut_10ms",
+    "BMW_MOD_TqeLimStatMaxMdk_10ms",
+    "BMW_MOD_BsPost_200ms"
   )
 
   private val valueCentredGraphs = Table[String](
     "Object name",
-    "Stat_mdinfo_s_tqc_tmp"
+    "Pkat"
+//    "Stat_mdinfo_s_tqc_tmp"
 //    "Tabg_mw"
 //    "K_I_GANG_AT"
 //    "BMWtchbas_b_Noise_bo"

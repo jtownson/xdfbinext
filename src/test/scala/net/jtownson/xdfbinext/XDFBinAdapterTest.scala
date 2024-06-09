@@ -42,7 +42,7 @@ class XDFBinAdapterTest extends AnyFlatSpec {
 //    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPRatCmpr_T"))
 //    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPDyn_C"))
 //    println(MapCompare.table2Str(binAdapter, "Maximaler Sollladedruck wegen Diagnose Ladedrucksensor"))
-    println(MapCompare.table2Str(binAdapter, "BMWtchsp_rat_p_CmprPmp_T"))
+    println(XDFMapCompare.table2Str(binAdapter, "BMWtchsp_rat_p_CmprPmp_T"))
   }
 
   "BinAdapter" should "read a scalar short" in {

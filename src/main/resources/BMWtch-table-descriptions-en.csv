@@ -343,7 +343,7 @@ BMWtchsp_fac_FadePBefTc_C,Crossfade between Pvdl (0) and Pumg (1) for calculatin
 BMWtchsp_fac_FilPDifReqMax_C,Filter constant for filtering the difference between max. target charging pressure and current target charging pressure
 BMWtchsp_fac_FilPDyn_C,Filter constant for dyn. Boost pressure setpoint
 BMWtchsp_fac_FilPRatCmpr_T,Filter constant for target pressure ratio
-BMWtchsp_fac_mf_FilCmprNorm_T,Filter constant for corr. Target mass flow
+BMWtchsp_fac_mf_FilCmprNorm_T,Filter constant for corrected target mass flow
 BMWtchsp_fac_mf_FilCmprNormGc_C,Filter constant for standardized target mass flow when changing gears
 BMWtchsp_fac_rf_MaxSmaMdl_C,"Correction factor to increase the Rfmax, which is calculated from the simple characteristic curve model. This increase makes sense in order not to unnecessarily reduce the Rfmax at low partial load due to model inaccuracies."
 BMWtchsp_fac_SqrtTBefTc_T,Temperature in front of charger corrected
@@ -1725,15 +1725,15 @@ BMWext_lam_CptPronMinLeanTq_M,Lambda Lean Best Torque for limiting the component
 BMWext_swi_RednCtlrTcOff_C,"Switch for deactivating the temperature controller via reduction factor (ATL), 1 = controller off"
 BMWext_t_DeltRednCtlrTcOff_C,Difference from the target temperature to switch off the temperature controller (ATL)
 BMWext_t_DeltRednCtlrTcOn_C,Difference from the target temperature for switching on the temperature controller (ATL)
-KF_BSLGF,Lambda grease run limit for component protection filling intervention
-KL_FRFMXBS,Characteristic curve factor filling intervention for BS at grease run limit
-K_DTARFMX,BS temperature control deviation for filling limitation at grease run limit
+KF_BSLGF,Lambda richness run limit for component protection filling intervention
+KL_FRFMXBS,Characteristic curve factor filling intervention for BS at rich limit
+K_DTARFMX,BS temperature control deviation for filling limitation at rich limit
 K_GRDUP_LALBT,Constant gradient limitation LBT lambda direction lean
 K_RFMX_I1,Increment integrator input ramp for filling limitation at BS
 K_RFMX_I2,Decrement integrator input ramp for filling limitation at BS
 K_TDBSLGF,Turnoff delay time for resetting the filling limit in the LL
 S_BSBUEK,Switch component protection for cross-bank Kruemmer
-S_BSRFMX,Filling limitation switch for component protection at the grease limit
+S_BSRFMX,Filling limitation switch for component protection at the rich limit
 S_BS_MONO,BS only calculate mono (Bank2=Bank1)
 BMWas_b_Idl_bo,"drive strategy () bit, boolean, flag, binary message or variable (log. condition) idle (idle) boolean/logic value (bool)"
 BMWext_t_DeltGasMnfXab,Delta temperature setpoint deviation gas temperature before ATL for torque/filling limitation
@@ -1768,11 +1768,11 @@ La_bs_roh_xab,Lambda set point in component protection from limitation
 La_bslalbt,Lambda Lean Best Torque
 La_bslalbt_roh,Lambda Lean Best Torque before gradient limitation
 St_bsvst,Status byte component protection precontrol for Noxkat
-St_bsvst.B_bslgf,BS regulator at the grease stop
+St_bsvst.B_bslgf,BS regulator at the richness limit
 St_bsvst.B_bsvst,Condition for component protection for Noxkat
 B_bslalbt_xab,Condition Lambda limitation in component protection through Lean Best Torque for each exhaust bank
 Bed_bs_xab,Component protection condition active
-Frfmxbsld,Factor filling limitation due to component protection at the grease limit
+Frfmxbsld,Factor filling limitation due to component protection at the rich limit
 La_bs_xab,Component protection lambda
 St_zwbts1,Status byte component protection function
 St_zwbts1.B_bs1,Condition component protection bank 1 active
@@ -4829,3 +4829,169 @@ St_EfcSrc_Statmdinfostqc,Calculation Stat_mdinfo_s_tqc: Status for pending limit
 BMWtqc_b_StIntvGbxDlyd_bo,"torque coordination bit, boolean, flag, binary message or variable state intervention gearbox delayed boolean"
 Stat_mdinfo_l_tqc_tmp,Intermediate size information torque interventions TQC air path
 Stat_mdinfo_s_tqc_tmp,Intermediate size information torque interventions TQC ignition path
+KL_AUSY_TURB,"Flow characteristic curve turbine, reduced mass flow (unit kg/s * root [°K] / kPa)"
+KF_ZW_S_PF2,"Ignition angle, path 2, safe"
+KF_ZW_PF2,"Ignition angle, path 2"
+KF_ZW_S_PF1,"Ignition angle, path 1, safe"
+KF_ZW_PF1,"Ignition angle, path 1"
+KF_FRKKORRF_1,Precontrol correction bank 1
+BMWosc_n_Gb1Max_T,Maximum reliable engine speed for transmission protection
+IKCtl_facRefMxSctn2_M,Maximum reference level for knock detection threshold cylinder group 2
+KF_HUB_GRDMX,Map maximum intake valve lift increase per 10ms
+BMWinjafs_fac_RatAirMax_T,Upper load limit for L-stoich adaptation
+KVMAXSWT,Value block to hold a set of vmax values
+S_BSRFMX,Load limit switch for component protection with maximally rich mixture
+S_DKPSRPL,Switch for enabling diagnosis of mass flow in the intake manifold (Msev_diag versus Msdk_diag)
+KL_LA_SBL,Lambda curve for burbles
+MoFTrqAct_trqPtdInjActv_C,"Maximum permitted actual torque, fuel injection active"
+KL_DKVL,"Maximum value for throttle valve setpoint (only with S_WDKSVL_VAR=1)"
+MKLIMATOB,Upper torque limit transmission in the event of a CAN error
+KL_MD_K_MAX_VL_ECO_STRG_AT,Speed-dependent strategic transmission input limitation during Eco for automatic
+KF_ZW_UESP_PF2,Ignition angle flushing path 2
+K_NKW_MAX,Max RPM of the crankshaft
+KF_MDIOP_1_TQE,Load to torque map
+KF_TA_IKSOLL,Target exhaust gas temperature in the cat
+KF_FDZWT_PF2,"Temperature correction factor, ZW knock limit path 2"
+KF_MDIMAX_TANS,Internal torque limit vs intake temperature
+FuPHi_pSpFuTemp_T,Target fuel pressure limitation depending on fuel temperature
+KF_MDR_ABV_SPO2,Relative torque request in sport mode (2)
+AKRGRCC_VAR2,"Map for exhaust flap control vs gear actual and nmot, with the convertible top closed and the sport button activated"
+BMWlam_swi_AcvnRstDlyCptPron_C,Lamda switch (only for application data) activation reset delay component protection constant
+K_HUBAPP,Application value inlet valve lift setpoint (only with CW_HUBAPP(Bit0)=1)
+BMWlpsc_volf_FuEjrPmpFuFil_M,Fuel volume flow map suction jet pump minimum pressure
+K_TKW_HZ,Coolant target temperature in heating output operating mode
+AFS_mfPhyRngHiB1_C,Upper threshold of the HFM physical range check
+AKRGRCO_VAR1,"Map for exhaust flap control depending on gear and nmot, with the convertible top open"
+AKRGRCO,"Map for exhaust flap control depending on gear and nmot, with the convertible top open"
+AKRGRCOATM,"Map for exhaust flap control depending on actual gear and nmot, auto transmission), convertible top open, sports mode"
+VMINAKR,Minimum vehicle speed for pulse output
+AKRGRCOM_VAR1,"Map for exhaust flap control depending on gear and nmot, with the convertible top open and the sports button activated"
+AKRGRCCM,"Map for exhaust flap control depending on gear actual and nmot, with the convertible top closed and the sport button activated"
+AKRGRCCATM,"Map for exhaust flap control depending on actual gear and nmot, AT transmission, with the convertible top closed and the sports button activated"
+VMINAKR_VAR2,"Minimum vehicle speed for pulse output"
+AKRGRCCM_VAR2,"Map for exhaust flap control depending on gear actual and nmot, with the convertible top closed and the sport button activated"
+AKRGRCCAT_VAR1,"Map for exhaust flap control depending on gear actual and nmot, AT transmission, with the convertible top closed"
+AKRGRCOAT_VAR1,"Map for exhaust flap control depending on gear actual and nmot, AT transmission) with the convertible top open"
+AKRGRCCM_VAR1,"Kennfeld fï¿½r Abgasklappenansteuerung in Abh. von gangsist und nmot, bei geschlossenem Cabrioverdeck bei aktivierten Sporttaster"
+TVSTAKR,Delay time for activation of the exhaust flap after start
+AKRGRCC,"Map for exhaust flap control depending on gear actual and nmot, with the convertible top closed"
+AKRGRCOATM_VAR1,"Map for exhaust flap control depending on actual gear and nmot, AT transmission, with open convertible top and activated sports button and activated sports button"
+AKRGRCOAT,"Map for exhaust flap control depending on gear actual and nmot, AT transmission, with the convertible top open"
+AKRGRCC_VAR1,"Map for exhaust flap control depending on gear actual and nmot, with the convertible top closed and the sport button activated"
+AKRGRCCATM_VAR1,"Map for exhaust flap control depending on actual gear and nmot, AT transmission, with the convertible top closed and the sports button activated"
+AKRGRCCAT_VAR2,"Map for exhaust flap control depending on gear actual and nmot, AT transmission, with the convertible top closed"
+AKRGRCCAT,"Map for exhaust flap control depending on gear actual and nmot, AT transmission, with the convertible top closed"
+AKRGRCOM,"Map for exhaust flap control depending on gear and nmot, with the convertible top open and the sports button activated"
+AKRGRCCATM_VAR2,"Map for exhaust flap control depending on actual gear and nmot, AT transmission, with the convertible top closed and the sports button activated"
+DWMSVMX,Angle limitation for maximum delivery rate
+MATEGES,Autonomous transmission protection torque in the event of a CAN-EGS error
+DPTPVDMN,maximum lower tolerance of the pressure before DK
+PVDEMX,"Substitute value for maximum pressure before DK"
+DPTPVDMX,maximum upper tolerance of the pressure before DK
+BMWlpa_n_EfpModMax_C,EKP speed specification max mode
+BMWlpa_n_EfpEngStrtAmb_M,EKP speed specification start environment
+BMWlpa_rat_EfpPwm_T,EKP control speed in PWM
+BMWlpa_n_EfpModBoos_C,LoPAsst EKP speed specification boost mode
+BMWlpa_n_EfpGraNegMax_C,EKP speed specification gradient limitation negative
+BMWlpg_volf_FuBoosHysRi_C,LoPGovr volume flow fuel boost mode hysteresis
+BMWlpsc_volf_FuEjrPmp_M,Flow rate map
+BMWlpsc_n_EfpBasc_M,Speed EKP map from pressure and volume flow
+BMWlpsc_p_HppBasc_M,Map of necessary pressure before HDP basis
+BMWlpsc_p_HppMax_T,Characteristic curve Maximum pressure before HDP depending on the flow
+BMWlpsd_p_RailDifMax_T,Rail pressure deviation threshold
+K_PAK_MX,Maximum exhaust manifold pressure value
+KF_AUSY_TURB,"Flow map turbine plus wastegate, reduced mass flow (unit kg/s * root[°K] / kPa)"
+KF_EHUB_MX,Maximum intake valve lift map
+GKF_ASPR_NORM_WARM_PF1,"Outlet spread setpoint map (normal operation map, warm, path 1)"
+GKF_ESPR_NORM_KALT_PF1,"Map of inlet spread setpoint (map of normal operation, cold, load, path 1)"
+GKF_ESPR_NORM_WARM_PF1,"Inlet spread setpoint map (normal operation map, warm, load, path 1)"
+KL_RFTNLMX,Maximum nonlinear Drf when calculating Ps_soll_sm_nl
+K_MAX_PSSOLBER,"Maximum Ps_soll_offs (when calculating Ps_soll_sm_nl)"
+K_BS_MN,Lambda minimum value for component protection
+KL_TVKLK,Exhaust gas temperature threshold for active switching
+KF_TA_ATLSOLL,Target temperature for exhaust gas temperature ATL
+KF_TA_VKSOLL,Target temperature for exhaust gas temperature mixing section
+K_PSPVDK_EDIAG_MX,"Maximum pressure ratio for switching to Mszyl_diag, as the calculation of the mass flow from the KL_AF is too imprecise"
+KF_FMS_HFMPL_MX,Upper mass flow quotient for diagnosis HFM Mshfm vs. Mszyl_diag
+KF_FMS_HFMPL_MN,Lower mass flow quotient for diagnosis HFM Mshfm vs. Mszyl_diag
+KF_FMS_DKPSRPL_MN,Lower mass flow quotient for diagnosis of mass flow in the intake manifold Msev_diag versus Msdk_diag
+KF_FMS_DKPSRPL_MX,Upper mass flow quotient for diagnosis of mass flow in the intake manifold Msev_diag versus Msdk_diag
+K_PSSOL_PSREGMX,Maximum target intake manifold pressure for enabling intake manifold pressure regulator (B_psreg_akt)
+BMWext_eff_TrbWg_T,Turbine efficiency (former KF_ATM_ATLETA_MSWG) with addressing Mswg and Msturbine
+KF_FDZWT_PF1,Temperature correction factor ZW knock limit path 1
+KF_DZWT_PF2,Temperature correction ZW knock limit path 2
+KF_DZWT_PF1,Temperature correction ZW knock limit path 1
+KF_ZW_UESP_PF1,Ignition angle flush path 1
+KF_ZW_VP_PF1,Map for ignition angle Vanos at the limit F_basis=1 path 1
+KF_ZW_VP_PF2,Map for ignition angle Vanos at the limit F_basis=1 path 2
+K_MSVANST_DIFFPRAIL,Constant monitoring HDP control minimal rail pressure undershoot
+K_MSVANST_START_DELAY,Constant delay in monitoring HDP control after start
+BMWinjmon_fac_HppEff_M,Injection map factor efficiency high-pressure pump
+BMWinjmon_vol_HppCmpn_C,Injection delivery volume HDP for delivery performance calculation of the HDP
+K_MSVANST_MAX_DELAY,Constant delay monitoring maximum control HDP
+KL_RFMIN_KRSTSYS,Minimum filling for filling limitation from injection monitoring
+KF_PHA_H_B1_W,Starting angle map ES1 Warm
+KF_PHA_H_B1_SK_PRE,Starting angle map ES1 Super knock preventive.
+KF_PHA_H_E3_2ES_W,End angle map ES3 for double ES warm
+KF_PHA_H_E3_3ES_W,End angle map ES3 for triple ES warm
+KF_LAMIN_H,Lambda limit bold
+KF_LABAS_1,Lambda setpoint bank 1
+KF_LABAS_2,Lambda setpoint bank 2
+KF_LA_SK,Lambda setpoint at Superknock
+K_LA_FETTDELAY,Lambda threshold from which a richening request from KF_LABAS_XXX is suppressed
+S_AUSWAHL_FETTDELAY,"Control flag for switching the lambda setpoint during richening suppression. Either Lamda=1 or Max selection between La_main and K_LA_FETTDELAY is output."
+KF_TD_FETTDELAY_TABG,Duration of richness suppression from KF_LABAS_XXX. This time depends on the pipe wall temperature Tw_r1.
+BMWlhm_v_VehLimApplVal_C,Manual value for the maximum vehicle speed
+BMWlpa_fac_AirLimOvrTMin_C,LoPAsst filling limitation due to EKP overtemperature factor minimum
+BMWlpa_volf_FuFpcOvrT_C,LoPAsst filling limitation due to EKP overtemperature maximum volume flow
+BMWlpa_rat_AirLimGraPosEfp_T,Filling limitation due to EKP maximum volume flow gradient limitation positive (characteristic curve)
+BMWlpa_rat_AirLimMax_C,Filling limitation due to EKP maximum value
+KL_PMAX_TGHAS,Characteristic curve for maximum performance depending on rear axle temperature
+KF_MDR_ABV_SPO2_HS,"Relative torque request in sports, manual mode (2)"
+KF_MDR_ABV_SPO_HS,"Relative torque request in sports, manual mode"
+KF_MDR_ABV_SPO,Relative torque request in sports mode
+S_MSABS,"Switch for MSA operating strategy"
+BMWosc_tq_MaxIdlCtlGbx_C,Maximum torque of the idle speed control to form Mdg_fahrer_vm
+KF_PRAIL_H,Rail pressure map with VVT active
+KF_PRAIL_HGD,Rail pressure map with VVT deactivated
+KF_PRAIL_H_K,"Rail pressure map, cold, with VVT active"
+KF_PRAIL_HGD_K,"Rail pressure map, cold, with VVT deactivated"
+S_PRAIL_GL_LA1,Switch for activating the target rail pressure from the basic map in the CILCN operating mode
+K_PRAIL_ST_MAX,"Maximum rail pressure setpoint for engine start"
+KL_TKW_NO,Coolant target temperature in normal operating mode depending on the ambient temperature
+K_TKW_MX,Coolant target temperature in MAX operating mode
+K_TKW_ST,Coolant target temperature in the control operating class
+KL_TKW_HI,Coolant target temperature in High operating mode depending on the ambient temperature
+KF_VSEWP_LLK_TANS,Coolant volume flow of the EWP_LLK depending on the intake air temperature and the difference between the intake air temperature and the ambient temperature
+KFVSTMSVO,Offset feedforward control MSV
+KLVSTMSVG,Gain factor feedforward control MSV
+DWVSTMSVST,Startwert Vorsteuerung MSV bei Hochdruckstart
+CWDVMX,Codeword SW switch for integrator initiation with VMAX control
+KLMIVMX,Target torque for VMAX limitation
+K_FMDK0_AKT,Maximum k0 torque to activate the addition of the K0 torque limit
+K_FMDK0_NAKT,Addition of the K0 torque limit at a lower certain Mdk_k0_max
+KL_MD_K_MAX_BST_STRG_AT,Speed-dependent strategic transmission input limitation during boosting for automatic
+KL_MD_K_MAX_BST_STRG_HS,Speed-dependent strategic transmission input limitation during boosting for manual switches
+KL_MDGMAX_GSNOTL_PERM_DKG,Maximum permissible torque for DKG emergency running without communication (permanent/temp. load limit)
+KL_MD_K_MAX_RNSTART_STRG_AT,Speed-dependent strategic transmission input limitation during race start for automatic
+KL_MDGMAX_GSNOTL_PERM_AT,Maximum permissible torque for AT emergency running without communication (permanent/temp. load limit)
+KL_MD_K_MAX_RNSTART_STRG_HS,Speed-dependent strategic transmission input limitation during race start for manual switch
+KL_MD_K_MAX_VL_ECO_STRG_HS,Speed-dependent strategic transmission input limitation during Eco for manual switch
+K_MD_KW_MAX_NLIMIT,Max moment for EM2
+KF_MDSCHALT_P,P component connection speed controller in normal mode
+KL_ENA_NREG_DSC,DSC mode characteristic
+K_KSU_INTREG_MX,Maximum value for integral component PI controller
+K_KSU_MDKISTFSP,Torque threshold for fault memory slip suppression
+K_KSU_MDKISTFSPSH,Torque threshold for shadow error memory slip suppression
+K_KSU_MDKISTFSPCC,Drehmomentenschwelle fuer Fehlerspeicher CC-Meldung Schlupfunterdrueckung
+CW_TQGMXLMSRCHAXLPRONMXSTATTQC,"Code word for including the various torque limitations in the maximum static transmission input potential to protect the hybrid axle, for use within the TQC"
+K_MDK_KUPP_ZU_MX,MAX torque when clutch is closed
+K_VLIM_APPLI,Applicable maximum speed
+PID51_stFuTyp_C,Coding of the fuel type without taking the vehicle configuration into account
+NMAXTMM,Speed limitation at high engine temperatures.
+NMAXSWT,Speed limit by SWT
+MoFETC_tiAccExcddThd_C,Time threshold for exceeded acceleration
+MoFAMo_nWhlStandgThd_C,Maximum wheel speed (abs.) for wheel detection
+MKLIMATUB,Lower torque limit transmission in the event of a CAN error
+IKCtl_FacKnockDetThd2_GM,Knock detection factor map cylinder counter 2
+IKCtl_FacKnockDetThd0_GM,Knock detection factor map cylinder counter 0
