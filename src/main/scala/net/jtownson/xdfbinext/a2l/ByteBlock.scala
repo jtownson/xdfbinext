@@ -69,7 +69,7 @@ object ByteBlock {
   val fnLabel     = "fn"
   val unusedLabel = "-"
 
-  private val sizeOf: Map[DataType, Int] = Map(
+  val sizeOf: Map[DataType, Int] = Map(
     SBYTE        -> 1,
     UBYTE        -> 1,
     SWORD        -> 2,

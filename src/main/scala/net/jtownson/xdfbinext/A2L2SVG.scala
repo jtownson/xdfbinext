@@ -1,5 +1,6 @@
 package net.jtownson.xdfbinext
 
+import net.jtownson.xdfbinext.A2L2Dot.GraphOptions
 import scopt.{OParser, OParserBuilder}
 
 import java.io.*
@@ -18,9 +19,17 @@ object A2L2SVG {
         val a2l2Dot    = new A2L2Dot(config.a2lFile.toURI.toURL)
         val objectName = config.objectName
         if (config.isFnCentred)
-          A2L2Dot.functionCentredGraphWith(a2l2Dot, _ => true, _ == objectName, config.outFile.toString)
+          A2L2Dot.functionCentredGraphWith(
+            config.objectName,
+            a2l2Dot,
+            _ == objectName,
+            _ => true,
+            (_, _) => true,
+            GraphOptions(showAxes = true, showLocals = true),
+            config.outFile.toString
+          )
         else
-          A2L2Dot.valueCentredGraphWith(a2l2Dot, _ == objectName, config.outFile.toString)
+          A2L2Dot.valueCentredGraphWith(config.objectName, a2l2Dot, _ == objectName, config.outFile.toString)
 
       case _ =>
 

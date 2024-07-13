@@ -5,7 +5,7 @@ import scala.io.Source
 import scala.util.Using
 object BmwTchDescriptions {
 
-  val table: Map[String, String] = Using.resource(Source.fromResource("BMWtch-table-descriptions-en.csv")) { src =>
+  val table: Map[String, String] = Using.resource(Source.fromResource("BMW-a2l-object-descriptions-en.csv")) { src =>
     src.getLines.map { line =>
       val fields = parse(line, ',', '"')
       require(fields.length == 2, s"Invalid field count in line $line")
