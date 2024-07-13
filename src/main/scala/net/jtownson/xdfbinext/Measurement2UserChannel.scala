@@ -24,25 +24,26 @@ class Measurement2UserChannel(a2lUrl: URL) {
   }
 
   private def measurement2UserChannel(m: Measurement): Seq[String] = {
-    Option(m.getArraySize).fold(
-      Seq(measurement2UserChannel(m, m.getEcuAddress, m.getName)))(size => measurement2UserChannelArr(m, m.getEcuAddress, m.getName, size.toInt))
+    Option(m.getArraySize).fold(Seq(measurement2UserChannel(m, m.getEcuAddress, m.getName)))(size =>
+      measurement2UserChannelArr(m, m.getEcuAddress, m.getName, size.toInt)
+    )
   }
-  
+
   private def measurement2UserChannelArr(m: Measurement, address: Long, name: String, size: Int): Seq[String] = {
-    (0 until size).map { offset =>
+    (1 to size).map { offset =>
       val sizeBytes = ByteBlock.sizeOf(m.getDatatype)
-      measurement2UserChannel(m, address + offset*sizeBytes, s"${name}_$offset") 
+      measurement2UserChannel(m, address + offset * sizeBytes, s"${name}_$offset")
     }
   }
-  
+
   private def measurement2UserChannel(m: Measurement, address: Long, name: String): String = {
     val segmentPrefix = "50"
-    val sizeBytes = ByteBlock.sizeOf(m.getDatatype)
-    val compuMethod = compuMethods(m.getConversion)
-    val units = compuMethod.getUnit
-    val dp = Measurement2UserChannel.format2DecimalPl(m.getFormat)
-    val coeffs = compuMethod.getCoeffs
-    val (mhdA, mhdB) = (coeffs.getB, coeffs.getF)
+    val sizeBytes     = ByteBlock.sizeOf(m.getDatatype)
+    val compuMethod   = compuMethods(m.getConversion)
+    val units         = compuMethod.getUnit
+    val dp            = Measurement2UserChannel.format2DecimalPl(m.getFormat)
+    val coeffs        = compuMethod.getCoeffs
+    val (mhdA, mhdB)  = (coeffs.getB, coeffs.getF)
 
     actualValueTemplate(
       name,

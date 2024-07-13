@@ -3,6 +3,7 @@
 Repo with two utilities to help B58 tuning tasks
 1. net.jtownson.xdfbinext.MapCompare A utility for comparing two bin files with respect to a tunerpro XDF which applies to both.
 2. net.jtownson.xdfbinext.A2L2SVG Graphs functions, characteristics and measurements from an a2l.
+3. net.jtownson.xdfbinext.MHDUserChannelGen Create MHD custom logging channel definitions from an a2l and measurement names.
 
 ### Motivation
 
@@ -17,9 +18,13 @@ In addition it can also help in studying FR docs. Although A2L2SVG only shows bl
 than white box computation paths) it will add comments and descriptions (with translation where available)
 thus you can use the tool as a study companion which saves having to remember so many variable names.
 
+MHDUserChannelGen automates the process of creating `ActualValue` snippets to put into an MHD custom logging
+channels file. If you have the a2l for your car, you can give this app the names of some DME measurements
+and the app will generate ActualValue snippets that you can paste into a logging channels file.
+
 ### Usage MapCompare
 ```shell
-Usage: xbc [options]
+Usage: net.jtownson.xdfbinext.MapCompare [options]
 
 --help                   Display usage text
 --xdf <value>            XDF model common to both bins
@@ -35,7 +40,7 @@ Usage: xbc [options]
 
 For example, the following command
 ```shell
-xbc --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
+net.jtownson.xdfbinext.MapCompare --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
 ```
 will compare a stage 0 and stage 1 bin, ignoring flexfuel, antilag and multimap tables.
 
@@ -129,6 +134,60 @@ java -cp .\target\scala-3.3.1\xbc.jar net.jtownson.xdfbinext.A2L2SVG -f --a2l .\
 Produces the tch diagram as follows:
 ![TchCtr_Pwr_10ms](src/main/resources/testmodel.svg "testmodel")
 
+### Usage MHDUserChannelGen
+
+Usage: MHD User channel generator [options]
+
+--help                  Display usage text
+--a2l <value>           An A2L file name
+--measurements <value>  List of measurement names from the a2l
+--output <value>        Output filename.
+
+example 
+```shell
+java -cp .\target\scala-3.3.1\xbc.jar --measurements=Zwstat_pf1,Dzwt_pf1,Dzw_krann,Dzwdyn,Zw_out --a2l="DME861_R1C9J8B3B.a2l" 
+```
+This will generate output such as the following.
+
+Note that array outputs, such as Zw_out result in a channel for each array element. In the case of something like
+Zw_out the names of each channel correspond to the indices of the array, which is *not* necessarily the firing order (1-5-3-6-2-4). 
+At the moment, you might have to tweak the names manually. 
+
+```xml
+<?xml version="1.0" standalone="yes"?>
+<ActualValues>
+  <ActualValue ReqBlock="51802740" Size="1" DataA="2.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Dzwdyn</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="5180273d" Size="1" DataA="2.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zwstat_pf1</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="5180236a" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Dzw_krann</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f14" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Dzwt_pf1</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f80" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_1</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f82" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_2</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f84" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_3</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f86" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_4</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f88" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_5</Text>
+  </ActualValue>
+  <ActualValue ReqBlock="51801f8a" Size="2" DataA="10.0" DataB="1.0" Prefix="50" Units="°" RoundingDigits="1">
+    <Text xml:lang="en">Zw_out_6</Text>
+  </ActualValue>
+</ActualValues>
+```
 
 ### Limitations
 
