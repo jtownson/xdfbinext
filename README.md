@@ -149,7 +149,8 @@ Produces the tch diagram as follows:
 ### Usage MHDUserChannelGen
 
 MHDUserChannelGen automates the process of creating `ActualValue` XML to put into an MHD custom logging
-channels file. To use this app *you need the correct a2l for your car*.
+channels file. To use this app *you need the correct a2l for your car*. If you are not sure what this is
+or how to get hold of it, consult [The B58 Wiki](https://b58.wiki/wiki/Useful_resources_for_getting_started).
 
 Given the a2l for your car, you pass this app the names of some DME measurements
 and the app will generate an logging channel file.
