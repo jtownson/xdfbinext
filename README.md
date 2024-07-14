@@ -2,10 +2,20 @@
 
 Repo with two utilities to help B58 tuning tasks
 1. net.jtownson.xdfbinext.MapCompare A utility for comparing two bin files with respect to a tunerpro XDF which applies to both.
-2. net.jtownson.xdfbinext.A2L2SVG Graphs functions, characteristics and measurements from an a2l.
-3. net.jtownson.xdfbinext.MHDUserChannelGen Create MHD custom logging channel definitions from an a2l and measurement names.
+2. net.jtownson.xdfbinext.A2LMapCompare A utility for comparing two bin files with respect to an A2L file which applies to both. Less friendly than MapCompare but will find all modified maps and constants in a tune.
+3. net.jtownson.xdfbinext.A2L2SVG Graphs functions, characteristics and measurements from an a2l. Turn that nasty, hard to understand a2l into a pretty picture.
+4. net.jtownson.xdfbinext.MHDUserChannelGen Create MHD custom logging channel definitions from an a2l and measurement names.
 
-### Motivation
+### System requirements
+
+You will need a Java JDK 17+ installed on your system.
+
+These are not production grade tools. You might hit bugs, missing cases and limitations
+that require tweaks. If you hit one of these problems, feel free to message me or create
+an issue in github. Otherwise, to make tweaks yourself, you will need a Scala 
+development environment, such as Intellij with the Scala plugin.
+
+### MapCompare
 
 The idea of MapCompare is to compare bins, according to an XDF so that you can
 see the changes you or another tuner have made to a bin relative to some starting point.
@@ -13,16 +23,7 @@ see the changes you or another tuner have made to a bin relative to some startin
 This helps to take stock of your changes before flashing and in reverse engineering
 changes made by others.
 
-A2L2SVG draws graphs of a2l functions, with their inputs and outputs in order to help vizualize a2ls.
-In addition it can also help in studying FR docs. Although A2L2SVG only shows black box diagrams (rather
-than white box computation paths) it will add comments and descriptions (with translation where available)
-thus you can use the tool as a study companion which saves having to remember so many variable names.
-
-MHDUserChannelGen automates the process of creating `ActualValue` snippets to put into an MHD custom logging
-channels file. If you have the a2l for your car, you can give this app the names of some DME measurements
-and the app will generate ActualValue snippets that you can paste into a logging channels file.
-
-### Usage MapCompare
+#### MapCompare usage
 ```shell
 Usage: net.jtownson.xdfbinext.MapCompare [options]
 
@@ -40,7 +41,7 @@ Usage: net.jtownson.xdfbinext.MapCompare [options]
 
 For example, the following command
 ```shell
-net.jtownson.xdfbinext.MapCompare --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
+java -cp xbc.jar net.jtownson.xdfbinext.MapCompare --table-exclusions="(Antilag),(Map 2),(Map 3),(Map 4),(FF),(FF#2)" --report "stage-0-vs-stage-1.txt" --xdf "BMW-XDFs\F G series B58\00003076501103.xdf" --base-bin "stage-0.bin" --mod-bin "stage-1.bin"
 ```
 will compare a stage 0 and stage 1 bin, ignoring flexfuel, antilag and multimap tables.
 
@@ -97,25 +98,36 @@ re-run the diff after map changes, the existing notes and orderings will be main
 The tail of the report contains listings of tables that are not changed and those have been excluded 
 due to `--table-exclusions` and `--category-exclusions`.
 
-### Thoughts on future features
-
-1. Map simulation
-This would allow arithmetic expressions referencing table lookups and allow the user
-to feed in ranges of values to see the response from the map. For example, calculate
-the torque request given the values in 'relative torque request' and 'torque request ceiling'
-maps for a range of accelerator pedal inputs. Determine if any inputs fall outside the 
-map breakpoints.
-
-2. Nicer rendering
-Text works okay but HTML rendering with coloured graphs would be nicer.
-
 ### Limitations
 
-1. Some older XDFs do not parse since they are missing fields with are mandatory in the current model.
+1. Some older XDFs do not parse since they are missing fields which are mandatory in the current model.
+
+### Usage A2LMapCompare
+
+Compare bin files using an A2L and print out a report with the differences. 
+Supports iterative tune development by allowing you to see what has and has not been changed when developing a tune. 
+Also useful for reverse engineering existing bin files.
+
+The difference between with A2LMapCompare vs MapCompare is that this app will spot _all_ modified tables in a tune,
+not just those that happen to have been imported into an XDF.
+
+```shell
+Usage: A2LMapCompare [options]
+
+--help                Display usage text
+--a2l <value>         A2L model common to both bins
+--base-bin <value>    Filename of the starting bin file
+--mod-bin <value>     Filename of the bin to compare with the base
+--mod-ignore <value>  List of BMW module names to ignore
+--output <value>      Output filename for difference report.
+```
 
 ### Usage A2L2SVG
 
-Note, for technical reasons, A2L2SVG requires a 17+ JRE installed on your system.
+A2L2SVG draws graphs of a2l functions, with their inputs and outputs, in order to help vizualize a2ls.
+In addition, it can also help in studying FR docs. Although A2L2SVG only shows black box diagrams (rather
+than white box computation paths) it will add comments and descriptions (with translation where available)
+thus you can use the tool as a study companion which saves having to remember so many variable names.
 
 ```shell
 Creates a graph based around an a2l function, characteristic or measurement.
@@ -136,6 +148,12 @@ Produces the tch diagram as follows:
 
 ### Usage MHDUserChannelGen
 
+MHDUserChannelGen automates the process of creating `ActualValue` XML to put into an MHD custom logging
+channels file. To use this app *you need the correct a2l for your car*.
+
+Given the a2l for your car, you pass this app the names of some DME measurements
+and the app will generate an logging channel file.
+
 Usage: MHD User channel generator [options]
 
 --help                  Display usage text
@@ -145,13 +163,10 @@ Usage: MHD User channel generator [options]
 
 example 
 ```shell
-java -cp .\target\scala-3.3.1\xbc.jar --measurements=Zwstat_pf1,Dzwt_pf1,Dzw_krann,Dzwdyn,Zw_out --a2l="DME861_R1C9J8B3B.a2l" 
+java -cp xbc.jar net.jtownson.xdfbinext.MHDUserChannelGen --measurements=Zwstat_pf1,Dzwt_pf1,Dzw_krann,Dzwdyn,Zw_out --a2l="DME861_R1C9J8B3B.a2l"
+
 ```
 This will generate output such as the following.
-
-Note that array outputs, such as Zw_out result in a channel for each array element. In the case of something like
-Zw_out the names of each channel correspond to the indices of the array, which might be the firing order (1-5-3-6-2-4)
-and *not* necessarily the cylinder order. 
 
 ```xml
 <?xml version="1.0" standalone="yes"?>
@@ -189,7 +204,15 @@ and *not* necessarily the cylinder order.
 </ActualValues>
 ```
 
-### Limitations
+Note that array outputs, such as Zw_out result in a channel for each array element. In the case of something like
+`Zw_out` the names of each channel correspond to the indices of the array, which might be the firing order (1-5-3-6-2-4)
+and *not* necessarily the cylinder order.
 
-These tools lie somewhere between fully-fledged utilities and scripts I've hacked together. They exist
-to get to grips with the B58 ECU rather than well supported reverse engineering tools.
+### Thoughts on future features
+
+1. Map simulation
+   This would allow arithmetic expressions referencing table lookups and allow the user
+   to feed in ranges of values to see the response from the map. For example, calculate
+   the torque request given the values in 'relative torque request' and 'torque request ceiling'
+   maps for a range of accelerator pedal inputs. Determine if any inputs fall outside the
+   map breakpoints.
