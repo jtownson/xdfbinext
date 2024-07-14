@@ -216,7 +216,6 @@ object A2LWrapper {
   private def getA2L(a2lUrl: URL): Asap2File = {
     Using.resource(a2lUrl.openStream()) { i =>
       val parser: Asap2Parser = new Asap2Parser(i)
-      println(s"PERFORMING A PARSE: $a2lUrl")
       parser.parse()
     }
   }
