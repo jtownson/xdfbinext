@@ -1,6 +1,6 @@
 ## MapCompare and A2L2SVG: B58 tuning utilities 
 
-Repo with two utilities to help B58 tuning tasks
+Repo with utilities to help B58 tuning tasks
 1. net.jtownson.xdfbinext.MapCompare A utility for comparing two bin files with respect to a tunerpro XDF which applies to both.
 2. net.jtownson.xdfbinext.A2LMapCompare A utility for comparing two bin files with respect to an A2L file which applies to both. Less friendly than MapCompare but will find all modified maps and constants in a tune.
 3. net.jtownson.xdfbinext.A2L2SVG Graphs functions, characteristics and measurements from an a2l. Turn that nasty, hard to understand a2l into a pretty picture.
