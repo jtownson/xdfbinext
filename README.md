@@ -141,7 +141,7 @@ Usage: a2l2svg [options]
 ```
 For example
 ```shell
-java -cp .\target\scala-3.3.1\xbc.jar net.jtownson.xdfbinext.A2L2SVG -f --a2l .\src\test\resources\DME861_R1C9J8B3B.a2l --object-name BMW_MOD_TchCtr_Pwr_10ms --out testmodel.svg
+java -cp xbc.jar net.jtownson.xdfbinext.A2L2SVG -f --a2l .\src\test\resources\DME861_R1C9J8B3B.a2l --object-name BMW_MOD_TchCtr_Pwr_10ms --out testmodel.svg
 ```
 Produces the tch diagram as follows:
 ![TchCtr_Pwr_10ms](src/main/resources/testmodel.svg "testmodel")
