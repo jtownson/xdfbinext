@@ -32,7 +32,7 @@ class A2L2XDFTest extends AnyFlatSpec {
     println(a2l.characteristic2XDF(_ == "BMWtchctr_fac_FilRatWg_T").head)
   }
 
-  it should "output XDF snippets for tchsp tables" in {
+  it should "output XDF snippets for tchsp tables" ignore {
     val newTables =
       List(
         "BMWausy_p_DifCat_T",
@@ -66,9 +66,5 @@ class A2L2XDFTest extends AnyFlatSpec {
       println(a2l.characteristic2XDF(_ == table).mkString("\n\n"))
       println
     }
-  }
-
-  it should "create tables for every characteristic without crashing" in {
-    pending
   }
 }

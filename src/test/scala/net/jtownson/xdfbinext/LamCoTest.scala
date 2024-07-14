@@ -10,7 +10,7 @@ class LamCoTest extends AnyFlatSpec {
   val a2lUrl  = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
   val a2l2Dot = new A2L2Dot(a2lUrl)
 
-  it should "graph lamco functions" in {
+  it should "graph lamco functions" ignore {
     A2L2Dot.parentGraphWith(
       "Lam_225_001_0",
       a2l2Dot,

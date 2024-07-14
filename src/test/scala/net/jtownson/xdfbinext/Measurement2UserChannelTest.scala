@@ -33,6 +33,5 @@ class Measurement2UserChannelTest extends AnyFlatSpec {
   it should "output multiple values for arrays" in {
     val actual = a2l.measurement2UserChannel(_ == "Zw_out")
     actual.length shouldBe 6
-    println(actual.mkString("\n"))
   }
 }

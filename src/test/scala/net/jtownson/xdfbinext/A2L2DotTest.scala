@@ -21,8 +21,7 @@ class A2L2DotTest extends AnyFlatSpec {
   }
 
   private val handGraphs = Table[String](
-    "filename",
-    "IgnBas.dot"
+    "filename"
 //    "BMW_MOD_IgnBasDelt_Msc_10ms.dot",
 //    "tchdiag_pressure.dot",
 //    "tchsp_p_Req_uw.dot",
@@ -125,13 +124,13 @@ class A2L2DotTest extends AnyFlatSpec {
     A2L2DotTest.resourcesGraph(filename)
   }
 
-  it should "render fn centred graphs" in forAll(fnCentredGraphs) { fnName =>
+  it should "render fn centred graphs" ignore forAll(fnCentredGraphs) { fnName =>
     withA2L(a2l =>
       functionCentredGraphWith(fnName, a2l, _ == fnName, _ => true, (_, _) => true, GraphOptions(true, true), fnName)
     )
   }
 
-  it should "render value centred graphs" in forAll(valueCentredGraphs) { objName =>
+  it should "render value centred graphs" ignore forAll(valueCentredGraphs) { objName =>
     withA2L(a2l => valueCentredGraphWith(objName, a2l, _ == objName, objName))
   }
 

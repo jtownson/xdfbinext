@@ -150,8 +150,8 @@ java -cp .\target\scala-3.3.1\xbc.jar --measurements=Zwstat_pf1,Dzwt_pf1,Dzw_kra
 This will generate output such as the following.
 
 Note that array outputs, such as Zw_out result in a channel for each array element. In the case of something like
-Zw_out the names of each channel correspond to the indices of the array, which is *not* necessarily the firing order (1-5-3-6-2-4). 
-At the moment, you might have to tweak the names manually. 
+Zw_out the names of each channel correspond to the indices of the array, which might be the firing order (1-5-3-6-2-4)
+and *not* necessarily the cylinder order. 
 
 ```xml
 <?xml version="1.0" standalone="yes"?>
@@ -191,5 +191,5 @@ At the moment, you might have to tweak the names manually.
 
 ### Limitations
 
-This (and MapCompare) lie somewhere between fully-fledged utilities and scripts I've hacked together. They exist
+These tools lie somewhere between fully-fledged utilities and scripts I've hacked together. They exist
 to get to grips with the B58 ECU rather than well supported reverse engineering tools.

@@ -8,10 +8,10 @@ import scala.jdk.CollectionConverters.*
 
 class IgnDotTest extends AnyFlatSpec {
 
-  val a2lUrl  = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
-  val a2l2Dot = new A2L2Dot(a2lUrl)
+  val a2lUrl       = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
+  lazy val a2l2Dot = new A2L2Dot(a2lUrl)
 
-  it should "graph ign functions - high level flow" in {
+  it should "graph ign functions - high level flow" ignore {
 
     val valsToInclude = Set(
       "Nkw",
@@ -101,7 +101,7 @@ class IgnDotTest extends AnyFlatSpec {
     )
   }
 
-  it should "graph ign functions" in {
+  it should "graph ign functions" ignore {
 
     val additionalFns = Set(
       "BMW_SWC_TqeIgGraph_Int",

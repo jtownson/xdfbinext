@@ -60,9 +60,6 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         consumer.applyFuncTab(ct)
       case rf: RatFun =>
         consumer.applyFuncFormula(rf, A2LWrapper.getDecimalPlaces(c))
-      case _ =>
-        ???
-
   }
 
   private def readCurve(cName: String): CurveValueType = {
