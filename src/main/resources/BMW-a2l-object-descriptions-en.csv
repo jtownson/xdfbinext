@@ -1447,7 +1447,7 @@ BMWtchctr_pct_WgBasc_uw,Additional size for WG control due to WG spring
 BMWtchctr_pct_WgBefLim_uw,Manipulating variable from ATL controller - before limitation
 BMWtchctr_pct_WgClsdMin_C,Threshold value Atlvst for delayed locking EEC
 BMWtchctr_pct_WgClsdPl_C,Position setpoint of wastegate for partload at acoustic critical velocity
-BMWtchctr_pct_WgCrtd1_uw,Manipulating variable share through feedforward control - after correction
+BMWtchctr_pct_WgCrtd1_uw,Manipulating variable share through feedforward control - after correction 1
 BMWtchctr_pct_WgCrtd2_uw,Manipulating variable share through feedforward control - after correction 2
 BMWtchctr_pct_WgCrtd3_uw,Manipulating variable share through feedforward control - after correction 3
 BMWtchctr_pct_WgDeltRaceStr_C,Offset to the partial load precontrol for increased preload of the ATL at the start of the race

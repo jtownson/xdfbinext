@@ -2,7 +2,7 @@ package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
-import net.alenzen.a2l.{Asap2File, Unit as A2lUnit, *}
+import net.alenzen.a2l.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getA2L, getObjectDescription}
 import net.jtownson.xdfbinext.a2l.CharacteristicSummary
 import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValBlkSummary, ValueSummary}
@@ -15,6 +15,14 @@ import scala.util.Using
 case class A2LWrapper(a2lUrl: URL) {
 
   val a2l: Asap2File = getA2L(a2lUrl)
+
+  val memorySegments: Map[String, MemorySegment] = collectWithPf[MemorySegment](_.getName)
+
+  private val memorySegmentsByAddress: List[Long] = memorySegments.values.map(_.getAddress).toList.sorted
+
+  def segmentForAddress(address: Long): Long = {
+    memorySegmentsByAddress.takeWhile(segmentAddress => segmentAddress <= address).last
+  }
 
   val recordLayouts: Map[String, RecordLayout] = collectWithPf[RecordLayout](_.getName)
 

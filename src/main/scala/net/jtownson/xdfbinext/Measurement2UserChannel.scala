@@ -1,8 +1,8 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.Measurement
+import net.alenzen.a2l.{Measurement, MemorySegment}
 import net.jtownson.xdfbinext.Measurement2UserChannel.{actualValueTemplate, actualValuesTemplate}
-import net.jtownson.xdfbinext.a2l.ByteBlock
+import net.jtownson.xdfbinext.a2l.{ByteBlock, FormulaExpressionInverse, RatFun}
 
 import java.net.URL
 
@@ -37,24 +37,28 @@ class Measurement2UserChannel(a2lUrl: URL) {
   }
 
   private def measurement2UserChannel(m: Measurement, address: Long, name: String): String = {
-    val segmentPrefix = "50"
+    val segmentPrefix = a2l.segmentForAddress(address).toHexString.take(2)
     val sizeBytes     = ByteBlock.sizeOf(m.getDatatype)
+    val isSigned      = ByteBlock.signedFlag(m.getDatatype)
     val compuMethod   = compuMethods(m.getConversion)
     val units         = compuMethod.getUnit
     val dp            = Measurement2UserChannel.format2DecimalPl(m.getFormat)
     val coeffs        = compuMethod.getCoeffs
-    val (mhdA, mhdB)  = (coeffs.getB, coeffs.getF)
+
+    val a = coeffs.getF / coeffs.getB
+    val b = coeffs.getC / coeffs.getB
 
     actualValueTemplate(
-      name,
-      address.toHexString,
-      sizeBytes.toString,
-      coeffs.getB.toString,
-      coeffs.getF.toString,
-      segmentPrefix,
-      units,
-      dp.toString,
-      1
+      name = name,
+      a2lAddress = address.toHexString,
+      sizeBytes = sizeBytes.toString,
+      dataA = a.toString,
+      dataB = b.toString,
+      memorySegmentPrefix = segmentPrefix,
+      units = units,
+      dp = dp.toString,
+      isSigned = isSigned,
+      indent = 1
     )
   }
 
@@ -73,17 +77,20 @@ object Measurement2UserChannel {
       name: String,
       a2lAddress: String,
       sizeBytes: String,
-      ratFunCoeffB: String,
-      ratFunCoeffF: String,
+      dataA: String,
+      dataB: String,
       memorySegmentPrefix: String,
       units: String,
       dp: String,
+      isSigned: Boolean,
       indent: Int
   ): String = {
 
+    def signedParam: String = if (isSigned) """ signed="1"""" else ""
+
     def indents(p: Int): String = "  ".repeat(indent + p)
     // format: off
-    s"""${indents(0)}<ActualValue ReqBlock="$a2lAddress" Size="$sizeBytes" DataA="$ratFunCoeffB" DataB="$ratFunCoeffF" Prefix="$memorySegmentPrefix" Units="$units" RoundingDigits="$dp">
+    s"""${indents(0)}<ActualValue ReqBlock="$a2lAddress" Size="$sizeBytes" DataA="$dataA" DataB="$dataB" Prefix="$memorySegmentPrefix" Units="$units" RoundingDigits="$dp"$signedParam>
        |${indents(1)}<Text xml:lang="en">$name</Text>
        |${indents(0)}</ActualValue>""".stripMargin
     // format: on

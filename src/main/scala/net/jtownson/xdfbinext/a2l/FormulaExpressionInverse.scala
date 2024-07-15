@@ -1,6 +1,12 @@
 package net.jtownson.xdfbinext.a2l
 
+import net.alenzen.a2l.Coeffs
+
 object FormulaExpressionInverse {
+
+  def toFormulaInv(coeffs: Coeffs): String = {
+    toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+  }
 
   def toFormulaInv(
       a: BigDecimal,

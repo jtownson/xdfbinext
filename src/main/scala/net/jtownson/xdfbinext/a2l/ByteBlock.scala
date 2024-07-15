@@ -69,6 +69,17 @@ object ByteBlock {
   val fnLabel     = "fn"
   val unusedLabel = "-"
 
+  val signedFlag: Map[DataType, Boolean] = Map(
+    SBYTE        -> true,
+    UBYTE        -> false,
+    SWORD        -> true,
+    UWORD        -> false,
+    SLONG        -> true,
+    ULONG        -> false,
+    FLOAT32_IEEE -> true,
+    FLOAT64_IEEE -> true
+  )
+
   val sizeOf: Map[DataType, Int] = Map(
     SBYTE        -> 1,
     UBYTE        -> 1,
