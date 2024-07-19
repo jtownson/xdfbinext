@@ -30,3 +30,7 @@ metals.sbt
 .idea
 .idea_modules
 /.worksheet/
+
+*.dot
+*.png
+*.svg

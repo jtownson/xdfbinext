@@ -9,7 +9,7 @@ class Measurement2UserChannelTest extends AnyFlatSpec {
 
   "MeasurementToUserChannel" should "output a snippet for Nkw" in {
     // format: off
-    val expected = """  <ActualValue ReqBlock="50802002" Size="2" DataA="1.0" DataB="0.0" Prefix="50" Units="1/min" RoundingDigits="3" signed="1">
+    val expected = """  <ActualValue ReqBlock="50802002" Size="2" DataA="1.0" DataB="0.0" Prefix="50" Units="1/min" RoundingDigits="3" Signed="1">
                      |    <Text xml:lang="en">Nkw</Text>
                      |  </ActualValue>""".stripMargin
     // format: on
@@ -19,7 +19,7 @@ class Measurement2UserChannelTest extends AnyFlatSpec {
 
   it should "output a snipped for Dzwt_pf1" in {
     // format: off
-    val expected = """  <ActualValue ReqBlock="51801f14" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" signed="1">
+    val expected = """  <ActualValue ReqBlock="51801f14" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" Signed="1">
                      |    <Text xml:lang="en">Dzwt_pf1</Text>
                      |  </ActualValue>""".stripMargin
     // format: on
@@ -41,7 +41,7 @@ class Measurement2UserChannelTest extends AnyFlatSpec {
     // format: off
     val expected = """<?xml version="1.0" standalone="yes"?>
                      |<ActualValues>
-                     |  <ActualValue ReqBlock="50802002" Size="2" DataA="1.0" DataB="0.0" Prefix="50" Units="1/min" RoundingDigits="3" signed="1">
+                     |  <ActualValue ReqBlock="50802002" Size="2" DataA="1.0" DataB="0.0" Prefix="50" Units="1/min" RoundingDigits="3" Signed="1">
                      |    <Text xml:lang="en">Nkw</Text>
                      |  </ActualValue>
                      |</ActualValues>""".stripMargin

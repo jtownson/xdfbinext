@@ -86,7 +86,7 @@ object Measurement2UserChannel {
       indent: Int
   ): String = {
 
-    def signedParam: String = if (isSigned) """ signed="1"""" else ""
+    def signedParam: String = if (isSigned) """ Signed="1"""" else ""
 
     def indents(p: Int): String = "  ".repeat(indent + p)
     // format: off

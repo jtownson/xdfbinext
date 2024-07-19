@@ -36,9 +36,9 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
-    "BMW_SWC_LamCo_Int",
-    "BMW_SWC_LamSp_Int",
-    "BMW_MOD_LamCo_3WHL_10ms"
+//    "BMW_SWC_LamCo_Int",
+//    "BMW_SWC_LamSp_Int",
+//    "BMW_MOD_LamCo_3WHL_10ms"
 //    "BMW_MOD_TqeBasIgSpRamp_seg",
 //    "BMW_SWC_TqeBas_Int",
 //    "BMW_MOD_IgnBas_BestCoord_seg"
@@ -68,14 +68,14 @@ class A2L2DotTest extends AnyFlatSpec {
 //    "BMW_MOD_TchSp_Volf_10ms",
 //    "BMW_MOD_AusyKat_10ms",
 //    "BMW_MOD_TchCtr_Pwr_10ms",
-//    "BMW_MOD_TchCtr_Pwr2Pos_10ms",
+    "BMW_MOD_TchCtr_Pwr2Pos_10ms",
 //    "BMW_MOD_AusyKat_10ms",
 //    "BMW_MOD_TchBas_P_10ms",
 //    "BMW_MOD_TchBas_Misc_10ms",
 //    "BMW_MOD_BlsRfMax_10ms",
 //    "BMW_SWC_Ewg",
 //    "BMW_MOD_TchCtr_Pwr_10ms",
-//    "BMW_MOD_TchCtr_PosAdIp_10ms",
+    "BMW_MOD_TchCtr_PosAdIp_10ms"
 //    "BMW_MOD_TchOut_10ms",
 //    "BMW_MOD_TqeLimStatMaxMdk_10ms",
 //    "BMW_MOD_BsPost_200ms"
@@ -124,7 +124,7 @@ class A2L2DotTest extends AnyFlatSpec {
     A2L2DotTest.resourcesGraph(filename)
   }
 
-  it should "render fn centred graphs" ignore forAll(fnCentredGraphs) { fnName =>
+  it should "render fn centred graphs" in forAll(fnCentredGraphs) { fnName =>
     withA2L(a2l =>
       functionCentredGraphWith(fnName, a2l, _ == fnName, _ => true, (_, _) => true, GraphOptions(true, true), fnName)
     )
