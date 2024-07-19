@@ -164,7 +164,7 @@ Usage: MHD User channel generator [options]
 
 example 
 ```shell
-java -cp xbc.jar net.jtownson.xdfbinext.MHDUserChannelGen --measurements=Nkw,Zwstat_pf1,Dzwt_pf1,Dzw_krann,Dzwdyn,BMWtchctr_pct_WgCrtd1_uw,BMWtchctr_pct_Wg_uw --a2l="DME861_R1C9J8B3B.a2l"
+java -cp xbc.jar net.jtownson.xdfbinext.MHDUserChannelGen --measurements=Zwstat,Dzwt,Dzw_krann,Dzwdyn,BMWtchctr_pct_WgBasc_uw,BMWtchctr_pct_Wg_uw,BMWtchctr_pct_Wg_uw --a2l="DME861_R1C9J8B3B.a2l"
 
 ```
 This will generate output such as the following.
@@ -172,22 +172,19 @@ This will generate output such as the following.
 ```xml
 <?xml version="1.0" standalone="yes"?>
 <ActualValues>
-   <ActualValue ReqBlock="50801af0" Size="2" DataA="0.00152587890625" DataB="0.0" Prefix="50" Units="%" RoundingDigits="3">
-      <Text xml:lang="en">BMWtchctr_pct_WgCrtd1_uw</Text>
-   </ActualValue>
-   <ActualValue ReqBlock="50802002" Size="2" DataA="1.0" DataB="0.0" Prefix="50" Units="1/min" RoundingDigits="3" signed="1">
-      <Text xml:lang="en">Nkw</Text>
-   </ActualValue>
-   <ActualValue ReqBlock="51801f14" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="Â°" RoundingDigits="1" signed="1">
-      <Text xml:lang="en">Dzwt_pf1</Text>
-   </ActualValue>
-   <ActualValue ReqBlock="51802740" Size="1" DataA="0.5" DataB="0.0" Prefix="51" Units="Â°" RoundingDigits="1" signed="1">
+   <ActualValue ReqBlock="51802740" Size="1" DataA="0.5" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" Signed="1">
       <Text xml:lang="en">Dzwdyn</Text>
    </ActualValue>
-   <ActualValue ReqBlock="5180273d" Size="1" DataA="0.5" DataB="0.0" Prefix="51" Units="Â°" RoundingDigits="1" signed="1">
-      <Text xml:lang="en">Zwstat_pf1</Text>
+   <ActualValue ReqBlock="5180273c" Size="1" DataA="0.5" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" Signed="1">
+      <Text xml:lang="en">Zwstat</Text>
    </ActualValue>
-   <ActualValue ReqBlock="5180236a" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="Â°" RoundingDigits="1" signed="1">
+   <ActualValue ReqBlock="50801b14" Size="2" DataA="0.00152587890625" DataB="0.0" Prefix="50" Units="%" RoundingDigits="3">
+      <Text xml:lang="en">BMWtchctr_pct_WgBasc_uw</Text>
+   </ActualValue>
+   <ActualValue ReqBlock="51801f12" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" Signed="1">
+      <Text xml:lang="en">Dzwt</Text>
+   </ActualValue>
+   <ActualValue ReqBlock="5180236a" Size="2" DataA="0.1" DataB="0.0" Prefix="51" Units="°" RoundingDigits="1" Signed="1">
       <Text xml:lang="en">Dzw_krann</Text>
    </ActualValue>
    <ActualValue ReqBlock="50801b04" Size="2" DataA="0.00152587890625" DataB="0.0" Prefix="50" Units="%" RoundingDigits="3">
