@@ -17,7 +17,7 @@ object XDFMapCompare {
     xdf.table(tableName) match {
       case t: XdfTable =>
         o.append(s"\n=== $tableName ===\n")
-        o.append(s"\n'''Brief description''': ${t.description}\n")
+        o.append(s"\n'''Description''': ${t.description}\n")
         o.append(s"\n'''Dimension''': constant\n")
         o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
         o.append(s"\n'''Units''': ${t.zUnits}\n")
@@ -27,7 +27,7 @@ object XDFMapCompare {
 
       case t: XdfTable1D =>
         o.append(s"\n=== $tableName ===\n")
-        o.append(s"\n'''Brief Description''': ${t.table.description}\n")
+        o.append(s"\n'''Description''': ${t.table.description}\n")
         o.append(s"\n'''Dimension''': 1D, vector\n")
         o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
         o.append(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
@@ -38,7 +38,7 @@ object XDFMapCompare {
 
       case t: XdfTable2D =>
         o.append(s"\n=== $tableName ===\n")
-        o.append(s"\n'''Brief description''': ${t.table.description}\n")
+        o.append(s"\n'''Description''': ${t.table.description}\n")
         o.append(s"\n'''Dimension''': 2D, table\n")
         o.append(s"\n'''Categories''': ${cats.mkString(", ")}\n")
         o.append(s"\n'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")
@@ -93,7 +93,7 @@ object XDFMapCompare {
               xdf.table(tableName) match {
                 case t: XdfTable =>
                   o.print(s"\n=== $tableName ===\n")
-                  o.print(s"\n'''Brief description''': ${t.description}\n")
+                  o.print(s"\n'''Description''': ${t.description}\n")
                   o.print(s"\n'''Dimension''': constant\n")
                   o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
                   o.print(s"\n'''Units''': ${t.zUnits}\n")
@@ -101,7 +101,7 @@ object XDFMapCompare {
 
                 case t: XdfTable1D =>
                   o.print(s"\n=== $tableName ===\n")
-                  o.print(s"\n'''Brief Description''': ${t.table.description}\n")
+                  o.print(s"\n'''Description''': ${t.table.description}\n")
                   o.print(s"\n'''Dimension''': 1D, vector\n")
                   o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
                   o.print(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
@@ -109,7 +109,7 @@ object XDFMapCompare {
                   o.print('\n')
                 case t: XdfTable2D =>
                   o.print(s"\n=== $tableName ===\n")
-                  o.print(s"\n'''Brief description''': ${t.table.description}\n")
+                  o.print(s"\n'''Description''': ${t.table.description}\n")
                   o.print(s"\n'''Dimension''': 2D, table\n")
                   o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
                   o.print(s"\n'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")

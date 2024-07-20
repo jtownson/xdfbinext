@@ -18,18 +18,20 @@ object ReportExtractor {
       Acc(m, currentTable, currentNote.map(n => Note(n.lines :+ line)))
 
     def endNote: Acc =
-      currentTable.fold(this)(t =>
-        Acc(m + (t -> currentNote.get.lines.mkString("\n")), currentTable = None, currentNote = None)
-      )
+      currentTable.fold(this)(t => Acc(m + (t -> trimNote.mkString("\n")), currentTable = None, currentNote = None))
+
+    private def trimNote: Vector[String] =
+      currentNote.get.lines.dropWhile(_.isBlank).reverse.dropWhile(_.isBlank).reverse
 
     val inNote: Boolean = currentNote.nonEmpty
   }
 
   def tables(report: Iterable[String]): List[String] = {
     report.flatMap { line =>
-      val nl = line.trim
-      if (nl.startsWith("Table (vector):") || nl.startsWith("Table (scalar):") || nl.startsWith("Table (matrix):")) {
-        val tableName = nl.substring(15, nl.length).trim
+      val nl      = line.trim
+      val mbTable = tableRegex.findFirstMatchIn(nl)
+      if (mbTable.nonEmpty) {
+        val tableName = mbTable.get.group(1).trim
         List(tableName)
       } else {
         List.empty
@@ -37,24 +39,34 @@ object ReportExtractor {
     }.toList
   }
 
+  private val tableRegex   = """===\s(.+)\s===""".r
+  private val notesRegex   = """'''Notes''':""".r
+  private val wikiSegRegex = """'''.+''':""".r
+
   def notes(report: Iterable[String]): Map[String, String] = {
     report
       .foldLeft(Acc(Map.empty, None, None)) { (acc, nextLine) =>
-        val nl = nextLine.trim
-        if (nl.startsWith("Table (vector):") || nl.startsWith("Table (scalar):") || nl.startsWith("Table (matrix):")) {
-          val tableName = nl.substring(15, nl.length).trim
-          acc.startTable(tableName)
-        } else if (nl.startsWith("Notes:")) {
+        val nl      = nextLine.trim
+        val mbTable = tableRegex.findFirstMatchIn(nl)
+        if (mbTable.nonEmpty) {
+          val tableName = mbTable.get.group(1).trim
+          if (acc.inNote)
+            acc.endNote.startTable(tableName)
+          else
+            acc.startTable(tableName)
+        } else if (nl.startsWith("'''Notes''':")) {
           require(acc.currentNote.isEmpty, "invalid start note state")
-          val remainder = nl.substring(6, nl.length)
+          val remainder = nl.substring(12, nl.length)
           if (remainder.nonEmpty)
             acc.startNewNote(remainder)
           else
             acc.startNewNote
-        } else if (acc.inNote && nextLine.trim.nonEmpty) {
+        } else if (acc.inNote && !nextLine.isBlank) {
           acc.addNoteLine(nextLine.stripTrailing())
-        } else if (acc.inNote && nextLine.trim.isEmpty) {
+        } else if (acc.inNote && (wikiSegRegex.matches(nl) || tableRegex.matches(nl))) {
           acc.endNote
+        } else if (acc.inNote && nextLine.isBlank) {
+          acc.addNoteLine("")
         } else {
           acc
         }

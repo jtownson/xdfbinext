@@ -100,7 +100,7 @@ object TableNotes {
     xdfModel.table(tableName) match {
       case t: XdfTable =>
         sb.append(s"=== $tableName ===\n")
-        sb.append(s"'''Brief description''': ${t.description}\n")
+        sb.append(s"'''Description''': ${t.description}\n")
         sb.append('\n')
         sb.append(s"'''Dimension''': constant\n")
         sb.append('\n')
@@ -110,7 +110,7 @@ object TableNotes {
         sb.append('\n')
       case t: XdfTable1D =>
         sb.append(s"=== $tableName ===\n")
-        sb.append(s"'''Brief Description''': ${t.table.description}\n")
+        sb.append(s"'''Description''': ${t.table.description}\n")
         sb.append('\n')
         sb.append(s"'''Dimension''': 1D, vector\n")
         sb.append('\n')
@@ -122,7 +122,7 @@ object TableNotes {
         sb.append('\n')
       case t: XdfTable2D =>
         sb.append(s"=== $tableName ===\n")
-        sb.append(s"'''Brief description''': ${t.table.description}\n")
+        sb.append(s"'''Description''': ${t.table.description}\n")
         sb.append('\n')
         sb.append(s"'''Dimension''': 2D, table\n")
         sb.append('\n')
