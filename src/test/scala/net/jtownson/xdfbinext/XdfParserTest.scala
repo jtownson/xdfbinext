@@ -113,9 +113,9 @@ class XdfParserTest extends AnyFlatSpec {
         mmedMinorStrideBits = 0
       ),
       indexCount = 12,
-      dataType = 0,
-      unitType = 0,
-      daLink = DaLink(0),
+      dataType = Some(0),
+      unitType = Some(0),
+      daLink = Some(DaLink(0)),
       labels = Seq(
         Label(index = 0, value = "0.00"),
         Label(index = 1, value = "0.00"),
@@ -130,7 +130,7 @@ class XdfParserTest extends AnyFlatSpec {
         Label(index = 10, value = "0.00"),
         Label(index = 11, value = "0.00")
       ),
-      math = Math(equation = "X", vars = Seq(Var(id = "X"))),
+      math = Some(Math(equation = "X", vars = Seq(Var(id = "X")))),
       units = ""
     )
 
@@ -147,11 +147,11 @@ class XdfParserTest extends AnyFlatSpec {
         mmedMinorStrideBits = 0
       ),
       indexCount = 1,
-      dataType = 0,
-      unitType = 0,
-      daLink = DaLink(0),
+      dataType = Some(0),
+      unitType = Some(0),
+      daLink = Some(DaLink(0)),
       labels = Seq(Label(index = 0, value = "0.00")),
-      math = Math(equation = "X", vars = Seq(Var(id = "X"))),
+      math = Some(Math(equation = "X", vars = Seq(Var(id = "X")))),
       units = ""
     )
 
@@ -166,11 +166,11 @@ class XdfParserTest extends AnyFlatSpec {
         mmedMajorStrideBits = 0,
         mmedMinorStrideBits = 0
       ),
-      decimalPl = 1,
-      min = BigDecimal("0.000000"),
-      max = BigDecimal("255.000000"),
-      outputType = 1,
-      math = Math(equation = "X/100", vars = Seq(Var(id = "X"))),
+      decimalPl = Some(1),
+      min = Some(BigDecimal("0.000000")),
+      max = Some(BigDecimal("255.000000")),
+      outputType = Some(1),
+      math = Some(Math(equation = "X/100", vars = Seq(Var(id = "X")))),
       units = ""
     )
   }

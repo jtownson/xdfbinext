@@ -157,7 +157,7 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
   }
 
   def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
-    in.map(bd => bd.setScale(t.axes.z.decimalPl, RoundingMode.HALF_UP))
+    t.axes.z.decimalPl.fold(in)(dp => in.map(bd => bd.setScale(dp, RoundingMode.HALF_UP)))
   }
 
   private def readRaw(table: XdfTable): Array[Byte] = {
@@ -189,11 +189,11 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
 
     if (isSigned) {
       val t                            = readRaw(table)
-      val equation: Byte => BigDecimal = EquationParser.parseByteF1(table.axes.z.math.equation)
+      val equation: Byte => BigDecimal = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
       t.map(equation)
     } else {
       val t                           = readUnsignedByte(table)
-      val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.equation)
+      val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
       t.map(equation)
     }
 
@@ -218,7 +218,7 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
       toBuff.addOne(intVal)
     }
 
-    val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.equation)
+    val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
 
     toBuff.map(equation).toArray
   }
@@ -242,7 +242,8 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
         val f = floatBuff.get()
         toBuff.addOne(BigDecimal(f))
       }
-      val equation: BigDecimal => BigDecimal = EquationParser.parseBigDecimalF1(table.axes.z.math.equation)
+      val equation: BigDecimal => BigDecimal =
+        EquationParser.parseBigDecimalF1(table.axes.z.math.map(_.equation).getOrElse("x"))
 
       toBuff.map(equation).toArray
 
@@ -255,7 +256,7 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
         toBuff.addOne(longVal)
       }
 
-      val equation: Long => BigDecimal = EquationParser.parseLongF1(table.axes.z.math.equation)
+      val equation: Long => BigDecimal = EquationParser.parseLongF1(table.axes.z.math.map(_.equation).getOrElse("x"))
 
       toBuff.map(equation).toArray
     }

@@ -35,9 +35,9 @@ class A2L2XDFTest extends AnyFlatSpec {
   it should "output XDF snippets for tchsp tables" ignore {
     val newTables =
       List(
-        "BMWausy_p_DifCat_T",
-        "BMWausy_gra_PEgFlpDwn_C",
-        "BMWausy_gra_PEgFlpOp_C"
+        "BMWausy_p_DifCat_T"
+//        "BMWausy_gra_PEgFlpDwn_C",
+//        "BMWausy_gra_PEgFlpOp_C"
 
 //        "BMWtchsp_rat_p_CmprPmp_T",
 //        "BMWtchsp_rat_p_CmprMax_M",

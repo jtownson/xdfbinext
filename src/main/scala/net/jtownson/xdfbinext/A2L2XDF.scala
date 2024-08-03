@@ -1,7 +1,7 @@
 package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.enums.{ConversionType, DataType}
-import net.alenzen.a2l.{Unit as A2lUnit, *}
+import net.alenzen.a2l.*
 import net.jtownson.xdfbinext.A2L2XDF.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getObjectDescription}
 import net.jtownson.xdfbinext.XdfSchema.{CategoryMem, XdfModel}
@@ -81,11 +81,12 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
   private def getCategoryMems(c: Characteristic): List[CategoryMem] = {
     val refFns = a2l.characteristicUsage(c.getName)
 
-    val cats =
-      if (c.getName == "KL_AUSY_TURB" || c.getName == "BMWausy_p_DifCat_T")
-        List(catMap("BMW_MOD_TchCtr_Pwr2Pos_10ms"))
-      else
-        refFns.flatMap(catMap.get).filter(_.name != "BMW_MOD_AusyTurb_Seg").toList
+    val refCats = refFns.flatMap(catMap.get)
+
+    val cats = A2lXdfCategories.table
+      .get(c.getName)
+      .fold(refCats)(catName => catMap.get(catName))
+      .toList
 
     cats.indices.map(i => CategoryMem(i, cats(i))).toList
   }
@@ -324,7 +325,7 @@ object A2L2XDF {
     s"""  <XDFTABLE uniqueid="0x0" flags="0x0">
        |    <title>$title</title>
        |    <description>$description</description>
-       |    ${categoryMems.map(catMem)}
+       |    ${categoryMems.map(catMem).mkString("\n")}
        |    <XDFAXIS id="x" uniqueid="0x0">
        |      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
        |      <units>-</units>

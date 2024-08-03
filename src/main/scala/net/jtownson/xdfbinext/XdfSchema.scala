@@ -6,9 +6,12 @@ import scala.collection.immutable.Seq
 
 object XdfSchema:
 
-  val undefinedAddress: Long = -1
+  val undefinedAddress: Long                 = -1
+  val isUndefinedAddress: Long => Boolean    = a => a == -1 || a == 0
+  val isNotUndefinedAddress: Long => Boolean = a => !isUndefinedAddress(a)
+
   val floatingPointFlag: Int = 0x10000
-  val signedFlag: Int = 0x01
+  val signedFlag: Int        = 0x01
 
   case class XdfModel(
       version: String,
@@ -22,15 +25,15 @@ object XdfSchema:
 
     private val tablesByAddress: Map[Long, XdfTable] = tables.foldLeft(Map.empty[Long, XdfTable]) { (acc, nextTable) =>
       val zAddr = nextTable.axes.z.embeddedData.mmedAddress
-      if (zAddr != undefinedAddress)
+      if (isNotUndefinedAddress(zAddr))
         acc.updated(zAddr, nextTable)
       else
         acc
     }
 
     private val isConstant: XdfTable => Boolean = table =>
-      table.axes.x.embeddedData.mmedAddress == undefinedAddress &&
-        table.axes.y.embeddedData.mmedAddress == undefinedAddress &&
+      isUndefinedAddress(table.axes.x.embeddedData.mmedAddress) &&
+        isUndefinedAddress(table.axes.y.embeddedData.mmedAddress) &&
         table.axes.x.indexCount == 1 &&
         table.axes.y.indexCount == 1
 
@@ -43,8 +46,8 @@ object XdfSchema:
       t.axes.y.indexCount == 1 && t.axes.x.indexCount > 1
 
     private val is2D: XdfTable => Boolean = table =>
-      (table.axes.x.embeddedData.mmedAddress != undefinedAddress || table.axes.x.indexCount > 1) &&
-        (table.axes.y.embeddedData.mmedAddress != undefinedAddress || table.axes.y.indexCount > 1)
+      (isNotUndefinedAddress(table.axes.x.embeddedData.mmedAddress) || table.axes.x.indexCount > 1) &&
+        (isNotUndefinedAddress(table.axes.y.embeddedData.mmedAddress) || table.axes.y.indexCount > 1)
 
     val tablesConstant: Map[String, XdfTable] =
       tablesByName.filter((_, t) => isConstant(t))
@@ -77,15 +80,15 @@ object XdfSchema:
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
       val yAddr = tVal.axes.y.embeddedData.mmedAddress
-      val tX    = if (xAddr == undefinedAddress) None else Some(tablesByAddress(xAddr))
-      val tY    = if (yAddr == undefinedAddress) None else Some(tablesByAddress(yAddr))
+      val tX    = if (isUndefinedAddress(xAddr)) None else Some(tablesByAddress(xAddr))
+      val tY    = if (isUndefinedAddress(yAddr)) None else Some(tablesByAddress(yAddr))
       XdfTable2D(tVal, tX, tY)
     }
 
     private def table1DAndBreakpoints(name: String): XdfTable1D = {
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
-      val tX    = if (xAddr == undefinedAddress) None else Some(tablesByAddress(xAddr))
+      val tX    = if (isUndefinedAddress(xAddr)) None else Some(tablesByAddress(xAddr))
 
       XdfTable1D(tVal, tX)
     }
@@ -176,11 +179,11 @@ object XdfSchema:
       uniqueId: Int,
       embeddedData: EmbeddedData,
       indexCount: Int,
-      dataType: Int,
-      unitType: Int,
-      daLink: DaLink,
+      dataType: Option[Int],
+      unitType: Option[Int],
+      daLink: Option[DaLink],
       labels: Seq[Label],
-      math: Math,
+      math: Option[Math],
       units: String
   )
 
@@ -189,22 +192,22 @@ object XdfSchema:
       uniqueId: Int,
       embeddedData: EmbeddedData,
       indexCount: Int,
-      dataType: Int,
-      unitType: Int,
-      daLink: DaLink,
+      dataType: Option[Int],
+      unitType: Option[Int],
+      daLink: Option[DaLink],
       labels: Seq[Label],
-      math: Math,
+      math: Option[Math],
       units: String
   )
 
   case class XdfAxisZ(
       id: String,
       embeddedData: EmbeddedData,
-      decimalPl: Int,
-      min: BigDecimal,
-      max: BigDecimal,
-      outputType: Int,
-      math: Math,
+      decimalPl: Option[Int],
+      min: Option[BigDecimal],
+      max: Option[BigDecimal],
+      outputType: Option[Int],
+      math: Option[Math],
       units: String
   )
 

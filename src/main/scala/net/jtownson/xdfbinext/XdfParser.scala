@@ -100,12 +100,12 @@ object XdfParser:
     val xAxis = {
       val uniqueId     = decode(n \@ "uniqueid")
       val indexCount   = decode((xAxisNode \ "indexcount").head.text)
-      val dataType     = decode((xAxisNode \ "datatype").head.text)
-      val unitType     = decode((xAxisNode \ "unittype").head.text)
+      val dataType     = (xAxisNode \ "datatype").headOption.map(_.text).map(decode).map(_.toInt)
+      val unitType     = (xAxisNode \ "unittype").headOption.map(_.text).map(decode).map(_.toInt)
       val embeddedData = node2EmbeddedData((xAxisNode \ "EMBEDDEDDATA").head)
-      val daLink       = node2DaLink((xAxisNode \ "DALINK").head)
+      val daLink       = (xAxisNode \ "DALINK").headOption.map(node2DaLink)
       val labels       = (xAxisNode \ "LABEL").map(node2Label)
-      val math         = node2Math((xAxisNode \ "MATH").head)
+      val math         = (xAxisNode \ "MATH").headOption.map(node2Math)
       val units        = (xAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisX(
@@ -126,12 +126,12 @@ object XdfParser:
     val yAxis = {
       val uniqueId     = decode(n \@ "uniqueid")
       val indexCount   = decode((yAxisNode \ "indexcount").head.text)
-      val dataType     = decode((yAxisNode \ "datatype").head.text)
-      val unitType     = decode((yAxisNode \ "unittype").head.text)
+      val dataType     = (yAxisNode \ "datatype").headOption.map(_.text).map(decode).map(_.toInt)
+      val unitType     = (yAxisNode \ "unittype").headOption.map(_.text).map(decode).map(_.toInt)
       val embeddedData = node2EmbeddedData((yAxisNode \ "EMBEDDEDDATA").head)
-      val daLink       = node2DaLink((yAxisNode \ "DALINK").head)
+      val daLink       = (yAxisNode \ "DALINK").headOption.map(node2DaLink)
       val labels       = (yAxisNode \ "LABEL").map(node2Label)
-      val math         = node2Math((yAxisNode \ "MATH").head)
+      val math         = (yAxisNode \ "MATH").headOption.map(node2Math)
       val units        = (yAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisY(
@@ -151,11 +151,11 @@ object XdfParser:
     val zAxisNode = axisNodes.find(axis("z")).getOrElse(fail("missing z axis in $n"))
     val zAxis = {
       val embeddedData = node2EmbeddedData((zAxisNode \ "EMBEDDEDDATA").head)
-      val decimalPl    = decode((zAxisNode \ "decimalpl").head.text)
-      val min          = BigDecimal((zAxisNode \ "min").head.text)
-      val max          = BigDecimal((zAxisNode \ "max").head.text)
-      val outputType   = decode((zAxisNode \ "outputtype").head.text)
-      val math         = node2Math((zAxisNode \ "MATH").head)
+      val decimalPl    = (zAxisNode \ "decimalpl").headOption.map(_.text).map(_.toInt)
+      val min          = (zAxisNode \ "min").headOption.map(_.text).map(BigDecimal(_))
+      val max          = (zAxisNode \ "max").headOption.map(_.text).map(BigDecimal(_))
+      val outputType   = (zAxisNode \ "outputtype").headOption.map(_.text).map(decode).map(_.toInt)
+      val math         = (zAxisNode \ "MATH").headOption.map(node2Math)
       val units        = (zAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
       XdfAxisZ(

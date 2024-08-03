@@ -21,7 +21,7 @@ object Data2Str {
 
   def data2Str1D(xAxisData: Array[String], tableData: Array[String]): String = {
     val cols       = xAxisData.length
-    val maxXLen    = xAxisData.map(_.length).max
+    val maxXLen    = if (xAxisData.isEmpty) 0 else xAxisData.map(_.length).max
     val maxDataLen = tableData.map(_.length).max
     val len        = Math.max(maxXLen, maxDataLen) + 1
 
@@ -46,8 +46,8 @@ object Data2Str {
     val cols = xAxisData.length
     val rows = yAxisData.length
 
-    val maxXLen    = xAxisData.map(_.length).max
-    val maxYLen    = yAxisData.map(_.length).max
+    val maxXLen    = if (xAxisData.isEmpty) 0 else xAxisData.map(_.length).max
+    val maxYLen    = if (yAxisData.isEmpty) 0 else yAxisData.map(_.length).max
     val maxDataLen = tableData.map(_.length).max
     val len        = Math.max(maxXLen, Math.max(maxYLen, maxDataLen)) + 1
 
