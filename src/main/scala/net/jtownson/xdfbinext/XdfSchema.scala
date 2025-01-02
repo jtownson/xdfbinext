@@ -10,8 +10,11 @@ object XdfSchema:
   val isUndefinedAddress: Long => Boolean    = a => a == -1 || a == 0
   val isNotUndefinedAddress: Long => Boolean = a => !isUndefinedAddress(a)
 
-  val floatingPointFlag: Int = 0x10000
-  val signedFlag: Int        = 0x01
+  val signedFlag: Int           = 0x01
+  val lsbFlag: Int              = 0x02
+  val signedLsbFlag: Int        = 0x03
+  val floatingPointFlag: Int    = 0x10000
+  val floatingPointLsbFlag: Int = 0x10003
 
   case class XdfModel(
       version: String,
@@ -80,15 +83,28 @@ object XdfSchema:
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
       val yAddr = tVal.axes.y.embeddedData.mmedAddress
-      val tX    = if (isUndefinedAddress(xAddr)) None else Some(tablesByAddress(xAddr))
-      val tY    = if (isUndefinedAddress(yAddr)) None else Some(tablesByAddress(yAddr))
+      val tX    = if (isUndefinedAddress(xAddr)) None else tablesByAddress.get(xAddr)
+      val tY    = if (isUndefinedAddress(yAddr)) None else tablesByAddress.get(yAddr)
+
+//      if (tX.isEmpty)
+//        println(s"WARNING. Missing X-axis breakpoint definition for table $name")
+
+//      if (tY.isEmpty)
+//        println(s"WARNING. Missing Y-axis breakpoint definition for table $name")
+
       XdfTable2D(tVal, tX, tY)
     }
 
     private def table1DAndBreakpoints(name: String): XdfTable1D = {
       val tVal  = tablesByName(name)
       val xAddr = tVal.axes.x.embeddedData.mmedAddress
-      val tX    = if (isUndefinedAddress(xAddr)) None else Some(tablesByAddress(xAddr))
+      val tX =
+        if (isUndefinedAddress(xAddr)) None
+        else
+          tablesByAddress.get(xAddr)
+
+//      if (tX.isEmpty)
+//        println(s"WARNING. Missing X-axis breakpoint definition for table $name")
 
       XdfTable1D(tVal, tX)
     }

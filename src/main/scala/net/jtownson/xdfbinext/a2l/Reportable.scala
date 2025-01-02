@@ -2,7 +2,13 @@ package net.jtownson.xdfbinext.a2l
 
 import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
 import net.jtownson.xdfbinext.Data2Str
-import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValBlkSummary, ValueSummary}
+import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{
+  AsciiSummary,
+  CurveSummary,
+  MapSummary,
+  ValBlkSummary,
+  ValueSummary
+}
 import net.jtownson.xdfbinext.a2l.CurveType.{
   NumberNumberTable1D,
   NumberStringTable1D,
@@ -19,6 +25,7 @@ object Reportable {
       case ss: ValBlkSummary => report(label, ss)
       case ss: CurveSummary  => report(label, ss)
       case ss: MapSummary    => report(label, ss)
+      case ss: AsciiSummary  => report(label, ss)
 
   def report(cv: CharacteristicValue): String =
     cv match
@@ -72,6 +79,15 @@ object Reportable {
     sb.append(s"\n'''Type''': value\n")
     sb.append(s"\n'''Usage''': ${s.referencedBy.mkString(", ")}\n")
     sb.append(s"\n'''Units''': ${s.fnUnits}\n")
+    sb.toString
+  }
+
+  def report(label: String, s: AsciiSummary): String = {
+    val sb: StringBuilder = new StringBuilder
+    sb.append(s"\n=== $label ${s.name} ===\n")
+    sb.append(s"\n'''Description''': ${s.description}\n")
+    sb.append(s"\n'''Type''': ASCII\n")
+    sb.append(s"\n'''Usage''': ${s.referencedBy.mkString(", ")}\n")
     sb.toString
   }
 

@@ -8,6 +8,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 
 import java.io.File
+import java.util.Base64
 import scala.util.Using
 
 class A2L2DotTest extends AnyFlatSpec {
@@ -21,7 +22,8 @@ class A2L2DotTest extends AnyFlatSpec {
   }
 
   private val handGraphs = Table[String](
-    "filename"
+    "filename",
+    "B58FR/BMW_MOD_IgnOut_kra_10ms.dot"
 //    "BMW_MOD_IgnBasDelt_Msc_10ms.dot",
 //    "tchdiag_pressure.dot",
 //    "tchsp_p_Req_uw.dot",
@@ -36,7 +38,7 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
-    "wmtkm"
+//    "BMW_MOD_InjSplt_seg"
 //    "BMW_SWC_LamCo_Int",
 //    "BMW_SWC_LamSp_Int",
 //    "BMW_MOD_LamCo_3WHL_10ms"
@@ -71,8 +73,8 @@ class A2L2DotTest extends AnyFlatSpec {
 //    "BMW_MOD_TchCtr_Pwr_10ms",
 //    "BMW_MOD_TchCtr_Pwr2Pos_10ms",
 //    "BMW_MOD_AusyKat_10ms",
-//    "BMW_MOD_TchBas_P_10ms",
-//    "BMW_MOD_TchBas_Misc_10ms",
+    "BMW_MOD_TchBas_P_10ms",
+    "BMW_MOD_TchBas_Misc_10ms"
 //    "BMW_MOD_BlsRfMax_10ms",
 //    "BMW_SWC_Ewg",
 //    "BMW_MOD_TchCtr_Pwr_10ms",
@@ -84,6 +86,7 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val valueCentredGraphs = Table[String](
     "Object name",
+    "KF_PHA_H_E1"
 //    "Dzw_annm",
 //    "K_TKW_MX"
 //    "Zw_opt",

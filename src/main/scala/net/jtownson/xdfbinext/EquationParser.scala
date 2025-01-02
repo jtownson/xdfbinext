@@ -43,7 +43,7 @@ object EquationParser:
     def parseF0(e: String): BigDecimal = parse(e, expr(_)).get.value
 
     def parseF1(e: String): T => BigDecimal = { (x: T) =>
-      val ee = e.replace("x", x.toString).replace("X", x.toString)
+      val ee = e.replace("x", x.toString).replace("X", x.toString).replaceAll("\\s*", "")
       parseF0(ee)
     }
 

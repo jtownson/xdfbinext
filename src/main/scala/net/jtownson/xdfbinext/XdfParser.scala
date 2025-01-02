@@ -161,7 +161,7 @@ object XdfParser:
       XdfAxisZ(
         id = "z",
         embeddedData = embeddedData,
-        decimalPl = decimalPl,
+        decimalPl = decimalPl.orElse(Some(2)),
         min = min,
         max = max,
         outputType = outputType,

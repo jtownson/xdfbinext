@@ -15,7 +15,9 @@ class A2LBinDiff(binFileLhs: File, binFileRhs: File, a2l: A2LWrapper, offset: Lo
   val diffs: Iterable[(Characteristic, Diff)] = a2l.characteristics.values
     .map(c => c -> (binLhs.readCharacteristic(c.getName), binRhs.readCharacteristic(c.getName)))
     .collect { case (n, (v1, v2)) if v1 != v2 => n -> (v1, v2) }
-    .map { case (c, (lhs, rhs)) => c -> Diff(a2l.getSummary(c.getName), lhs, rhs) }
+    .map { case (c, (lhs, rhs)) =>
+      c -> Diff(a2l.getSummary(c.getName), lhs, rhs, A2LBinAdapter.diffCharacteristic(lhs, rhs))
+    }
 
   lazy val diffsByUsage: List[(Characteristic, Diff)] =
     diffs.toList.sortBy((c, diff) => diff.summary.referencedBy.mkString)
@@ -26,6 +28,7 @@ object A2LBinDiff {
   case class Diff(
       summary: CharacteristicSummary,
       lhs: CharacteristicValue,
-      rhs: CharacteristicValue
+      rhs: CharacteristicValue,
+      diff: CharacteristicValue
   )
 }

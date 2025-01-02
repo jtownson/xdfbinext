@@ -15,6 +15,11 @@ lazy val commonsText = Seq("org.apache.commons" % "commons-text" % "1.11.0")
 lazy val scopt       = Seq("com.github.scopt" %% "scopt" % "4.1.0")
 lazy val a2lParser   = Seq("net.alenzen.a2l" % "a2lparser" % "2.6.2-local")
 lazy val graphviz    = Seq("guru.nidi" % "graphviz-java" % "0.18.1")
+lazy val circe = Seq(
+  "io.circe" %% "circe-core"    % "0.14.10",
+  "io.circe" %% "circe-generic" % "0.14.10",
+  "io.circe" %% "circe-parser"  % "0.14.10"
+)
 
 lazy val root = project
   .in(file("."))
@@ -23,9 +28,10 @@ lazy val root = project
     version      := "0.1",
     scalaVersion := scala3Version,
     resolvers += Resolver.mavenLocal,
-    libraryDependencies ++= scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
+    libraryDependencies ++= circe ++ scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
     assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare"),
     assemblyJarName      := "xbc.jar",
+    scalacOptions ++= Seq("-Xmax-inlines", "64"),
     assemblyMergeStrategy := {
       case PathList("module-info.class") =>
         MergeStrategy.last

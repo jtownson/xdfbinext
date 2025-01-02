@@ -57,6 +57,10 @@ class A2LWrapperTest extends AnyFlatSpec {
     a2l.segmentForAddress(0x51802740) shouldBe 0x51800000
     a2l.segmentForAddress(0x50801af0) shouldBe 0x50800000
   }
+
+  it should "get a format for St_kr.B_krdws" in withA2L { a2l =>
+    a2l.getFormat(a2l.measurements("St_kr.B_krdws")) shouldBe (6, 3)
+  }
 }
 
 object A2LWrapperTest {

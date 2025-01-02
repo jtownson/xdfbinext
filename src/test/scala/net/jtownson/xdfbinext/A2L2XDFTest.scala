@@ -16,8 +16,27 @@ class A2L2XDFTest extends AnyFlatSpec {
   val a2lUrl = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
   val a2l    = new A2L2XDF(a2lUrl = a2lUrl, xdfModel = modXdf)
 
-  it should "output an XDF snippet for an A2L characteristic" ignore {
-    println(a2l.characteristic2XDF(_ == "K_MDKIST_SOT_MX").head)
+  it should "output K_F_SCHALTEINGRIFF" in {
+    val a2lFile = new File(
+      "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\MHD BMW Maps\\F-G Series\\s58_____MG1CS024 F4C9G595B+damos\\00005c640a6405_____MG1CS024 F4C9G595B\\F4C9G576B\\Asap2_9\\DME86S0_F4C9G576B.a2l"
+    )
+    val a2lUrl = a2lFile.toURI.toURL
+    val xdfFile = new File(
+      "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\BMW-XDFs\\B58gen2\\00005D553CAA08\\00005D553CAA08.xdf"
+    )
+    val xdfModel = Using.resource(Source.fromFile(xdfFile))(xdfSource => XdfParser.parse(xdfSource.mkString))
+    val a2l      = new A2L2XDF(a2lUrl = a2lUrl, xdfModel = xdfModel)
+
+    println(a2l.characteristic2XDF(_ == "K_F_SCHALTEINGRIFF").head)
+  }
+  it should "output a snippet for exhuast tables" in {
+    println(a2l.characteristic2XDF(_ == "KF_TA_ATLSOLL").head)
+  }
+
+  it should "output an XDF snippet for an A2L characteristic" in {
+    // TODO (VAL_BLK)
+    pending
+//    println(a2l.characteristic2XDF(_ == "K_I_GANG_AT").head)
   }
 
   it should "output an XDF snippet for an A2L curve" ignore {

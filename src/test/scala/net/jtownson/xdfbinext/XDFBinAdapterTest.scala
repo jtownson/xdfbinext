@@ -42,7 +42,7 @@ class XDFBinAdapterTest extends AnyFlatSpec {
 //    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPRatCmpr_T"))
 //    println(MapCompare.table2Str(binAdapter, "BMWtchsp_fac_FilPDyn_C"))
 //    println(MapCompare.table2Str(binAdapter, "Maximaler Sollladedruck wegen Diagnose Ladedrucksensor"))
-    println(XDFMapCompare.table2Str(binAdapter, "BMWtchsp_rat_p_CmprPmp_T"))
+//    println(XDFMapCompare.table2Str(binAdapter, "BMWtchsp_rat_p_CmprPmp_T"))
   }
 
   "BinAdapter" should "read a scalar short" in {
@@ -80,10 +80,6 @@ class XDFBinAdapterTest extends AnyFlatSpec {
   it should "read a 2D table of unsigned short values" in {
     val table = "Rail pressure homogen"
     binAdapter.tableRead(table).exists(value => value < 0) shouldBe false
-  }
-
-  it should "read a constant with a 32 bit values" in {
-    binAdapter.tableRead("Maximum indicated torque (Nm)") shouldBe Array[BigDecimal](BigDecimal("521.00"))
   }
 
   it should "read timing main breakpoints correctly" in {

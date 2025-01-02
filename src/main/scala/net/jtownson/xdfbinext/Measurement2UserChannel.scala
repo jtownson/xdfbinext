@@ -42,7 +42,7 @@ class Measurement2UserChannel(a2lUrl: URL) {
     val isSigned      = ByteBlock.signedFlag(m.getDatatype)
     val compuMethod   = compuMethods(m.getConversion)
     val units         = compuMethod.getUnit
-    val dp            = Measurement2UserChannel.format2DecimalPl(m.getFormat)
+    val dp            = a2l.getFormat(m)._2
     val coeffs        = compuMethod.getCoeffs
 
     val a = coeffs.getF / coeffs.getB

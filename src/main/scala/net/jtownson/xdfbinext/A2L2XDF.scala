@@ -32,7 +32,14 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
   }
 
   private def characteristic2XDF(c: Characteristic): String = {
-    characteristicFold(c, value2Xdf, valBlk2Xdf, curve2Xdf, map2Xdf)
+    characteristicFold(
+      c,
+      value2Xdf,
+      valBlk2Xdf,
+      curve2Xdf,
+      map2Xdf,
+      _ => throw new UnsupportedOperationException("Cannot convert A2L ASCII block to XDF")
+    )
   }
 
   private def getTypeFlag(c: Characteristic): Int = {

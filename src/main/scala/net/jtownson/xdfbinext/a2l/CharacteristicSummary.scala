@@ -7,6 +7,8 @@ trait CharacteristicSummary {
 }
 
 object CharacteristicSummary {
+  case class AsciiSummary(name: String, description: String, referencedBy: Set[String]) extends CharacteristicSummary
+
   case class ValueSummary(name: String, description: String, referencedBy: Set[String], fnUnits: String)
       extends CharacteristicSummary
 

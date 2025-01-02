@@ -4,8 +4,8 @@ import net.alenzen.a2l.*
 import net.alenzen.a2l.enums.CharacteristicType.{ASCII, CURVE, MAP, VALUE, VAL_BLK}
 import net.alenzen.a2l.enums.{CharacteristicType, ConversionType}
 import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
-import net.jtownson.xdfbinext.a2l.CurveType.*
-import net.jtownson.xdfbinext.a2l.MapType.*
+import net.jtownson.xdfbinext.a2l.CurveType.{CurveValueType, *}
+import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, *}
 import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
 import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
 import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
@@ -325,4 +325,73 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
 object A2LBinAdapter {
   type CharacteristicValue = ValueType | ValBlkType | CurveValueType | MapValueType
+
+  def diffCharacteristic(lhs: CharacteristicValue, rhs: CharacteristicValue): CharacteristicValue = {
+    (lhs, rhs) match {
+      case (l: ValueType, r: ValueType) =>
+        diffValueTypes(l, r)
+      case (l: ValBlkType, r: ValBlkType) =>
+        diffValBlkTypes(l, r)
+      case (l: CurveValueType, r: CurveValueType) =>
+        diffCurveValueTypes(l, r)
+      case (l: MapValueType, r: MapValueType) =>
+        diffMapValueTypes(l, r)
+      case _ =>
+        throw new IllegalStateException(s"Attempt to diff characteristics of different types: $lhs, $rhs")
+    }
+  }
+
+  private def diffValueTypes(lhs: ValueType, rhs: ValueType): ValueType = {
+    (lhs, rhs) match {
+      case (l: String, r: String) =>
+        l.diff(r)
+      case (l: BigDecimal, r: BigDecimal) =>
+        l - r
+    }
+  }
+
+  private def diffValBlkTypes(lhs: ValBlkType, rhs: ValBlkType): ValBlkType = {
+    (lhs, rhs) match {
+      case (l: NumericArray, r: NumericArray) =>
+        NumericArray(l.values.zip(r.values).map((nl, nr) => nl - nr))
+      case (l: StringArray, r: StringArray) =>
+        StringArray(l.values.zip(r.values).map((sl, sr) => sl.diff(sr)))
+    }
+  }
+
+  // TODO consider smarter, interpolated diff when axes are also different
+  private def diffCurveValueTypes(lhs: CurveValueType, rhs: CurveValueType): CurveValueType = {
+    (lhs, rhs) match {
+      case (l: NumberStringTable1D, r: NumberStringTable1D) =>
+        NumberStringTable1D(Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: StringNumberTable1D, r: StringNumberTable1D) =>
+        StringNumberTable1D(Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+      case (l: StringStringTable1D, r: StringStringTable1D) =>
+        StringStringTable1D(Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: NumberNumberTable1D, r: NumberNumberTable1D) =>
+        NumberNumberTable1D(Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+    }
+  }
+
+  // TODO consider smarter, interpolated diff when axes are also different
+  private def diffMapValueTypes(lhs: MapValueType, rhs: MapValueType): MapValueType = {
+    (lhs, rhs) match {
+      case (l: NumberNumberNumberTable2D, r: NumberNumberNumberTable2D) =>
+        NumberNumberNumberTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+      case (l: NumberNumberStringTable2D, r: NumberNumberStringTable2D) =>
+        NumberNumberStringTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: NumberStringNumberTable2D, r: NumberStringNumberTable2D) =>
+        NumberStringNumberTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+      case (l: NumberStringStringTable2D, r: NumberStringStringTable2D) =>
+        NumberStringStringTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: StringNumberStringTable2D, r: StringNumberStringTable2D) =>
+        StringNumberStringTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: StringNumberNumberTable2D, r: StringNumberNumberTable2D) =>
+        StringNumberNumberTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+      case (l: StringStringStringTable2D, r: StringStringStringTable2D) =>
+        StringStringStringTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln diff rn))
+      case (l: StringStringNumberTable2D, r: StringStringNumberTable2D) =>
+        StringStringNumberTable2D(Array.empty, Array.empty, l.values.zip(r.values).map((ln, rn) => ln - rn))
+    }
+  }
 }

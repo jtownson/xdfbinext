@@ -11,7 +11,7 @@ class IgnDotTest extends AnyFlatSpec {
   val a2lUrl       = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
   lazy val a2l2Dot = new A2L2Dot(a2lUrl)
 
-  it should "graph ign functions - high level flow" ignore {
+  it should "graph ign functions - high level flow" in {
 
     val valsToInclude = Set(
       "Nkw",
@@ -35,6 +35,7 @@ class IgnDotTest extends AnyFlatSpec {
       "Dzwt_best_pf2",
       "Dzwdyn",
       "Dzw_kr",
+      "Dzw_ks",
       "Zw_grund_kg",
       "Zw_soll",
       "BMWign_ag_MinNorm_sw"
@@ -64,6 +65,7 @@ class IgnDotTest extends AnyFlatSpec {
     )
 
     val fnsToInclude = Set(
+      "BMW_MOD_IgnKnPr_Seg",
       "BMW_MOD_IgnBas_BestCoord_seg",
       "BMW_MOD_IgnBas_Norm_seg",
       "BMW_MOD_IgnBasDelt_Temp_1000ms",

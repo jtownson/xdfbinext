@@ -5,7 +5,8 @@ import net.jtownson.xdfbinext.XDFBinAdapter.*
 import net.jtownson.xdfbinext.XdfSchema.*
 
 import java.io.{File, RandomAccessFile}
-import java.nio.ByteBuffer
+import java.nio.{ByteBuffer, ByteOrder}
+import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
@@ -181,19 +182,29 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
     a.toArray
   }
 
-  private def tableByte(table: XdfTable): Array[BigDecimal] = {
+  private def tableByte(table: XdfTable) = {
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
+    val isLsbFirst    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
+    val isSignedLsb   = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
     require(cellSizeBytes == 1, s"Invalid cell size for tableByte: ${table.title} has size in bytes $cellSizeBytes")
 
-    if (isSigned) {
-      val t                            = readRaw(table)
-      val equation: Byte => BigDecimal = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+    if (isSigned) { // signed, big endian
+      val t        = readRaw(table)
+      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
       t.map(equation)
-    } else {
-      val t                           = readUnsignedByte(table)
-      val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+    } else if (isLsbFirst) { // unsigned, little endian
+      val t        = readUnsignedByte(table)
+      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    } else if (isSignedLsb) { // signed, little endian (TODO test for -ve values)
+      val t        = readRaw(table)
+      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    } else { // unsigned, big endian
+      val t        = readUnsignedByte(table)
+      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
       t.map(equation)
     }
 
@@ -204,17 +215,21 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
 
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
+    val isLsbFirst    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
+    val isSignedLsb   = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
 
     require(cellSizeBytes == 2, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
 
-    val wrapped: ByteBuffer = ByteBuffer.wrap(tableRaw)
-    val shortBuff           = wrapped.asShortBuffer()
-    val toBuff              = new ArrayBuffer[Int](numCells)
+    val wrapped: ByteBuffer =
+      if (isLsbFirst || isSignedLsb) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN)
+      else ByteBuffer.wrap(tableRaw)
+    val shortBuff = wrapped.asShortBuffer()
+    val toBuff    = new ArrayBuffer[Int](numCells)
 
     while (shortBuff.hasRemaining) {
       val shortVal    = shortBuff.get
-      val intVal: Int = if (isSigned || shortVal >= 0) shortVal.toInt else 0x10000 + shortVal
+      val intVal: Int = if (isSigned || isSignedLsb || shortVal >= 0) shortVal.toInt else 0x10000 + shortVal
       toBuff.addOne(intVal)
     }
 
@@ -229,13 +244,15 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
 
-    val wrapped: ByteBuffer = ByteBuffer.wrap(tableRaw)
-
     require(cellSizeBytes == 4, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
 
-    val isFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointFlag
+    val isFloatingPoint    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointFlag
+    val isLsbFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointLsbFlag
 
-    if (isFloatingPoint) {
+    val wrapped: ByteBuffer =
+      if (isLsbFloatingPoint) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN) else ByteBuffer.wrap(tableRaw)
+
+    if (isFloatingPoint || isLsbFloatingPoint) {
       val floatBuff = wrapped.asFloatBuffer()
       val toBuff    = new ArrayBuffer[BigDecimal](numCells)
       while (floatBuff.hasRemaining) {

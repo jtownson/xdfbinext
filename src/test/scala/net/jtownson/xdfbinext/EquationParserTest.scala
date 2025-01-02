@@ -4,7 +4,7 @@ import net.jtownson.xdfbinext.EquationParser.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
-class EquationParserTest extends AnyFlatSpec:
+class EquationParserTest extends AnyFlatSpec {
 
   "Equation parser" should "calculate constant additions" in {
     parseConst("1+1") shouldBe 2
@@ -34,3 +34,8 @@ class EquationParserTest extends AnyFlatSpec:
   it should "enable short input but expand to BigDecimal" in {
     parseBigDecimalF1("x*0.1")(425) shouldBe BigDecimal("42.5")
   }
+
+  it should "handle an expression with whitespace" in {
+    parseBigDecimalF1("1/(X * 2.0) * 2.0")(1) shouldBe BigDecimal(1)
+  }
+}

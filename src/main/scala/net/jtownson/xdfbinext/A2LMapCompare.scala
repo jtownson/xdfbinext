@@ -92,8 +92,10 @@ object A2LMapCompare {
             val summaryReport = report(label, cdiff.summary)
             val lReport       = report(cdiff.lhs)
             val rReport       = report(cdiff.rhs)
+            val diffReport    = report(cdiff.diff)
             o.println(summaryReport)
             o.println(lReport)
+            o.println(diffReport)
             o.println(rReport)
           }
         }

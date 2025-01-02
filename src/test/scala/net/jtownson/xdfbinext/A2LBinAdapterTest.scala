@@ -213,6 +213,7 @@ class A2LBinAdapterTest extends AnyFlatSpec {
       a2LBinAdapter.readCharacteristic(n)
     }
   }
+
 }
 
 object A2LBinAdapterTest {

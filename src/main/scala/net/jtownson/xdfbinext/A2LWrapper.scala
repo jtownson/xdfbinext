@@ -1,11 +1,17 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.CharacteristicType.{CURVE, MAP, VALUE, VAL_BLK}
+import net.alenzen.a2l.enums.CharacteristicType.{ASCII, CURVE, MAP, VALUE, VAL_BLK}
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
 import net.alenzen.a2l.*
 import net.jtownson.xdfbinext.A2LWrapper.{characteristicFold, getA2L, getObjectDescription}
 import net.jtownson.xdfbinext.a2l.CharacteristicSummary
-import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValBlkSummary, ValueSummary}
+import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{
+  AsciiSummary,
+  CurveSummary,
+  MapSummary,
+  ValBlkSummary,
+  ValueSummary
+}
 
 import java.net.URL
 import scala.jdk.CollectionConverters.*
@@ -91,7 +97,14 @@ case class A2LWrapper(a2lUrl: URL) {
         getUnits(c)
       )
 
-    characteristicFold(c, valueSummary, valBlkSummary, curveSummary, mapSummary)
+    def asciiSummary(c: Characteristic) =
+      AsciiSummary(
+        c.getName,
+        getObjectDescription(c.getName, c.getLongIdentifier),
+        characteristicUsage(c.getName)
+      )
+
+    characteristicFold(c, valueSummary, valBlkSummary, curveSummary, mapSummary, asciiSummary)
 
   }
 
@@ -164,6 +177,15 @@ case class A2LWrapper(a2lUrl: URL) {
     getAxisCount(c, 1)
   }
 
+  def getFormat(m: Measurement): (Int, Int) = {
+    val f = m.getFormat
+    Option(f).map(A2LWrapper.getFormat).getOrElse(getFormat(compuMethods(m.getConversion)))
+  }
+
+  def getFormat(c: CompuMethod): (Int, Int) = {
+    A2LWrapper.getFormat(c.getFormat)
+  }
+
   private def getAxisCount(c: Characteristic, i: Int): Int = {
     val xAxisDescr = c.getAxisDescriptions.asScala(i)
 
@@ -233,7 +255,8 @@ object A2LWrapper {
       fValue: Characteristic => T,
       fValBlk: Characteristic => T,
       fCurve: Characteristic => T,
-      fMap: Characteristic => T
+      fMap: Characteristic => T,
+      fAscii: Characteristic => T
   ): T = {
     if (c.getType == VALUE)
       fValue(c)
@@ -243,6 +266,8 @@ object A2LWrapper {
       fMap(c)
     else if (c.getType == VAL_BLK)
       fValBlk(c)
+    else if (c.getType == ASCII)
+      fAscii(c)
     else
       throw new IllegalStateException(s"Unsupported characteristic type: ${c.getType}")
   }
