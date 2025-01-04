@@ -6,14 +6,13 @@ import net.jtownson.xdfbinext.XdfSchema.*
 
 import java.io.{File, RandomAccessFile}
 import java.nio.{ByteBuffer, ByteOrder}
-import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 
-class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
+class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r") {
 
-  private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
+  private val binAccess: RandomAccessFile = new RandomAccessFile(bin, mode)
 
   private val constants: Map[String, Array[BigDecimal]] =
     xdfModel.tablesConstant.map((tableName, _) => tableName -> tableRead(tableName))
@@ -161,7 +160,7 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
     t.axes.z.decimalPl.fold(in)(dp => in.map(bd => bd.setScale(dp, RoundingMode.HALF_UP)))
   }
 
-  private def readRaw(table: XdfTable): Array[Byte] = {
+  def readRaw(table: XdfTable): Array[Byte] = {
     val startAddress  = table.axes.z.embeddedData.mmedAddress
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
@@ -169,6 +168,11 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel) {
     binAccess.seek(startAddress)
     binAccess.read(a)
     a
+  }
+
+  def writeRaw(address: Long, data: Array[Byte]): Unit = {
+    binAccess.seek(address)
+    binAccess.write(data)
   }
 
   private def readUnsignedByte(table: XdfTable): Array[Int] = {

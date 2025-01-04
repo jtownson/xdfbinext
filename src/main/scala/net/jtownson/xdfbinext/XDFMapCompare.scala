@@ -105,7 +105,7 @@ object XDFMapCompare {
                   o.print(s"\n'''Dimension''': 1D, vector\n")
                   o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
                   o.print(s"\n'''Unit info''': ${t.table.xUnits} --> ${t.table.zUnits}\n")
-                  o.print(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
+                  o.print(s"\n'''Breakpoints (x)''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
                   o.print('\n')
                 case t: XdfTable2D =>
                   o.print(s"\n=== $tableName ===\n")
@@ -113,8 +113,8 @@ object XDFMapCompare {
                   o.print(s"\n'''Dimension''': 2D, table\n")
                   o.print(s"\n'''Categories''': ${cats.mkString(", ")}\n")
                   o.print(s"\n'''Unit info''': ${t.table.xUnits}, ${t.table.yUnits} --> ${t.table.zUnits}\n")
-                  o.print(s"\n'''Breakpoints''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)} vs ${t.yAxisBreakpoints
-                      .fold("<labels>")(_.title)}")
+                  o.print(s"\n'''Breakpoints (x)''': ${t.xAxisBreakpoints.fold("<labels>")(_.title)}\n")
+                  o.print(s"\n'''Breakpoints (y)''': ${t.yAxisBreakpoints.fold("<labels>")(_.title)}\n")
                   o.print('\n')
               }
 
