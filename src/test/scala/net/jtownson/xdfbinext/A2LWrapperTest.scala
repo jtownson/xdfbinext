@@ -61,6 +61,10 @@ class A2LWrapperTest extends AnyFlatSpec {
   it should "get a format for St_kr.B_krdws" in withA2L { a2l =>
     a2l.getFormat(a2l.measurements("St_kr.B_krdws")) shouldBe (6, 3)
   }
+  
+  it should "read this table with absolute axis" in withA2L { a2l =>
+    a2l.characteristics
+  }
 }
 
 object A2LWrapperTest {

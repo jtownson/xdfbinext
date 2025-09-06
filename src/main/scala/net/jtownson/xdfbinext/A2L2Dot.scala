@@ -20,9 +20,10 @@ import java.util.UUID
 import scala.collection.mutable
 import scala.jdk.CollectionConverters.*
 
-class A2L2Dot(a2lUrl: URL) {
+class A2L2Dot(val a2l: A2LWrapper) {
 
-  val a2l: A2LWrapper         = A2LWrapper(a2lUrl)
+  def this(a2lUrl: URL) = this(A2LWrapper(a2lUrl))
+
   private val compuMethods    = a2l.compuMethods
   private val characteristics = a2l.characteristics
   private val measurements    = a2l.measurements
@@ -338,8 +339,6 @@ object A2L2Dot {
     val gv = Graphviz.fromGraph(graph)
     gv.render(Format.DOT).toFile(new File(s"$filename.dot"))
     gv.render(Format.SVG).toFile(new File(s"$filename.svg"))
-    gv.render(Format.PNG).toFile(new File(s"$filename.png"))
-//    gv.render(Format.PNG).toFile(new File(s"$filename.png"))
   }
 
   def parentGraphWith(graphName: String,

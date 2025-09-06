@@ -3,7 +3,7 @@ val scala3Version = "3.3.1"
 lazy val scalameta = Seq("org.scalameta" %% "munit" % "0.7.29" % Test)
 lazy val scalatest = Seq(
   "org.scalatest"     %% "scalatest"       % "3.2.15"   % Test,
-  "org.scalatestplus" %% "scalacheck-1-17" % "3.2.15.0" % Test
+  "org.scalatestplus" %% "scalacheck-1-17" % "3.2.18.0" % Test
 )
 lazy val scalaXml  = Seq("org.scala-lang.modules" %% "scala-xml" % "2.2.0")
 lazy val fastParse = Seq("com.lihaoyi" %% "fastparse" % "3.0.2")
@@ -20,6 +20,11 @@ lazy val circe = Seq(
   "io.circe" %% "circe-generic" % "0.14.10",
   "io.circe" %% "circe-parser"  % "0.14.10"
 )
+lazy val jfree = Seq(
+  "org.jfree" % "jfreechart"    % "1.5.5",
+  "org.jfree" % "org.jfree.svg" % "5.0.6"
+)
+lazy val opencsv = Seq("com.opencsv" % "opencsv" % "5.9")
 
 lazy val root = project
   .in(file("."))
@@ -28,7 +33,7 @@ lazy val root = project
     version      := "0.1",
     scalaVersion := scala3Version,
     resolvers += Resolver.mavenLocal,
-    libraryDependencies ++= circe ++ scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
+    libraryDependencies ++= opencsv ++ jfree ++ circe ++ scalameta ++ scalaXml ++ scalatest ++ fastParse ++ breeze ++ commonsText ++ scopt ++ a2lParser ++ graphviz,
     assembly / mainClass := Some("net.jtownson.xdfbinext.MapCompare"),
     assemblyJarName      := "xbc.jar",
     scalacOptions ++= Seq("-Xmax-inlines", "64"),

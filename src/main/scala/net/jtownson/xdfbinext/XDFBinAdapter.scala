@@ -128,6 +128,16 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
     }
   }
 
+  def tableReadCSV(name: String): Iterable[String] = {
+    xdfModel.table(name) match {
+      case t: XdfTable1D =>
+        dataToCSV1D(t)
+      case t: XdfTable2D =>
+        ???
+//        dataToCSV2D(t)
+    }
+  }
+
   private def isMonotonicallyIncreasing(decimals: Array[BigDecimal]): Boolean = decimals.sorted.sameElements(decimals)
 
   def tableDyn(table: XdfTable): Array[BigDecimal] = {
@@ -165,8 +175,15 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
     val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
     val a             = new Array[Byte](cellSizeBytes * numCells)
-    binAccess.seek(startAddress)
-    binAccess.read(a)
+    try {
+      binAccess.seek(startAddress)
+      binAccess.read(a)
+    } catch
+      case t: Throwable =>
+        throw new IllegalStateException(
+          s"Error during readRaw for XdfTable ${table.title} using start address $startAddress",
+          t
+        )
     a
   }
 
@@ -181,8 +198,17 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
     val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
     val a             = new ArrayBuffer[Int](cellSizeBytes * numCells)
 
-    binAccess.seek(startAddress)
-    (0 until numCells).foreach(i => a.addOne(binAccess.readUnsignedByte()))
+    try {
+      binAccess.seek(startAddress)
+      (0 until numCells).foreach(i => a.addOne(binAccess.readUnsignedByte()))
+    } catch {
+      case t: Throwable =>
+        throw new IllegalStateException(
+          s"Error during readUnsignedByte for XdfTable ${table.title} using start address $startAddress",
+          t
+        )
+    }
+
     a.toArray
   }
 
@@ -281,6 +307,13 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
 
       toBuff.map(equation).toArray
     }
+  }
+
+  private def dataToCSV1D(t: XdfTable1D): Iterable[String] = {
+    val tableData = tableRead(t.table)
+    val xAxisData = tableReadOrX(t.table, t.xAxisBreakpoints)
+//    data2CSV1D(xAxisData, tableData)
+    ???
   }
 
   private def dataToStrConst(table: XdfTable): String = {

@@ -15,9 +15,10 @@ class A2L2DotTest extends AnyFlatSpec {
 
   behavior of "A2l2Dot"
 
+  private val a2lUrl  = getClass.getResource("/DME86S0_F4C9G576B.a2l").toURI.toURL
+  private val a2l2Dot = new A2L2Dot(a2lUrl)
+
   def withA2L(test: A2L2Dot => Any): Unit = {
-    val a2lUrl  = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
-    val a2l2Dot = new A2L2Dot(a2lUrl)
     test(a2l2Dot)
   }
 
@@ -38,6 +39,28 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
+    "EngDa_PwrEng"
+//    "BMW_MOD_InjMon_TqLim_10ms",
+//    "P_MDGMK_10ms",
+//    "P_MDGMK_Gc",
+//    "BMW_MOD_TqeLimInfo_10ms",
+//    "BMW_MOD_TqeLimStatMaxExt_10ms"
+//    "PFlt_InpSel",
+//    "BMW_MOD_BlsDk_10ms",
+//    "BMW_MOD_Bls_Pssol_10ms",
+//    "BMW_MOD_ExtEngEb_200ms"
+//    "P_MDGKSU_10ms"
+//    "BMW_MOD_BsSollwerte_200ms",
+//    "BMW_MOD_BsAtl_200ms",
+//    "BMW_MOD_BsPost_200ms",
+//    "BMW_MOD_BlsRfMax_10ms",
+//    "BMW_MOD_BlsRfSoll_10ms",
+//    "BMW_MOD_GpfDiag_Lim_100ms"
+//    "BMW_MOD_TmcFett_200ms",
+//    "BMW_MOD_CtbFl_seg"
+//    "BMW_SWC_LoPSpdDiag",
+//    "BMW_SWC_LoPSpdCtl",
+//    "DKVBDE"
 //    "BMW_MOD_InjSplt_seg"
 //    "BMW_SWC_LamCo_Int",
 //    "BMW_SWC_LamSp_Int",
@@ -71,10 +94,10 @@ class A2L2DotTest extends AnyFlatSpec {
 //    "BMW_MOD_TchSp_Volf_10ms",
 //    "BMW_MOD_AusyKat_10ms",
 //    "BMW_MOD_TchCtr_Pwr_10ms",
-//    "BMW_MOD_TchCtr_Pwr2Pos_10ms",
+//    "BMW_MOD_TchCtr_Pwr2Pos_10ms"
 //    "BMW_MOD_AusyKat_10ms",
-    "BMW_MOD_TchBas_P_10ms",
-    "BMW_MOD_TchBas_Misc_10ms"
+//    "BMW_MOD_TchBas_P_10ms",
+//    "BMW_MOD_TchBas_Misc_10ms"
 //    "BMW_MOD_BlsRfMax_10ms",
 //    "BMW_SWC_Ewg",
 //    "BMW_MOD_TchCtr_Pwr_10ms",
@@ -86,7 +109,17 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val valueCentredGraphs = Table[String](
     "Object name",
-    "KF_PHA_H_E1"
+//    "Mshfm_kor"
+    "EngDa_tqInnrMax_C"
+//    "KF_FTRANSVL"
+//    "FuPHi_FlmMaxpl_T",
+//    "K_KSU_MDEINGRIFF_MX"
+//    "Frfmxbsld",
+//    "BMWls_rf_MaxEgT",
+//    "Tatlsoll",
+//    "BMWext_t_DeltCptPronInCat_T",
+//    "BMWls_rf_MaxEgT_M",
+//    "La_vst_fett"
 //    "Dzw_annm",
 //    "K_TKW_MX"
 //    "Zw_opt",
@@ -141,6 +174,23 @@ class A2L2DotTest extends AnyFlatSpec {
 
   it should "render some value" ignore {
     withA2L(a2l => valueCentredGraphWith("???", a2l, _ == "???", s"???.svg"))
+  }
+
+  it should "render comp prot" in {
+    val fnPred: String => Boolean = s =>
+      Set("BMW_MOD_BsSollwerte_200ms", "BMW_MOD_BsAtl_200ms", "BMW_MOD_BsPost_200ms", "BMW_MOD_BlsRfMax_10ms").contains(
+        s
+      )
+
+    functionCentredGraphWith(
+      "BMW_MOD_Bs",
+      a2l2Dot,
+      fnPred,
+      _ => true,
+      (_, _) => true,
+      GraphOptions(false, true),
+      "BMW_MOD_Bs"
+    )
   }
 
 }

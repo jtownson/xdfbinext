@@ -25,6 +25,10 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     s"0x${(a2lAddress - offset).toHexString}"
   }
 
+  def characteristic2XDF(names: List[String]): Seq[String] = {
+    names.map(name => characteristics(name)).map(characteristic2XDF)
+  }
+
   def characteristic2XDF(namePredicate: String => Boolean): Seq[String] = {
     val applicableCharacteristics = characteristics.filter((n, _) => namePredicate(n)).values
 
@@ -54,12 +58,17 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     getSizeBits(a2l.recordLayouts(c.getDeposit))
   }
 
+  private def getSizeBytes(dataType: DataType): Int = getSizeBits(dataType) / 8
+
   private def getSizeBits(a: AxisPts): Int = {
     getSizeBits(a2l.recordLayouts(a.getDeposit))
   }
 
   private def getTypeFlag(r: RecordLayout): Int = {
-    val dataType = Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype)
+    getTypeFlag(Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype))
+  }
+
+  private def getTypeFlag(dataType: DataType): Int = {
     if (dataType == DataType.UBYTE || dataType == DataType.UWORD || dataType == DataType.ULONG)
       0
     else if (dataType == DataType.SBYTE || dataType == DataType.SWORD || dataType == DataType.SLONG)
@@ -71,7 +80,10 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
   }
 
   private def getSizeBits(r: RecordLayout): Int = {
-    val dataType = Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype)
+    getSizeBits(Option(r.getFunctionValues).map(_.getDataType).getOrElse(r.getAxisPtsX.getDatatype))
+  }
+
+  private def getSizeBits(dataType: DataType): Int = {
     if (dataType == DataType.SBYTE || dataType == DataType.UBYTE)
       8
     else if (dataType == DataType.SWORD || dataType == DataType.UWORD)
@@ -82,7 +94,6 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
       64
     else
       throw new IllegalStateException(s"Unsupported data type: $dataType")
-
   }
 
   private def getCategoryMems(c: Characteristic): List[CategoryMem] = {
@@ -134,6 +145,151 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
   }
 
   def curve2Xdf(c: Characteristic): String = {
+    if (c.getName == "FWIHDR") {
+      curveFWIHDR(c)
+    } else if (c.getName == "MfVDTypC_KLVZMSVUB") {
+      curveMfVDTypC_KLVZMSVUB(c)
+    } else {
+      curve2XdfWithAxis(c)
+    }
+  }
+
+  // TODO!! This is tricky because the curve has a record layout
+  // where the address is at an offset determined by the number of axis pts.
+  // Therefore the offset will depend on the bin. This makes it difficult
+  // to write a purely static description
+  private def curveFWIHDR(c: Characteristic) = {
+    val layout      = a2l.getRecordLayout(c)
+    val title       = c.getName
+    val description = getObjectDescription(c.getName, c.getLongIdentifier)
+    val compuMethod = compuMethods(c.getConversion)
+    val units       = compuMethod.getUnit
+    val decimalPl   = format2DecimalPl(compuMethod.getFormat)
+    val outputType  = "1"
+    val min         = BigDecimal(c.getLowerLimit).setScale(decimalPl, HALF_UP).toString
+    val max         = BigDecimal(c.getUpperLimit).setScale(decimalPl, HALF_UP).toString
+    val eq          = getFormula(c)
+    val typeFlag    = getTypeFlag(c)
+
+    val noAxisPtsX = layout.getNoAxisPtsX
+    val axisPtsX   = layout.getAxisPtsX
+    val address = offsetAddress(
+      c.getAddress + getSizeBytes(noAxisPtsX.getDataType) + getSizeBytes(axisPtsX.getDatatype) * 8
+    )
+    val elSizeBits   = getSizeBits(c)
+    val categoryMems = getCategoryMems(c)
+
+    val dataOffset = layout.getNoAxisPtsX
+    val xAxisDescr = c.getAxisDescriptions.asScala(0)
+    val xCompu     = compuMethods(xAxisDescr.getConversion)
+    val xUnits     = xCompu.getUnit
+    val xTitle     = s"$title (X)"
+    val xDesc      = s"$title (X)"
+    val xDp        = format2DecimalPl(xCompu.getFormat)
+    val xMin       = BigDecimal(xAxisDescr.getLowerLimit).setScale(xDp, HALF_UP).toString
+    val xMax       = BigDecimal(xAxisDescr.getUpperLimit).setScale(xDp, HALF_UP).toString
+    val xAddr = offsetAddress(c.getAddress + getSizeBytes(noAxisPtsX.getDataType)) // offsetAddress(xCompu.getAddress)
+    val xElSzBits = 8                  // getSizeBits(xAxis)
+    val xTypeFlag = ""                 // getTypeFlag(xAxis)
+    val xColCount = "8"                // xAxis.getMaxAxisPoints.toString
+    val xEq       = getFormula(xCompu) // getFormula(xAxis)
+
+    val sb: StringBuilder = new StringBuilder()
+
+    sb.append(
+      xdfCurveTemplate(
+        title,
+        description,
+        units,
+        decimalPl,
+        outputType,
+        min,
+        max,
+        eq,
+        typeFlag,
+        address,
+        elSizeBits,
+        xAddr,
+        xElSzBits,
+        xTypeFlag.toInt,
+        xDp,
+        xColCount,
+        xUnits,
+        xEq,
+        categoryMems
+      )
+    )
+
+    sb.toString
+  }
+
+  private def curveMfVDTypC_KLVZMSVUB(c: Characteristic) = {
+    val layout      = a2l.getRecordLayout(c)
+    val title       = c.getName
+    val description = getObjectDescription(c.getName, c.getLongIdentifier)
+    val compuMethod = compuMethods(c.getConversion)
+    val units       = compuMethod.getUnit
+    val decimalPl   = format2DecimalPl(compuMethod.getFormat)
+    val outputType  = "1"
+    val min         = BigDecimal(c.getLowerLimit).setScale(decimalPl, HALF_UP).toString
+    val max         = BigDecimal(c.getUpperLimit).setScale(decimalPl, HALF_UP).toString
+    val eq          = getFormula(c)
+    val typeFlag    = getTypeFlag(c)
+
+    val noAxisPtsX = layout.getNoAxisPtsX
+    val axisPtsX   = layout.getAxisPtsX
+    val address = offsetAddress(
+      c.getAddress + getSizeBytes(noAxisPtsX.getDataType) + getSizeBytes(axisPtsX.getDatatype) * 5
+    )
+    val elSizeBits   = getSizeBits(c)
+    val categoryMems = getCategoryMems(c)
+
+    val dataOffset = layout.getNoAxisPtsX
+    val xAxisDescr = c.getAxisDescriptions.asScala(0)
+    val xCompu     = compuMethods(xAxisDescr.getConversion)
+    val xUnits     = xCompu.getUnit
+    val xTitle     = s"$title (X)"
+    val xDesc      = s"$title (X)"
+    val xDp        = format2DecimalPl(xCompu.getFormat)
+    val xMin       = BigDecimal(xAxisDescr.getLowerLimit).setScale(xDp, HALF_UP).toString
+    val xMax       = BigDecimal(xAxisDescr.getUpperLimit).setScale(xDp, HALF_UP).toString
+    val xAddr = offsetAddress(c.getAddress + getSizeBytes(noAxisPtsX.getDataType)) // offsetAddress(xCompu.getAddress)
+    val xElSzBits = 16                   // getSizeBits(xAxis)
+    val xTypeFlag = XdfSchema.signedFlag // getTypeFlag(xAxis)
+    val xColCount = "5"                  // xAxis.getMaxAxisPoints.toString
+    val xEq       = getFormula(xCompu)   // getFormula(xAxis)
+
+    val sb: StringBuilder = new StringBuilder()
+
+    sb.append(
+      xdfCurveTemplate(
+        title,
+        description,
+        units,
+        decimalPl,
+        outputType,
+        min,
+        max,
+        eq,
+        typeFlag,
+        address,
+        elSizeBits,
+        xAddr,
+        xElSzBits,
+        xTypeFlag,
+        xDp,
+        xColCount,
+        xUnits,
+        xEq,
+        categoryMems
+      )
+    )
+
+    sb.toString
+  }
+
+  private def curve2XdfWithAxis(c: Characteristic) = {
+
     val title        = c.getName
     val description  = getObjectDescription(c.getName, c.getLongIdentifier)
     val compuMethod  = compuMethods(c.getConversion)
@@ -214,9 +370,13 @@ class A2L2XDF(a2lUrl: URL, offset: Long = 0x9000000, xdfModel: XdfModel) {
     }
   }
 
-  private def getFormula(axis: AxisPts): String = {
-    val coeffs = compuMethods(axis.getConversion).getCoeffs
+  private def getFormula(compuMethod: CompuMethod): String = {
+    val coeffs = compuMethod.getCoeffs
     FormulaExpressionInverse.toFormulaInv(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
+  }
+
+  private def getFormula(axis: AxisPts): String = {
+    getFormula(compuMethods(axis.getConversion))
   }
 
   private def map2Xdf(c: Characteristic): String = {

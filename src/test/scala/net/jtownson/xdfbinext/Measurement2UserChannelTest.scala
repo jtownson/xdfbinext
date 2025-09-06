@@ -54,4 +54,17 @@ class Measurement2UserChannelTest extends AnyFlatSpec {
     val actual = a2l.measurement2UserChannel(_ == "Zw_out")
     actual.length shouldBe 6
   }
+
+  it should "output boolean flags" in {
+    val expected =
+      """<?xml version="1.0" standalone="yes"?>
+        |<ActualValues>
+        |  <ActualValue ReqBlock="40027703" Size="1" DataA="1.0" DataB="1.0" Prefix="40" Units="-" RoundingDigits="3">
+        |    <Text xml:lang="en">St_zwbts1.B_bs1</Text>
+        |  </ActualValue>
+        |</ActualValues>""".stripMargin
+    val actual = a2l.measurement2UserChannels(_ == "St_zwbts1.B_bs1")
+
+    actual shouldBe expected
+  }
 }

@@ -4,6 +4,7 @@ import net.jtownson.xdfbinext.XdfSchema.{Region, XdfTable, *}
 
 import java.lang.Integer.decode
 import java.lang.Long.decode as decodeLong
+import scala.util.Try
 import scala.xml.{Node, XML}
 
 object XdfParser:
@@ -91,6 +92,8 @@ object XdfParser:
     Label(index = index, value = value)
   }
 
+  private def toBdSafe(s: String): Option[BigDecimal] = Try(BigDecimal(s)).toOption
+
   private val node2Axes: Node => Axes = { n =>
     val axisNodes = n \ "XDFAXIS"
 
@@ -152,22 +155,28 @@ object XdfParser:
     val zAxis = {
       val embeddedData = node2EmbeddedData((zAxisNode \ "EMBEDDEDDATA").head)
       val decimalPl    = (zAxisNode \ "decimalpl").headOption.map(_.text).map(_.toInt)
-      val min          = (zAxisNode \ "min").headOption.map(_.text).map(BigDecimal(_))
-      val max          = (zAxisNode \ "max").headOption.map(_.text).map(BigDecimal(_))
-      val outputType   = (zAxisNode \ "outputtype").headOption.map(_.text).map(decode).map(_.toInt)
-      val math         = (zAxisNode \ "MATH").headOption.map(node2Math)
-      val units        = (zAxisNode \ "units").headOption.map(_.text).getOrElse("")
+      try {
+        val min        = (zAxisNode \ "min").headOption.map(_.text).flatMap(toBdSafe)
+        val max        = (zAxisNode \ "max").headOption.map(_.text).flatMap(toBdSafe)
+        val outputType = (zAxisNode \ "outputtype").headOption.map(_.text).map(decode).map(_.toInt)
+        val math       = (zAxisNode \ "MATH").headOption.map(node2Math)
+        val units      = (zAxisNode \ "units").headOption.map(_.text).getOrElse("")
 
-      XdfAxisZ(
-        id = "z",
-        embeddedData = embeddedData,
-        decimalPl = decimalPl.orElse(Some(2)),
-        min = min,
-        max = max,
-        outputType = outputType,
-        math = math,
-        units = units
-      )
+        XdfAxisZ(
+          id = "z",
+          embeddedData = embeddedData,
+          decimalPl = decimalPl.orElse(Some(2)),
+          min = min,
+          max = max,
+          outputType = outputType,
+          math = math,
+          units = units
+        )
+      } catch {
+        case t: Throwable =>
+          println(t)
+          ???
+      }
     }
 
     Axes(xAxis, yAxis, zAxis)

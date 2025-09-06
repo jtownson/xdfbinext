@@ -1,6 +1,6 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.{Measurement, MemorySegment}
+import net.alenzen.a2l.{Coeffs, CompuMethod, Measurement, MemorySegment}
 import net.jtownson.xdfbinext.Measurement2UserChannel.{actualValueTemplate, actualValuesTemplate}
 import net.jtownson.xdfbinext.a2l.{ByteBlock, FormulaExpressionInverse, RatFun}
 
@@ -36,6 +36,15 @@ class Measurement2UserChannel(a2lUrl: URL) {
     }
   }
 
+  private def getAB(compuMethod: CompuMethod): (Double, Double) = {
+    Option(compuMethod.getCoeffs) match
+      case Some(coeffs) =>
+        (coeffs.getF / coeffs.getB, coeffs.getC / coeffs.getB)
+
+      case None =>
+        (1, 1)
+  }
+
   private def measurement2UserChannel(m: Measurement, address: Long, name: String): String = {
     val segmentPrefix = a2l.segmentForAddress(address).toHexString.take(2)
     val sizeBytes     = ByteBlock.sizeOf(m.getDatatype)
@@ -43,10 +52,7 @@ class Measurement2UserChannel(a2lUrl: URL) {
     val compuMethod   = compuMethods(m.getConversion)
     val units         = compuMethod.getUnit
     val dp            = a2l.getFormat(m)._2
-    val coeffs        = compuMethod.getCoeffs
-
-    val a = coeffs.getF / coeffs.getB
-    val b = coeffs.getC / coeffs.getB
+    val (a, b)        = getAB(compuMethod)
 
     actualValueTemplate(
       name = name,

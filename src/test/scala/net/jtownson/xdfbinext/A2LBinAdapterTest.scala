@@ -214,6 +214,10 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     }
   }
 
+  it should "read a curve with an absolute axis" in {
+    a2LBinAdapter.readCharacteristic("MfVDTypC_KLVZMSVUB")
+  }
+
 }
 
 object A2LBinAdapterTest {

@@ -2,12 +2,53 @@ package net.jtownson.xdfbinext
 
 import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
 
+import scala.math
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 
 case class Interpolated2D(xAxis: Array[BigDecimal], yAxis: Array[BigDecimal], values: Array[BigDecimal]) {
 
+  override def equals(obj: Any): Boolean = {
+    obj match
+      case Interpolated2D(x, y, v) =>
+        x.sameElements(xAxis) && y.sameElements(yAxis) && v.sameElements(values)
+      case _ =>
+        false
+  }
+
   val sizeX: Int = xAxis.length
   val sizeY: Int = yAxis.length
+
+  def map(f: (BigDecimal, BigDecimal, BigDecimal) => (BigDecimal, BigDecimal, BigDecimal)): Interpolated2D = {
+
+    val z0 =
+      (new Array[BigDecimal](xAxis.length), new Array[BigDecimal](yAxis.length), new Array[BigDecimal](values.length))
+
+    val t = yAxis.indices.foldLeft(z0) { (acc, iRow) =>
+      xAxis.indices.foldLeft(acc) { (accInner, iCol) =>
+
+        val x = xAxis(iCol)
+        val y = yAxis(iRow)
+        val z = atRowCol(iRow, iCol)
+
+        val (x2, y2, z2) = f(x, y, z)
+
+        val (xAxis2, yAxis2, values2) = accInner
+
+        xAxis2(iCol) = x2
+        yAxis2(iRow) = y2
+        values2(xAxis.length * iRow + iCol) = z2
+
+        accInner
+      }
+    }
+
+    Interpolated2D(t._1, t._2, t._3)
+  }
+
+  def invertedX: Interpolated2D = {
+    val (xp, yp, zp) = Invert.tableInvertX(xAxis, yAxis, values)
+    Interpolated2D(xp, yp, zp)
+  }
 
   def atXY(x: BigDecimal, y: BigDecimal): BigDecimal = linearInterpolate(xAxis, yAxis, values, x, y)
 
@@ -45,6 +86,13 @@ case class Interpolated2D(xAxis: Array[BigDecimal], yAxis: Array[BigDecimal], va
       s"Subtraction operations on tables requires matching dimension. Have ($sizeX, $sizeY) vs (${r.sizeX}, ${r.sizeY}."
     )
     copy(values = values.zip(r.values).map((a, b) => a - b))
+  }
+
+  def scaleX(factor: BigDecimal): Interpolated2D = {
+    map { (x, y, z) =>
+      val x2 = x * factor
+      (x2, y, atXY(x2, y))
+    }
   }
 }
 

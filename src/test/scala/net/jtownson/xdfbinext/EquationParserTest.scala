@@ -35,7 +35,16 @@ class EquationParserTest extends AnyFlatSpec {
     parseBigDecimalF1("x*0.1")(425) shouldBe BigDecimal("42.5")
   }
 
+  it should "handle an expression with redundant brackets" in {
+    parseBigDecimalF1("((x+((x))))")(1) shouldBe BigDecimal(2)
+    parseBigDecimalF1("((x*((x))))")(1) shouldBe BigDecimal(1)
+  }
+
   it should "handle an expression with whitespace" in {
     parseBigDecimalF1("1/(X * 2.0) * 2.0")(1) shouldBe BigDecimal(1)
+  }
+
+  it should "parse expressions with exponents" in {
+    parseBigDecimalF1("x*3.409805040499158E-27")(1) shouldBe BigDecimal("3.409805040499158E-27")
   }
 }

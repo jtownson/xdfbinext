@@ -5,6 +5,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
 import scala.io.Source
+import scala.util.Using
 
 class XdfParserTest extends AnyFlatSpec {
 

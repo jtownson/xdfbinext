@@ -1,5 +1,8 @@
 package net.jtownson.xdfbinext
 
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.HALF_UP
+
 object Data2Str {
 
   def data2StrConst(tableData: String): String = {
@@ -28,6 +31,18 @@ object Data2Str {
     val xAxisHeader = (0 until cols).map { col => pad(xAxisData(col), len) }.mkString
     val rowStr      = (0 until cols).map { col => pad(tableData(col), len) }.mkString
     new StringBuilder().append(xAxisHeader).append("\n").append(rowStr).append("\n").toString
+  }
+
+  def data2Str(t: Interpolated1D, scale: Int): String = {
+    val xs   = t.axis.map(_.setScale(scale, HALF_UP)).map(_.toString)
+    val vals = t.values.map(_.setScale(scale, HALF_UP)).map(_.toString)
+    data2Str1D(xs, vals)
+  }
+
+  def data2Str(t: Interpolated2D, scale: Int): String = {
+    val xs = t.xAxis.map(_.setScale(scale, HALF_UP)).map(_.toString)
+    val ys = t.yAxis.map(_.setScale(scale, HALF_UP)).map(_.toString)
+    data2Str2D(xs, ys, t.values.map(_.setScale(scale, HALF_UP)))
   }
 
   def data2Str2D(
