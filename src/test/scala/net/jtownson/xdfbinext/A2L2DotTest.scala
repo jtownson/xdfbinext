@@ -24,7 +24,8 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val handGraphs = Table[String](
     "filename",
-    "B58FR/BMW_MOD_IgnOut_kra_10ms.dot"
+    "B58FR/test.dot"
+//    "B58FR/BMW_MOD_IgnOut_kra_10ms.dot"
 //    "BMW_MOD_IgnBasDelt_Msc_10ms.dot",
 //    "tchdiag_pressure.dot",
 //    "tchsp_p_Req_uw.dot",
@@ -39,7 +40,16 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val fnCentredGraphs = Table[String](
     "functionName",
-    "EngDa_PwrEng"
+//    "NMAXS"
+
+    "BMW_MOD_Mafw_Pedal",
+    "BMW_MOD_Mafw_Wunsch"
+//    "P_MDGK_EVMKO_S_BGRZ"
+//    "P_MDGS_10ms",
+//    "BMW_MOD_Mafw_MdMax"
+//    "MoFDrDem_Co"
+//    "BMW_MOD_AsInFahrsit_100ms"
+//    "EngDa_PwrEng"
 //    "BMW_MOD_InjMon_TqLim_10ms",
 //    "P_MDGMK_10ms",
 //    "P_MDGMK_Gc",
@@ -110,7 +120,10 @@ class A2L2DotTest extends AnyFlatSpec {
   private val valueCentredGraphs = Table[String](
     "Object name",
 //    "Mshfm_kor"
-    "EngDa_tqInnrMax_C"
+    "KL_MD_K_MAX_VL"
+//    "Mdk_bst"
+//    "MoFTrqPtd_tqCluMax_C"
+//    "EngDa_tqInnrMax_C"
 //    "KF_FTRANSVL"
 //    "FuPHi_FlmMaxpl_T",
 //    "K_KSU_MDEINGRIFF_MX"
@@ -174,6 +187,21 @@ class A2L2DotTest extends AnyFlatSpec {
 
   it should "render some value" ignore {
     withA2L(a2l => valueCentredGraphWith("???", a2l, _ == "???", s"???.svg"))
+  }
+
+  it should "render TQE" in {
+    val fnPred: String => Boolean = s => {
+      s.contains("TqeEng") && s != "BMW_MOD_TqeEngStOut_100ms"
+    }
+    functionCentredGraphWith(
+      graphName = "TQE",
+      a2l2Dot = a2l2Dot,
+      fnPredicate = fnPred,
+      characteristicPredicate = _ => true,
+      measurementPredicate = (_, _) => true,
+      graphOptions = GraphOptions(false, false),
+      filename = "tqe"
+    )
   }
 
   it should "render comp prot" in {

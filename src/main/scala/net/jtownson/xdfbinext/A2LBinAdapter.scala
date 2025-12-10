@@ -5,18 +5,42 @@ import net.alenzen.a2l.enums.CharacteristicType.{ASCII, CURVE, MAP, VALUE, VAL_B
 import net.alenzen.a2l.enums.{CharacteristicType, ConversionType}
 import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
 import net.jtownson.xdfbinext.a2l.CurveType.{CurveValueType, *}
-import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, *}
+import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, NumberNumberStringTable2D, NumberStringNumberTable2D, *}
 import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
 import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
-import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, *}
+import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, MapType, *}
 
 import scala.jdk.CollectionConverters.*
 import java.io.{File, RandomAccessFile}
 
 /** What would be nice here would be to convert an a2l+bin to some kind of repr where we are able to answer questions
-  * such as 'find axes where the units are kg/h and the values are below 1300 kg/h.
+  * such as _find axes where the units are kg/h and the values are below 1300 kg/h_.
   */
-class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
+class A2LBinAdapter(val bin: File, val a2l: A2LWrapper, offset: Long = 0x9000000) {
+
+  // TODO this handle is leaked
+  private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
+
+  def numberNumberNumberTable2D(name: String): NumberNumberNumberTable2D =
+    readMap(name).asInstanceOf[NumberNumberNumberTable2D]
+
+  def numberNumberTable1D(name: String): NumberNumberTable1D =
+    readCurve(name).asInstanceOf[NumberNumberTable1D]
+
+  case class BaceMap(a2LBinAdapter: A2LBinAdapter, name: String) {
+    private val mapValue: MapValueType = a2LBinAdapter.readMap(name)
+
+    def apply(x: BigDecimal, y: BigDecimal): BigDecimal = mapValue match {
+      case m: NumberNumberNumberTable2D =>
+        m.atXY(x, y)
+      case x =>
+        throw new UnsupportedOperationException()
+    }
+  }
+
+  def readCharacteristicWithCast[T](cName: String): T = {
+    readCharacteristic(a2l.characteristics(cName)).asInstanceOf[T]
+  }
 
   def readCharacteristic(cName: String): CharacteristicValue = {
     readCharacteristic(a2l.characteristics(cName))
@@ -38,7 +62,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
     val valueConsumer = ValueConsumer(c, a2l.getRecordLayout(c), offset, binAccess)
 
-    getFormula(c) match
+    a2l.getFormula(c) match
       case cvt: CompuVTab =>
         valueConsumer.applyFuncVTab(cvt)
 
@@ -53,7 +77,7 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
     val consumer = ValBlkConsumer(c, a2l.getRecordLayout(c), offset, binAccess)
 
-    getFormula(c) match
+    a2l.getFormula(c) match
       case cvt: CompuVTab =>
         consumer.applyFuncVTab(cvt)
       case ct: CompuTab =>
@@ -154,7 +178,9 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
   private def readCurve(c: Characteristic): CurveValueType = {
     val fnRecordLayout = a2l.getRecordLayout(c)
-    val fnFormula      = getFormula(c)
+    val fnFormula      = a2l.getFormula(c)
+
+    val axisCompu = a2l.getXAxisFormula(c)
 
     Option(c.getAxisDescriptions.get(0).getAxisPoints_ref) match
       case Some(axisPtsRef) =>
@@ -163,8 +189,6 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         val axisRecordLayout = a2l.getRecordLayout(axisPts)
 
         val consumer = CurveConsumer(c, axisType, axisPts, axisRecordLayout, fnRecordLayout, offset, binAccess)
-
-        val axisCompu = getFormula(axisPts)
 
         compuMethodCata1D(
           axisCompu,
@@ -175,9 +199,8 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
         )
 
       case None =>
-        val axisDesc  = c.getAxisDescriptions.get(0)
-        val consumer  = CurveConsumer(c, axisDesc, fnRecordLayout, offset, binAccess)
-        val axisCompu = getFormula(axisDesc)
+        val axisDesc = c.getAxisDescriptions.get(0)
+        val consumer = CurveConsumer(c, axisDesc, fnRecordLayout, offset, binAccess)
 
         compuMethodCata1D(
           axisCompu,
@@ -194,20 +217,20 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
 
   private def readMap(c: Characteristic): MapValueType = {
     val fnRecordLayout = a2l.getRecordLayout(c)
-    val fnCompuMethod  = getFormula(c)
+    val fnCompuMethod  = a2l.getFormula(c)
 
     Option(c.getAxisDescriptions.get(0).getAxisPoints_ref)
       .and(Option(c.getAxisDescriptions.get(1).getAxisPoints_ref)) match {
       case Some((xAxisPtsRef, yAxisPtsRef)) =>
         val xAxisPts          = a2l.getXAxisPts(c)
         val xAxisFormat       = xAxisPts.getFormat
-        val xAxisCompu        = getFormula(xAxisPts)
+        val xAxisCompu        = a2l.getFormula(xAxisPts)
         val xAxisType         = a2l.getType(xAxisPts)
         val xAxisRecordLayout = a2l.getRecordLayout(xAxisPts)
 
         val yAxisPts          = a2l.getYAxisPts(c)
         val yAxisFormat       = yAxisPts.getFormat
-        val yAxisCompu        = getFormula(yAxisPts)
+        val yAxisCompu        = a2l.getFormula(yAxisPts)
         val yAxisType         = a2l.getType(yAxisPts)
         val yAxisRecordLayout = a2l.getRecordLayout(yAxisPts)
 
@@ -237,11 +260,11 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       case None =>
         val xAxisDesc   = c.getAxisDescriptions.get(0)
         val xAxisFormat = xAxisDesc.getFormat
-        val xAxisCompu  = getFormula(xAxisDesc)
+        val xAxisCompu  = a2l.getFormula(xAxisDesc)
 
         val yAxisDesc   = c.getAxisDescriptions.get(1)
         val yAxisFormat = yAxisDesc.getFormat
-        val yAxisCompu  = getFormula(yAxisDesc)
+        val yAxisCompu  = a2l.getFormula(yAxisDesc)
 
         val consumer = MapConsumer(c, xAxisDesc, yAxisDesc, fnRecordLayout, offset, binAccess)
 
@@ -272,54 +295,6 @@ class A2LBinAdapter(val bin: File, a2l: A2LWrapper, offset: Long = 0x9000000) {
       ???
     }
   }
-
-  private def getFormula(c: Characteristic): CompuMethodType = {
-    val compuMethod = a2l.compuMethods(c.getConversion)
-    getFormula(compuMethod)
-  }
-
-  private def getFormula(a: AxisPts): CompuMethodType = {
-    val compuMethod = a2l.compuMethods(a.getConversion)
-    getFormula(compuMethod)
-  }
-
-  private def getFormula(a: AxisDescr): CompuMethodType = {
-    val compuMethod = a2l.compuMethods(a.getConversion)
-    getFormula(compuMethod)
-  }
-
-  private def getFormula(compuMethod: CompuMethod): CompuMethodType = {
-    val conversionType = compuMethod.getConversionType
-    if (conversionType == ConversionType.RAT_FUNC) {
-      val coeffs = compuMethod.getCoeffs
-      RatFun(coeffs.getA, coeffs.getB, coeffs.getC, coeffs.getD, coeffs.getE, coeffs.getF)
-    } else if (conversionType == ConversionType.TAB_VERB) {
-      val entries = a2l
-        .compuVTabs(compuMethod.getCompuTab_ref)
-        .getValuePairs
-        .asScala
-        .map(vp => vp.getInVal.toInt -> vp.getOutVal)
-        .toMap
-
-      CompuVTab(entries)
-
-    } else if (conversionType == ConversionType.TAB_INTP || conversionType == ConversionType.TAB_NOINTP) {
-      val entries = a2l
-        .compuTabs(compuMethod.getCompuTab_ref)
-        .getValuePairs
-        .asScala
-        .map(vp => BigDecimal(vp.getInVal) -> BigDecimal(vp.getOutVal))
-
-      val x  = entries.map(_._1).toArray
-      val fx = entries.map(_._2).toArray
-
-      CompuTab(x, fx)
-    } else {
-      ???
-    }
-  }
-
-  private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
 
 }
 

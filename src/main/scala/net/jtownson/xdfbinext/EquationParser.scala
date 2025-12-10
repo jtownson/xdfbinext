@@ -44,7 +44,11 @@ object EquationParser:
 
     def factor[$: P]: P[BigDecimal] = P(number | parens)
 
-    def divMul[$: P]: P[BigDecimal] = P(factor ~ (CharIn("*/").! ~/ factor).rep).map(eval)
+    def divMulRedundantParens[$: P]: P[BigDecimal] = P("(" ~/ divMulBare ~ ")")
+
+    def divMulBare[$: P]: P[BigDecimal] = P(factor ~ (CharIn("*/").! ~/ factor).rep).map(eval)
+
+    def divMul[$: P]: P[BigDecimal] = P(divMulRedundantParens | divMulBare)
 
     def addSub[$: P]: P[BigDecimal] = P(divMul ~ (CharIn("+\\-").! ~/ divMul).rep).map(eval)
 
@@ -80,7 +84,8 @@ object EquationParser:
     }
 
     def parseF1(e: String): T => BigDecimal = { (x: T) =>
-      val ee = e.replace("x", x.toString).replace("X", x.toString).replaceAll("\\s*", "")
+      val ee =
+        e.replace("x", x.toString).replace("X", x.toString).replace("(", "").replace(")", "").replaceAll("\\s*", "")
       parseF0(ee)
     }
 

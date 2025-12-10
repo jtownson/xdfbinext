@@ -1,12 +1,16 @@
 package net.jtownson.xdfbinext.a2l
 
+import cats.kernel.Monoid
 import net.jtownson.xdfbinext.{Data2Str, Interpolated2D}
 import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
 
-trait MapType[X, Y, Z] {
+trait MapType[X, Y, Z: Monoid] {
   def xAxis: Array[X]
   def yAxis: Array[Y]
   def values: Array[Z]
+
+  def apply(x: X, y: Y): Z = Monoid.empty[Z]
+
   override def equals(obj: Any): Boolean = {
     obj match
       case mt: MapType[_, _, _] =>
@@ -21,7 +25,7 @@ object MapType {
   type MapValueType = NumberNumberNumberTable2D | NumberNumberStringTable2D | NumberStringNumberTable2D |
     NumberStringStringTable2D | StringNumberStringTable2D | StringNumberNumberTable2D | StringStringStringTable2D |
     StringStringNumberTable2D
-  
+
   def foldMapValueType[T](
       fnnn: NumberNumberNumberTable2D => T,
       fnns: NumberNumberStringTable2D => T,
@@ -55,6 +59,8 @@ object MapType {
 
     val sizeX: Int = xAxis.length
     val sizeY: Int = yAxis.length
+
+    override def apply(x: BigDecimal, y: BigDecimal): BigDecimal = atXY(x, y)
 
     def atXY(x: BigDecimal, y: BigDecimal): BigDecimal = linearInterpolate(xAxis, yAxis, values, x, y)
 

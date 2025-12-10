@@ -60,7 +60,7 @@ object XDFMapCompare {
 
         val allTablesSorted = config.reportFile
           .fold(allTablesByCategory(xdf))(report => allTablesByReport(xdf, report))
-          .filterNot(xdf.isBreakpointTable)
+//          .filterNot(xdf.isBreakpointTable)
 
         val tablesOrderedAndFiltered =
           TableAndCategoryFilter

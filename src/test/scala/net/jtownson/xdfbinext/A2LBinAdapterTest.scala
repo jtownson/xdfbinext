@@ -1,18 +1,25 @@
 package net.jtownson.xdfbinext
 
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
+import net.alenzen.a2l.{AxisPts, Characteristic}
 import net.jtownson.xdfbinext.A2LBinAdapterTest.{a2LBinAdapter, a2LWrapper}
 import net.jtownson.xdfbinext.a2l.CurveType.{NumberNumberTable1D, NumberStringTable1D, StringNumberTable1D}
-import net.jtownson.xdfbinext.a2l.MapType.{NumberNumberNumberTable2D, NumberNumberStringTable2D, NumberStringNumberTable2D}
+import net.jtownson.xdfbinext.a2l.MapType.{
+  NumberNumberNumberTable2D,
+  NumberNumberStringTable2D,
+  NumberStringNumberTable2D
+}
 import net.jtownson.xdfbinext.a2l.StringArray
 import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
 import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
-import java.io.File
+import java.io.{File, FileOutputStream, PrintWriter}
+import scala.jdk.CollectionConverters.*
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
+import scala.util.Using
 
 class A2LBinAdapterTest extends AnyFlatSpec {
   behavior of "A2LBinAdapter"
@@ -23,6 +30,28 @@ class A2LBinAdapterTest extends AnyFlatSpec {
         println(n)
       }
     }
+  }
+
+  it should "read characteristic addresses" in {
+
+    Using.resource(new PrintWriter(new FileOutputStream("characteristics.csv"))) { out =>
+      out.println("name,address")
+      a2LWrapper.a2l.iterator().asScala.foreach {
+        case c: Characteristic =>
+          out.println(s"${c.getName},0x${c.getAddress.toHexString}")
+        case a: AxisPts =>
+          out.println(s"${a.getName},0x${a.getAddress.toHexString}")
+        case _ =>
+      }
+    }
+  }
+
+  it should "read a value from a bench-read binary with different offset" in {
+    val bin           = new File("src/test/resources/10SW002539_iRom.Bin")
+    val fileSize      = bin.length()
+    val offset        = 0x8fc0000
+    val a2LBinAdapter = new A2LBinAdapter(bin, a2LWrapper, offset = offset)
+    a2LBinAdapter.readCharacteristic("BMWtchad_fac_IpOfs_C") shouldBe BigDecimal("0.00500")
   }
 
   it should "read a SWORD value" in {
@@ -63,18 +92,22 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     )
   }
 
+  it should "read a SWORD map - direct case" in {
+    a2LBinAdapter.numberNumberNumberTable2D("BMWtchctr_t_ExGasMdl_M")(1, 0) shouldBe BigDecimal(850.0)
+  }
+
   it should "read a UWORD map" in {
     // format: off
     val expectedX = Array[BigDecimal](1050.000, 1130.000, 1200.000, 1300.000, 1350.000, 1400.000, 1450.000, 1525.000)
     val expectedY = Array[BigDecimal](25.00, 30.00, 35.00, 40.00, 60.00, 80.00)
     val expectedValues = Array[BigDecimal](
-      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
-      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
-      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
-      3.000,	3.000,	3.000,	2.874,	2.664,	2.329,	2.150,	2.150,
-      3.000,	3.000,	3.000,	2.874,	2.650,	2.198,	2.000,	2.000,
-      3.000,	3.000,	3.000,	2.874,	2.650,	2.184,	2.000,	2.000)
-    
+      3.000, 3.000, 3.000, 2.874, 2.664, 2.329, 2.150, 2.150,
+      3.000, 3.000, 3.000, 2.874, 2.664, 2.329, 2.150, 2.150,
+      3.000, 3.000, 3.000, 2.874, 2.664, 2.329, 2.150, 2.150,
+      3.000, 3.000, 3.000, 2.874, 2.664, 2.329, 2.150, 2.150,
+      3.000, 3.000, 3.000, 2.874, 2.650, 2.198, 2.000, 2.000,
+      3.000, 3.000, 3.000, 2.874, 2.650, 2.184, 2.000, 2.000)
+
     a2LBinAdapter.readCharacteristic("BMWtchsp_rat_p_CmprMax_M") shouldBe NumberNumberNumberTable2D(expectedX, expectedY, expectedValues)
     // format: on
   }
@@ -122,7 +155,7 @@ class A2LBinAdapterTest extends AnyFlatSpec {
     )
   }
 
-  it should "read a single boolean" in {
+  it should "read a single boolean string from a compuvtab" in {
     a2LBinAdapter.readCharacteristic("B_VMDEAK397_V") shouldBe "false"
   }
 

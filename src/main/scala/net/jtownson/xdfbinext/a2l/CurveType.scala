@@ -1,10 +1,12 @@
 package net.jtownson.xdfbinext.a2l
 
+import cats.kernel.Monoid
 import net.jtownson.xdfbinext.LinearInterpolate.linearInterpolate
 
-trait CurveType[X, Z] {
+trait CurveType[X, Z: Monoid] {
   def axis: Array[X]
   def values: Array[Z]
+  def apply(x: X): Z = Monoid.empty[Z]
   override def equals(obj: Any): Boolean = {
     obj match
       case mt: CurveType[_, _] =>
@@ -38,6 +40,9 @@ object CurveType {
 
   case class NumberNumberTable1D(axis: Array[BigDecimal], values: Array[BigDecimal])
       extends CurveType[BigDecimal, BigDecimal] {
+
+    override def apply(x: BigDecimal): BigDecimal = atX(x)
+
     def atX(x: BigDecimal): BigDecimal = linearInterpolate(axis, values, x)
   }
 

@@ -1,6 +1,5 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.enums.CharacteristicType
 import net.jtownson.xdfbinext.A2LWrapperTest.withA2L
 import net.jtownson.xdfbinext.a2l.CharacteristicSummary.{CurveSummary, MapSummary, ValueSummary}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -48,8 +47,8 @@ class A2LWrapperTest extends AnyFlatSpec {
 
   it should "generate summaries for all objects" ignore withA2L { a2l =>
     a2l.characteristics.foreach { (n, c) =>
-      if (c.getType != CharacteristicType.ASCII)
-        println(a2l.getSummary(n))
+//      if (c.getType != CharacteristicType.ASCII)
+      println(a2l.getSummary(n))
     }
   }
 
@@ -61,9 +60,57 @@ class A2LWrapperTest extends AnyFlatSpec {
   it should "get a format for St_kr.B_krdws" in withA2L { a2l =>
     a2l.getFormat(a2l.measurements("St_kr.B_krdws")) shouldBe (6, 3)
   }
-  
+
   it should "read this table with absolute axis" in withA2L { a2l =>
     a2l.characteristics
+  }
+
+  it should "correctly determine the type of a numeric constant" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("BMWtchctr_fac_FilLimPctl_C")
+      .withDefaultArgs(fNumber = () => 1)
+
+    applied shouldBe 1
+  }
+
+  it should "correctly determine the type of a string constant" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("B_VMDEAK397_V")
+      .withDefaultArgs(fString = () => 1)
+
+    applied shouldBe 1
+  }
+
+  it should "correctly determine the type of a normal numeric curve" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("BMWtchco_fac_FadePl_T")
+      .withDefaultArgs(fNumberNumber = () => 1)
+
+    applied shouldBe 1
+  }
+
+  it should "correctly determine the type of a numeric curve with absolute axis" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("MfVDTypC_KLVZMSVUB")
+      .withDefaultArgs(fNumberNumber = () => 1)
+
+    applied shouldBe 1
+  }
+
+  it should "correctly determine the type of KL_TD_HBA_F (a curve mapping string -> numbers)" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("KL_TD_HBA_F")
+      .withDefaultArgs(fStringNumber = () => 1)
+
+    applied shouldBe 1
+  }
+
+  it should "correctly determine the type of a valblk" in withA2L { a2l =>
+    val applied = a2l
+      .saneCharacteristicTypeFold[Int]("BMWchm_fac_TqRsv_Ca")
+      .withDefaultArgs(fNumberArr = () => 1)
+
+    applied shouldBe 1
   }
 }
 

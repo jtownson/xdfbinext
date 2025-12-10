@@ -47,4 +47,8 @@ class EquationParserTest extends AnyFlatSpec {
   it should "parse expressions with exponents" in {
     parseBigDecimalF1("x*3.409805040499158E-27")(1) shouldBe BigDecimal("3.409805040499158E-27")
   }
+
+  it should "parse multiply expression with redundant brackets" in {
+    noException shouldBe thrownBy(parseBigDecimalF1("(X*0.0002441406)*14.7")(1))
+  }
 }
