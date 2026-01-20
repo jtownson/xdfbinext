@@ -9,10 +9,6 @@ import scala.jdk.CollectionConverters.*
 
 class A2L2Scala(val a2l: A2LWrapper, outputPath: Path) {
 
-  def callGen(fnName: String): Unit = {
-    callGen(fnName, System.out)
-  }
-
   def callGen(fnName: String, out: PrintStream): Unit = {
     val fn              = a2l.functions(fnName)
     val inMeasurements  = nfm(fn.getInMeasurments)
@@ -24,44 +20,39 @@ class A2L2Scala(val a2l: A2LWrapper, outputPath: Path) {
       .filter(a2l.characteristics.contains)
 
     val characteristicParamTypes = getCharacteristicParamTypes(characteristicParamNames)
-
-    val characteristicValidNames = characteristicParamNames
-      .map(validName)
-
+    val characteristicValidNames = characteristicParamNames.map(validName)
     val characteristicParamDefs = zip3(characteristicParamNames, characteristicValidNames, characteristicParamTypes)
       .map((name, validName, tpe) => s"val $validName: $tpe = a2lBin.readCharacteristicWithCast(\"$name\")")
       .mkString("\n")
 
     val inMeasurementValidNames = inMeasurements.map(validName)
-
-    val inMeasurementParams = inMeasurementValidNames.map(mName => s"$mName: BigDecimal")
+    val inMeasurementDefs = inMeasurements
+      .zip(inMeasurementValidNames)
+      .map((mName, mValidName) => s"val $mValidName: InMeasurement = a2lBin.measurement(\"$mName\")")
+      .mkString("\n")
+    val inMeasurementParams = inMeasurementValidNames
+      .map(mValidName => s"$mValidName: A2LMeasurement")
 
     val outMeasurementValidNames = outMeasurements.map(validName)
-
-    val outMeasurementParams = outMeasurementValidNames.map(mName => s"$mName: OutMeasurement[BigDecimal]")
-
-    val outMeasurementDefs = outMeasurementValidNames
-      .map(mName => s"val $mName = OutMeasurement[BigDecimal]()")
+    val outMeasurementDefs = outMeasurements
+      .zip(outMeasurementValidNames)
+      .map((mName, mValidName) => s"val $mValidName: OutMeasurement = a2lBin.measurement(\"$mName\")")
       .mkString("\n")
+    val outMeasurementParams = outMeasurementValidNames
+      .map(mValidName => s"$mValidName: A2LMeasurement")
 
-    val paramsOuter = (inMeasurementParams ++ outMeasurementParams).mkString(", ")
     val paramsInner = (inMeasurementValidNames ++ characteristicValidNames ++ outMeasurementValidNames).mkString(", ")
 
     val fnStr = s"""
-                   |$commonImports
-                   |import net.jtownson.xdfbinext.A2LBinAdapter
-                   |
-                   |object Harness$fnName {
-                   |
-                   |$outMeasurementDefs
-                   |
-                   |def $fnName(a2lBin: A2LBinAdapter)($paramsOuter): Unit = {
+                   |def $fnName(a2lBin: A2LBinAdapter): Unit = {
                    |
                    |$characteristicParamDefs
+                   |$inMeasurementDefs
+                   |$outMeasurementDefs
                    |
                    |  $fnName($paramsInner)
                    |}
-                   |}""".stripMargin
+                   |""".stripMargin
 
     out.println(fnStr)
   }
@@ -116,6 +107,11 @@ class A2L2Scala(val a2l: A2LWrapper, outputPath: Path) {
   }
 
   private def leafFnGen(fnName: String, out: PrintStream): Unit = {
+    fnDefinitionGen(fnName, out)
+    callGen(fnName, out)
+  }
+
+  private def fnDefinitionGen(fnName: String, out: PrintStream): Unit = {
     val fn              = a2l.functions(fnName)
     val inMeasurements  = nfm(fn.getInMeasurments)
     val outMeasurements = nfm(fn.getOutMeasurments)
@@ -132,18 +128,19 @@ class A2L2Scala(val a2l: A2LWrapper, outputPath: Path) {
       .zip(characteristicParamTypes)
       .map((name, tpe) => s"$name: $tpe")
 
-    val inMeasurementParams = inMeasurements.map(validName).map(mName => s"$mName: BigDecimal")
+    val inMeasurementParams = inMeasurements.map(validName).map(mName => s"$mName: InMeasurement")
 
-    val outMeasurementParams = outMeasurements.map(validName).map(mName => s"$mName: OutMeasurement[BigDecimal]")
+    val outMeasurementParams = outMeasurements.map(validName).map(mName => s"$mName: OutMeasurement")
 
     val params = inMeasurementParams ++ characteristicParams ++ outMeasurementParams
 
     val paramStr = params.mkString(", ")
 
-    val fnStr = s"""
-        |def $fnName($paramStr): Unit = {
-        | ???
-        |}""".stripMargin
+    val fnStr =
+      s"""
+         |def $fnName($paramStr): Unit = {
+         | ???
+         |}""".stripMargin
 
     out.println(fnStr)
   }
@@ -162,8 +159,11 @@ class A2L2Scala(val a2l: A2LWrapper, outputPath: Path) {
 
   private val commonImports =
     """
-      |import net.jtownson.xdfbinext.a2l.{CurveType, MapType}
-      |import net.jtownson.xdfbinext.bace.BaceDSL.MeasurementType.OutMeasurement
+      |package net.jtownson.xdfbinext.bace.DME861_R1C9J8B3B
+      |import net.jtownson.xdfbinext.bace.BaceDSL.*
+      |import net.jtownson.xdfbinext.A2LBinAdapter
+      |import net.jtownson.xdfbinext.a2l.A2LMeasurement.{InMeasurement, OutMeasurement}
+      |import net.jtownson.xdfbinext.a2l.{CurveType, MapType, A2LMeasurement}
       |""".stripMargin
 
 }

@@ -112,6 +112,31 @@ class A2LWrapperTest extends AnyFlatSpec {
 
     applied shouldBe 1
   }
+
+  it should "get the formula for all measurements" in withA2L { a2l =>
+    a2l.measurementsOrdered.foreach { m =>
+      val compuMethod = a2l.getFormula(m)
+
+      val printit: () => Unit = () => println(s"${m.getName}, ${compuMethod}")
+
+      A2LWrapper.compuMethodTypeFold(
+        compuMethod,
+        fVtab = printit,
+        fTab = () => (),
+        fRatFun = () => ()
+      )
+
+//      println(s"${m.getName}, ${a2l.getFormula(m)}")
+//      noException shouldBe thrownBy(methodType)
+    }
+  }
+
+  it should "correctly determine the type of a measurement" in withA2L { a2l =>
+    a2l.measurementTypeFold("BMWFl_st_PTankMod_ub", fString = () => 0, fNumber = () => 1) shouldBe 1
+    a2l.measurementTypeFold("t_swi_el_nvld", fString = () => 0, fNumber = () => 1) shouldBe 1
+    a2l.measurementTypeFold("BMWlpsc_st_PTankModSub_C", fString = () => 0, fNumber = () => 1) shouldBe 1
+    a2l.measurementTypeFold("dvest_flgClr", fString = () => 0, fNumber = () => 1) shouldBe 1
+  }
 }
 
 object A2LWrapperTest {

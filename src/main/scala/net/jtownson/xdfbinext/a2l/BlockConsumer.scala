@@ -1,11 +1,11 @@
 package net.jtownson.xdfbinext.a2l
 
+import breeze.io.RandomAccessFile
 import net.alenzen.a2l.{AxisDescr, RecordLayout}
 import net.alenzen.a2l.enums.DataType
 import net.alenzen.a2l.enums.DataType.*
 import net.jtownson.xdfbinext.a2l.ByteBlock.{ByteBlockAbs, toRecord}
 
-import java.io.RandomAccessFile
 import java.nio.ByteBuffer
 import scala.collection.mutable.ArrayBuffer
 import scala.math.BigDecimal.RoundingMode.HALF_UP
@@ -16,6 +16,7 @@ trait BlockConsumer {
   def applyVTab(vtab: CompuVTab): Array[String]
 
   def applyTab(tab: CompuTab): Array[BigDecimal]
+
 }
 
 object BlockConsumer {
@@ -37,7 +38,7 @@ object BlockConsumer {
       private val axisPoints = (1 to numberPoints).map(i => offset + (i - 1) * BigDecimal(2).pow(shift)).toArray
 
       override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
-        axisPoints.map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+        axisPoints.map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
 
       override def applyVTab(vtab: CompuVTab): Array[String] = throw new UnsupportedOperationException(
         "Cannot apply vtab to fix_axis"
@@ -87,10 +88,8 @@ object BlockConsumer {
     }
 
   private def readSByte(address: Long, len: Int, binAccess: RandomAccessFile): Array[Byte] = {
-    val a = new Array[Byte](len)
     binAccess.seek(address)
-    binAccess.read(a)
-    a
+    binAccess.readByte(len)
   }
 
   def readUByte(address: Long, len: Int, binAccess: RandomAccessFile): Array[Int] = {
@@ -121,18 +120,9 @@ object BlockConsumer {
     a.toArray
   }
 
-  private def readULong(address: Long, len: Int, binAccess: RandomAccessFile): Array[Long] = {
-    val a = new Array[Byte](len * 4)
+  private def readULong(address: Long, len: Int, binAccess: RandomAccessFile): Array[BigInt] = {
     binAccess.seek(address)
-    binAccess.read(a)
-    val wrapped = ByteBuffer.wrap(a).asIntBuffer()
-    val toBuff  = new ArrayBuffer[Long](len)
-    while (wrapped.hasRemaining) {
-      val intVal  = wrapped.get
-      val longVal = intVal & 0xffffffffL
-      toBuff.addOne(longVal)
-    }
-    toBuff.toArray
+    binAccess.readUInt64(len).map(_.toBigInt)
   }
 
   private def readFloat32(address: Long, len: Int, binAccess: RandomAccessFile): Array[Float] = {
@@ -145,7 +135,7 @@ object BlockConsumer {
     (0 until len).map(_ => binAccess.readDouble()).toArray
   }
 
-  case class SByteBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class SByteBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readSByte(address, len, binAccess).map(b => vtab.tab.getOrElse(b.toInt, b.toString))
 
@@ -153,10 +143,10 @@ object BlockConsumer {
       readSByte(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
-      readSByte(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readSByte(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
   }
 
-  case class UByteBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class UByteBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readUByte(address, len, binAccess).map(b => vtab.tab.getOrElse(b, b.toString))
 
@@ -164,10 +154,10 @@ object BlockConsumer {
       readUByte(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
-      readUByte(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readUByte(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
   }
 
-  case class SWordBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class SWordBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readSWord(address, len, binAccess).map(b => vtab.tab.getOrElse(b, b.toString))
 
@@ -175,11 +165,11 @@ object BlockConsumer {
       readSWord(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] = {
-      readSWord(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readSWord(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
     }
   }
 
-  case class UWordBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class UWordBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readUWord(address, len, binAccess).map(b => vtab.tab.getOrElse(b, b.toString))
 
@@ -187,11 +177,11 @@ object BlockConsumer {
       readUWord(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] = {
-      readUWord(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readUWord(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
     }
   }
 
-  case class SLongBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class SLongBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readSLong(address, len, binAccess).map(b => vtab.tab.getOrElse(b, b.toString))
 
@@ -199,11 +189,11 @@ object BlockConsumer {
       readSLong(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] = {
-      readSLong(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readSLong(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
     }
   }
 
-  case class ULongBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class ULongBlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
     def applyVTab(vtab: CompuVTab): Array[String] =
       readULong(address, len, binAccess).map(b => vtab.tab.getOrElse(b.toInt, b.toString))
 
@@ -211,14 +201,14 @@ object BlockConsumer {
       readULong(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
 
     def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] = {
-      readULong(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readULong(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
     }
   }
 
-  case class Float32BlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class Float32BlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
 
     override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
-      readFloat32(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readFloat32(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
 
     def applyTab(tab: CompuTab): Array[BigDecimal] =
       readFloat32(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))
@@ -227,10 +217,10 @@ object BlockConsumer {
       throw new UnsupportedOperationException("Cannot perform vtab lookup for float32 storage type.")
   }
 
-  case class Float64BlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
+  private case class Float64BlockConsumer(address: Long, len: Int, binAccess: RandomAccessFile) extends BlockConsumer {
 
     override def applyFormula(ratFun: RatFun, dp: Int): Array[BigDecimal] =
-      readFloat64(address, len, binAccess).map(BigDecimal(_)).map(ratFun.apply).map(_.setScale(dp, HALF_UP))
+      readFloat64(address, len, binAccess).map(BigDecimal(_)).map(ratFun.applyInverse).map(_.setScale(dp, HALF_UP))
 
     def applyTab(tab: CompuTab): Array[BigDecimal] =
       readFloat64(address, len, binAccess).map(BigDecimal(_)).map(b => tab.interpolated.atX(b))

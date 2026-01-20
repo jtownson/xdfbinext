@@ -5,7 +5,7 @@ import net.alenzen.a2l.{AxisDescr, AxisPts, Characteristic, RecordLayout}
 import net.jtownson.xdfbinext.a2l.ByteBlock.{fnLabel, xLabel}
 import net.jtownson.xdfbinext.a2l.BlockConsumer.{fixAxisBlockConsumer, toTypedConsumableRecord}
 
-import java.io.RandomAccessFile
+import breeze.io.RandomAccessFile
 
 class CurveConsumer(x: BlockConsumer, z: BlockConsumer) {
   def applyAxisFormula(ratFun: RatFun, dp: Int): NumericArray =

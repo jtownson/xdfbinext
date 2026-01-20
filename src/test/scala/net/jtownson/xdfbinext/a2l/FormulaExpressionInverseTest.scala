@@ -14,11 +14,11 @@ class FormulaExpressionInverseTest extends AnyFlatSpec {
   }
 
   it should "evaluate a formulate" in {
-    RatFun(0, 65536, 0, 0, 0, 1)(1) shouldBe BigDecimal(1) / BigDecimal(65536)
+    RatFun(0, 65536, 0, 0, 0, 1).applyInverse(1) shouldBe BigDecimal(1) / BigDecimal(65536)
   }
 
   it should "have an identity" in {
-    RatFun.identity(0) shouldBe 0
-    RatFun.identity(1) shouldBe 1
+    RatFun.identity.applyInverse(0) shouldBe 0
+    RatFun.identity.applyInverse(1) shouldBe 1
   }
 }

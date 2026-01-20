@@ -34,3 +34,5 @@ metals.sbt
 *.dot
 *.png
 *.svg
+# Ignore Python virtual environments created by `venv` in the project
+src/main/python/venv/

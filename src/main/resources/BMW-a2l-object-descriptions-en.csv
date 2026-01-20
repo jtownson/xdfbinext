@@ -2322,6 +2322,7 @@ BMWtqe_fac_TqAboPatVvtModDyn_T,"Torque Engine factor, dimensionless torque abort
 BMWtqe_fac_TqMinCmbFil_T,"Torque Engine factor, dimensionless torque minimum combustion filter curve"
 BMWtqe_fac_TqMinDly_C,"Torque Engine factor, dimensionless torque minimum delay constant"
 BMWtqe_fac_VnsPas_ub,"Factor Vanos Passive"
+BMWtqe_fac_eff_CmbWiIg4Sp,"Torque factor efficiency combustion with ignition setpoint"
 BMWtqe_fac_eff_DeltIgAct_uw,"Ignition angle actual efficiency factor of the current cylinder"
 BMWtqe_fac_eff_DeltIgFild_uw,"Efficiency filtered at Zwbas"
 BMWtqe_fac_eff_DeltIgGra_uw,"Torque Engine factor, dimensionless efficiency delta ignition gradient unsigned Word (uint16)"
@@ -2338,6 +2339,7 @@ BMWtqe_n_SpdMinAltReq_T,"Torque Engine speed speed minimum  alternator request c
 BMWtqe_n_StrtEndEol_C,"Torque Engine speed starting end end of line constant"
 BMWtqe_rf_IgGraphCall_sw,"Torque Engine load ignition graph call"
 BMWtqe_rf_OfsTqGraIgMin_sw,"Torque Engine(torque combustion engine) relative filling(relative filling) offset(offset) torque(torque) gradient(slope) ignition(ignition) minimum(minimum, min) signed Word (sint16)"
+BMWtqe_rf_SpTqRaw_sw,"Relative filling setpoint raw value"
 BMWtqe_st_BrkgSou4NoiseAcvn_T,"Sport detection for sound activation and, if active, for the selection (1 or 2) between 2 maps for Zw_min_sot"
 BMWtqe_st_LimSrcDfcoTranAbo_C,"UEWE abort in case of external interventions"
 BMWtqe_st_LimSrcDfcoTranProh_C,"Codeword to forbid a change from Part Load to Transition-to-DFCO during an active torque intervention"
@@ -4584,6 +4586,7 @@ La_soll_br_h_xab,"Target lambda combustion chamber, exhaust gas bank-specific"
 La_soll_br_h_xeb,"Target lambda combustion chamber, intake bank specific"
 La_soll_br_h_xzyl,"Target lambda combustion chamber, individual cylinder"
 La_soll_ko_xab,"Coordinated lambda setpoint from LAMKO, specific to the exhaust gas bank"
+La_soll_mot_br_h_mw,"Target lambda combustion chamber from LAMKO, mean value"
 La_soll_so_h_xab,"Target lambda probe, exhaust gas bank-specific"
 La_soll_stat_xab,"Target lambda in the combustion chamber without pulsation (homogeneous, bench array)"
 La_soll_tester_xab,Lambda requirement tester exhaust gas bank specific
@@ -4805,6 +4808,8 @@ Mdi_res_ac,Torque reserve for the air conditioning compressor
 Mdi_res_diag,Reserve torque from OBD probe dynamic diagnosis
 Mdi_res_sl,for power steering
 Mdi_res_tev,Torque reserve for the TEV
+Mdi_rf_soll_md,"Corrected Mdi_ml_target for the calculation of Rf_target_md"
+Mdi_rf_soll_md_pre,"Corrected Mdi_ml_target for the calculation of Rf_target_md_pred"
 Mdi_vmax,Vmax limit
 Mdi_zw_min,"Maximum convertible internal VM torque averaged over the number of Rf banks from the current filling with ZW_min"
 Mdi_zw_min_rfmin,Maximum convertible internal VM torque averaged over number of Rf benches from minimum filling with ZW_min
@@ -5563,9 +5568,12 @@ Rf_max_pldmax,max. possible filling for Rf_set limitation due to boost pressure 
 Rf_max_ti,"Relative air filling, maximum"
 Rf_mdk_max,"Load at maximum torque"
 Rf_min,minimal Rf
+Rf_pre_h,"Predicted Rf (without dash)"
 Rf_soll,"Target filling (from Rf_soll_md, limited between Rf_max and Rf_min)"
 Rf_soll_dyn,"Positive RF_Soll Dynamics, = RF_Soll - low pass (rf_soll), limited to pos. Values, filter k_fk_rfsolldyn"
-Rf_soll_md,"Should RF from the moment structure"
+Rf_soll_md,"Target filling from TqeSpAirIg (Air/Ignition setpoint module)"
+Rf_soll_md_pred,"Predicted target Rf from the torque structure"
+Rf_soll_md_pred_ub,"Predicted target Rf from the torque structure with a lower resolution (than Rf_target_md_pred)"
 Rf_vl,Relative filling at full load
 Rf_vlsaug_max,"Relative filling at full suction load under Normbed with correction via engine temperature, altitude and temperature"
 Rf_wm,"Relative air filling in the WMK"
@@ -5585,6 +5593,7 @@ Rfvhub_last,"normalized relative filling, from inverse calculation of the load s
 Rfvhub_norm_warm_last,"standardized relative filling, norm, warm, last"
 Rk_ges_h_mw_xlb,Total relative fuel mass (correction + TEV)
 Rk_gesbas_h_mw_xlb,"Total relative fuel mass (correction, without TEV)"
+Rk_pre_h,"Predicted Rk (without dash)"
 Rk_soll,Relative target fuel mass (%)
 Rk_soll_kr,"Target fuel mass for knock control calculation"
 Rk_sollmd_h_xzyl,"Cylinder-specific relative fuel mass (homogeneous)"

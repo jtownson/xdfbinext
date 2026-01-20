@@ -71,6 +71,11 @@ case class A2LWrapper(a2lUrl: URL) {
   def getSummary(name: String): CharacteristicSummary =
     getSummary(characteristics(name))
 
+  def getFormula(m: Measurement): CompuMethodType = {
+    val compuMethod = compuMethods(m.getConversion)
+    getFormula(compuMethod)
+  }
+
   def getFormula(c: Characteristic): CompuMethodType = {
     val compuMethod = compuMethods(c.getConversion)
     getFormula(compuMethod)
@@ -110,6 +115,15 @@ case class A2LWrapper(a2lUrl: URL) {
       ???
     }
   }
+
+  def getXDim(m: Measurement): Int =
+    Option(m.getMatrixDim).map(_.getxDim.toInt).getOrElse(1)
+
+  def getYDim(m: Measurement): Int =
+    Option(m.getMatrixDim).map(_.getyDim.toInt).getOrElse(1)
+
+  def getZDim(m: Measurement): Int =
+    Option(m.getMatrixDim).map(_.getzDim.toInt).getOrElse(1)
 
   private def getSummary(c: Characteristic): CharacteristicSummary = {
 
@@ -266,10 +280,6 @@ case class A2LWrapper(a2lUrl: URL) {
       .collect { case t: T => t }
 
     i
-  }
-
-  def valueTypeFold[T](c: Characteristic, fString: () => T, fNumber: () => T): T = {
-    compuMethodTypeFold(getFormula(c), fString, fNumber)
   }
 
   def getXAxisFormula(c: Characteristic): CompuMethodType = {
@@ -435,6 +445,14 @@ case class A2LWrapper(a2lUrl: URL) {
       )
     }
   }
+
+  def measurementTypeFold[T](mName: String, fString: () => T, fNumber: () => T): T = {
+    measurementTypeFold(measurements(mName), fString, fNumber)
+  }
+
+  def measurementTypeFold[T](m: Measurement, fString: () => T, fNumber: () => T): T = {
+    compuMethodTypeFold(getFormula(m), fString, fNumber)
+  }
 }
 
 object A2LWrapper {
@@ -509,15 +527,19 @@ object A2LWrapper {
   }
 
   def compuMethodTypeFold[T](c: CompuMethodType, fString: () => T, fNumber: () => T): T = {
+    compuMethodTypeFold(c, fString, fNumber, fNumber)
+  }
+
+  def compuMethodTypeFold[T](c: CompuMethodType, fVtab: () => T, fTab: () => T, fRatFun: () => T): T = {
     c match {
       case cvt: net.jtownson.xdfbinext.a2l.CompuVTab =>
-        fString()
+        fVtab()
 
       case ct: net.jtownson.xdfbinext.a2l.CompuTab =>
-        fNumber()
+        fTab()
 
       case ratFun: net.jtownson.xdfbinext.a2l.RatFun =>
-        fNumber()
+        fRatFun()
     }
   }
 }

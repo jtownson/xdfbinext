@@ -1,42 +1,105 @@
 package net.jtownson.xdfbinext
 
-import net.alenzen.a2l.*
-import net.alenzen.a2l.enums.CharacteristicType.{ASCII, CURVE, MAP, VALUE, VAL_BLK}
-import net.alenzen.a2l.enums.{CharacteristicType, ConversionType}
-import net.jtownson.xdfbinext.A2LBinAdapter.CharacteristicValue
-import net.jtownson.xdfbinext.a2l.CurveType.{CurveValueType, *}
-import net.jtownson.xdfbinext.a2l.MapType.{MapValueType, NumberNumberStringTable2D, NumberStringNumberTable2D, *}
-import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
+import breeze.io.RandomAccessFile
+import net.alenzen.a2l.MemorySegment.{MemoryType, PrgType}
+import net.alenzen.a2l.{Characteristic, Measurement, MemorySegment}
+import net.alenzen.a2l.enums.{CharacteristicType, DataType}
+import net.alenzen.a2l.enums.CharacteristicType.*
+import net.jtownson.xdfbinext.A2LBinAdapter.{
+  CharacteristicValue,
+  FileBackedSegment,
+  SegmentIndex,
+  buildFileBackedSegment,
+  isVariableRAM
+}
+import net.jtownson.xdfbinext.a2l.*
+import net.jtownson.xdfbinext.a2l.A2LMeasurement.BinMeasurement
+import net.jtownson.xdfbinext.a2l.CurveType.*
+import net.jtownson.xdfbinext.a2l.MapType.*
 import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
-import net.jtownson.xdfbinext.a2l.{CompuTab, CompuVTab, MapType, *}
+import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
 
-import scala.jdk.CollectionConverters.*
-import java.io.{File, RandomAccessFile}
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.attribute.FileAttribute
+import scala.collection.immutable.TreeMap
 
-/** What would be nice here would be to convert an a2l+bin to some kind of repr where we are able to answer questions
-  * such as _find axes where the units are kg/h and the values are below 1300 kg/h_.
+/** Facade over a2l memory blocks to support reading characteristics and reading/writing measurements.
   */
-class A2LBinAdapter(val bin: File, val a2l: A2LWrapper, offset: Long = 0x9000000) {
+class A2LBinAdapter(val calibrationBin: File, val a2l: A2LWrapper, offset: Long = 0x9000000) extends AutoCloseable {
 
-  // TODO this handle is leaked
-  private val binAccess: RandomAccessFile = new RandomAccessFile(bin, "r")
+  private val binAccess: RandomAccessFile = new RandomAccessFile(calibrationBin, "r")
 
-  def numberNumberNumberTable2D(name: String): NumberNumberNumberTable2D =
-    readMap(name).asInstanceOf[NumberNumberNumberTable2D]
+  val ramSegments: SegmentIndex = SegmentIndex(
+    a2l.memorySegmentsOrdered
+      .filter(isVariableRAM)
+      .map(buildFileBackedSegment)
+      .toSeq
+  )
 
-  def numberNumberTable1D(name: String): NumberNumberTable1D =
-    readCurve(name).asInstanceOf[NumberNumberTable1D]
+  def measurement(mName: String): A2LMeasurement = {
+    BinMeasurement(a2l.measurements(mName), this)
+  }
 
-  case class BaceMap(a2LBinAdapter: A2LBinAdapter, name: String) {
-    private val mapValue: MapValueType = a2LBinAdapter.readMap(name)
-
-    def apply(x: BigDecimal, y: BigDecimal): BigDecimal = mapValue match {
-      case m: NumberNumberNumberTable2D =>
-        m.atXY(x, y)
-      case x =>
-        throw new UnsupportedOperationException()
+  def writeMeasurement(bds: Array[BigDecimal], dataType: DataType, raf: RandomAccessFile, off: Long, len: Int): Unit = {
+    raf.seek(off)
+    dataType match {
+      case DataType.UBYTE =>
+        raf.writeUInt8(bds.map(_.toShort))
+      case DataType.SBYTE =>
+        raf.writeInt8(bds.map(_.toByte))
+      case DataType.UWORD =>
+        raf.writeUInt16(bds.map(_.toChar))
+      case DataType.SWORD =>
+        raf.writeInt16(bds.map(_.toShort))
+      case DataType.ULONG =>
+        raf.writeUInt32(bds.map(_.toLong))
+      case DataType.SLONG =>
+        raf.writeInt32(bds.map(_.toInt))
+      case DataType.FLOAT32_IEEE =>
+        raf.writeFloat(bds.map(_.toFloat))
+      case DataType.FLOAT64_IEEE =>
+        raf.writeDouble(bds.map(_.toDouble))
+      case _ => throw new UnsupportedOperationException()
     }
   }
+
+  def readMeasurement(dataType: DataType, raf: RandomAccessFile, off: Long, len: Int): Array[BigDecimal] = {
+    raf.seek(off)
+    dataType match {
+      case DataType.UBYTE =>
+        raf.readUInt8(len).map(BigDecimal(_))
+      case DataType.SBYTE =>
+        raf.readInt8(len).map(BigDecimal(_))
+      case DataType.UWORD =>
+        raf.readUInt16(len).map(BigDecimal(_))
+      case DataType.SWORD =>
+        raf.readInt16(len).map(BigDecimal(_))
+      case DataType.ULONG =>
+        raf.readUInt32(len).map(BigDecimal(_))
+      case DataType.SLONG =>
+        raf.readInt32(len).map(BigDecimal(_))
+      case DataType.FLOAT32_IEEE =>
+        raf.readFloat(len).map(BigDecimal(_))
+      case DataType.FLOAT64_IEEE =>
+        raf.readDouble(len).map(BigDecimal(_))
+      case _ => throw new UnsupportedOperationException()
+    }
+  }
+
+  private def applyRatFun(m: Measurement, bds: Array[BigDecimal]): Array[BigDecimal] = {
+    val compuMethod = a2l.getFormula(m)
+    compuMethodCata(rf => bds.map(rf.apply), _ => bds, _ => bds)(compuMethod)
+  }
+
+  private def applyRatFunInverse(m: Measurement, bds: Array[BigDecimal]): Array[BigDecimal] = {
+    val compuMethod = a2l.getFormula(m)
+    compuMethodCata(rf => bds.map(rf.applyInverse), _ => bds, _ => bds)(compuMethod)
+  }
+
+  private def getXDim(m: Measurement): Int = Option(m.getMatrixDim).map(_.getxDim.toInt).getOrElse(1)
+  private def getYDim(m: Measurement): Int = Option(m.getMatrixDim).map(_.getyDim.toInt).getOrElse(1)
+  private def getZDim(m: Measurement): Int = Option(m.getMatrixDim).map(_.getzDim.toInt).getOrElse(1)
 
   def readCharacteristicWithCast[T](cName: String): T = {
     readCharacteristic(a2l.characteristics(cName)).asInstanceOf[T]
@@ -296,9 +359,55 @@ class A2LBinAdapter(val bin: File, val a2l: A2LWrapper, offset: Long = 0x9000000
     }
   }
 
+  override def close(): Unit = {
+    binAccess.close()
+  }
 }
 
 object A2LBinAdapter {
+
+  case class FileBackedSegment(segment: MemorySegment, file: RandomAccessFile) extends AutoCloseable {
+
+    def getCheckedOffset(address: Long): Long = {
+      val off = address - segment.getAddress
+      require(off >= 0 && off <= file.length, s"Invalid measurement address $address for segment ${segment.getName}.")
+      off
+    }
+
+    override def close(): Unit = file.close()
+  }
+
+  case class SegmentIndex(segments: Seq[FileBackedSegment]) extends AutoCloseable {
+
+    // Use the 'start' as the key to enable binary search behavior.
+    private val tree: TreeMap[Long, FileBackedSegment] = TreeMap(
+      segments.map(s => s.segment.getAddress -> s): _*
+    )
+
+    def apply(m: Measurement): FileBackedSegment = get(m).get
+
+    def get(m: Measurement): Option[FileBackedSegment] =
+      get(m.getEcuAddress)
+
+    def get(i: Long): Option[FileBackedSegment] = {
+      tree.rangeTo(i).lastOption.map(_._2).filter(s => i <= s.segment.getAddress + s.segment.getSize)
+    }
+
+    override def close(): Unit = tree.values.foreach(_.close())
+  }
+
+  val isVariableRAM: MemorySegment => Boolean = segment =>
+    segment.getPrgType == PrgType.VARIABLES && segment.getMemoryType == MemoryType.RAM
+
+  def buildFileBackedSegment(segment: MemorySegment): FileBackedSegment = {
+    val tmpFile = Files.createTempFile("a2lBinAdapter", segment.getName)
+    tmpFile.toFile.deleteOnExit()
+    val sz       = segment.getSize
+    val initData = Array.fill[Byte](sz.toInt)(0.toByte)
+    Files.write(tmpFile, initData)
+    FileBackedSegment(segment, new RandomAccessFile(tmpFile.toFile, "rw"))
+  }
+
   type CharacteristicValue = ValueType | ValBlkType | CurveValueType | MapValueType
 
   def diffCharacteristic(lhs: CharacteristicValue, rhs: CharacteristicValue): CharacteristicValue = {

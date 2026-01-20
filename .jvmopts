@@ -1,0 +1,6 @@
+-Xms512M
+-Xmx3G
+-XX:MaxMetaspaceSize=512M
+-XX:+UseG1GC
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=./heapdump.hprof

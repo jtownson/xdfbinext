@@ -51,4 +51,21 @@ class EquationParserTest extends AnyFlatSpec {
   it should "parse multiply expression with redundant brackets" in {
     noException shouldBe thrownBy(parseBigDecimalF1("(X*0.0002441406)*14.7")(1))
   }
+
+  it should "handle extra parentheses edge cases" in {
+    // simple nested parentheses
+    parseBigDecimalF1("((((x))))")(3) shouldBe BigDecimal(3)
+
+    // nested with addition
+    parseBigDecimalF1("(((((x+2)))))")(1) shouldBe BigDecimal(3)
+
+    // nested parentheses combined with multiplication chaining
+    parseBigDecimalF1("((x)*( (x+1) ))*2")(1) shouldBe BigDecimal(4) // ((1)*(2))*2 = 4
+
+    // nested multiplication where inner parentheses also wrap expressions
+    parseBigDecimalF1("((((X*0.0002441406))))*14.7")(1) shouldBe parseBigDecimalF1("(X*0.0002441406)*14.7")(1)
+
+    // nested division with many parentheses
+    parseBigDecimalF1("( ( ( (x/(2)) ) ) )")(4) shouldBe BigDecimal(2)
+  }
 }

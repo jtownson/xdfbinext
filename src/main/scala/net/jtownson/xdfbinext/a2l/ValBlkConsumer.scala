@@ -1,10 +1,9 @@
 package net.jtownson.xdfbinext.a2l
 
+import breeze.io.RandomAccessFile
 import net.alenzen.a2l.{Characteristic, RecordLayout}
 import net.jtownson.xdfbinext.a2l.BlockConsumer.toTypedConsumableRecord
 import net.jtownson.xdfbinext.a2l.ByteBlock.fnLabel
-
-import java.io.RandomAccessFile
 
 class ValBlkConsumer(z: BlockConsumer) {
 

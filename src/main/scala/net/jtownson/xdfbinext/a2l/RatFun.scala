@@ -3,14 +3,20 @@ package net.jtownson.xdfbinext.a2l
 import net.alenzen.a2l.Coeffs
 
 case class RatFun(a: BigDecimal, b: BigDecimal, c: BigDecimal, d: BigDecimal, e: BigDecimal, f: BigDecimal) {
+
   def apply(x: BigDecimal): BigDecimal = {
+    // (axx + bx + c)/(dxx + ex + f)
     if (a == 0 && d == 0)
-      applyFormulaInvLinear(x)
+      applyDirect(x)
     else
       ???
   }
 
-  def applyFormulaInvLinear(x: BigDecimal): BigDecimal = {
+  def applyDirect(x: BigDecimal): BigDecimal = {
+    (b * x + c) / (e * x + f)
+  }
+
+  def applyInverse(x: BigDecimal): BigDecimal = {
     (c - f * x) / (e * x - b)
   }
 }

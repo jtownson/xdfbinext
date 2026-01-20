@@ -41,9 +41,9 @@ class A2L2DotTest extends AnyFlatSpec {
   private val fnCentredGraphs = Table[String](
     "functionName",
 //    "NMAXS"
-
-    "BMW_MOD_Mafw_Pedal",
-    "BMW_MOD_Mafw_Wunsch"
+    "BMW_MOD_TqeSpAir2Rf_10ms"
+//    "BMW_MOD_Mafw_Pedal",
+//    "BMW_MOD_Mafw_Wunsch"
 //    "P_MDGK_EVMKO_S_BGRZ"
 //    "P_MDGS_10ms",
 //    "BMW_MOD_Mafw_MdMax"

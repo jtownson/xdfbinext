@@ -1,10 +1,9 @@
 package net.jtownson.xdfbinext.a2l
 
-import net.alenzen.a2l.{Characteristic, RecordLayout}
+import breeze.io.RandomAccessFile
+import net.alenzen.a2l.{Characteristic, Measurement, RecordLayout}
 import net.jtownson.xdfbinext.a2l.ByteBlock.fnLabel
 import net.jtownson.xdfbinext.a2l.BlockConsumer.toTypedConsumableRecord
-
-import java.io.RandomAccessFile
 
 class ValueConsumer(z: BlockConsumer) {
   def applyFuncFormula(ratFun: RatFun, dp: Int): BigDecimal =

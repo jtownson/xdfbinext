@@ -12,15 +12,24 @@ class JMTB58Test extends AnyFlatSpec {
   val xdfFile = new File(
     "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\BMW-XDFs\\B58gen1\\00003076501103.xdf"
   )
+//  val bin1 = new File(
+//    "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\tuning-repo\\jmt\\jmt-daw-ff-comp-wip.bin"
+//  )
   val bin1 = new File(
-    "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\tuning-repo\\jmt\\jmt-daw-ff-comp-wip.bin"
+    "C:\\Users\\Jeremy\\Documents\\Car\\tuning\\BMW-XDFs-original\\B58gen1\\00003076501103_original.bin"
   )
 
   private val xdfModel   = Using.resource(Source.fromFile(xdfFile))(r => XdfParser.parse(r.mkString))
   private val binAdapter = new XDFBinAdapter(bin1, xdfModel)
 
-  it should "have a sensible wg maf axis" in {
-    (0 to 11).map(i => BigDecimal(25) + i * (550 - 25) / 11).foreach(println)
+  it should "scale load to torque" in {
+
+    val loadToTorque = binAdapter.tableRead2D("Load to torque")
+
+    val scaled = loadToTorque.data.scaleX(BigDecimal(220) / BigDecimal(200))
+
+    println(Data2Str.data2Str(scaled, 1))
+
   }
 
   it should "calculate the turbine massflow" in {

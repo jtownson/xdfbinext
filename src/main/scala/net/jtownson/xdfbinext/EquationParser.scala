@@ -40,19 +40,26 @@ object EquationParser:
 
     def number[$: P]: P[BigDecimal] = P(numberS1 | numberS2)
 
-    def parens[$: P]: P[BigDecimal] = P("(" ~/ addSub ~ ")")
+    def parens[$: P]: P[BigDecimal] = P("(" ~ addSub ~ ")")
 
     def factor[$: P]: P[BigDecimal] = P(number | parens)
 
-    def divMulRedundantParens[$: P]: P[BigDecimal] = P("(" ~/ divMulBare ~ ")")
+    def divMulRedundantParens[$: P]: P[BigDecimal] = P("(" ~ divMulBare ~ ")")
 
-    def divMulBare[$: P]: P[BigDecimal] = P(factor ~ (CharIn("*/").! ~/ factor).rep).map(eval)
+    def divMulBare[$: P]: P[BigDecimal] = P(factor ~ (CharIn("*/").! ~ factor).rep).map(eval)
 
-    def divMul[$: P]: P[BigDecimal] = P(divMulRedundantParens | divMulBare)
+    // Prefer the bare multiplication/division chain so expressions like "(a*b)*c"
+    // are parsed as a factor followed by further */ factors. If we match the
+    // redundant-parens alternative first, it will consume the parenthesized
+    // group and prevent chaining with the following operator.
+    def divMul[$: P]: P[BigDecimal] = P(divMulBare | divMulRedundantParens)
 
-    def addSub[$: P]: P[BigDecimal] = P(divMul ~ (CharIn("+\\-").! ~/ divMul).rep).map(eval)
+    def addSub[$: P]: P[BigDecimal] = P(divMul ~ (CharIn("+\\-").! ~ divMul).rep).map(eval)
 
-    def expr[$: P]: P[BigDecimal] = P((parens | addSub) ~ End)
+    // Parse addSub first so expressions starting with a parenthesized term followed by operators
+    // (e.g. "(x*2)*3") are handled by the left-recursive/chain parsing instead of the parens-only
+    // alternative which would consume the initial parenthesized group and prevent parsing the rest.
+    def expr[$: P]: P[BigDecimal] = P(addSub ~ End)
 
     private def eval(tree: (BigDecimal, Seq[(String, BigDecimal)])): BigDecimal = {
       val (base, ops) = tree
@@ -85,7 +92,7 @@ object EquationParser:
 
     def parseF1(e: String): T => BigDecimal = { (x: T) =>
       val ee =
-        e.replace("x", x.toString).replace("X", x.toString).replace("(", "").replace(")", "").replaceAll("\\s*", "")
+        e.replace("x", x.toString).replace("X", x.toString).replaceAll("\\s*", "")
       parseF0(ee)
     }
 

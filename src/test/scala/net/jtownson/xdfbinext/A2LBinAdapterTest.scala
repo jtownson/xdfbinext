@@ -1,5 +1,7 @@
 package net.jtownson.xdfbinext
 
+import breeze.io.RandomAccessFile
+import net.alenzen.a2l.enums.DataType.{FLOAT32_IEEE, FLOAT64_IEEE}
 import net.alenzen.a2l.enums.{CharacteristicType, DataType}
 import net.alenzen.a2l.{AxisPts, Characteristic}
 import net.jtownson.xdfbinext.A2LBinAdapterTest.{a2LBinAdapter, a2LWrapper}
@@ -12,10 +14,15 @@ import net.jtownson.xdfbinext.a2l.MapType.{
 import net.jtownson.xdfbinext.a2l.StringArray
 import net.jtownson.xdfbinext.a2l.ValBlkConsumer.ValBlkType
 import net.jtownson.xdfbinext.a2l.ValueConsumer.ValueType
+import org.scalacheck.Gen
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
+import org.scalatest.prop.TableDrivenPropertyChecks
+import org.scalatest.prop.Tables.Table
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 import java.io.{File, FileOutputStream, PrintWriter}
+import java.nio.file.Files
 import scala.jdk.CollectionConverters.*
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.HALF_UP
@@ -93,7 +100,8 @@ class A2LBinAdapterTest extends AnyFlatSpec {
   }
 
   it should "read a SWORD map - direct case" in {
-    a2LBinAdapter.numberNumberNumberTable2D("BMWtchctr_t_ExGasMdl_M")(1, 0) shouldBe BigDecimal(850.0)
+    a2LBinAdapter
+      .readCharacteristicWithCast[NumberNumberNumberTable2D]("BMWtchctr_t_ExGasMdl_M")(1, 0) shouldBe BigDecimal(850.0)
   }
 
   it should "read a UWORD map" in {
@@ -249,6 +257,69 @@ class A2LBinAdapterTest extends AnyFlatSpec {
 
   it should "read a curve with an absolute axis" in {
     a2LBinAdapter.readCharacteristic("MfVDTypC_KLVZMSVUB")
+  }
+
+  it should "read/write the value of a uword based measurement" in {
+    val expected    = BigDecimal(101)
+    val measurement = a2LBinAdapter.measurement("Stat_map_zylmot2abgb")
+    measurement.write1(expected)
+    val actual = measurement.read1
+    actual shouldBe expected
+  }
+
+  it should "apply formulas for function-based measurements" in {
+    val expected    = BigDecimal(6000)
+    val measurement = a2LBinAdapter.measurement("V_antriebsachse")
+    measurement.write1(expected)
+    val actual = measurement.read1
+    actual shouldBe expected
+  }
+
+  it should "read/write the value of an array-based measurement" in {
+    val expected    = Array(BigDecimal(101), BigDecimal(202))
+    val measurement = a2LBinAdapter.measurement("Stat_map_zylmot2abgb_xab")
+    measurement.write(expected)
+    val actual = measurement.read
+    actual shouldBe expected
+  }
+
+  private val intDatatypeCases = Table[DataType, BigInt, BigInt](
+    ("datatype", "min", "max"),
+    (DataType.UBYTE, BigInt(0), BigInt(255)),
+    (DataType.SBYTE, BigInt(-128), BigInt(127)),
+    (DataType.UWORD, BigInt(0), BigInt(65535)),
+    (DataType.SWORD, BigInt(-32768), BigInt(32767)),
+    (DataType.ULONG, BigInt(0), BigInt(4294967295L)),
+    (DataType.SLONG, BigInt(-2147483648L), BigInt(2147483647L))
+  )
+
+  it should "read/write all datatypes symmetrically" in {
+    val f = File.createTempFile("a2lbinadaptertest", "tmp")
+    f.deleteOnExit()
+    Using.resource(new RandomAccessFile(f, "rw")) { raf =>
+      raf.setLength(1024)
+
+      TableDrivenPropertyChecks.forAll(intDatatypeCases) { (dataType, min, max) =>
+        ScalaCheckDrivenPropertyChecks.forAll(Gen.choose(min, max)) { b =>
+          val bd = Array(BigDecimal(b))
+          a2LBinAdapter.writeMeasurement(bd, dataType, raf, 0, 1)
+          a2LBinAdapter.readMeasurement(dataType, raf, 0, 1) shouldBe bd
+        }
+      }
+
+      ScalaCheckDrivenPropertyChecks.forAll(Gen.choose[Float](Float.MinValue, Float.MaxValue)) { b =>
+        val bd = Array(BigDecimal(b))
+        a2LBinAdapter.writeMeasurement(bd, FLOAT32_IEEE, raf, 0, 1)
+        a2LBinAdapter.readMeasurement(FLOAT32_IEEE, raf, 0, 1) shouldBe bd
+      }
+
+      ScalaCheckDrivenPropertyChecks.forAll(Gen.choose[Double](Double.MinValue, Double.MaxValue)) { b =>
+        val bd = Array(BigDecimal(b))
+        a2LBinAdapter.writeMeasurement(bd, FLOAT64_IEEE, raf, 0, 1)
+        a2LBinAdapter.readMeasurement(FLOAT64_IEEE, raf, 0, 1) shouldBe bd
+      }
+
+    }
   }
 
 }
