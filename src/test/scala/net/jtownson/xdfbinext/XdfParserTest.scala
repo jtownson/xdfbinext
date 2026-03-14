@@ -172,6 +172,15 @@ class XdfParserTest extends AnyFlatSpec {
     xdfModel.isBreakpointTable(xdfModel.tablesByName("Basic catalyst heating mode wish")) shouldBe false
   }
 
+  it should "return table and axis addresses" in {
+    val addresses = xdfModel.tableAxisAddresses()
+
+    addresses should contain(("Load to torque", 0x6a1d8eL))
+    addresses should contain(("Load to torque", 0x6a1db2L))
+    addresses should contain(("Load to torque", 0x6a1abeL))
+    addresses.exists(_._2 == undefinedAddress) shouldBe false
+  }
+
   it should "parse the motiv XDF" in {
     val xdfFile = Source.fromResource("v5.99_Reflex+_XDF.xdf").mkString
 

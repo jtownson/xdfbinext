@@ -14,13 +14,13 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
 
   private val binAccess: RandomAccessFile = new RandomAccessFile(bin, mode)
 
-  private val constants: Map[String, Array[BigDecimal]] =
+  val constants: Map[String, Array[BigDecimal]] =
     xdfModel.tablesConstant.map((tableName, _) => tableName -> tableRead(tableName))
 
-  private val tables1D: Map[String, Array[BigDecimal]] =
+  val tables1D: Map[String, Array[BigDecimal]] =
     xdfModel.tables1D.map((tableName, _) => tableName -> tableRead(tableName))
 
-  private val tables2D: Map[String, Array[BigDecimal]] =
+  val tables2D: Map[String, Array[BigDecimal]] =
     xdfModel.tables2D.map((tableName, _) => tableName -> tableRead(tableName))
 
   private val virtualTables: Map[String, Interpolated2D] =
@@ -141,17 +141,7 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
   private def isMonotonicallyIncreasing(decimals: Array[BigDecimal]): Boolean = decimals.sorted.sameElements(decimals)
 
   def tableDyn(table: XdfTable): Array[BigDecimal] = {
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
-    if (cellSizeBytes == 1)
-      tableByte(table)
-    else if (cellSizeBytes == 2)
-      tableShort(table)
-    else if (cellSizeBytes == 4)
-      tableInt(table)
-    else
-      throw new UnsupportedOperationException(s"No handling of cells with size $cellSizeBytes bytes")
+    XDFBinAdapter.tableDyn(table, binAccess)
   }
 
   private def tableRead(xdfTable: XdfTable): Array[BigDecimal] = {
@@ -166,147 +156,13 @@ class XDFBinAdapter(val bin: File, val xdfModel: XdfModel, val mode: String = "r
     maybeY.fold(table.yLabels.toArray)(t => tableRead(t).map(_.toString))
   }
 
-  def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
-    t.axes.z.decimalPl.fold(in)(dp => in.map(bd => bd.setScale(dp, RoundingMode.HALF_UP)))
-  }
-
   def readRaw(table: XdfTable): Array[Byte] = {
-    val startAddress  = table.axes.z.embeddedData.mmedAddress
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-    val a             = new Array[Byte](cellSizeBytes * numCells)
-    try {
-      binAccess.seek(startAddress)
-      binAccess.read(a)
-    } catch
-      case t: Throwable =>
-        throw new IllegalStateException(
-          s"Error during readRaw for XdfTable ${table.title} using start address $startAddress",
-          t
-        )
-    a
+    XDFBinAdapter.readRaw(table, binAccess)
   }
 
   def writeRaw(address: Long, data: Array[Byte]): Unit = {
     binAccess.seek(address)
     binAccess.write(data)
-  }
-
-  private def readUnsignedByte(table: XdfTable): Array[Int] = {
-    val startAddress  = table.axes.z.embeddedData.mmedAddress
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-    val a             = new ArrayBuffer[Int](cellSizeBytes * numCells)
-
-    try {
-      binAccess.seek(startAddress)
-      (0 until numCells).foreach(i => a.addOne(binAccess.readUnsignedByte()))
-    } catch {
-      case t: Throwable =>
-        throw new IllegalStateException(
-          s"Error during readUnsignedByte for XdfTable ${table.title} using start address $startAddress",
-          t
-        )
-    }
-
-    a.toArray
-  }
-
-  private def tableByte(table: XdfTable) = {
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
-    val isLsbFirst    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
-    val isSignedLsb   = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-    require(cellSizeBytes == 1, s"Invalid cell size for tableByte: ${table.title} has size in bytes $cellSizeBytes")
-
-    if (isSigned) { // signed, big endian
-      val t        = readRaw(table)
-      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-      t.map(equation)
-    } else if (isLsbFirst) { // unsigned, little endian
-      val t        = readUnsignedByte(table)
-      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-      t.map(equation)
-    } else if (isSignedLsb) { // signed, little endian (TODO test for -ve values)
-      val t        = readRaw(table)
-      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-      t.map(equation)
-    } else { // unsigned, big endian
-      val t        = readUnsignedByte(table)
-      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-      t.map(equation)
-    }
-
-  }
-
-  private def tableShort(table: XdfTable): Array[BigDecimal] = {
-    val tableRaw = readRaw(table)
-
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val isSigned      = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
-    val isLsbFirst    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
-    val isSignedLsb   = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
-    require(cellSizeBytes == 2, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
-
-    val wrapped: ByteBuffer =
-      if (isLsbFirst || isSignedLsb) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN)
-      else ByteBuffer.wrap(tableRaw)
-    val shortBuff = wrapped.asShortBuffer()
-    val toBuff    = new ArrayBuffer[Int](numCells)
-
-    while (shortBuff.hasRemaining) {
-      val shortVal    = shortBuff.get
-      val intVal: Int = if (isSigned || isSignedLsb || shortVal >= 0) shortVal.toInt else 0x10000 + shortVal
-      toBuff.addOne(intVal)
-    }
-
-    val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-
-    toBuff.map(equation).toArray
-  }
-
-  private def tableInt(table: XdfTable): Array[BigDecimal] = {
-    val tableRaw = readRaw(table)
-
-    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
-    val numCells      = table.axes.x.indexCount * table.axes.y.indexCount
-
-    require(cellSizeBytes == 4, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
-
-    val isFloatingPoint    = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointFlag
-    val isLsbFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointLsbFlag
-
-    val wrapped: ByteBuffer =
-      if (isLsbFloatingPoint) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN) else ByteBuffer.wrap(tableRaw)
-
-    if (isFloatingPoint || isLsbFloatingPoint) {
-      val floatBuff = wrapped.asFloatBuffer()
-      val toBuff    = new ArrayBuffer[BigDecimal](numCells)
-      while (floatBuff.hasRemaining) {
-        val f = floatBuff.get()
-        toBuff.addOne(BigDecimal(f))
-      }
-      val equation: BigDecimal => BigDecimal =
-        EquationParser.parseBigDecimalF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-
-      toBuff.map(equation).toArray
-
-    } else {
-      val intBuff = wrapped.asIntBuffer()
-      val toBuff  = new ArrayBuffer[Long](numCells)
-      while (intBuff.hasRemaining) {
-        val intVal  = intBuff.get
-        val longVal = intVal & 0xffffffffL
-        toBuff.addOne(longVal)
-      }
-
-      val equation: Long => BigDecimal = EquationParser.parseLongF1(table.axes.z.math.map(_.equation).getOrElse("x"))
-
-      toBuff.map(equation).toArray
-    }
   }
 
   private def dataToCSV1D(t: XdfTable1D): Iterable[String] = {
@@ -345,4 +201,159 @@ object XDFBinAdapter {
   // could extract that info to a new type. Map XdfTable2D to that type and do likewise for virtual tables somehow.
   case class BinTable2D(xdfTable: XdfTable2D, data: Interpolated2D)
 
+  def readRaw(table: XdfTable, binAccess: RandomAccessFile): Array[Byte] = {
+    val startAddress = table.axes.z.embeddedData.mmedAddress
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+    val a = new Array[Byte](cellSizeBytes * numCells)
+    try {
+      binAccess.seek(startAddress)
+      binAccess.read(a)
+    } catch
+      case t: Throwable =>
+        throw new IllegalStateException(
+          s"Error during readRaw for XdfTable ${table.title} using start address $startAddress",
+          t
+        )
+    a
+  }
+
+  def tableDyn(table: XdfTable, binAccess: RandomAccessFile): Array[BigDecimal] = {
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+
+    if (cellSizeBytes == 1)
+      tableByte(table, binAccess)
+    else if (cellSizeBytes == 2)
+      tableShort(table, binAccess)
+    else if (cellSizeBytes == 4)
+      tableInt(table, binAccess)
+    else
+      throw new UnsupportedOperationException(s"No handling of cells with size $cellSizeBytes bytes")
+  }
+
+  private def readUnsignedByte(table: XdfTable, binAccess: RandomAccessFile): Array[Int] = {
+    val startAddress = table.axes.z.embeddedData.mmedAddress
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+    val a = new ArrayBuffer[Int](cellSizeBytes * numCells)
+
+    try {
+      binAccess.seek(startAddress)
+      (0 until numCells).foreach(i => a.addOne(binAccess.readUnsignedByte()))
+    } catch {
+      case t: Throwable =>
+        throw new IllegalStateException(
+          s"Error during readUnsignedByte for XdfTable ${table.title} using start address $startAddress",
+          t
+        )
+    }
+
+    a.toArray
+  }
+
+  private def tableByte(table: XdfTable, binAccess: RandomAccessFile) = {
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val isSigned = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
+    val isLsbFirst = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
+    val isSignedLsb = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+    require(cellSizeBytes == 1, s"Invalid cell size for tableByte: ${table.title} has size in bytes $cellSizeBytes")
+
+    if (isSigned) { // signed, big endian
+      val t = readRaw(table, binAccess)
+      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    } else if (isLsbFirst) { // unsigned, little endian
+      val t = readUnsignedByte(table, binAccess)
+      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    } else if (isSignedLsb) { // signed, little endian (TODO test for -ve values)
+      val t = readRaw(table, binAccess)
+      val equation = EquationParser.parseByteF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    } else { // unsigned, big endian
+      val t = readUnsignedByte(table, binAccess)
+      val equation = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+      t.map(equation)
+    }
+
+  }
+
+  private def tableShort(table: XdfTable, binAccess: RandomAccessFile): Array[BigDecimal] = {
+    val tableRaw = readRaw(table, binAccess)
+
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val isSigned = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedFlag
+    val isLsbFirst = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.lsbFlag
+    val isSignedLsb = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.signedLsbFlag
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+
+    require(cellSizeBytes == 2, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
+
+    val wrapped: ByteBuffer =
+      if (isLsbFirst || isSignedLsb) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN)
+      else ByteBuffer.wrap(tableRaw)
+    val shortBuff = wrapped.asShortBuffer()
+    val toBuff = new ArrayBuffer[Int](numCells)
+
+    while (shortBuff.hasRemaining) {
+      val shortVal = shortBuff.get
+      val intVal: Int = if (isSigned || isSignedLsb || shortVal >= 0) shortVal.toInt else 0x10000 + shortVal
+      toBuff.addOne(intVal)
+    }
+
+    val equation: Int => BigDecimal = EquationParser.parseIntF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+
+    toBuff.map(equation).toArray
+  }
+
+  private def tableInt(table: XdfTable, binAccess: RandomAccessFile): Array[BigDecimal] = {
+    val tableRaw = readRaw(table, binAccess)
+
+    val cellSizeBytes = table.axes.z.embeddedData.mmedElementSizeBits / 8
+    val numCells = table.axes.x.indexCount * table.axes.y.indexCount
+
+    require(cellSizeBytes == 4, s"Invalid cell size for tableShort: ${table.title} has size in bytes $cellSizeBytes")
+
+    val isFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointFlag
+    val isLsbFloatingPoint = table.axes.z.embeddedData.mmedTypeFlags == XdfSchema.floatingPointLsbFlag
+
+    val wrapped: ByteBuffer =
+      if (isLsbFloatingPoint) ByteBuffer.wrap(tableRaw).order(ByteOrder.LITTLE_ENDIAN) else ByteBuffer.wrap(tableRaw)
+
+    if (isFloatingPoint || isLsbFloatingPoint) {
+      val floatBuff = wrapped.asFloatBuffer()
+      val toBuff = new ArrayBuffer[BigDecimal](numCells)
+      while (floatBuff.hasRemaining) {
+        val f = floatBuff.get()
+        toBuff.addOne(BigDecimal(f))
+      }
+      val equation: BigDecimal => BigDecimal =
+        EquationParser.parseBigDecimalF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+
+      toBuff.map(equation).toArray
+
+    } else {
+      val intBuff = wrapped.asIntBuffer()
+      val toBuff = new ArrayBuffer[Long](numCells)
+      while (intBuff.hasRemaining) {
+        val intVal = intBuff.get
+        val longVal = intVal & 0xffffffffL
+        toBuff.addOne(longVal)
+      }
+
+      val equation: Long => BigDecimal = EquationParser.parseLongF1(table.axes.z.math.map(_.equation).getOrElse("x"))
+
+      toBuff.map(equation).toArray
+    }
+  }
+
+  def applyDecimalPl(t: XdfTable)(in: Array[BigDecimal]): Array[BigDecimal] = {
+    t.axes.z.decimalPl.fold(in)(dp => in.map(bd => bd.setScale(dp, RoundingMode.HALF_UP)))
+  }
+
+  def tableRead(xdfTable: XdfTable, binAccess: RandomAccessFile): Array[BigDecimal] = {
+    applyDecimalPl(xdfTable)(tableDyn(xdfTable, binAccess))
+  }
 }

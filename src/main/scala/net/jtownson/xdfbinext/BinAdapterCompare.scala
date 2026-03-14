@@ -1,6 +1,7 @@
 package net.jtownson.xdfbinext
 
 import net.jtownson.xdfbinext.Data2Str.{data2Str1D, data2Str2D, data2StrConst}
+import net.jtownson.xdfbinext.XDFBinAdapter.applyDecimalPl
 import net.jtownson.xdfbinext.XdfSchema.{XdfModel, XdfTable, XdfTable1D, XdfTable2D}
 
 import java.io.File
@@ -33,7 +34,7 @@ object BinAdapterCompare {
     val dl = lhsb.tableDyn(table)
     val dr = rhsb.tableDyn(table)
 
-    val diff = rhsb.applyDecimalPl(table)(dl.zip(dr).map { case (lbd, rbd) => rbd - lbd })
+    val diff = applyDecimalPl(table)(dl.zip(dr).map { case (lbd, rbd) => rbd - lbd })
 
     xdfModel.table(tableName) match
       case t: XdfTable =>

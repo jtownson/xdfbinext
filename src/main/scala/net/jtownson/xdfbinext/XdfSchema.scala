@@ -71,6 +71,18 @@ object XdfSchema:
 
     def isBreakpointTable(xdfTable: XdfTable): Boolean = breakPointTables.contains(xdfTable.title)
 
+    def tableAxisAddresses(): Seq[(String, Long)] = {
+      tables
+        .flatMap { table =>
+          Seq(
+            (table.title, table.axes.x.embeddedData.mmedAddress),
+            (table.title, table.axes.y.embeddedData.mmedAddress),
+            (table.title, table.axes.z.embeddedData.mmedAddress)
+          )
+        }
+        .filter(a => isNotUndefinedAddress(a._2))
+    }
+
     def table(tableName: String): XdfTable | XdfTable1D | XdfTable2D = {
       tablesConstant
         .get(tableName)

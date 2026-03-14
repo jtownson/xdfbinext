@@ -24,7 +24,8 @@ class A2L2DotTest extends AnyFlatSpec {
 
   private val handGraphs = Table[String](
     "filename",
-    "B58FR/test.dot"
+    "B58FR/throttle-aggression.dot"
+//    "B58FR/test.dot"
 //    "B58FR/BMW_MOD_IgnOut_kra_10ms.dot"
 //    "BMW_MOD_IgnBasDelt_Msc_10ms.dot",
 //    "tchdiag_pressure.dot",

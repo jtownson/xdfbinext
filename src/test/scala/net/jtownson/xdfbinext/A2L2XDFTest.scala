@@ -16,6 +16,34 @@ class A2L2XDFTest extends AnyFlatSpec {
   val a2lUrl = getClass.getResource("/DME861_R1C9J8B3B.a2l").toURI.toURL
   val a2l    = new A2L2XDF(a2lUrl = a2lUrl, xdfModel = modXdf)
 
+  it should "calculate offsets" ignore {
+    val vals = Seq(0x77722228, 0x7772221c, 0x77722034)
+    val off = 0x24B0
+
+    vals.foreach{i =>
+      val no = i + off
+      println(f"0x$i%08X -> 0x$no%08X")
+    }
+  }
+  
+  it should "write thingys tables" ignore {
+    val xdfFile = new File("C:\\Users\\Jeremy\\Documents\\Car\\tuning\\BMW-XDFs\\B58gen2\\00005D55466408\\00005D55466408.xdf")
+
+    val xdf = Using.resource(Source.fromFile(xdfFile))(xdfSource => XdfParser.parse(xdfSource.mkString))
+    val a2lUrl = getClass.getResource("/DME86S0_F4C9G576B.a2l").toURI.toURL
+    val a2l = new A2L2XDF(a2lUrl = a2lUrl, xdfModel = xdf)
+
+    val tables = List(
+      "BMWtchctr_fac_IpPctWg_M"
+    )
+
+    a2l.characteristic2XDF(tables).foreach(println)
+  }
+
+  it should "compare table addresses for two XDFs" in {
+    pending
+  }
+
   it should "write tables for gauntlet HPFP" in {
 
     val tables = List(
